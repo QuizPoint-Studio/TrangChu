@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Di truyền Thực vật - Modern UI</title>
+    
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+        body { 
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0f9ff 100%);
+            min-height: 100vh;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- ICON COMPONENTS ---
+        const IconWrapper = ({ children, size = 24, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
+        );
+
+        const CheckCircle = (props) => <IconWrapper {...props}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></IconWrapper>;
+        const XCircle = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></IconWrapper>;
+        const ArrowLeft = (props) => <IconWrapper {...props}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></IconWrapper>;
+        const RotateCcw = (props) => <IconWrapper {...props}><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></IconWrapper>;
+        const Award = (props) => <IconWrapper {...props}><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></IconWrapper>;
+        const History = (props) => <IconWrapper {...props}><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></IconWrapper>;
+        const Trash2 = (props) => <IconWrapper {...props}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></IconWrapper>;
+        const LogOut = (props) => <IconWrapper {...props}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></IconWrapper>;
+        const Eye = (props) => <IconWrapper {...props}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></IconWrapper>;
+        const ChevronLeft = (props) => <IconWrapper {...props}><polyline points="15 18 9 12 15 6"/></IconWrapper>;
+        const ChevronRight = (props) => <IconWrapper {...props}><polyline points="9 18 15 12 9 6"/></IconWrapper>;
+        const Sparkles = (props) => <IconWrapper {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></IconWrapper>;
+        const Dna = (props) => <IconWrapper {...props}><path d="M2 15c6.667-6 13.333 0 20-6"/><path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"/><path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"/><path d="M17 6l-2.5-2.5"/><path d="M14 8l-1-1"/><path d="M7 18l2.5 2.5"/><path d="M3.5 14.5l.5.5"/><path d="M20 9l.5.5"/><path d="M6.5 12.5l1 1"/><path d="M16.5 10.5l-1-1"/><path d="M10 16l1.5 1.5"/></IconWrapper>;
+        const Microscope = (props) => <IconWrapper {...props}><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/><path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/></IconWrapper>;
+        const Layers = (props) => <IconWrapper {...props}><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></IconWrapper>;
+        const Phone = (props) => <IconWrapper {...props}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></IconWrapper>;
+        const User = (props) => <IconWrapper {...props}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></IconWrapper>;
+        const Presentation = (props) => <IconWrapper {...props}><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></IconWrapper>;
+        const CheckSquare = (props) => <IconWrapper {...props}><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></IconWrapper>;
+        const List = (props) => <IconWrapper {...props}><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></IconWrapper>;
+
+        // ============================================================================
+        // DỮ LIỆU CÂU HỎI DI TRUYỀN THỰC VẬT
+        // ============================================================================
+        
+        // 25 CÂU ĐÚNG SAI (Phần 1)
+        const TF_DATA = [
+            { id: 146, q: "Sự hình thành túi phối ở thực vật có hoa gồm 3 lần nguyên phân và có 8 tế bào?", ans: "Đúng", opts: ["Đúng", "Sai"] },
+            { id: 147, q: "Sự hình thành hạt phấn 3 nhân ở thực vật có hoa gồm 2 lần nguyên nhân xả có 2 tế bảo?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 148, q: "Sự hình thành hạt phấn 3 nhân ở thực vật có hoa gồm 2 lần nguyên phân và có 4 tế bào?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 149, q: "Thu tinh kép ở thực vật có hoa là quá trình hình thành hợp tử (2n) và phôi nhỏ (2n)?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 150, q: "Thụ tinh kép ở thực vật có hoa là quá trình hình thành hợp tử (3n) và phối nhỏ (2n)?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 151, q: "Thụ tinh kép ở thực vật có hoa là quá trình hình thành hợp tử (2n) và phôi nhủ (3n)?", ans: "Đúng", opts: ["Đúng", "Sai"] },
+            { id: 152, q: "Antisen là công nghệ tạo ra RNA ngược nghĩa bắt cặp bổ sung với mRNA?", ans: "Đúng", opts: ["Đúng", "Sai"] },
+            { id: 153, q: "Antisen là công nghệ tạo ra DNA ngược nghĩa bặt cặp bổ sung với mRNA?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 154, q: "Antisen là công nghệ tạo ra RNA xuôi nghĩa bắt cặp bộ sung với mRNA?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 155, q: "RNA polymerase có hoạt tính helicase và primase?", ans: "Đúng", opts: ["Đúng", "Sai"] },
+            { id: 156, q: "DNA polymerase có hoạt tính helicase và primase?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 157, q: "RNA polymerase có hoạt tính polymer, tự lắp ghép nucleotide mới vào mạch bổ sung?", ans: "Đúng", opts: ["Đúng", "Sai"] },
+            { id: 158, q: "DNA polymerase có hoạt tính polymer, tự lặp ghép nucleotide mới vào mạch bổ sung?", ans: "Đúng", opts: ["Đúng", "Sai"] },
+            { id: 159, q: "Phương sai kiểu hình càng lớn thì hệ số di truyền tính trạng cảng lớn?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 160, q: "Phương sai kiểu gen và kiểu hình bằng nhau khi phương sai môi trường băng 0?", ans: "Đúng", opts: ["Đúng", "Sai"] },
+            { id: 161, q: "Phương sai kiểu gen và kiểu hình bằng nhau khi phương sai môi trường băng 1?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 162, q: "Về lý thuyết trong dòng cậy trông thuần chủng. hệ số di truyền băng 0,5?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 163, q: "Về lý thuyết trong dòng cây trồng thuần chủng, hệ số di truyền băng 0?", ans: "Đúng", opts: ["Đúng", "Sai"] },
+            { id: 164, q: "Về lý thuyết trong dòng cây trồng thuần chủng hệ số di truyền băng 1?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 165, q: "Trình tu 3 base đổi mã trên tRNA tương ứng với một amino acid gọi là codon?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 166, q: "Trình tự 3 base đổi mã trên tRNA tương ứng với một amino acid gọi là anticodon?", ans: "Đúng", opts: ["Đúng", "Sai"] },
+            { id: 167, q: "Chu trình tế bảo nhân đội nhiễm sắc thể trong kỳ trung gian?", ans: "Đúng", opts: ["Đúng", "Sai"] },
+            { id: 168, q: "Chu trình tế bào nhân đội nhiễm sắc thể trong kỷ phân chia mitotic?", ans: "Sai", opts: ["Đúng", "Sai"] },
+            { id: 169, q: "Trinh từ 3 base trên mRNA tương ứng với một amino acid được coi là codon?", ans: "Đúng", opts: ["Đúng", "Sai"] },
+            { id: 170, q: "Trình tự 3 base trên mRNA tương ứng với một amino acid được gọi là anticodon?", ans: "Sai", opts: ["Đúng", "Sai"] }
+        ];
+
+        // 38 CÂU TRẮC NGHIỆM (Phần 2)
+        const MC_DATA = [
+            { id: 1, q: "Sự đa dạng di truyền là kết quả của quá trình nào?", ans: "Sinh sản hữu tính", opts: ["Mẫu sinh", "Trinh sản", "Sinh sản hữu tính", "Sinh sản vô phối"] },
+            { id: 2, q: "Cấu trúc mạch đối song song (anti-parallel) đúng cho các phân tử nào?", ans: "DNA và cDNA", opts: ["RNA và Protein", "DNA và cDNA", "RNA và cDNA", "mRNA và tRNA"] },
+            { id: 3, q: "Cơ chế điều hòa hoạt động của các gen đã được Jacob và Monod phát hiện ở đối tượng nào?", ans: "Vi khuẩn E.coli", opts: ["Ruồi giấm", "Đậu Hà Lan", "Vi khuẩn E.coli", "Virus"] },
+            { id: 4, q: "Nhiễm sắc thể được nhìn thấy rõ nhất dưới kính hiển vi khi nào?", ans: "Kỳ phân chia Mitosis/Meiosis", opts: ["Kỳ trung gian", "Kỳ phân chia Mitosis/Meiosis", "Kỳ cuối", "Kỳ đầu"] },
+            { id: 5, q: "Sự nhân đôi DNA (DNA replication) diễn ra ở giai đoạn nào của chu trình tế bào?", ans: "Kỳ trung gian (Pha S)", opts: ["Kỳ trung gian (Pha S)", "Kỳ đầu", "Kỳ giữa", "Kỳ cuối"] },
+            { id: 6, q: "Tác dụng của Colchicine trong gây đột biến nhân tạo là gì?", ans: "Kìm hãm hình thành thoi vô sắc", opts: ["Thay thế nucleotide", "Kìm hãm hình thành thoi vô sắc", "Ion hóa nguyên tử", "Kích thích phân chia"] },
+            { id: 7, q: "Hệ số di truyền thấp cho thấy điều gì?", ans: "Tính trạng chịu ảnh hưởng nhiều của môi trường", opts: ["Tính trạng phụ thuộc nhiều vào kiểu gen", "Kiểu gen ít chịu ảnh hưởng môi trường", "Tính trạng chịu ảnh hưởng nhiều của môi trường", "Biến dị kiểu gen bằng biến dị kiểu hình"] },
+            { id: 8, q: "Trình tự 3 base trên mRNA tương ứng với một amino acid gọi là?", ans: "Codon", opts: ["Codon", "Anticodon", "Gene", "Genome"] },
+            { id: 9, q: "Trình tự 3 base đổi mã trên tRNA tương ứng với một amino acid gọi là?", ans: "Anticodon", opts: ["Codon", "Anticodon", "Gene", "Genome"] },
+            { id: 10, q: "Trong kỹ thuật PCR, enzyme Taq polymerase được ly trích từ đối tượng nào?", ans: "Vi khuẩn suối nước nóng", opts: ["Tảo lam", "Nấm", "Virus", "Vi khuẩn suối nước nóng"] },
+            { id: 11, q: "Enzyme nào có khả năng nối các đoạn cắt DNA trong kỹ thuật DNA tái tổ hợp?", ans: "Ligase", opts: ["Helicase", "Primase", "Ligase", "Gyrase"] },
+            { id: 12, q: "Biến dị không di truyền được (thường biến) có đặc điểm gì?", ans: "Không thay đổi kiểu gen, chỉ thay đổi kiểu hình", opts: ["Thay đổi kiểu gen", "Không thay đổi kiểu gen, chỉ thay đổi kiểu hình", "Luôn có hại cho sinh vật", "Gây ra đột biến nhiễm sắc thể"] },
+            { id: 13, q: "Đột biến gen liên quan đến sự thay đổi ở mức độ nào?", ans: "Một hay vài cặp nucleotide", opts: ["Toàn bộ bộ NST", "Một hay vài cặp nucleotide", "Sự phân ly tế bào", "Hình thái bên ngoài"] },
+            { id: 14, q: "Cơ sở di truyền của ưu thế lai là gì?", ans: "Tất cả các ý trên", opts: ["Tập trung gen trội có lợi", "Gen lặn hại bị át chế", "Cơ thể dị hợp tốt hơn đồng hợp", "Tất cả các ý trên"] },
+            { id: 15, q: "Tính đa hiệu của gene là hiện tượng gì?", ans: "Một gen hình thành nhiều tính trạng", opts: ["Nhiều gen tạo 1 tính trạng", "Một gen hình thành nhiều tính trạng", "Gen nằm ở nhiều locus", "Dãy đa allele"] },
+            { id: 16, q: "DNA polymerase chỉ có thể nối nucleotide vào đầu mạch bổ sung khuôn nào?", ans: "3' OH", opts: ["5' P", "3' OH", "5' G", "3' P"] },
+            { id: 17, q: "Hiện tượng hoán vị gen xảy ra do đâu?", ans: "Tiếp hợp và trao đổi chéo ở kỳ đầu giảm phân I", opts: ["Chuyển đoạn NST", "Lặp đoạn NST", "Tiếp hợp và trao đổi chéo ở kỳ đầu giảm phân I", "Phân ly ngẫu nhiên"] },
+            { id: 18, q: "Hiện tượng liên kết gen là do?", ans: "Nhiều gen nằm chung trên 1 NST và di truyền cùng nhau", opts: ["Nhiều gen nằm chung trên 1 NST và di truyền cùng nhau", "Nhiều gen tương tác 1 tính trạng", "Đột biến cấu trúc", "Phân ly độc lập"] },
+            { id: 19, q: "Kiểu hình là kết quả biểu hiện của kiểu gen dưới tác động của yếu tố nào?", ans: "Môi trường", opts: ["Con người", "Môi trường", "Đột biến", "Chọn lọc tự nhiên"] },
+            { id: 20, q: "Kết quả của quá trình phân bào giảm nhiễm từ tế bào 2n là gì?", ans: "4 tế bào n", opts: ["2 tế bào n", "2 tế bào 2n", "4 tế bào n", "4 tế bào 2n"] },
+            { id: 21, q: "Đột biến lặp đoạn nhiễm sắc thể dẫn đến kết quả nào?", ans: "Tăng cường biểu hiện tính trạng", opts: ["Mất vật chất di truyền", "Tăng cường biểu hiện tính trạng", "Đảo ngược trình tự gen", "Chuyển gen sang NST khác"] },
+            { id: 22, q: "Cơ sở di truyền của việc cấm kết hôn gần là để tránh?", ans: "Gen lặn hại xuất hiện ở trạng thái đồng hợp", opts: ["Ưu thế lai", "Gen lặn hại xuất hiện ở trạng thái đồng hợp", "Đột biến gen trội", "Sự đa dạng di truyền"] },
+            { id: 23, q: "Năng suất cây trồng là tính trạng số lượng do nhiều gen quy định và?", ans: "Chịu nhiều tác động của môi trường", opts: ["Ít chịu tác động môi trường", "Chịu nhiều tác động của môi trường", "Không di truyền được", "Chỉ do đột biến tạo ra"] },
+            { id: 24, q: "Allele là trạng thái biểu hiện khác của gen cùng locus, hình thành do đâu?", ans: "Đột biến", opts: ["Lai xa", "Tương tác gen", "Đột biến", "Chuyển gen"] },
+            { id: 25, q: "Trong kỹ thuật PCR, giai đoạn biến tính (denaturation) tách mạch DNA ở nhiệt độ nào?", ans: "94-95°C", opts: ["37°C", "72°C", "94-95°C", "55°C"] },
+            { id: 26, q: "Cấu trúc Operon Lac gồm các thành phần nào theo thứ tự?", ans: "Vùng khởi động - Vùng vận hành - Các gen cấu trúc", opts: ["Vùng vận hành - Vùng khởi động - Các gen cấu trúc", "Vùng khởi động - Vùng vận hành - Các gen cấu trúc", "Các gen cấu trúc - Vùng vận hành", "Gen điều hòa - Vùng khởi động"] },
+            { id: 27, q: "Đột biến điểm là loại đột biến liên quan đến bao nhiêu cặp nucleotide?", ans: "1 cặp", opts: ["1 cặp", "2 cặp", "Cả đoạn gen", "Toàn bộ NST"] },
+            { id: 28, q: "Đặc điểm nào sau đây KHÔNG phải của mã di truyền?", ans: "Tính gián đoạn", opts: ["Tính đặc hiệu", "Tính thoái hóa", "Tính phổ biến", "Tính gián đoạn"] },
+            { id: 29, q: "Trong phân tử DNA, Adenine (A) luôn bắt cặp với loại nào theo nguyên tắc bổ sung?", ans: "Thymine (T)", opts: ["Guanine (G)", "Thymine (T)", "Cytosine (C)", "Uracil (U)"] },
+            { id: 30, q: "Enzyme đóng vai trò chính trong quá trình phiên mã là gì?", ans: "RNA polymerase", opts: ["DNA polymerase", "RNA polymerase", "Ligase", "Helicase"] },
+            { id: 31, q: "Quá trình dịch mã diễn ra tại bào quan nào trong tế bào?", ans: "Ribosome", opts: ["Nhân tế bào", "Ribosome", "Ti thể", "Lưới nội chất"] },
+            { id: 32, q: "Đơn vị cơ bản cấu tạo nên nhiễm sắc thể là nucleosome, gồm 146 cặp nu quấn quanh?", ans: "8 phân tử histone", opts: ["4 phân tử histone", "8 phân tử histone", "1 phân tử histone", "Protein phi histone"] },
+            { id: 33, q: "Ưu thế lai thể hiện rõ nhất ở thế hệ nào?", ans: "F1", opts: ["F1", "F2", "F3", "Thế hệ bố mẹ"] },
+            { id: 34, q: "tRNA mang acid amine mở đầu tiến vào ribosome có bộ ba đối mã (anticodon) là gì?", ans: "UAC", opts: ["UAC", "AUA", "CUA", "AUC"] },
+            { id: 35, q: "Hiện tượng một gene tham gia vào việc hình thành nhiều tính trạng được gọi là?", ans: "Gen đa hiệu", opts: ["Tương tác gen", "Gen đa hiệu", "Gen liên kết", "Gen át chế"] },
+            { id: 36, q: "Biến dị có sự thay đổi kiểu hình nhưng không thay đổi kiểu gen là?", ans: "Thường biến", opts: ["Đột biến gen", "Đột biến NST", "Thường biến", "Biến dị tổ hợp"] },
+            { id: 37, q: "Enzyme giới hạn (Restriction enzyme) có khả năng gì?", ans: "Cắt DNA tại những điểm có trình tự đặc hiệu", opts: ["Nối các đoạn DNA", "Cắt DNA tại những điểm có trình tự đặc hiệu", "Nhân đôi DNA", "Tháo xoắn DNA"] },
+            { id: 38, q: "Các đoạn cắt DNA trong tiến trình tạo vector tái tổ hợp được nối lại nhờ enzyme?", ans: "Ligase", opts: ["Helicase", "Gyrase", "Primase", "Ligase"] }
+        ];
+
+        const apiKey = ""; 
+
+        const QuizApp = () => {
+          const [currentPart, setCurrentPart] = useState(null);
+          const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+          const [score, setScore] = useState(0);
+          const [wrongScore, setWrongScore] = useState(0); 
+          const [showResult, setShowResult] = useState(false);
+          const [selectedOption, setSelectedOption] = useState(null);
+          const [isCorrect, setIsCorrect] = useState(null);
+          const [questions, setQuestions] = useState([]);
+          const [shuffledOptions, setShuffledOptions] = useState([]);
+          const [isConfirming, setIsConfirming] = useState(false); 
+          const [sessionAnswers, setSessionAnswers] = useState([]); 
+          const [reviewMode, setReviewMode] = useState(false);
+          const [reviewData, setReviewData] = useState([]); 
+          
+          const [aiExplanation, setAiExplanation] = useState(null);
+          const [isAiLoading, setIsAiLoading] = useState(false);
+          const [currentAiQuestionId, setCurrentAiQuestionId] = useState(null);
+
+          const [history, setHistory] = useState(() => {
+            try {
+              const saved = localStorage.getItem('di_truyen_quiz_v1'); 
+              const parsed = saved ? JSON.parse(saved) : [];
+              return Array.isArray(parsed) ? parsed : [];
+            } catch (e) { return []; }
+          });
+
+          const shuffleArray = (array) => {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+          };
+
+          const saveHistory = (finalScore, finalWrong, totalQuestions, partId, answers) => {
+            const newRecord = {
+              id: Date.now(),
+              date: new Date().toLocaleString('vi-VN'),
+              part: partId === 'tf' ? 'Đúng/Sai' : 'Trắc nghiệm',
+              score: finalScore,
+              wrong: finalWrong,
+              total: totalQuestions,
+              details: answers.map(q => ({
+                id: q.id,
+                q: q.q,
+                o: q.options || [],
+                s: q.userSelected,
+                c: q.correct
+              }))
+            };
+            const updatedHistory = [newRecord, ...history];
+            setHistory(updatedHistory);
+            try {
+              localStorage.setItem('di_truyen_quiz_v1', JSON.stringify(updatedHistory));
+            } catch (e) {
+              localStorage.setItem('di_truyen_quiz_v1', JSON.stringify(updatedHistory.slice(0, 30)));
+            }
+          };
+
+          const clearHistory = () => {
+            if (window.confirm('Bạn có chắc muốn xóa toàn bộ lịch sử không?')) {
+              setHistory([]);
+              localStorage.removeItem('di_truyen_quiz_v1');
+            }
+          };
+
+          const startQuiz = (part) => {
+            const raw = part === 'tf' ? TF_DATA : MC_DATA;
+            const formatted = raw.map(item => ({
+              id: item.id,
+              q: item.q,
+              correct: item.ans,
+              options: shuffleArray(item.opts.map(opt => ({ key: opt, text: opt })))
+            }));
+            setQuestions(formatted);
+            setCurrentPart(part);
+            setCurrentQuestionIndex(0);
+            setScore(0);
+            setWrongScore(0);
+            setSessionAnswers([]);
+            setShowResult(false);
+            setSelectedOption(null);
+            setIsCorrect(null);
+            setAiExplanation(null); 
+            if(formatted.length > 0) setShuffledOptions(formatted[0].options);
+          };
+
+          const changeQuestion = (newIndex) => {
+            setCurrentQuestionIndex(newIndex);
+            const newQ = questions[newIndex];
+            setAiExplanation(null);
+            const existingAnswer = sessionAnswers.find(a => a.id === newQ.id);
+            if (existingAnswer) {
+              setShuffledOptions(existingAnswer.options);
+              setSelectedOption(existingAnswer.userSelected);
+              setIsCorrect(existingAnswer.userSelected === existingAnswer.correct);
+            } else {
+              setShuffledOptions(newQ.options);
+              setSelectedOption(null);
+              setIsCorrect(null);
+            }
+          };
+
+          const handleOptionSelect = (optionKey) => {
+            if (selectedOption) return; 
+            const currentQ = questions[currentQuestionIndex];
+            const correct = optionKey === currentQ.correct;
+            setSelectedOption(optionKey);
+            setIsCorrect(correct);
+            if (correct) setScore(s => s + 1); else setWrongScore(s => s + 1);
+            setSessionAnswers(prev => [...prev, { ...currentQ, userSelected: optionKey, options: shuffledOptions }]);
+          };
+
+          const nextQuestion = () => {
+            if (currentQuestionIndex < questions.length - 1) changeQuestion(currentQuestionIndex + 1);
+            else {
+              setShowResult(true);
+              saveHistory(score, wrongScore, questions.length, currentPart, sessionAnswers);
+            }
+          };
+
+          const prevQuestion = () => { if (currentQuestionIndex > 0) changeQuestion(currentQuestionIndex - 1); };
+
+          const requestFinish = () => setIsConfirming(true);
+          const confirmFinish = () => {
+            setShowResult(true);
+            saveHistory(score, wrongScore, questions.length, currentPart, sessionAnswers);
+            setIsConfirming(false);
+          };
+          const resetQuiz = () => { setCurrentPart(null); setQuestions([]); setReviewMode(false); setAiExplanation(null); };
+
+          const currentQ = questions[currentQuestionIndex];
+          
+          if (reviewMode) {
+            return (
+              <div className="min-h-screen p-4 sm:p-6 lg:p-8 font-sans bg-gray-50/50">
+                <div className="max-w-4xl mx-auto space-y-6">
+                  <div className="glass-panel p-4 rounded-2xl shadow-sm sticky top-4 z-10 flex justify-between items-center mb-8">
+                    <button onClick={() => setReviewMode(false)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-semibold transition-colors"><ArrowLeft size={20} /> <span>Quay lại</span></button>
+                    <h2 className="text-xl font-bold text-gray-800 tracking-tight">Chi tiết bài làm</h2>
+                    <div className="w-8"></div> 
+                  </div>
+                  <div className="space-y-8 pb-10">
+                    {reviewData.map((item, index) => {
+                      const isCorrect = item.s === item.c;
+                      const options = Array.isArray(item.o) ? item.o : [];
+                      return (
+                        <div key={index} className={`bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-gray-100 ${!isCorrect ? 'ring-1 ring-red-100' : ''}`}>
+                          <div className="flex gap-4 mb-6">
+                            <span className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg ${isCorrect ? 'bg-gradient-to-br from-emerald-400 to-emerald-600' : 'bg-gradient-to-br from-red-400 to-red-600'}`}>{index + 1}</span>
+                            <h3 className="text-lg font-semibold text-gray-800 leading-relaxed">{item.q}</h3>
+                          </div>
+                          <div className="space-y-3 pl-0 sm:pl-14">
+                            {options.map((opt, i) => {
+                              let optionClass = "p-4 rounded-xl border flex justify-between items-center ";
+                              if (opt.key === item.c) optionClass += "bg-emerald-50 border-emerald-200 text-emerald-800 font-medium shadow-sm";
+                              else if (opt.key === item.s && !isCorrect) optionClass += "bg-red-50 border-red-200 text-red-800 shadow-sm";
+                              else optionClass += "bg-white border-gray-100 text-gray-500 opacity-70";
+                              return (
+                                <div key={i} className={optionClass}>
+                                  <span>{opt.text}</span>
+                                  {opt.key === item.c && <CheckCircle size={20} className="text-emerald-600" />}
+                                  {opt.key === item.s && !isCorrect && <XCircle size={20} className="text-red-600" />}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          if (!currentPart) {
+            return (
+              <div className="min-h-screen p-6 sm:p-8 flex flex-col items-center justify-center font-sans">
+                <div className="w-full max-w-5xl space-y-10 animate-enter text-center">
+                  <div className="space-y-4">
+                    <div className="inline-flex p-4 rounded-full bg-white shadow-lg mb-2">
+                        <div className="bg-gradient-to-tr from-emerald-400 to-teal-500 p-3 rounded-full text-white">
+                            <Dna size={40} />
+                        </div>
+                    </div>
+                    <h1 className="text-4xl font-bold text-gray-800 tracking-tight">Di Truyền Thực Vật</h1>
+                    
+                    <div className="flex flex-col items-center gap-1 text-gray-600 bg-white/60 py-3 px-6 rounded-2xl border border-white/80 inline-block mx-auto shadow-md">
+                        <div className="flex items-center gap-2 font-semibold text-brand-700">
+                            <User size={20} /> 
+                            <span>Tên: Nguyễn Văn Lượng</span>
+                        </div>
+                        <div className="flex items-center gap-2 font-semibold text-brand-700">
+                            <Phone size={20} /> 
+                            <span>LH: 0333738861</span>
+                        </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-brand-600 to-teal-700 text-white p-6 rounded-3xl shadow-xl max-w-3xl mx-auto border border-brand-500/30 overflow-hidden relative group">
+                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
+                            <Sparkles size={100} />
+                        </div>
+                        <div className="relative z-10 flex flex-col items-center gap-4">
+                            <div className="flex items-center gap-3">
+                                <Sparkles size={28} className="text-yellow-300 animate-pulse" />
+                                <span className="font-bold text-xl sm:text-2xl leading-tight">QuizPoint Studio</span>
+                            </div>
+                            <p className="text-emerald-100 text-sm">Nhận thiết kế Quiz & PowerPoint Học thuật</p>
+                        </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                    <button onClick={() => startQuiz('tf')} className="group p-8 rounded-[32px] bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center gap-4">
+                        <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform">
+                            <CheckSquare size={32} />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-gray-800">Phần 1: Đúng / Sai</h3>
+                            <p className="text-gray-400 text-sm mt-1">25 câu hỏi lý thuyết</p>
+                        </div>
+                        <span className="mt-2 text-xs font-bold text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full uppercase tracking-wider">Bắt đầu ngay</span>
+                    </button>
+
+                    <button onClick={() => startQuiz('mc')} className="group p-8 rounded-[32px] bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center gap-4">
+                        <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                            <List size={32} />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-gray-800">Phần 2: Trắc Nghiệm</h3>
+                            <p className="text-gray-400 text-sm mt-1">38 câu hỏi nâng cao</p>
+                        </div>
+                        <span className="mt-2 text-xs font-bold text-amber-600 bg-amber-50 px-4 py-2 rounded-full uppercase tracking-wider">Thử thách ngay</span>
+                    </button>
+                  </div>
+
+                  <div className="glass-panel p-6 rounded-3xl shadow-sm border border-white/50 max-w-2xl mx-auto w-full">
+                    <div className="flex justify-between items-center mb-6 px-2">
+                      <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2"><History className="text-gray-400" size={20} /> Lịch sử</h2>
+                      {history.length > 0 && <button onClick={clearHistory} className="text-rose-500 hover:text-rose-700 p-2 hover:bg-rose-50 rounded-lg transition-colors"><Trash2 size={18} /></button>}
+                    </div>
+                    {history.length === 0 ? <div className="text-center py-8 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl">Chưa có dữ liệu bài làm</div> : (
+                      <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar text-left">
+                        {history.map((record) => (
+                          <div key={record.id} className="p-4 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
+                            <div className="flex-1 w-full sm:w-auto">
+                              <div className="font-bold text-gray-700 flex items-center gap-2">{record.part}</div>
+                              <div className="text-xs text-gray-400 mt-1 tracking-tight italic">{record.date}</div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <div className="text-right">
+                                    <div className="text-sm font-bold"><span className="text-emerald-600">{record.score} Đ</span><span className="text-rose-500 ml-1">/ {record.wrong} S</span></div>
+                                    <div className="text-[10px] text-gray-400">/{record.total} câu</div>
+                                </div>
+                                <button onClick={() => { setReviewData(record.details || []); setReviewMode(true); }} className="p-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors"><Eye size={18} /></button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          if (showResult) {
+            return (
+              <div className="min-h-screen flex items-center justify-center p-4 font-sans bg-gray-50 text-center">
+                <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-xl max-w-md w-full border border-gray-100 animate-enter">
+                  <div className="relative inline-block mb-6"><div className="absolute inset-0 bg-yellow-200 blur-xl opacity-50 rounded-full"></div><Award className="w-24 h-24 text-yellow-500 relative z-10 animate-bounce-slow" /></div>
+                  <h2 className="text-3xl font-bold mb-2 text-gray-800 tracking-tight">Hoàn Thành!</h2>
+                  <p className="text-gray-400 text-sm mb-8">Kết quả của bạn đã được ghi lại</p>
+                  <div className="grid grid-cols-2 gap-4 mb-8">
+                    <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100"><p className="text-emerald-600 text-xs font-bold uppercase tracking-wider mb-1">Đúng</p><p className="text-4xl font-bold text-emerald-600">{score}</p></div>
+                    <div className="p-4 bg-rose-50 rounded-2xl border border-rose-100"><p className="text-rose-500 text-xs font-bold uppercase tracking-wider mb-1">Sai</p><p className="text-4xl font-bold text-rose-500">{wrongScore}</p></div>
+                  </div>
+                  <button onClick={resetQuiz} className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg shadow-emerald-200 transition-all flex items-center justify-center gap-2"><RotateCcw size={20} /> Về màn hình chính</button>
+                </div>
+              </div>
+            );
+          }
+
+          const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+          return (
+            <div className="min-h-screen flex flex-col items-center p-4 sm:p-6 font-sans relative">
+              {isConfirming && (
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-enter">
+                  <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl">
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">Kết thúc bài?</h3>
+                    <p className="text-gray-500 mb-8">Kết quả hiện tại sẽ được lưu lại.</p>
+                    <div className="flex gap-3">
+                      <button onClick={() => setIsConfirming(false)} className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 rounded-xl font-bold transition-colors">Tiếp tục</button>
+                      <button onClick={confirmFinish} className="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold shadow-lg transition-colors text-sm sm:text-base">Kết thúc</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className="w-full max-w-3xl flex justify-between items-center mb-6 pt-2">
+                <button onClick={requestFinish} className="p-2 rounded-xl text-gray-400 hover:text-rose-500 hover:bg-rose-50 transition-all"><LogOut size={24} /></button>
+                <div className="glass-panel px-4 py-2 rounded-full border border-white/60 shadow-sm text-xs sm:text-sm font-semibold text-gray-600">Câu {currentQuestionIndex + 1} / {questions.length}</div>
+                <div className="flex items-center gap-3"><div className="flex items-center gap-1 text-emerald-600 font-bold bg-emerald-50 px-3 py-1 rounded-lg"><CheckCircle size={16} /> {score}</div></div>
+              </div>
+              <div className="w-full max-w-3xl mb-8">
+                <div className="h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner"><div className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all duration-500 ease-out rounded-full" style={{ width: `${progress}%` }} /></div>
+              </div>
+              <div className="w-full max-w-3xl bg-white p-6 sm:p-10 rounded-3xl shadow-xl border border-gray-100 mb-24 relative overflow-hidden animate-enter">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+                <div className="mb-8"><span className="inline-block bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded mb-3 tracking-wide">ID: {currentQ.id}</span><h2 className="text-xl sm:text-2xl font-bold text-gray-800 leading-normal">{currentQ.q}</h2></div>
+                <div className="space-y-3">
+                  {shuffledOptions.map((option, idx) => {
+                    let containerClass = "w-full p-5 rounded-2xl border-2 text-left transition-all duration-200 flex justify-between items-center relative overflow-hidden ";
+                    if (selectedOption) {
+                      if (option.key === currentQ.correct) containerClass += "border-emerald-500 bg-emerald-50 text-emerald-800 ring-2 ring-emerald-200";
+                      else if (option.key === selectedOption) containerClass += "border-rose-500 bg-rose-50 text-rose-800 ring-2 ring-rose-200";
+                      else containerClass += "border-gray-100 text-gray-400 opacity-60";
+                    } else containerClass += "border-gray-100 hover:border-emerald-300 hover:bg-emerald-50/50 cursor-pointer active:scale-[0.99] text-gray-600";
+                    return (
+                      <button key={idx} onClick={() => handleOptionSelect(option.key)} disabled={!!selectedOption} className={containerClass}>
+                        <span className="relative z-10 font-medium text-lg">{option.text}</span>
+                        {selectedOption && option.key === currentQ.correct && <CheckCircle className="text-emerald-600 relative z-10" size={24} />}
+                        {selectedOption && option.key === selectedOption && option.key !== currentQ.correct && <XCircle className="text-rose-600 relative z-10" size={24} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-gray-200 flex justify-center items-center gap-4 z-20">
+                <button onClick={prevQuestion} disabled={currentQuestionIndex === 0} className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all ${currentQuestionIndex === 0 ? 'bg-gray-100 text-gray-300' : 'bg-white border-2 border-gray-200 text-gray-600 hover:border-gray-400'}`}><ChevronLeft size={24} /></button>
+                <button onClick={nextQuestion} disabled={!selectedOption && !sessionAnswers.some(a => a.id === currentQ.id)} className={`flex-1 max-w-md h-14 rounded-2xl font-bold text-lg shadow-lg flex items-center justify-center gap-2 transition-all transform active:scale-95 ${(!selectedOption && !sessionAnswers.some(a => a.id === currentQ.id)) ? 'bg-gray-100 text-gray-400' : isCorrect ? 'bg-emerald-600 text-white shadow-emerald-200' : 'bg-gray-800 text-white shadow-gray-300'}`}>{currentQuestionIndex === questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <ChevronRight size={24} /></button>
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<QuizApp />);
+    </script>
+</body>
+</html>
