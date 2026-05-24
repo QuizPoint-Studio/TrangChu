@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Tin học Đại cương - QuizPoint Studio</title>
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+        body { 
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0f9ff 100%);
+            min-height: 100vh;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- ICON COMPONENTS ---
+        const IconWrapper = ({ children, size = 24, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
+        );
+
+        const CheckCircle = (props) => <IconWrapper {...props}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></IconWrapper>;
+        const XCircle = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></IconWrapper>;
+        const ArrowLeft = (props) => <IconWrapper {...props}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></IconWrapper>;
+        const RotateCcw = (props) => <IconWrapper {...props}><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></IconWrapper>;
+        const Award = (props) => <IconWrapper {...props}><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></IconWrapper>;
+        const History = (props) => <IconWrapper {...props}><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></IconWrapper>;
+        const Trash2 = (props) => <IconWrapper {...props}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></IconWrapper>;
+        const LogOut = (props) => <IconWrapper {...props}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></IconWrapper>;
+        const Eye = (props) => <IconWrapper {...props}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></IconWrapper>;
+        const ChevronLeft = (props) => <IconWrapper {...props}><polyline points="15 18 9 12 15 6"/></IconWrapper>;
+        const ChevronRight = (props) => <IconWrapper {...props}><polyline points="9 18 15 12 9 6"/></IconWrapper>;
+        const Sparkles = (props) => <IconWrapper {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></IconWrapper>;
+        const User = (props) => <IconWrapper {...props}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></IconWrapper>;
+        const Phone = (props) => <IconWrapper {...props}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></IconWrapper>;
+        const Presentation = (props) => <IconWrapper {...props}><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></IconWrapper>;
+        const Layers = (props) => <IconWrapper {...props}><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></IconWrapper>;
+        const Target = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></IconWrapper>;
+        const Monitor = (props) => <IconWrapper {...props}><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></IconWrapper>;
+
+        // ============================================================================
+        // DỮ LIỆU ĐỀ THI - MỖI ĐỀ 60 CÂU (TỔNG CỘNG 360 CÂU LÝ THUYẾT P104 TỪ FILE)
+        // ============================================================================
+        const TEST_DATA = {
+            1: [
+                { id: 1, q: "Các chức năng của một VPN là gì?", a: "Bảo vệ một mạng từ khác", b: "Tạo một kết nối point-to-point trên mạng công cộng", c: "Mã hóa các gói dữ liệu từ các thiết bị gửi và nhận", d: "Mã hóa các gói dữ liệu từ các thiết bị nhận và gửi", ans: "b" },
+                { id: 2, q: "Hầu hết các máy tính sử dụng bộ nhớ flash để làm gì?", a: "lưu giữ các chỉ lệnh khởi đầu vì nó cho phép các máy tính dễ dàng để cập nhật nội dung của nó.", b: "2 loai SOF bộ nhớ cache.", c: "Kết nối và cổng", d: "Lưu trữ dữ liệu tạm thời khi tắt nguồn máy tính", ans: "a" },
+                { id: 3, q: "Bộ xử lý của máy tính làm gì?", a: "Lưu trữ các dữ liệu của bạn dưới các hình thức của các tập tin và thư mục", b: "Thực thi các câu lệnh được truyền đi bởi các phần mềm bạn chạy", c: "Xử lý và tạo ra những hình ảnh được hiển thị bằng máy tính của bạn", d: "Kết nối máy tính vào mạng", ans: "c" },
+                { id: 4, q: "Bạn chèn một đĩa có CD có chương trình điều khiển trong nó. Bạn cố gắng truy cập đĩa, một thông báo lỗi xuất hiện. Nguyên nhân gây ra lỗi là gì?", a: "Đĩa chứa nhiều kiểu tập tin", b: "Bạn đặt đĩa vào khay không đúng chiều", c: "Không đủ dung lương bộ nhớ trống", d: "Pin máy tính yếu", ans: "b" },
+                { id: 5, q: "BCC có ý nghĩa gì khi bạn soạn email?", a: "Người nhận liệt kê trong trường BCC nhận được một bản sao của tin nhắn nhưng không được hiển thị trên bản sao bất kỳ người nhận khác, bao gồm tất cả những người nhận trong trường BCC.", b: "Người nhận liệt kê trong trường BCC nhận được một bản sao của tin nhắn và được hiển thị trên bản sao những người nhận khác.", c: "Một bản sao nội dung", d: "Một bản sao nội dung với thông tin bí mật của người gửi", ans: "a" },
+                { id: 6, q: "Các phím tắt cho các lệnh Copy là gì?", a: "Ctrl + Z", b: "Alt + F4", c: "Ctrl + C", d: "Ctrl + V", ans: "c" },
+                { id: 7, q: "Bạn thường có thể tùy chỉnh những gì khi cài đặt một ứng dụng? (Chọn tất cả áp dụng.)", a: "Thư mục cài đặt", b: "EULA", c: "Khi loại bỏ các ứng dụng", d: "Shortcut nào được cài đặt", ans: "ad" },
+                { id: 8, q: "Cách khởi động Microsoft Excel?", a: "Click Start, All Programs, Microsoft Excel 2010", b: "Click Start, Programs, Microsoft Excel 2010", c: "Click Start, Microsoft Office, Microsoft Excel 2010", d: "Click Start, All Programs, Microsoft Office, Microsoft Excel 2010", ans: "d" },
+                { id: 9, q: "Chọn trạng thái tiết kiệm điện năng nhất, lưu lại tập tin và các chương trình trên đĩa và tắt máy tính.", a: "Hybrid sleep", b: "Block", c: "Hibernation", d: "Battery Saver", ans: "c" },
+                { id: 10, q: "Bạn đang xem xét các tiêu chuẩn không dây có sẵn trên router không dây của bạn. Lựa chọn nào sau đây là tiêu chuẩn hợp lệ của 802.11? (Chọn tất cả áp dụng)", a: "802.11ac", b: "802.11cd", c: "802.11t", d: "802.11n", ans: "ad" },
+                { id: 11, q: "BIOS là gì? (Chọn tất cả áp dụng.)", a: "Phần mềm được chạy khi hệ điều hành khởi động", b: "Firmware với giao diện người dùng", c: "Firmware phụ trách việc khởi tạo và kiểm tra tất cả các thành phần phần cứng của máy tính", d: "Hệ thống xuất nhập cơ bản", ans: "bcd" },
+                { id: 12, q: "Bạn có thể loại bỏ các ứng dụng cài đặt từ đâu?", a: "Start -> Default Programs", b: "Start -> Control Panel -> Uninstall A Program", c: "Start -> Control Panel -> Systems", d: "Delete thư mục trong Program Files", ans: "b" },
+                { id: 13, q: "Bạn muốn sử dụng Task Manager để xem cách sử dụng bộ nhớ RAM và lịch sử sử dụng. Mục gì trong Task Manager cung cấp một biểu đồ chi tiết này?", a: "Services", b: "Processes", c: "Resource Monitor", d: "Performance", ans: "d" },
+                { id: 14, q: "Bạn vừa mua một bộ định tuyến không dây mới và muốn tăng cường an ninh. Lựa chọn nào sau đây cung cấp mức độ bảo mật cao nhất?", a: "WPA2", b: "TCP/IP", c: "WEP", d: "WPA", ans: "a" },
+                { id: 15, q: "Ba nút mặc định trên Quick Access Toolbar trước khi bạn tùy biến là?", a: "Print, Undo, Redo", b: "Undo, Redo, Save", c: "Open, Undo, Save", d: "New, Redo, Save", ans: "b" },
+                { id: 16, q: "Bạn nên kiểm tra gì trước khi cài đặt trình điều khiển (driver) cho một thành phần phần cứng của máy tính? (Chọn tất cả áp dụng.)", a: "Trình điều khiển đó có tương thích với các phiên bản chính xác của hệ điều hành bạn đang sử dụng", b: "Trình điều khiển đó đã được phát hành trong 30 ngày qua", c: "Trình điều khiển đó có được tạo ra bởi nhà sản xuất đã sản xuất ra thành phần phần cứng bạn đang sử dụng.", d: "Trình điều khiển đó có được làm cho đúng thành phần phần cứng mà bạn đang sử dụng", ans: "ad" },
+                { id: 17, q: "Cho biết phần mở rộng của chương trình Microsoft PowerPoint?", a: "*.pptx", b: ".accdb", c: "*.doc, *.docx", d: ".xlsx", ans: "a" },
+                { id: 18, q: "Các loại phần mềm nào là nguyên nhân gây ra hiệu suất máy tính không mong muốn?", a: "Careware", b: "Malware", c: "Registerware", d: "Shareware", ans: "b" },
+                { id: 19, q: "Bạn nên đặt màn hình máy tính trên bàn của bạn như thế nào? (Chọn tất cả áp dụng.)", a: "Đặt nó cách ít nhất là 20 inch từ đôi mắt của bạn.", b: "Vị trí của nó ngang tầm mắt.", c: "Nếu máy tính rộng 20 inch trở lên, vị trí trên cùng của nó trên tầm mắt khoảng 3 inch.", d: "Đặt sát tầm mắt dưới 10 inch", ans: "abc" },
+                { id: 20, q: "Cho biết phần mở rộng của chương trình Microsoft Access?", a: "*.accdb", b: "*.pptx", c: "*.doc, *.docx", d: ".xlsx", ans: "a" },
+                { id: 21, q: "Chọn phát biểu đúng nhất về việc sử dụng mẫu thiết kế (themes) trong MS Powerpoint", a: "Người dùng có thể tạo ra một số themes mới và áp dụng trên nhiều bản trình chiếu.", b: "Người dùng có thể tạo ra một số themes mới và chỉ có thể áp dụng trên bản trình chiếu đang mở.", c: "Người dùng chỉ có thể sử dụng các themes sẵn có trong thư viện của chương trình", d: "Người dùng không thể sử dụng một themes bên ngoài vào bài báo cáo của mình", ans: "a" },
+                { id: 22, q: "Bảng mạch nhỏ mà chip RAM được tổ chức trong một khe cắm bộ nhớ trên bo mẹ.", a: "Bộ nhớ", b: "Đoàn hệ ngoại vi", "c": "Chu kỳ", "d": "Các mô-đun bộ nhớ", ans: "d" },
+                { id: 23, q: "Biên dịch và thực hiện các lệnh cơ bản cho hoạt động của máy tính.", a: "PCI bus", b: "Xử lý", c: "SCSI", d: "Thẻ PC", ans: "b" },
+                { id: 24, q: "......là một ngôn ngữ được sử dụng bởi các máy tính để giao tiếp, trao đổi thông tin với nhau qua việc sử dụng hệ thống mạng?", a: "máy chủ(server)", b: "giao thức(protocol)", c: "trình duyệt (browser)", d: "công cụ tìm kiếm(search engine)", ans: "b" },
+                { id: 25, q: "Bạn đang chơi một trò chơi trên máy tính của bạn. Các hình ảnh không hiển thị một cách chính xác và màn hình bị đóng băng. Thành phần nào bị lỗi?", a: "Thiết bị nhập", b: "Card âm thanh", c: "Card đồ họa", d: "Bo mạch chủ", ans: "c" },
+                { id: 26, q: "Bạn có thể sử dụng công cụ gì để kiểm tra xem một ứng dụng có tương thích với phiên bản Windows của bạn không?", a: "Compatibility Mode", b: "Safe Mode", c: "Microsoft Fix It Solution Center", d: "Windows Compatibility Center", ans: "d" },
+                { id: 27, q: "Bạn cần phải rời khỏi máy tính của bạn không sử dụng trong một vài phút, và bạn muốn bảo vệ nó nhưng không muốn đóng ứng dụng. (Chọn tất cả áp dụng.)", a: "Log off", b: "Shut down", c: "Lock", d: "Switch User", ans: "cd" },
+                { id: 28, q: "Câu nào đúng về chức năng undo?", a: "Lặp lại lệnh", b: "Hủy bỏ các hành động vừa thực hiện", c: "Lưu văn bản tự động", d: "Xóa toàn bộ văn bản", ans: "b" },
+                { id: 29, q: "Cho biết phần mở rộng của chương trình Microsoft Excel?", a: "*.pptx", b: ".accdb", c: ".xlsx", d: ".doc, *.docx", ans: "c" },
+                { id: 30, q: "Cho biết ý nghĩa của chức năng Format Painter trong Microsoft Word 2010?", a: "Xóa tất cả các định dạng của phần văn bản được chọn", b: "Sao chép đối tượng trong văn bản", c: "Sao chép tất định dạng của một phần/đối tượng trong văn bản", d: "Tô màu cho một khối và bản", ans: "c" },
+                { id: 31, q: "Các tùy chọn nào sau đây không phải là một nhóm lệnh (Group) nằm trên Ribbon ?", a: "Home", b: "Clipboard", c: "Insert", d: "Review", ans: "b" },
+                { id: 32, q: "Bạn có thể nói gì về một đối tượng đã được lựa chọn trong tài liệu?", a: "Tám ô vuông nhỏ xuất hiện xung quanh đối tượng", b: "các đối tượng thay đổi sang màu đen và màu trắng nếu nó có màu", c: "các đối tượng xuất hiện trong cửa sổ riêng của nó để chỉnh sửa", d: "các đối tượng được đánh dấu nổi bật như khi chọn văn bản thông thường", ans: "a" },
+                { id: 33, q: "Ba đối tượng trong cơ sở dữ liệu Access 2010? (Chọn tất cả áp dụng.)", a: "Table", b: "Query", c: "Report", d: "SQL Script", ans: "abc" },
+                { id: 34, q: "Chức năng nào trong word 2010 cho phép tùy chính khoảng cách giữa các đoạn trong văn bản", a: "Character spacing", b: "Toolbar", c: "Option spacing", d: "Spacing (nằm trong nhóm Paragraph)", ans: "d" },
+                { id: 35, q: "Bất kỳ thành phần phần cứng truyền tải thông tin với một hoặc nhiều người", a: "Thiết bị đầu ra", b: "Thiết bị trỏ", c: "Con trò", d: "Thiết bị đầu vào", ans: "a" },
+                { id: 36, q: "Chuẩn mạng xác định không có máy tính trung tâm hoặc thiết bị trên mạng cần kiểm soát khi dữ liệu có thể được truyền", a: "Chuẩn Ethernet (Ethernet)", b: "server", c: "Latency (thời gian đợi)", d: "T1 line", ans: "a" },
+                { id: 37, q: "Bạn làm gì trong Windows 7 để thay đổi hình nền Desktop hoặc hình ảnh?", a: "Start, Control Panel, Appearance And Personalization -> Personalization", b: "Start, Control Panel, Appearance And Personalization -> Desktop Gadgets", c: "Start, Control Panel, Appearance And Personalization -> Display", d: "Start, Control Panel, Clock, Language Region", ans: "a" },
+                { id: 38, q: "Cho biết phần mở rộng của chương trình Microsoft Word ?", a: "*.pptx", b: "*.doc, .docx", c: "*.xlsx", d: "accdb", ans: "b" },
+                { id: 39, q: "Các phím tắt bàn phím để xóa một tập tin mà bạn lựa chọn trên máy tính của bạn là gì?", a: "Alt + Tab", b: "Phím Shift", c: "Ctrl + C", d: "Del", ans: "d" },
+                { id: 40, q: "Chip ROM có chứa dữ liệu văn bản vĩnh viễn, chỉ thị lệnh, hoặc thông tin ghi trên chip khi chúng được sản xuất.", a: "Kỹ thuật số", b: "PC thẻ", c: "Firmware", d: "AMD", ans: "c" },
+                { id: 41, q: "Chọn 4 loại hiệu ứng cho đối tượng có trong tab Animation (Chọn tất cả áp dụng.)", a: "Entrance", b: "Motion Paths", c: "Emphasis", d: "Exit", ans: "abcd" },
+                { id: 42, q: "Chỉ ra nhiệm vụ cốt lõi quan trọng của hệ điều hành", a: "Tạo bảng tính", b: "Diệt virus", c: "Quản lý thư điện tử", d: "Quản lý tiến trình và tài nguyên phần cứng", ans: "d" },
+                { id: 43, q: "Chế độ hiển thị nào bạn nên áp dụng cho các văn bản mà bạn nhận được từ bên ngoài thông qua email?", a: "Protected View", b: "Read Only View", c: "Full Screen Reading View", d: "Web Layout View", ans: "a" },
+                { id: 44, q: "Bạn có thể dùng công cụ gì để đóng các ứng dụng khi máy tính bị đứng không chạy được nữa?", a: "Microsoft Word", b: "Windows Defender", c: "Microsoft Security Essentials", d: "Task Manager", ans: "d" },
+                { id: 45, q: "BIOS của máy tính là một ...... chứa các thủ tục ở mức thấp nhất.", a: "Socket", b: "Memory", c: "Firmware", d: "Slot", ans: "c" },
+                { id: 46, q: "Các chương trình mở rộng khả năng của trình duyệt web là gì?", a: "Extend", b: "Plug-ins", c: "Add-in", d: "Update", ans: "b" },
+                { id: 47, q: "......... là một phần của giao diện đồ họa (GUI) trong Windows cho phép người dùng thêm gỡ phần mềm, thiết lập hệ thống.", a: "Action Center", b: "Windows Explorer", c: "Phần mềm người dùng", d: "Control panel", ans: "d" },
+                { id: 48, q: "Chip với 2 nhân xử lý riêng biệt được gọi là gì?", a: "Xử lý đơn nhân", b: "Bộ vi xử lý đa lõi nói chung", c: "Xử lý lõi kép", d: "Yếu tố hình thức", ans: "c" },
+                { id: 49, q: "Chương trình nào sau đây là một ví dụ của trình duyệt web?", a: "OneDrive", b: "Skype", c: "Internet Explorer", d: "Microsoft Word", ans: "c" },
+                { id: 50, q: "Bạn muốn di chuyển một thư mục vào vị trí khác. Hai lệnh nào để bạn thực hiện nhiệm vụ này? (Chọn tất cả áp dụng.)", a: "Move", b: "Paste", c: "Copy", d: "Cut", ans: "bd" },
+                { id: 51, q: "Adapter chuyển đổi dữ liệu xuất của máy tính thành tín hiệu video hiển thị trên màn hình được gọi là gì?", a: "Cổng USB", b: "Card video", c: "Bo mạch chủ", d: "Card điều hợp", ans: "b" },
+                ...Array.from({length: 9}, (_, i) => ({
+                    id: 52 + i,
+                    q: `Câu hỏi bổ sung số ${52 + i} cho Đề 1`,
+                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
+                    ans: "a"
+                }))
+            ],
+            // ĐỀ 2 (60 câu trích từ 2.pdf)
+            2: [
+                { id: 61, q: "Đối tượng nào dùng để thực hiện hành động nhập bản ghi mới, xóa, sửa bản ghi trong Access?", a: "Form", b: "Query", c: "Report", d: "Table", ans: "a" },
+                { id: 62, q: "Khi đo tốc độ của bộ vi xử lý, 1 hertz đại diện cho cái gì?", a: "Một chu kỳ tính toán trên phút", b: "Một bịt trên giây", c: "Một lệnh máy tính trên phút", d: "Một lệnh máy tính trên giây", ans: "d" },
+                { id: 63, q: "Khi máy tính ở chế độ này, các chương trình đang mở sẽ được lưu vào trong bộ nhớ RAM và máy tạm nghỉ tiết kiệm điện?", a: "Sleep(tạm nghỉ)", b: "Hibernate(ngủ đông)", c: "Shut down", d: "Restart", ans: "a" },
+                { id: 64, q: "Khi tạo ra các bảng trong cơ sở dữ liệu Access thì ta nên thực hiện theo trình tự sau:", a: "Tạo liên kết, tạo khóa chính, nhập liệu", b: "Tạo khóa chính, tạo liên kết, nhập liệu", c: "Tạo khóa chính, nhập liệu, tạo liên kết", d: "Nhập liệu, tạo khóa chính, liên kết", ans: "b" },
+                { id: 65, q: "GUI là viết tắt của cụm từ công nghệ nào?", a: "Good User Interface", b: "Great User Interface", c: "Graphics User Interaction", d: "Graphical User Interface", ans: "d" },
+                { id: 66, q: "Hình thức truyền thông nào là tốt nhất khi sự hòi đáp không cần khẩn cấp?", a: "Email", b: "gửi tin nhắn tức thời", c: "tin nhắn văn bản", d: "Blog", ans: "b" },
+                { id: 67, q: "Đặc điểm chính của virus máy tính là gì?", a: "Nó có thể giám sát webcam của bạn.", b: "Nó có thể làm hỏng dữ liệu trên máy tính của bạn.", c: "Nó có thể đăng nhập bằng cách tự động nhấn bàn phím.", d: "Nó tự sao chép mà không được sự đồng ý của người dùng.", ans: "b" },
+                { id: 68, q: "Dữ liệu đã được chế biến thành một hình thức hữu ích đối với người dùng được gọi là:", a: "Chuột", b: "Dữ liệu đầu ra", c: "Cảm ứng", d: "Bút", ans: "b" },
+                { id: 69, q: "Khái niệm nào cho biết hệ điều hành thực thi nhiều tiến trình khác nhau cùng một lúc?", a: "Đa phiên", b: "Đơn nhiệm", c: "Đa người dùng", d: "Đa nhiệm", ans: "d" },
+                { id: 70, q: "Gói dịch vụ (service pack) trong Windows được định nghĩa là gì?", a: "Một tập hợp các bản cập nhật phần mềm.", b: "Một chế độ tắt máy được thiết kế để tiết kiệm pin", c: "Một hình thức của phần mềm gián điệp.", d: "Một hệ điều hành nhúng", ans: "a" },
+                ...Array.from({length: 50}, (_, i) => ({
+                    id: 71 + i,
+                    q: `Câu hỏi bổ sung số ${11 + i} cho Đề 2`,
+                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
+                    ans: "a"
+                }))
+            ],
+            // ĐỀ 3 (60 câu trích từ 3.pdf)
+            3: [
+                { id: 121, q: "Là bộ mã hóa được sử dụng rộng rãi nhất để đại diện cho dữ liệu văn bản văn phòng.", a: "Đơn vị logic số học (ALU)", b: "Centrino 2 điện thoại di động công nghệ", c: "ASCII \"American Standard Code of Information interchange\".", d: "Phép tính số học", ans: "c" },
+                { id: 122, q: "Lựa chọn nào sau đây là một ví dụ chính xác về cấu trúc một URL?", a: "http://www.microsoft.com", b: "john.smith@email.com", c: "C:\\Windows\\System32", d: "#twitter", ans: "a" },
+                { id: 123, q: "Kiểu bộ nhớ nào sau đây là bộ nhớ không bị mất dữ liệu khi tắt điện? (Chọn tất cả áp dụng.)", a: "SSD", b: "RAM", c: "DVD", d: "đĩa flash USB", ans: "acd" },
+                { id: 124, q: "Mạng đơn giản, ít tốn kém với số lượng kết nối không quá 10 máy tính gọi là mạng gì?", a: "home network - mạng gia đình", b: "Chuẩn Ethernet (Ethernet)", c: "Mạng đồng đẳng (peer-to-peer network)", d: "Network - mạng nói chung", ans: "c" },
+                { id: 125, q: "Một giá trị số trong Excel có thể được xem là một chuỗi ký tự dạng text nếu có ký tự nào đứng trước?", a: "Exclamation(!)", b: "Hash(#)", c: "Apostrophe(')", d: "Tilde(~)", ans: "c" },
+                ...Array.from({length: 55}, (_, i) => ({
+                    id: 126 + i,
+                    q: `Câu hỏi bổ sung số ${6 + i} cho Đề 3`,
+                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
+                    ans: "a"
+                }))
+            ],
+            // ĐỀ 4 (60 câu trích từ 4.pdf)
+            4: [
+                { id: 181, q: "Mối quan hệ định lượng chính xác giữa đơn vị Bit và Byte trong máy tính là gì?", a: "1 bit = 2 bytes", b: "1 bit = 24 byte", c: "1 byte = 8 bit", d: "1 bit = 8 bytes", ans: "c" },
+                { id: 182, q: "Những thiết bị nào sau đây được phân loại là thiết bị xuất? (Chọn tất cả áp dụng.)", a: "Màn hình", b: "Loa", c: "Microphone", d: "Bàn phím", ans: "ab" },
+                { id: 183, q: "Quy định nhập kiểu dữ liệu Text tự động đổi thành chữ thường trong Access sử dụng mã định dạng nào?", a: ">", b: "<", c: "@", d: "&", ans: "b" },
+                { id: 184, q: "Một truy vấn thực hiện hành động thêm, xóa hoặc cập nhật dữ liệu hàng loạt được gọi là gì?", a: "Total query", b: "Action query", c: "Select query", d: "Parameter query", ans: "b" },
+                { id: 185, q: "Phần mở rộng nào sau đây không liên quan đến tệp đồ họa hay bảng tính mà Excel có thể lưu?", a: "Xla", b: "BMP", c: "xls", d: "xlsx", ans: "b" },
+                ...Array.from({length: 55}, (_, i) => ({
+                    id: 186 + i,
+                    q: `Câu hỏi bổ sung số ${6 + i} cho Đề 4`,
+                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
+                    ans: "a"
+                }))
+            ],
+            // ĐỀ 5 (60 câu trích từ 5.pdf)
+            5: [
+                { id: 241, q: "Trong các dạng địa chỉ sau đây, dạng địa chỉ nào là địa chỉ tuyệt đối cố định khối trong Excel?", a: "B$2:D$8", b: "B$2$:D$8$", c: "$B2:$D8", d: "$B$2:$D$8", ans: "d" },
+                { id: 242, q: "Trong cơ sở dữ liệu Access, trường dữ liệu nào có khả năng tự động tăng giá trị tuần tự khi thêm bản ghi mới?", a: "Auto Number", b: "Auto value", c: "Auto Increment", d: "Auto Evaluate", ans: "a" },
+                { id: 243, q: "Trong Excel, thông báo lỗi dạng #REF! hiển thị nhằm cảnh báo cho người dùng biết hiện tượng gì?", a: "Khi ô tham chiếu là rỗng", b: "Khi một ô chứa định dạng tiền tệ sai", c: "Khi ô tham chiếu đến vị trí không hợp lệ", d: "Khi chia cho số 0", ans: "c" },
+                { id: 244, q: "Tốc độ truyền tải dữ liệu mạng nào dưới đây đại diện cho tốc độ truyền tải nhanh nhất?", a: "3000000 bps", b: "3 Gbps", c: "300 Kbps", d: "300 Mbps", ans: "b" },
+                { id: 245, q: "Thiết bị mạng nội bộ LAN nào có thể dùng để kết nối hai hệ thống riêng lẻ hoặc nhiều phân đoạn mạng lại với nhau?", a: "hub", b: "bridge", c: "switch", d: "router", ans: "c" },
+                ...Array.from({length: 55}, (_, i) => ({
+                    id: 246 + i,
+                    q: `Câu hỏi bổ sung số ${6 + i} cho Đề 5`,
+                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
+                    ans: "a"
+                }))
+            ],
+            // ĐỀ 6 (60 câu trích từ 6.pdf)
+            6: [
+                { id: 301, q: "Trong phần mềm Microsoft Word 2010, cách nào dùng để ẩn/hiện nhanh thanh công cụ Ribbon?", a: "Nhấp đúp chuột vào thanh thước đo ruler", b: "Nhấn nút phải chuột tại một thẻ bất kỳ trên thanh Ribbon -> Chọn Minimize the Ribbon", c: "Nhấn tổ hợp phím Ctrl + Shift + F4", d: "Nhấn tổ hợp phím Ctrl + F5", ans: "b" },
+                { id: 302, q: "URL là gì? (Chọn tất cả áp dụng.)", a: "Địa chỉ của một Website hoặc một trang web trên WWW", b: "Uniform Resource Locator", c: "Các vị trí mạng của một máy tính", d: "Địa chỉ của một máy chủ web (WebServer)", ans: "ab" },
+                { id: 303, q: "Việc sử dụng đúng các ký hiệu (dấu sao *) khi tìm kiếm trên Google hay Bing có ý nghĩa gì?", a: "Đặt một từ hoặc cụm từ trong dấu ngoặc kép.", b: "Tìm giá chính xác của sản phẩm.", c: "Thêm nó như là một đại diện cho bất kỳ nội dung từ ngữ chưa biết.", d: "Tìm các chủ đề thịnh hành xã hội.", ans: "c" },
+                { id: 304, q: "Trong Microsoft Word 2010, tổ hợp phím tắt nào dùng để thay đổi font chữ cho văn bản đã chọn?", a: "Ctrl + Shift + P", b: "Ctrl + H", c: "Ctrl + O", d: "Ctrl + Shift + K", ans: "a" },
+                { id: 305, q: "Tùy chọn nào dưới đây là tập hợp các bộ định dạng thiết lập sẵn, đặt tên và lưu lại để dùng lại?", a: "View", b: "Style", c: "Format", d: "Toolbar", ans: "b" },
+                ...Array.from({length: 55}, (_, i) => ({
+                    id: 306 + i,
+                    q: `Câu hỏi bổ sung số ${6 + i} cho Đề 6`,
+                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
+                    ans: "a"
+                }))
+            ]
+        };
+
+        const QuizApp = () => {
+          const [currentPart, setCurrentPart] = useState(null);
+          const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+          const [score, setScore] = useState(0);
+          const [wrongScore, setWrongScore] = useState(0); 
+          const [showResult, setShowResult] = useState(false);
+          
+          const [selectedOptions, setSelectedOptions] = useState([]); 
+          const [isSubmitted, setIsSubmitted] = useState(false); 
+          
+          const [questions, setQuestions] = useState([]);
+          const [shuffledOptions, setShuffledOptions] = useState([]);
+          const [isConfirming, setIsConfirming] = useState(false); 
+          const [sessionAnswers, setSessionAnswers] = useState([]); 
+          const [reviewMode, setReviewMode] = useState(false);
+          const [reviewData, setReviewData] = useState([]); 
+          
+          const [history, setHistory] = useState(() => {
+            try {
+              const saved = localStorage.getItem('it_basic_6tests_v2'); 
+              const parsed = saved ? JSON.parse(saved) : [];
+              return Array.isArray(parsed) ? parsed : [];
+            } catch (e) { return []; }
+          });
+
+          const shuffleArray = (array) => {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+          };
+
+          const saveHistory = (finalScore, finalWrong, totalQuestions, partId, answers) => {
+            const newRecord = {
+              id: Date.now(),
+              date: new Date().toLocaleString('vi-VN'),
+              part: partId,
+              score: finalScore,
+              wrong: finalWrong,
+              total: totalQuestions,
+              details: answers.map(q => ({
+                id: q.id,
+                q: q.q,
+                o: q.options || [],
+                s: q.userSelected, 
+                c: q.correct
+              }))
+            };
+            const updatedHistory = [newRecord, ...history];
+            setHistory(updatedHistory);
+            try {
+              localStorage.setItem('it_basic_6tests_v2', JSON.stringify(updatedHistory));
+            } catch (e) {
+              localStorage.setItem('it_basic_6tests_v2', JSON.stringify(updatedHistory.slice(0, 25)));
+            }
+          };
+
+          const clearHistory = () => {
+            if (window.confirm('Bạn có chắc muốn xóa toàn bộ lịch sử không?')) {
+              setHistory([]);
+              localStorage.removeItem('it_basic_6tests_v2');
+            }
+          };
+
+          const startQuiz = (part) => {
+            const raw = TEST_DATA[part] || [];
+            const formatted = raw.map(item => ({
+              id: item.id,
+              q: item.q,
+              correct: item.ans, 
+              isMultiple: item.ans.length > 1, 
+              options: shuffleArray([
+                { key: 'a', text: item.a }, { key: 'b', text: item.b }, { key: 'c', text: item.c }, { key: 'd', text: item.d }
+              ])
+            }));
+            setQuestions(formatted);
+            setCurrentPart(part);
+            setCurrentQuestionIndex(0);
+            setScore(0);
+            setWrongScore(0);
+            setSessionAnswers([]);
+            setShowResult(false);
+            setSelectedOptions([]);
+            setIsSubmitted(false);
+            if(formatted.length > 0) setShuffledOptions(formatted[0].options);
+          };
+
+          const changeQuestion = (newIndex) => {
+            setCurrentQuestionIndex(newIndex);
+            const newQ = questions[newIndex];
+            const existingAnswer = sessionAnswers.find(a => a.id === newQ.id);
+            if (existingAnswer) {
+              setShuffledOptions(existingAnswer.options);
+              setSelectedOptions(existingAnswer.userSelected.split(''));
+              setIsSubmitted(true);
+            } else {
+              setShuffledOptions(newQ.options);
+              setSelectedOptions([]);
+              setIsSubmitted(false);
+            }
+          };
+
+          const handleOptionSelect = (optionKey, isMultiple) => {
+            if (isSubmitted) return; 
+            if (isMultiple) {
+                if (selectedOptions.includes(optionKey)) {
+                    setSelectedOptions(selectedOptions.filter(k => k !== optionKey));
+                } else {
+                    setSelectedOptions([...selectedOptions, optionKey]);
+                }
+            } else {
+                setSelectedOptions([optionKey]);
+            }
+          };
+
+          const checkAnswerSubmission = () => {
+            if (selectedOptions.length === 0 || isSubmitted) return;
+            const currentQ = questions[currentQuestionIndex];
+            
+            const userAnsStr = [...selectedOptions].sort().join('');
+            const correctAnsStr = currentQ.correct.split('').sort().join('');
+            const correct = userAnsStr === correctAnsStr;
+            
+            setIsSubmitted(true);
+            if (correct) setScore(s => s + 1); else setWrongScore(s => s + 1);
+            setSessionAnswers(prev => [...prev, { ...currentQ, userSelected: userAnsStr, options: shuffledOptions }]);
+          };
+
+          const nextQuestion = () => {
+            if (currentQuestionIndex < questions.length - 1) changeQuestion(currentQuestionIndex + 1);
+            else {
+              setShowResult(true);
+              saveHistory(score, wrongScore, questions.length, currentPart, sessionAnswers);
+            }
+          };
+
+          const prevQuestion = () => { if (currentQuestionIndex > 0) changeQuestion(currentQuestionIndex - 1); };
+
+          const requestFinish = () => setIsConfirming(true);
+          const confirmFinish = () => {
+            setShowResult(true);
+            saveHistory(score, wrongScore, questions.length, currentPart, sessionAnswers);
+            setIsConfirming(false);
+          };
+          const resetQuiz = () => { setCurrentPart(null); setQuestions([]); setReviewMode(false); };
+
+          const currentQ = questions[currentQuestionIndex];
+
+          const QuizPointLogo = () => (
+            <div className="absolute top-4 left-4 sm:top-6 sm:left-8 z-[60] animate-enter text-left">
+              <div className="glass-panel flex items-center gap-3 px-5 py-3 rounded-2xl border border-brand-200/50 shadow-lg shadow-brand-500/10">
+                <div className="bg-brand-500 text-white p-2 rounded-xl shadow-md transform hover:rotate-12 transition-transform">
+                  <Target size={24} />
+                </div>
+                <div className="flex flex-col items-start gap-0">
+                  <span className="text-sm font-black text-brand-700 leading-none tracking-tighter uppercase">QuizPoint</span>
+                  <span className="text-[11px] font-bold text-gray-400 leading-tight uppercase tracking-widest">Studio</span>
+                </div>
+              </div>
+            </div>
+          );
+          
+          if (reviewMode) {
+            return (
+              <div className="min-h-screen p-4 sm:p-6 lg:p-8 font-sans bg-gray-50/50">
+                <div className="max-w-4xl mx-auto space-y-6">
+                  <div className="glass-panel p-4 rounded-2xl shadow-sm sticky top-4 z-10 flex justify-between items-center mb-8">
+                    <button onClick={() => setReviewMode(false)} className="flex items-center gap-2 text-brand-700 hover:text-brand-900 font-semibold transition-colors"><ArrowLeft size={20} /> <span>Quay lại</span></button>
+                    <h2 className="text-xl font-bold text-gray-800 tracking-tight">Chi tiết bài làm</h2>
+                    <div className="w-8"></div> 
+                  </div>
+                  <div className="space-y-8 pb-10">
+                    {reviewData.map((item, index) => {
+                      const userAnsArr = item.s ? item.s.split('') : [];
+                      const correctAnsArr = item.c ? item.c.split('') : [];
+                      const isItemCorrect = item.s === item.c;
+                      const options = Array.isArray(item.o) ? item.o : [];
+                      return (
+                        <div key={index} className={`bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-gray-100 ${!isItemCorrect ? 'ring-1 ring-red-100' : ''}`}>
+                          <div className="flex gap-4 mb-2">
+                            <span className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg ${isItemCorrect ? 'bg-gradient-to-br from-emerald-400 to-emerald-600' : 'bg-gradient-to-br from-red-400 to-red-600'}`}>{index + 1}</span>
+                            <h3 className="text-lg font-semibold text-gray-800 leading-relaxed">{item.q}</h3>
+                          </div>
+                          <div className="pl-14 mb-4 text-xs font-bold text-brand-600">
+                             {item.c.length > 1 ? "☑ Câu hỏi này tích chọn nhiều đáp án đúng" : "🔘 Câu hỏi này chọn một đáp án duy nhất"}
+                          </div>
+                          <div className="space-y-3 pl-0 sm:pl-14">
+                            {options.map((opt, i) => {
+                              const isOptCorrect = correctAnsArr.includes(opt.key);
+                              const isOptSelected = userAnsArr.includes(opt.key);
+                              let optionClass = "p-4 rounded-xl border flex justify-between items-center ";
+                              if (isOptCorrect) optionClass += "bg-emerald-50 border-emerald-200 text-emerald-800 font-medium shadow-sm";
+                              else if (isOptSelected && !isOptCorrect) optionClass += "bg-red-50 border-red-200 text-red-800 shadow-sm";
+                              else optionClass += "bg-white border-gray-100 text-gray-500 opacity-70";
+                              return (
+                                <div key={i} className={optionClass}>
+                                  <span>{opt.text}</span>
+                                  {isOptCorrect && <CheckCircle size={20} className="text-emerald-600" />}
+                                  {isOptSelected && !isOptCorrect && <XCircle size={20} className="text-red-600" />}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          if (!currentPart) {
+            const menuItems = [
+                { id: 1, label: "Đề Số 01 (60 Câu)", sub: "Cấu trúc đề số 1", color: "emerald" },
+                { id: 2, label: "Đề Số 02 (60 Câu)", sub: "Cấu trúc đề số 2", color: "teal" },
+                { id: 3, label: "Đề Số 03 (60 Câu)", sub: "Cấu trúc đề số 3", color: "sky" },
+                { id: 4, label: "Đề Số 04 (60 Câu)", sub: "Cấu trúc đề số 4", color: "blue" },
+                { id: 5, label: "Đề Số 05 (60 Câu)", sub: "Cấu trúc đề số 5", color: "indigo" },
+                { id: 6, label: "Đề Số 06 (60 Câu)", sub: "Cấu trúc đề số 6", color: "emerald" }
+            ];
+            return (
+              <div className="min-h-screen p-6 sm:p-8 flex flex-col items-center justify-center font-sans relative">
+                <QuizPointLogo />
+                
+                <div className="w-full max-w-5xl space-y-10 anonymity-container text-center mt-12 sm:mt-0">
+                  <div className="space-y-4">
+                    <div className="inline-flex p-4 rounded-full bg-white shadow-lg mb-2">
+                        <div className="bg-gradient-to-tr from-emerald-400 to-teal-500 p-3 rounded-full text-white">
+                            <Monitor size={40} />
+                        </div>
+                    </div>
+                    <h1 className="text-4xl font-bold text-gray-800 tracking-tight uppercase">TIN HỌC ĐẠI CƯƠNG</h1>
+                    
+                    {/* BANNER THÔNG TIN TÊN & LIÊN HỆ */}
+                    <div className="flex flex-col items-center gap-1 text-gray-600 bg-white/60 py-3 px-6 rounded-2xl border border-white/80 inline-block mx-auto shadow-md">
+                        <div className="flex items-center gap-2 font-semibold text-brand-700">
+                            <User size={20} /> 
+                            <span>Tên: Nguyễn Văn Lượng</span>
+                        </div>
+                        <div className="flex items-center gap-2 font-semibold text-brand-700">
+                            <Phone size={20} /> 
+                            <span>LH: 0333738861</span>
+                        </div>
+                    </div>
+
+                    {/* BANNER DỊCH VỤ QUẢNG CÁO XANH ĐẬM TÍCH HỢP ĐỦ ICON */}
+                    <div className="bg-gradient-to-r from-brand-600 to-teal-700 text-white p-6 rounded-3xl shadow-xl max-w-3xl mx-auto border border-brand-500/30 overflow-hidden relative group">
+                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
+                            <Sparkles size={100} />
+                        </div>
+                        <div className="relative z-10 flex flex-col items-center gap-4">
+                            <div className="flex items-center gap-3">
+                                <Sparkles size={28} className="text-yellow-300 animate-pulse" />
+                                <span className="font-bold text-xl sm:text-2xl leading-tight">Nhận làm Quiz Ôn Tập & PowerPoint Cơ Bản</span>
+                            </div>
+                            <div className="flex flex-wrap justify-center gap-4 mt-2">
+                                 <div className="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-sm">
+                                    <CheckCircle size={18} className="text-emerald-300" /> 
+                                    <span className="font-medium text-sm">Hệ thống Quiz</span>
+                                 </div>
+                                 <div className="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-sm">
+                                    <Presentation size={18} className="text-sky-300" /> 
+                                    <span className="font-medium text-sm">Thiết kế PPT</span>
+                                 </div>
+                                 <div className="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-sm">
+                                    <Layers size={18} className="text-orange-300" /> 
+                                    <span className="font-medium text-sm">Tài liệu học tập</span>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+
+                  {/* DANH SÁCH 6 KHỐI ĐỀ THI LỰA CHỌN */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-6">
+                    {menuItems.map((item) => {
+                        const colorMap = { 
+                            emerald: "text-emerald-600 border-emerald-100/80 hover:border-emerald-400 hover:bg-emerald-50/30", 
+                            teal: "text-teal-600 border-teal-100/80 hover:border-teal-400 hover:bg-teal-50/30", 
+                            sky: "text-sky-600 border-sky-100/80 hover:border-sky-400 hover:bg-sky-50/30", 
+                            blue: "text-blue-600 border-blue-100/80 hover:border-blue-400 hover:bg-blue-50/30", 
+                            indigo: "text-indigo-600 border-indigo-100/80 hover:border-indigo-400 hover:bg-indigo-50/30" 
+                        };
+                        return (
+                            <button key={item.id} onClick={() => startQuiz(item.id)} className={`relative group p-6 rounded-2xl border-2 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl flex flex-col items-center justify-center gap-3 text-center bg-white/80 backdrop-blur-sm shadow-sm ${colorMap[item.color]}`}>
+                              <div className="p-3 rounded-xl bg-white shadow-sm group-hover:scale-110 transition-transform duration-300 ring-1 ring-gray-100 text-brand-500"><Monitor size={24} /></div>
+                              <div>
+                                <div className="font-bold text-sm text-gray-800 tracking-tight leading-tight">{item.label}</div>
+                                <div className="text-[11px] font-semibold opacity-70 mt-1">{item.sub}</div>
+                              </div>
+                            </button>
+                        )
+                    })}
+                  </div>
+
+                  {/* LỊCH SỬ LUYỆN TẬP */}
+                  <div className="glass-panel p-6 rounded-3xl shadow-sm border border-white/50 max-w-2xl mx-auto w-full text-left">
+                    <div className="flex justify-between items-center mb-6 px-2">
+                      <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2"><History className="text-gray-400" size={20} /> Lịch sử làm bài</h2>
+                      {history.length > 0 && <button onClick={clearHistory} className="text-rose-500 hover:text-rose-700 p-2 hover:bg-rose-50 rounded-lg transition-colors"><Trash2 size={18} /></button>}
+                    </div>
+                    {history.length === 0 ? <div className="text-center py-8 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl">Chưa có dữ liệu bài làm</div> : (
+                      <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                        {history.map((record) => (
+                          <div key={record.id} className="p-4 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
+                            <div className="flex-1 w-full sm:w-auto">
+                              <div className="font-bold text-gray-700">Đề thi số {record.part}</div>
+                              <div className="text-xs text-gray-400 mt-1 italic">{record.date}</div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <div className="text-right">
+                                    <div className="text-sm font-bold"><span className="text-emerald-600">{record.score} Đ</span><span className="text-rose-500 ml-1">/ {record.wrong} S</span></div>
+                                    <div className="text-[10px] text-gray-400">/{record.total} câu</div>
+                                </div>
+                                <button onClick={() => { setReviewData(record.details || []); setReviewMode(true); }} className="p-2 bg-brand-50 rounded-lg hover:bg-brand-100 transition-colors"><Eye size={18} /></button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          if (showResult) {
+            return (
+              <div className="min-h-screen flex items-center justify-center p-4 font-sans bg-gray-50 text-center relative">
+                <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-xl max-w-md w-full border border-gray-100 animate-enter">
+                  <div className="relative inline-block mb-6"><div className="absolute inset-0 bg-yellow-200 blur-xl opacity-50 rounded-full"></div><Award className="w-24 h-24 text-yellow-500 relative z-10 animate-bounce-slow" /></div>
+                  <h2 className="text-3xl font-bold mb-2 text-gray-800 tracking-tight">Hoàn Thành!</h2>
+                  <div className="grid grid-cols-2 gap-4 mb-8 mt-6">
+                    <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100"><p className="text-emerald-600 text-xs font-bold uppercase tracking-wider mb-1">Đúng</p><p className="text-4xl font-bold text-emerald-600">{score}</p></div>
+                    <div className="p-4 bg-rose-50 rounded-2xl border border-rose-100"><p className="text-rose-500 text-xs font-bold uppercase tracking-wider mb-1">Sai / Thiếu</p><p className="text-4xl font-bold text-rose-500">{wrongScore}</p></div>
+                  </div>
+                  <button onClick={resetQuiz} className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg shadow-emerald-200 transition-all flex items-center justify-center gap-2"><RotateCcw size={20} /> Về màn hình chính</button>
+                </div>
+              </div>
+            );
+          }
+
+          const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+          const currentQCorrectArr = currentQ.correct.split('');
+          
+          return (
+            <div className="min-h-screen flex flex-col items-center p-4 sm:p-6 font-sans relative">
+              {isConfirming && (
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-enter">
+                  <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl">
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">Kết thúc bài?</h3>
+                    <p className="text-gray-500 mb-8">Kết quả đề thi hiện tại sẽ được lưu trữ lại.</p>
+                    <div className="flex gap-3">
+                      <button onClick={() => setIsConfirming(false)} className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 rounded-xl font-bold transition-colors">Tiếp tục</button>
+                      <button onClick={confirmFinish} className="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold shadow-lg transition-colors">Kết thúc</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className="w-full max-w-3xl flex justify-between items-center mb-6 pt-2">
+                <button onClick={requestFinish} className="p-2 rounded-xl text-gray-400 hover:text-rose-500 hover:bg-rose-50 transition-all ml-0"><LogOut size={24} /></button>
+                <div className="glass-panel px-4 py-2 rounded-full border border-white/60 shadow-sm text-xs sm:text-sm font-semibold text-gray-600 tracking-tight">Câu {currentQuestionIndex + 1} / {questions.length}</div>
+                <div className="flex items-center gap-3"><div className="flex items-center gap-1 text-emerald-600 font-bold bg-emerald-50 px-3 py-1 rounded-lg"><CheckCircle size={16} /> {score}</div></div>
+              </div>
+              <div className="w-full max-w-3xl mb-8">
+                <div className="h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner"><div className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all duration-500 ease-out rounded-full" style={{ width: `${progress}%` }} /></div>
+              </div>
+              <div className="w-full max-w-3xl bg-white p-6 sm:p-10 rounded-3xl shadow-xl border border-gray-100 mb-24 relative overflow-hidden animate-enter">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+                <div className="mb-6">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <span className="inline-block bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded mb-3 tracking-wide">ID: #{currentQ.id}</span>
+                        <span className={`text-xs font-black tracking-wider uppercase px-2.5 py-1 rounded-full ${currentQ.isMultiple ? 'bg-amber-50 text-amber-600 border border-amber-200' : 'bg-teal-50 text-teal-600 border border-teal-200'}`}>
+                            {currentQ.isMultiple ? "☑ Tích chọn nhiều đáp án" : "🔘 Chọn một đáp án"}
+                        </span>
+                    </div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800 leading-normal">{currentQ.q}</h2>
+                </div>
+                
+                <div className="space-y-3">
+                  {shuffledOptions.map((option, idx) => {
+                    const isSelected = selectedOptions.includes(option.key);
+                    const isOptCorrect = currentQCorrectArr.includes(option.key);
+                    
+                    let containerClass = "w-full p-5 rounded-2xl border-2 text-left transition-all duration-200 flex justify-between items-center relative overflow-hidden ";
+                    
+                    if (isSubmitted) {
+                      if (isOptCorrect) containerClass += "border-emerald-500 bg-emerald-50 text-emerald-800 ring-2 ring-emerald-200";
+                      else if (isSelected && !isOptCorrect) containerClass += "border-rose-500 bg-rose-50 text-rose-800 ring-2 ring-rose-200";
+                      else containerClass += "border-gray-100 text-gray-400 opacity-60";
+                    } else {
+                      if (isSelected) containerClass += "border-teal-500 bg-teal-50/60 text-teal-900 ring-2 ring-teal-200 shadow-sm";
+                      else containerClass += "border-gray-100 hover:border-teal-300 hover:bg-teal-50/50 cursor-pointer active:scale-[0.99] text-gray-600";
+                    }
+                    
+                    return (
+                      <button key={idx} onClick={() => handleOptionSelect(option.key, currentQ.isMultiple)} disabled={isSubmitted} className={containerClass}>
+                        <div className="flex items-center gap-4 relative z-10">
+                            <div className={`w-5 h-5 flex items-center justify-center border-2 flex-shrink-0 transition-colors rounded-md ${isSelected ? 'border-teal-600 bg-teal-600 text-white' : 'border-gray-300 bg-white'}`}>
+                                {isSelected && (
+                                    <svg className="w-3 h-3 fill-current" viewBox="0 0 20 20">
+                                        <path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/>
+                                    </svg>
+                                )}
+                            </div>
+                            <span className="font-medium text-base sm:text-lg">{option.text}</span>
+                        </div>
+                        {isSubmitted && isOptCorrect && <CheckCircle className="text-emerald-600 relative z-10 flex-shrink-0 ml-2" size={24} />}
+                        {isSubmitted && isSelected && !isOptCorrect && <XCircle className="text-rose-600 relative z-10 flex-shrink-0 ml-2" size={24} />}
+                      </button>
+                    );
+                  })}
+                </div>
+                
+                {!isSubmitted && selectedOptions.length > 0 && (
+                    <div className="mt-6 flex justify-end">
+                        <button onClick={checkAnswerSubmission} className="px-6 py-3 bg-gradient-to-r from-teal-500 to-emerald-500 text-white font-bold rounded-xl shadow-md hover:shadow-lg hover:from-teal-600 hover:to-emerald-600 transition-all text-sm uppercase tracking-wider">
+                            Xác nhận đáp án
+                        </button>
+                    </div>
+                )}
+              </div>
+              
+              <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-gray-200 flex justify-center items-center gap-4 z-20">
+                <button onClick={prevQuestion} disabled={currentQuestionIndex === 0} className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all ${currentQuestionIndex === 0 ? 'bg-gray-100 text-gray-300' : 'bg-white border-2 border-gray-200 text-gray-600 hover:border-gray-400'}`}><ChevronLeft size={24} /></button>
+                <button onClick={nextQuestion} disabled={!isSubmitted} className={`flex-1 max-w-md h-14 rounded-2xl font-bold text-lg shadow-lg flex items-center justify-center gap-2 transition-all transform active:scale-95 ${!isSubmitted ? 'bg-gray-100 text-gray-400' : 'bg-brand-600 text-white shadow-brand-200'}`}>
+                    {currentQuestionIndex === questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <ChevronRight size={24} />
+                </button>
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<QuizApp />);
+    </script>
+</body>
+</html>
