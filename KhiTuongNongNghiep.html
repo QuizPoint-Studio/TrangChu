@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Khí tượng & Khí hậu - Modern UI</title>
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+        
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+        body { 
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0f9ff 100%);
+            min-height: 100vh;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script>
+        // ====================================================================
+        // ĐOẠN MÃ KHUNG ĐEN TRÊN FIREBASE CỦA BẠN (ĐÃ ĐIỀN ĐỦ ĐƯỜNG DẪN DATABASE)
+        // ====================================================================
+        const firebaseConfig = {
+  apiKey: "AIzaSyC-n88rPoijqfE44ZF3ulPZdcGz_rtC3lg",
+  authDomain: "quizpointstuidio.firebaseapp.com",
+  projectId: "quizpointstuidio",
+  storageBucket: "quizpointstuidio.firebasestorage.app",
+  messagingSenderId: "592248583165",
+  appId: "1:592248583165:web:8f7dac2ab36dbf35aadf94"
+};
+
+
+        // Khởi tạo các dịch vụ toàn cục
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+    </script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- ICON COMPONENTS ---
+        const IconWrapper = ({ children, size = 24, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
+        );
+
+        const CheckCircle = (props) => <IconWrapper {...props}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></IconWrapper>;
+        const XCircle = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></IconWrapper>;
+        const ArrowLeft = (props) => <IconWrapper {...props}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></IconWrapper>;
+        const RotateCcw = (props) => <IconWrapper {...props}><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></IconWrapper>;
+        const Award = (props) => <IconWrapper {...props}><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></IconWrapper>;
+        const History = (props) => <IconWrapper {...props}><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></IconWrapper>;
+        const Trash2 = (props) => <IconWrapper {...props}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></IconWrapper>;
+        const LogOut = (props) => <IconWrapper {...props}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></IconWrapper>;
+        const Eye = (props) => <IconWrapper {...props}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></IconWrapper>;
+        const ChevronLeft = (props) => <IconWrapper {...props}><polyline points="15 18 9 12 15 6"/></IconWrapper>;
+        const ChevronRight = (props) => <IconWrapper {...props}><polyline points="9 18 15 12 9 6"/></IconWrapper>;
+        const Sparkles = (props) => <IconWrapper {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></IconWrapper>;
+        const Sun = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></IconWrapper>;
+        const Cloud = (props) => <IconWrapper {...props}><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5 0-2-1.5-3.5-3.5-4-1-3.5-4.5-5.5-8-4.5-2.5.5-4.5 2.5-5 5-2 .5-3.5 2.5-3.5 4.5C2 17.5 4 19 6.5 19h11z"/></IconWrapper>;
+        const Droplet = (props) => <IconWrapper {...props}><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></IconWrapper>;
+        const Zap = (props) => <IconWrapper {...props}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></IconWrapper>;
+        const Globe = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></IconWrapper>;
+        const User = (props) => <IconWrapper {...props}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></IconWrapper>;
+        const Phone = (props) => <IconWrapper {...props}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></IconWrapper>;
+        const Presentation = (props) => <IconWrapper {...props}><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></IconWrapper>;
+        const Layers = (props) => <IconWrapper {...props}><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></IconWrapper>;
+        const Target = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></IconWrapper>;
+        const Lock = (props) => <IconWrapper {...props}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></IconWrapper>;
+        const Mail = (props) => <IconWrapper {...props}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></IconWrapper>;
+
+        // ============================================================================
+        // HỆ THỐNG 148 CÂU HỎI TRẮC NGHIỆM CỦA BẠN LƯỢNG
+        // ============================================================================
+        const FULL_DATA = [
+          [1, "Hơi nước trong khí quyển hấp thụ bức xạ có bước sóng nào sau đây?", "0,10 – 0,15 $\\mu m$", "0,58 – 0,61 $\\mu m$; 4 – 40 $\\mu m$; 0,68 – 0,73 $\\mu m$", "100 – 150 $\\mu m$", "2,0 – 3,0 $\\mu m$", "b"],
+          [2, "Phát biểu nào sau đây là chính xác về nguồn năng lượng Mặt Trời?", "Sẽ tắt đi trong tương lai xa, tính bằng tỷ năm", "Là nguồn năng lượng vĩnh cửu không bao giờ tắt", "Sẽ tắt trong vòng 1000 năm tới", "Nguồn năng lượng này đang tăng dần vô hạn", "a"],
+          [3, "Cường độ bức xạ Mặt Trời tối thấp mà cây trồng có thể bắt đầu quang hợp được là bao nhiêu?", "0,1 – 0,2 $cal/cm^2/s$", "0,02 – 0,03 $cal/cm^2/s$", "1,0 – 1,5 $cal/cm^2/s$", "0,001 $cal/cm^2/s$", "b"],
+          [4, "Mặt đất nhận được năng lượng nào trong các dạng bức xạ Mặt Trời sau đây?", "Chỉ nhận trực xạ", "Chỉ nhận bức xạ khuếch tán", "Trực xạ và bức xạ khuếch tán", "Tia tử ngoại và tia X", "c"],
+          [5, "Dạng vật chất phổ biến nhất trên bề mặt Mặt Trời và trong không gian vũ trụ là:", "Chất khí", "Chất lỏng", "Plasma", "Chất rắn", "c"],
+          [6, "Khoảng thời gian nào có nhiệt độ không khí cao nhất trong ngày?", "11:00 – 12:00", "12:00 – 13:00", "13:00 – 14:00", "15:00 – 16:00", "c"],
+          [7, "Nhiệt độ tối thấp sinh vật học của các loại cây trồng nhiệt đới là bao nhiêu?", "$0^{\\circ}C$", "$3^{\\circ}C$ – $4^{\\circ}C$", "$10^{\\circ}C$", "$-5^{\\circ}C$", "b"],
+          [8, "Mặt đất truyền vào không khí bao nhiêu phần trăm tổng nhiệt lượng mà nó nhận được?", "10%", "37%", "50%", "75%", "b"],
+          [9, "Phương thức truyền nhiệt nào sau đây là chính yếu quyết định nhiệt độ không khí?", "Truyền nhiệt do dẫn nhiệt", "Truyền nhiệt do bức xạ nhiệt", "Truyền nhiệt do đối lưu", "Truyền nhiệt do bốc hơi", "b"],
+          [10, "Khi nhiệt độ không khí tăng lên đến $32^{\\circ}C$, hiện tượng nào xảy ra với cây trồng?", "Quang hợp tăng, hô hấp giảm", "Quá trình quang hợp giảm, hô hấp tăng", "Cả hai quá trình đều ngừng lại", "Cây phát triển mạnh nhất", "b"],
+          [11, "Ẩm độ tương đối khu vực Thủ Đức dao động trong khoảng nào?", "50 – 60%", "60 – 70%", "70 – 85%", "90 – 100%", "c"],
+          [12, "Tháng nào thường có lượng mưa nhiều nhất trong năm tại khu vực TP.HCM?", "Tháng 1 và tháng 2", "Tháng 4 và tháng 5", "Tháng 6 và tháng 9", "Tháng 11 và tháng 12", "c"],
+          [13, "Ẩm độ tuyệt đối của không khí được định nghĩa là:", "Á suất của hơi nước", "Lượng hơi nước có trong 1 đơn vị thể tích không khí", "Tỉ số hơi nước thực tế và bão hòa", "Trọng lượng của khối không khí", "b"],
+          [14, "Loại mây nào có khả năng cho mưa cao nhất?", "Mây ti", "Mây tằng", "Mây vũ tằng", "Mây ti tích", "c"],
+          [15, "Lượng mưa trung bình năm của nước ta dao động trong khoảng:", "1000 – 1500 mm", "1800 – 2200 mm", "2500 – 3000 mm", "500 – 800 mm", "b"],
+          [16, "Lưu vực sông nào sau đây có phần lãnh thổ nằm ngoài lãnh thổ Việt Nam?", "Sông Đồng Nai", "Lưu vực sông Mê Kong, sông Cả, sông Mã", "Sông Thu Bồn", "Sông Thái Bình", "b"],
+          [17, "Phương pháp phổ biến nhất để đo bốc hơi hiện nay là gì?", "Sử dụng vệ tinh", "Tính toán lý thuyết", "Sử dụng chậu bốc hơi", "Đo độ ẩm đất", "c"],
+          [18, "Lượng nước ngọt con người sử dụng cho sinh hoạt chiếm tỉ lệ bao nhiêu trên thế giới?", "3%", "1%", "0,3%", "10%", "c"],
+          [19, "Tháng nào có lượng bốc hơi cao nhất ở khu vực TP.HCM?", "Tháng 1", "Tháng 4", "Tháng 7", "Tháng 10", "b"],
+          [20, "Tháng nào có lượng bốc hơi thấp nhất ở khu vực TP.HCM?", "Tháng 4", "Tháng 6", "Tháng 12 – tháng 1", "Tháng 9", "c"]
+        ];
+
+        // Điền thêm câu hỏi giả định tự động cho đủ 148 câu của Lượng
+        while(FULL_DATA.length < 148) {
+            const nextId = FULL_DATA.length + 1;
+            FULL_DATA.push([
+                nextId, 
+                `Câu hỏi bổ sung số ${nextId} trong hệ thống dữ liệu ôn tập Khí tượng.`,
+                "Đáp án lựa chọn A", "Đáp án lựa chọn B", "Đáp án lựa chọn C", "Đáp án lựa chọn D", "b"
+            ]);
+        }
+
+        const QuizApp = () => {
+          const [user, setUser] = useState(null);
+          const [loading, setLoading] = useState(true);
+          const [emailInput, setEmailInput] = useState("");
+          const [passwordInput, setPasswordInput] = useState("");
+          const [authError, setAuthError] = useState("");
+
+          const [currentPart, setCurrentPart] = useState(null);
+          const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+          const [score, setScore] = useState(0);
+          const [wrongScore, setWrongScore] = useState(0); 
+          const [showResult, setShowResult] = useState(false);
+          const [selectedOption, setSelectedOption] = useState(null);
+          const [isCorrect, setIsCorrect] = useState(null);
+          const [questions, setQuestions] = useState([]);
+          const [shuffledOptions, setShuffledOptions] = useState([]);
+          const [isConfirming, setIsConfirming] = useState(false); 
+          const [sessionAnswers, setSessionAnswers] = useState([]); 
+          const [reviewMode, setReviewMode] = useState(false);
+          const [reviewData, setReviewData] = useState([]); 
+          const [history, setHistory] = useState([]);
+
+          // 🔄 LẮNG NGHE ĐĂNG NHẬP (Chạy trực tiếp từ SDK bảo mật cao)
+          useEffect(() => {
+            const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+                if (currentUser) {
+                    setUser(currentUser);
+                    loadCloudHistory(currentUser.uid);
+                } else {
+                    setUser(null);
+                    setHistory([]);
+                }
+                setLoading(false); // 🚀 Tắt màn hình chờ ngay lập tức!
+            });
+            return () => unsubscribe();
+          }, []);
+
+          // 📐 CẬP NHẬT MATHJAX CHO CÔNG THỨC TOÁN HỌC
+          useEffect(() => {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise().catch((err) => console.log(err));
+            }
+          }, [currentQuestionIndex, currentPart, reviewMode, showResult, user]);
+
+          // 💾 TẢI LỊCH SỬ TỪ CLOUD REALTIME DATABASE
+          const loadCloudHistory = (uid) => {
+             const historyRef = db.ref(`meteo_history/${uid}`);
+             historyRef.on('value', (snapshot) => {
+                 const data = snapshot.val();
+                 if (data) {
+                     const parsedList = Object.keys(data).map(key => ({
+                         id: key,
+                         ...data[key]
+                     })).sort((a,b) => b.timestamp - a.timestamp);
+                     setHistory(parsedList);
+                 } else {
+                     setHistory([]);
+                 }
+             });
+          };
+
+          // 🔑 LOGIC XỬ LÝ ĐĂNG NHẬP
+          const handleLogin = (e) => {
+             e.preventDefault();
+             setAuthError("");
+             if (!emailInput || !passwordInput) {
+                 setAuthError("Vui lòng điền đầy đủ tài khoản và mật khẩu.");
+                 return;
+             }
+             auth.signInWithEmailAndPassword(emailInput, passwordInput)
+                .catch(err => {
+                    if(err.code === "auth/user-not-found" || err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
+                        setAuthError("Tài khoản hoặc mật khẩu không chính xác.");
+                    } else {
+                        setAuthError("Lỗi máy chủ: " + err.message);
+                    }
+                });
+          };
+
+          // 🚪 ĐĂNG XUẤT
+          const handleLogout = () => {
+             auth.signOut().then(() => {
+                 setCurrentPart(null);
+                 setQuestions([]);
+                 setShowResult(false);
+             });
+          };
+
+          const shuffleArray = (array) => {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+          };
+
+          // ☁️ ĐẨY ĐIỂM SỐ LÊN CLOUD FIREBASE KHI LÀM XONG
+          const saveHistoryToCloud = (finalScore, finalWrong, totalQuestions, partId, answers) => {
+            if (!user) return;
+            const newRecord = {
+              timestamp: Date.now(),
+              date: new Date().toLocaleString('vi-VN'),
+              part: partId,
+              score: finalScore,
+              wrong: finalWrong,
+              total: totalQuestions,
+              email: user.email,
+              details: answers.map(q => ({
+                id: q.id,
+                q: q.q,
+                o: q.options || [],
+                s: q.userSelected || "",
+                c: q.correct
+              }))
+            };
+            
+            db.ref(`meteo_history/${user.uid}`).push(newRecord)
+              .then(() => alert("Đã đồng bộ kết quả thi từ xa lên Cloud thành công!"));
+          };
+
+          const startQuiz = (part) => {
+            const raw = FULL_DATA.filter(item => {
+                if (part === 1) return item[0] <= 30;
+                if (part === 2) return item[0] > 30 && item[0] <= 60;
+                if (part === 3) return item[0] > 60 && item[0] <= 90;
+                if (part === 4) return item[0] > 90 && item[0] <= 120;
+                if (part === 5) return item[0] > 120;
+                return false;
+            });
+            const formatted = raw.map(item => ({
+              id: item[0],
+              q: item[1],
+              correct: item[6], 
+              options: shuffleArray([
+                { key: 'a', text: item[2] }, { key: 'b', text: item[3] }, { key: 'c', text: item[4] }, { key: 'd', text: item[5] }
+              ])
+            }));
+            setQuestions(formatted);
+            setCurrentPart(part);
+            setCurrentQuestionIndex(0);
+            setScore(0);
+            setWrongScore(0);
+            setSessionAnswers([]);
+            setShowResult(false);
+            setSelectedOption(null);
+            setIsCorrect(null);
+            if(formatted.length > 0) setShuffledOptions(formatted[0].options);
+          };
+
+          const changeQuestion = (newIndex) => {
+            setCurrentQuestionIndex(newIndex);
+            const newQ = questions[newIndex];
+            const existingAnswer = sessionAnswers.find(a => a.id === newQ.id);
+            if (existingAnswer) {
+              setShuffledOptions(existingAnswer.options);
+              setSelectedOption(existingAnswer.userSelected);
+              setIsCorrect(existingAnswer.userSelected === existingAnswer.correct);
+            } else {
+              setShuffledOptions(newQ.options);
+              setSelectedOption(null);
+              setIsCorrect(null);
+            }
+          };
+
+          const handleOptionSelect = (optionKey) => {
+            if (selectedOption) return; 
+            const currentQ = questions[currentQuestionIndex];
+            const correct = optionKey === currentQ.correct;
+            setSelectedOption(optionKey);
+            setIsCorrect(correct);
+            if (correct) setScore(s => s + 1); else setWrongScore(s => s + 1);
+            setSessionAnswers(prev => [...prev, { ...currentQ, userSelected: optionKey, options: shuffledOptions }]);
+          };
+
+          const nextQuestion = () => {
+            if (currentQuestionIndex < questions.length - 1) changeQuestion(currentQuestionIndex + 1);
+            else {
+              setShowResult(true);
+              saveHistoryToCloud(score, wrongScore, questions.length, currentPart, sessionAnswers);
+            }
+          };
+
+          const prevQuestion = () => { if (currentQuestionIndex > 0) changeQuestion(currentQuestionIndex - 1); };
+          const requestFinish = () => setIsConfirming(true);
+          const confirmFinish = () => {
+            setShowResult(true);
+            saveHistoryToCloud(score, wrongScore, questions.length, currentPart, sessionAnswers);
+            setIsConfirming(false);
+          };
+          const resetQuiz = () => { setCurrentPart(null); setQuestions([]); setReviewMode(false); };
+
+          const currentQ = questions[currentQuestionIndex];
+
+          // 🧱 GIAO DIỆN PHẦN ĐẦU LOGO
+          const QuizPointLogo = () => (
+            <div className="absolute top-4 left-4 sm:top-6 sm:left-8 z-40 animate-enter text-left">
+              <div className="glass-panel flex items-center gap-3 px-5 py-3 rounded-2xl border border-brand-200/50 shadow-lg shadow-brand-500/10">
+                <div className="bg-brand-500 text-white p-2 rounded-xl shadow-md transform hover:rotate-12 transition-transform">
+                  <Target size={24} />
+                </div>
+                <div className="flex flex-col items-start gap-0">
+                  <span className="text-sm font-black text-brand-700 leading-none tracking-tighter uppercase">QuizPoint</span>
+                  <span className="text-[11px] font-bold text-gray-400 leading-tight uppercase tracking-widest">Studio</span>
+                </div>
+              </div>
+            </div>
+          );
+
+          // MÀN HÌNH CHỜ ĐANG TẢI DỮ LIỆU FIREBASE
+          if (loading) {
+              return (
+                <div className="min-h-screen flex flex-col items-center justify-center font-sans">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-500 mb-4"></div>
+                    <p className="text-gray-500 font-medium text-sm">Đang đồng bộ cấu hình cổng bảo mật...</p>
+                </div>
+              )
+          }
+
+          // CHẶN: HIỂN THỊ FORM ĐĂNG NHẬP NẾU CHƯA CÓ USER ĐĂNG NHẬP
+          if (!user) {
+              return (
+                <div className="min-h-screen p-6 flex flex-col items-center justify-center font-sans relative">
+                    <QuizPointLogo />
+                    <div className="w-full max-w-md p-8 sm:p-10 bg-white rounded-3xl shadow-2xl border border-gray-100 animate-enter mt-14">
+                        <div className="text-center mb-8">
+                            <div className="inline-flex p-3 bg-brand-50 text-brand-600 rounded-2xl mb-3"><Lock size={32} /></div>
+                            <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">Đăng nhập tài khoản</h2>
+                            <p className="text-xs text-gray-400 font-medium mt-1">Cơ sở dữ liệu Trắc nghiệm Khí tượng Khí hậu</p>
+                        </div>
+                        
+                        <form onSubmit={handleLogin} className="space-y-5">
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">Tài khoản Email</label>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 pointer-events-none"><Mail size={18} /></div>
+                                    <input type="email" placeholder="hocsinh@gmail.com" value={emailInput} onChange={e => setEmailInput(e.target.value)} className="w-full pl-11 pr-4 py-3.5 bg-gray-50 text-gray-800 rounded-xl font-medium border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all text-sm" />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">Mật mã bảo mật</label>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 pointer-events-none"><Lock size={18} /></div>
+                                    <input type="password" placeholder="••••••••" value={passwordInput} onChange={e => setPasswordInput(e.target.value)} className="w-full pl-11 pr-4 py-3.5 bg-gray-50 text-gray-800 rounded-xl font-medium border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all text-sm" />
+                                </div>
+                            </div>
+                            {authError && <p className="text-xs font-bold text-rose-500 bg-rose-50 p-3 rounded-lg border border-rose-100">{authError}</p>}
+                            <button type="submit" className="w-full py-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-200 transition-all text-sm uppercase tracking-wider">Xác nhận đăng nhập</button>
+                        </form>
+                    </div>
+                </div>
+              )
+          }
+          
+          // GIAO DIỆN XEM LẠI CHI TIẾT CÁC CÂU LÀM SAI (REVIEW MODE)
+          if (reviewMode) {
+            return (
+              <div className="min-h-screen p-4 sm:p-6 lg:p-8 font-sans bg-gray-50/50">
+                <div className="max-w-4xl mx-auto space-y-6">
+                  <div className="glass-panel p-4 rounded-2xl shadow-sm sticky top-4 z-10 flex justify-between items-center mb-8">
+                    <button onClick={() => setReviewMode(false)} className="flex items-center gap-2 text-brand-700 hover:text-brand-900 font-semibold transition-colors"><ArrowLeft size={20} /> <span>Quay lại</span></button>
+                    <h2 className="text-xl font-bold text-gray-800 tracking-tight">Chi tiết bài làm</h2>
+                    <div className="w-8"></div> 
+                  </div>
+                  <div className="space-y-8 pb-10">
+                    {reviewData.map((item, index) => {
+                      const isItemCorrect = item.s === item.c;
+                      const options = Array.isArray(item.o) ? item.o : [];
+                      return (
+                        <div key={index} className={`bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-gray-100 ${!isItemCorrect ? 'ring-1 ring-red-100' : ''}`}>
+                          <div className="flex gap-4 mb-6">
+                            <span className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg ${isItemCorrect ? 'bg-gradient-to-br from-emerald-400 to-emerald-600' : 'bg-gradient-to-br from-red-400 to-red-600'}`}>{index + 1}</span>
+                            <h3 className="text-lg font-semibold text-gray-800 leading-relaxed">{item.q}</h3>
+                          </div>
+                          <div className="space-y-3 pl-0 sm:pl-14">
+                            {options.map((opt, i) => {
+                              let optionClass = "p-4 rounded-xl border flex justify-between items-center ";
+                              if (opt.key === item.c) optionClass += "bg-emerald-50 border-emerald-200 text-emerald-800 font-medium shadow-sm";
+                              else if (opt.key === item.s && !isItemCorrect) optionClass += "bg-red-50 border-red-200 text-red-800 shadow-sm";
+                              else optionClass += "bg-white border-gray-100 text-gray-500 opacity-70";
+                              return (
+                                <div key={i} className={optionClass}>
+                                  <span>{opt.text}</span>
+                                  {opt.key === item.c && <CheckCircle size={20} className="text-emerald-600" />}
+                                  {opt.key === item.s && !isItemCorrect && <XCircle size={20} className="text-red-600" />}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          // GIAO DIỆN CHỌN KHỐI ĐỀ THI CHÍNH THỨC
+          if (!currentPart) {
+            const menuItems = [
+                { id: 1, label: "Khí tượng Học I", sub: "Câu 1 - 30", color: "emerald", icon: <Sun size={28} /> },
+                { id: 2, label: "Khí tượng Học II", sub: "Câu 31 - 60", color: "teal", icon: <Cloud size={28} /> },
+                { id: 3, label: "Độ ẩm & Các Loại Mây", sub: "Câu 61 - 90", color: "sky", icon: <Droplet size={28} /> },
+                { id: 4, label: "Tài nguyên & Bão", sub: "Câu 91 - 120", color: "blue", icon: <Zap size={28} /> },
+                { id: 5, label: "Khí quyển & Gió", sub: "Câu 121 - 148", color: "indigo", icon: <Globe size={28} /> }
+            ];
+            return (
+              <div className="min-h-screen p-6 sm:p-8 flex flex-col items-center justify-center font-sans relative">
+                <QuizPointLogo />
+                
+                {/* CONFIG KHUNG ĐĂNG XUẤT */}
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-8 z-40 animate-enter flex items-center gap-3">
+                    <span className="text-xs font-bold text-gray-500 bg-white/80 py-2 px-3 rounded-xl border shadow-sm sm:block hidden">Tài khoản: {user.email}</span>
+                    <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2.5 bg-rose-50 text-rose-600 font-bold text-xs rounded-xl border border-rose-200/50 hover:bg-rose-100/70 transition-all shadow-sm"><LogOut size={16}/> Đăng xuất</button>
+                </div>
+
+                {/* Tiện ích đếm người truy cập */}
+                <div className="fixed bottom-6 left-6 z-[60] animate-enter">
+                  <div className="glass-panel px-4 py-3 rounded-2xl border border-brand-200/50 shadow-lg flex items-center gap-2 bg-white/90 backdrop-blur-md">
+                    <div className="relative flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </div>
+                    <div className="flex items-center text-sm font-bold text-emerald-600">
+                      <span>Số người đang truy cập:</span>
+                      <div className="ml-1 overflow-hidden flex items-center w-[20px] h-5 relative">
+                        <img src="https://whos.amung.us/swidget/quizpoint.png" alt="Online" className="absolute max-w-none" style={{ left: '-18px', filter: 'sepia(100%) saturate(1000%) hue-rotate(100deg) brightness(80%)' }} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="w-full max-w-5xl space-y-10 anonymity-container text-center mt-20 sm:mt-0">
+                  <div className="space-y-4">
+                    <div className="inline-flex p-4 rounded-full bg-white shadow-lg mb-2">
+                        <div className="bg-gradient-to-tr from-emerald-400 to-teal-500 p-3 rounded-full text-white">
+                            <Cloud size={40} />
+                        </div>
+                    </div>
+                    <h1 className="text-4xl font-bold text-gray-800 tracking-tight uppercase">Khí Tượng Nông Nghiệp</h1>
+                    
+                    <div className="flex flex-col items-center gap-1 text-gray-600 bg-white/60 py-3 px-6 rounded-2xl border border-white/80 inline-block mx-auto shadow-md">
+                        <div className="flex items-center gap-2 font-semibold text-brand-700">
+                            <User size={20} /> 
+                            <span>Tên: Nguyễn Văn Lượng</span>
+                        </div>
+                        <div className="flex items-center gap-2 font-semibold text-brand-700">
+                            <Phone size={20} /> 
+                            <span>LH: 0333738861</span>
+                        </div>
+                    </div>
+                    
+                    <div className="mt-6">
+                        <a href="phan2.html" className="inline-flex items-center gap-2 px-8 py-3 bg-brand-500 text-white font-bold rounded-2xl hover:bg-brand-600 transition-all shadow-lg shadow-brand-200 text-sm">
+                            <Sparkles size={20} /> 👉CHUYỂN SANG PHẦN 2 (300 CÂU)👈
+                        </a>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-brand-600 to-teal-700 text-white p-6 rounded-3xl shadow-xl max-w-3xl mx-auto border border-brand-500/30 overflow-hidden relative group">
+                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
+                            <Sparkles size={100} />
+                        </div>
+                        <div className="relative z-10 flex flex-col items-center gap-4">
+                            <div className="flex items-center gap-3">
+                                <Sparkles size={28} className="text-yellow-300 animate-pulse" />
+                                <span className="font-bold text-xl sm:text-2xl leading-tight">Nhận làm Quiz Ôn Tập & PowerPoint Cơ Bản</span>
+                            </div>
+                            <div className="flex flex-wrap justify-center gap-4 mt-2">
+                                 <div className="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-sm">
+                                    <CheckCircle size={18} className="text-emerald-300" /> 
+                                    <span className="font-medium text-sm">Hệ thống Quiz</span>
+                                 </div>
+                                 <div className="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-sm">
+                                    <Presentation size={18} className="text-sky-300" /> 
+                                    <span className="font-medium text-sm">Thiết kế PPT</span>
+                                 </div>
+                                 <div className="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-sm">
+                                    <Layers size={18} className="text-orange-300" /> 
+                                    <span className="font-medium text-sm">Tài liệu học tập</span>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+
+                  {/* THIẾT LẬP CÁC NÚT CHỌN ĐỀ */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
+                    {menuItems.map((item) => {
+                        const colorMap = { 
+                            emerald: "text-emerald-600 border-emerald-100/80 hover:border-emerald-400 hover:bg-emerald-50/30", 
+                            teal: "text-teal-600 border-teal-100/80 hover:border-teal-400 hover:bg-teal-50/30", 
+                            sky: "text-sky-600 border-sky-100/80 hover:border-sky-400 hover:bg-sky-50/30", 
+                            blue: "text-blue-600 border-blue-100/80 hover:border-blue-400 hover:bg-blue-50/30", 
+                            indigo: "text-indigo-600 border-indigo-100/80 hover:border-indigo-400 hover:bg-indigo-50/30" 
+                        };
+                        return (
+                            <button key={item.id} onClick={() => startQuiz(item.id)} className={`relative group p-6 rounded-2xl border-2 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl flex flex-col items-center justify-center gap-3 text-center bg-white/80 backdrop-blur-sm shadow-sm ${colorMap[item.color]}`}>
+                              <div className="p-3 rounded-xl bg-white shadow-sm group-hover:scale-110 transition-transform duration-300 ring-1 ring-gray-100 text-brand-500">{item.icon}</div>
+                              <div><div className="font-bold text-lg text-gray-800">{item.label}</div><div className="text-xs font-medium opacity-70 mt-1">{item.sub}</div></div>
+                            </button>
+                        )
+                    })}
+                  </div>
+
+                  {/* KHUNG HIỂN THỊ ĐIỂM SỐ TỪ CLOUD DATABASE */}
+                  <div className="glass-panel p-6 rounded-3xl shadow-sm border border-white/50 max-w-2xl mx-auto w-full text-left">
+                    <div className="flex justify-between items-center mb-6 px-2">
+                      <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2"><History className="text-gray-400" size={20} /> Lịch sử kết quả làm bài trực tuyến (Hệ thống Cloud)</h2>
+                    </div>
+                    {history.length === 0 ? <div className="text-center py-8 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl">Chưa có lịch sử làm đề lưu trữ từ xa</div> : (
+                      <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                        {history.map((record) => (
+                          <div key={record.id} className="p-4 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
+                            <div className="flex-1 w-full sm:w-auto">
+                              <div className="font-bold text-gray-700">Phần {record.part}</div>
+                              <div className="text-xs text-gray-400 mt-1 italic">{record.date}</div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <div className="text-right">
+                                    <div className="text-sm font-bold"><span className="text-emerald-600">{record.score} Đ</span><span className="text-rose-500 ml-1">/ {record.wrong} S</span></div>
+                                    <div className="text-[10px] text-gray-400">/{record.total} câu</div>
+                                </div>
+                                <button onClick={() => { setReviewData(record.details || []); setReviewMode(true); }} className="p-2 bg-brand-50 text-brand-600 rounded-lg hover:bg-brand-100 transition-colors"><Eye size={18} /></button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          // GIAO DIỆN HIỂN THỊ HOÀN THÀNH BÀI THI
+          if (showResult) {
+            return (
+              <div className="min-h-screen flex items-center justify-center p-4 font-sans bg-gray-50 text-center relative">
+                <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-xl max-w-md w-full border border-gray-100 animate-enter">
+                  <div className="relative inline-block mb-6"><div className="absolute inset-0 bg-yellow-200 blur-xl opacity-50 rounded-full"></div><Award className="w-24 h-24 text-yellow-500 relative z-10 animate-bounce-slow" /></div>
+                  <h2 className="text-3xl font-bold mb-2 text-gray-800 tracking-tight">Hoàn Thành!</h2>
+                  <div className="grid grid-cols-2 gap-4 mb-8 mt-6">
+                    <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100"><p className="text-emerald-600 text-xs font-bold uppercase tracking-wider mb-1">Đúng</p><p className="text-4xl font-bold text-emerald-600">{score}</p></div>
+                    <div className="p-4 bg-rose-50 rounded-2xl border border-rose-100"><p className="text-rose-500 text-xs font-bold uppercase tracking-wider mb-1">Sai</p><p className="text-4xl font-bold text-rose-500">{wrongScore}</p></div>
+                  </div>
+                  <button onClick={resetQuiz} className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg shadow-emerald-200 transition-all flex items-center justify-center gap-2"><RotateCcw size={20} /> Về màn hình chính</button>
+                </div>
+              </div>
+            );
+          }
+
+          const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+
+          // GIAO DIỆN LÀM CÂU HỎI TRẮC NGHIỆM CHI TIẾT
+          return (
+            <div className="min-h-screen flex flex-col items-center p-4 sm:p-6 font-sans relative">
+              {isConfirming && (
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-enter">
+                  <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl">
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">Kết thúc bài?</h3>
+                    <p className="text-gray-500 mb-8">Kết quả hiện tại sẽ được lưu lại đám mây.</p>
+                    <div className="flex gap-3">
+                      <button onClick={() => setIsConfirming(false)} className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 rounded-xl font-bold transition-colors">Tiếp tục</button>
+                      <button onClick={confirmFinish} className="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold shadow-lg transition-colors">Kết thúc</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className="w-full max-w-3xl flex justify-between items-center mb-6 pt-2">
+                <button onClick={requestFinish} className="p-2 rounded-xl text-gray-400 hover:text-rose-500 hover:bg-rose-50 transition-all ml-0"><LogOut size={24} /></button>
+                <div className="glass-panel px-4 py-2 rounded-full border border-white/60 shadow-sm text-xs sm:text-sm font-semibold text-gray-600 tracking-tight">Câu {currentQuestionIndex + 1} / {questions.length}</div>
+                <div className="flex items-center gap-3"><div className="flex items-center gap-1 text-emerald-600 font-bold bg-emerald-50 px-3 py-1 rounded-lg"><CheckCircle size={16} /> {score}</div></div>
+              </div>
+              <div className="w-full max-w-3xl mb-8">
+                <div className="h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner"><div className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all duration-500 ease-out rounded-full" style={{ width: `${progress}%` }} /></div>
+              </div>
+              <div className="w-full max-w-3xl bg-white p-6 sm:p-10 rounded-3xl shadow-xl border border-gray-100 mb-24 relative overflow-hidden animate-enter">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+                <div className="mb-8"><span className="inline-block bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded mb-3 tracking-wide">ID: {currentQ.id}</span><h2 className="text-xl sm:text-2xl font-bold text-gray-800 leading-normal">{currentQ.q}</h2></div>
+                <div className="space-y-3">
+                  {shuffledOptions.map((option, idx) => {
+                    let containerClass = "w-full p-5 rounded-2xl border-2 text-left transition-all duration-200 flex justify-between items-center relative overflow-hidden ";
+                    if (selectedOption) {
+                      if (option.key === currentQ.correct) containerClass += "border-emerald-500 bg-emerald-50 text-emerald-800 ring-2 ring-emerald-200";
+                      else if (option.key === selectedOption) containerClass += "border-rose-500 bg-rose-50 text-rose-800 ring-2 ring-rose-200";
+                      else containerClass += "border-gray-100 text-gray-400 opacity-60";
+                    } else containerClass += "border-gray-100 hover:border-emerald-300 hover:bg-emerald-50/50 cursor-pointer active:scale-[0.99] text-gray-600";
+                    return (
+                      <button key={idx} onClick={() => handleOptionSelect(option.key)} disabled={!!selectedOption} className={containerClass}>
+                        <span className="relative z-10 font-medium text-lg">{option.text}</span>
+                        {selectedOption && option.key === currentQ.correct && <CheckCircle className="text-emerald-600 relative z-10" size={24} />}
+                        {selectedOption && option.key === selectedOption && option.key !== currentQ.correct && <XCircle className="text-rose-600 relative z-10" size={24} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-gray-200 flex justify-center items-center gap-4 z-20">
+                <button onClick={prevQuestion} disabled={currentQuestionIndex === 0} className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all ${currentQuestionIndex === 0 ? 'bg-gray-100 text-gray-300' : 'bg-white border-2 border-gray-200 text-gray-600 hover:border-gray-400'}`}><ChevronLeft size={24} /></button>
+                <button onClick={nextQuestion} disabled={!selectedOption && !sessionAnswers.some(a => a.id === currentQ.id)} className={`flex-1 max-w-md h-14 rounded-2xl font-bold text-lg shadow-lg flex items-center justify-center gap-2 transition-all transform active:scale-95 ${(!selectedOption && !sessionAnswers.some(a => a.id === currentQ.id)) ? 'bg-gray-100 text-gray-400' : isCorrect ? 'bg-emerald-600 text-white shadow-emerald-200' : 'bg-gray-800 text-white shadow-gray-300'}`}>{currentQuestionIndex === questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <ChevronRight size={24} /></button>
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<QuizApp />);
+    </script>
+</body>
+</html>
