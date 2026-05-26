@@ -52,8 +52,6 @@
             font-family: 'Be Vietnam Pro', sans-serif; 
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-        
-        /* ẨN THANH CUỘN HỆ THỐNG */
         html, body, .custom-scrollbar {
             scrollbar-width: none;
             -ms-overflow-style: none;
@@ -63,7 +61,6 @@
             width: 0 !important;
             height: 0 !important;
         }
-        
         .glass-panel {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(12px);
@@ -121,7 +118,7 @@
         const Sun = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></IconWrapper>;
         const Moon = (props) => <IconWrapper {...props}><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></IconWrapper>;
         const User = (props) => <IconWrapper {...props}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></IconWrapper>;
-        const Phone = (props) => <IconWrapper {...props}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></IconWrapper>;
+        const Phone = (props) => <IconWrapper {...props}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .81 2.71A2 2 0 0 1 22 16.92z"/></IconWrapper>;
         const Presentation = (props) => <IconWrapper {...props}><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></IconWrapper>;
         const Layers = (props) => <IconWrapper {...props}><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></IconWrapper>;
         const Target = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></IconWrapper>;
@@ -131,136 +128,444 @@
         const ShieldAlert = (props) => <IconWrapper {...props}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></IconWrapper>;
 
         // ============================================================================
-        // DỮ LIỆU ĐỀ THI - MỖI ĐỀ 60 CÂU
+        // DỮ LIỆU ĐỀ THI - PHÂN CHIA HOÀN CHỈNH 8 ĐỀ (TỔNG CỘNG ĐÚNG 480 CÂU THỰC TẾ)
         // ============================================================================
         const TEST_DATA = {
             1: [
                 { id: 1, q: "Các chức năng của một VPN là gì?", a: "Bảo vệ một mạng từ khác", b: "Tạo một kết nối point-to-point trên mạng công cộng", c: "Mã hóa các gói dữ liệu từ các thiết bị gửi và nhận", d: "Mã hóa các gói dữ liệu từ các thiết bị nhận và gửi", ans: "b" },
-                { id: 2, q: "Hầu hết các máy tính sử dụng bộ nhớ flash để làm gì?", a: "lưu giữ các chỉ lệnh khởi đầu vì nó cho phép các máy tính dễ dàng để cập nhật nội dung của nó.", b: "2 loai SOF bộ nhớ cache.", c: "Kết nối và cổng", d: "Lưu trữ dữ liệu tạm thời khi tắt nguồn máy tính", ans: "a" },
-                { id: 3, q: "Bộ xử lý của máy tính làm gì?", a: "Lưu trữ các dữ liệu của bạn dưới các hình thức của các tập tin và thư mục", b: "Thực thi các câu lệnh được truyền đi bởi các phần mềm bạn chạy", c: "Xử lý và tạo ra những hình ảnh được hiển thị bằng máy tính của bạn", d: "Kết nối máy tính vào mạng", ans: "c" },
+                { id: 2, q: "__________ lưu giữ các chỉ lệnh khởi đầu vì nó cho phép các máy tính dễ dàng để cập nhật nội dung của nó.", a: "Bộ nhớ flash.", b: "2 loại SOF bộ nhớ cache.", c: "Kết nối và cổng", d: "Hầu hết các máy tính sử dụng bộ nhớ flash để", ans: "d" },
+                { id: 3, q: "Bộ xử lý của máy tính làm gì?", a: "B. Thực thi các câu lệnh được truyển đi bởi các phần mềm bạn chạy", b: "C. Xử lý và tạo ra những hình ảnh được hiển thị bằng máy tính của bạn", c: "D. Kết nối máy tính vào mạng", d: "A. Lưu trữ các dữ liệu của bạn dưới các hình thức của các tập tin và thư mục", ans: "b" },
                 { id: 4, q: "Bạn chèn một đĩa có CD có chương trình điều khiển trong nó. Bạn cố gắng truy cập đĩa, một thông báo lỗi xuất hiện. Nguyên nhân gây ra lỗi là gì?", a: "Đĩa chứa nhiều kiểu tập tin", b: "Bạn đặt đĩa vào khay không đúng chiều", c: "Không đủ dung lương bộ nhớ trống", d: "Pin máy tính yếu", ans: "b" },
                 { id: 5, q: "BCC có ý nghĩa gì khi bạn soạn email?", a: "Người nhận liệt kê trong trường BCC nhận được một bản sao của tin nhắn nhưng không được hiển thị trên bản sao bất kỳ người nhận khác, bao gồm tất cả những người nhận trong trường BCC.", b: "Người nhận liệt kê trong trường BCC nhận được một bản sao của tin nhắn và được hiển thị trên bản sao những người nhận khác.", c: "Một bản sao nội dung", d: "Một bản sao nội dung với thông tin bí mật của người gửi", ans: "a" },
                 { id: 6, q: "Các phím tắt cho các lệnh Copy là gì?", a: "Ctrl + Z", b: "Alt + F4", c: "Ctrl + C", d: "Ctrl + V", ans: "c" },
-                { id: 7, q: "Bạn thường có thể tùy chỉnh những gì khi cài đặt một ứng dụng? (Chọn tất cả áp dụng.)", a: "Thư mục cài đặt", b: "EULA", c: "Khi loại bỏ các ứng dụng", d: "Shortcut nào được cài đặt", ans: "ad" },
-                { id: 8, q: "Cách khởi động Microsoft Excel?", a: "Click Start, All Programs, Microsoft Excel 2010", b: "Click Start, Programs, Microsoft Excel 2010", c: "Click Start, Microsoft Office, Microsoft Excel 2010", d: "Click Start, All Programs, Microsoft Office, Microsoft Excel 2010", ans: "d" },
+                { id: 7, q: "Bạn thường có thể tùy chỉnh những gì khi cài đặt một ứng dụng? (Chọn tất cả áp dụng.)", a: "Khi loại bỏ các ứng dụng", b: "Thư mục cài đặt", c: "Shortcut nào được cài đặt", d: "EULA", ans: "bc" },
+                { id: 8, q: "Cách khởi động Microsoft Excel?", a: "Click Start, All Programs,Microsoft Excel 2010", b: "Click Start, Programs, Microsoft Excel 2010", c: "Click Start,Microsoft Office, Microsoft Excel 2010", d: "Click Start, All Programs, Microsoft Office,Microsoft Excel 2010", ans: "d" },
                 { id: 9, q: "Chọn trạng thái tiết kiệm điện năng nhất, lưu lại tập tin và các chương trình trên đĩa và tắt máy tính.", a: "Hybrid sleep", b: "Block", c: "Hibernation", d: "Battery Saver", ans: "c" },
-                { id: 10, q: "Bạn đang xem xét các tiêu chuẩn không dây có sẵn trên router không dây của bạn. Lựa chọn nào sau đây là tiêu chuẩn hợp lệ của 802.11? (Chọn tất cả áp dụng)", a: "802.11ac", b: "802.11cd", c: "802.11t", d: "802.11n", ans: "ad" },
-                { id: 11, q: "BIOS là gì? (Chọn tất cả áp dụng.)", a: "Phần mềm được chạy khi hệ điều hành khởi động", b: "Firmware với giao diện người dùng", c: "Firmware phụ trách việc khởi tạo và kiểm tra tất cả các thành phần phần cứng của máy tính", d: "Hệ thống xuất nhập cơ bản", ans: "bcd" },
-                { id: 12, q: "Bạn có thể loại bỏ các ứng dụng cài đặt từ đâu?", a: "Start -> Default Programs", b: "Start -> Control Panel -> Uninstall A Program", c: "Start -> Control Panel -> Systems", d: "Delete thư mục trong Program Files", ans: "b" },
-                { id: 13, q: "Bạn muốn sử dụng Task Manager để xem cách sử dụng bộ nhớ RAM và lịch sử sử dụng. Mục gì trong Task Manager cung cấp một biểu đồ chi tiết này?", a: "Services", b: "Processes", c: "Resource Monitor", d: "Performance", ans: "d" },
-                { id: 14, q: "Bạn vừa mua một bộ định tuyến không dây mới và muốn tăng cường an ninh. Lựa chọn nào sau đây cung cấp mức độ bảo mật cao nhất?", a: "WPA2", b: "TCP/IP", c: "WEP", d: "WPA", ans: "a" },
-                { id: 15, q: "Ba nút mặc định trên Quick Access Toolbar trước khi bạn tùy biến là?", a: "Print, Undo, Redo", b: "Undo, Redo, Save", c: "Open, Undo, Save", d: "New, Redo, Save", ans: "b" },
-                { id: 16, q: "Bạn nên kiểm tra gì trước khi cài đặt trình điều khiển (driver) cho một thành phần phần cứng của máy tính? (Chọn tất cả áp dụng.)", a: "Trình điều khiển đó có tương thích với các phiên bản chính xác của hệ điều hành bạn đang sử dụng", b: "Trình điều khiển đó đã được phát hành trong 30 ngày qua", c: "Trình điều khiển đó có được tạo ra bởi nhà sản xuất đã sản xuất ra thành phần phần cứng bạn đang sử dụng.", d: "Trình điều khiển đó có được làm cho đúng thành phần phần cứng mà bạn đang sử dụng", ans: "ad" },
-                { id: 17, q: "Cho biết phần mở rộng của chương trình Microsoft PowerPoint?", a: "*.pptx", b: ".accdb", c: "*.doc, *.docx", d: ".xlsx", ans: "a" },
-                { id: 18, q: "Các loại phần mềm nào là nguyên nhân gây ra hiệu suất máy tính không mong muốn?", a: "Careware", b: "Malware", c: "Registerware", d: "Shareware", ans: "b" },
-                { id: 19, q: "Bạn nên đặt màn hình máy tính trên bàn của bạn như thế nào? (Chọn tất cả áp dụng.)", a: "Đặt nó cách ít nhất là 20 inch từ đôi mắt của bạn.", b: "Vị trí của nó ngang tầm mắt.", c: "If máy tính rộng 20 inch trở lên, vị trí trên cùng của nó trên tầm mắt khoảng 3 inch.", d: "Đặt sát tầm mắt dưới 10 inch", ans: "abc" },
-                { id: 20, q: "Cho biết phần mở rộng của chương trình Microsoft Access?", a: "*.accdb", b: "*.pptx", c: "*.doc, *.docx", d: ".xlsx", ans: "a" },
-                { id: 21, q: "Chọn phát biểu đúng nhất về việc sử dụng mẫu thiết kế (themes) trong MS Powerpoint", a: "Người dùng có thể tạo ra một số themes mới và áp dụng trên nhiều bản trình chiếu.", b: "Người dùng có thể tạo ra một số themes mới và chỉ có thể áp dụng trên bản trình chiếu đang mở.", c: "Người dùng chỉ có thể sử dụng các themes sẵn có trong thư viện của chương trình", d: "Người dùng không thể sử dụng một themes bên ngoài vào bài báo cáo của mình", ans: "a" },
-                { id: 22, q: "Bảng mạch nhỏ mà chip RAM được tổ chức trong một khe cắm bộ nhớ trên bo mẹ.", a: "Bộ nhớ", b: "Đoàn hệ ngoại vi", c: "Chu kỳ", d: "Các mô-đun bộ nhớ", ans: "d" },
-                { id: 23, q: "Biên dịch và thực hiện các lệnh cơ bản cho hoạt động của máy tính.", a: "PCI bus", b: "Xử lý", c: "SCSI", d: "Thẻ PC", ans: "b" },
-                { id: 24, q: "......là một ngôn ngữ được sử dụng bởi các máy tính để giao tiếp, trao đổi thông tin với nhau qua việc sử dụng hệ thống mạng?", a: "máy chủ(server)", b: "giao thức(protocol)", c: "trình duyệt (browser)", d: "công cụ tìm kiếm(search engine)", ans: "b" },
-                { id: 25, q: "Bạn đang chơi một trò chơi trên máy tính của bạn. Các hình ảnh không hiển thị một cách chính xác và màn hình bị đóng băng. Thành phần nào bị lỗi?", a: "Thiết bị nhập", b: "Card âm thanh", c: "Card đồ họa", d: "Bo mạch chủ", ans: "c" },
-                { id: 26, q: "Bạn có thể sử dụng công cụ gì để kiểm tra xem một ứng dụng có tương thích với phiên bản Windows của bạn không?", a: "Compatibility Mode", b: "Safe Mode", c: "Microsoft Fix It Solution Center", d: "Windows Compatibility Center", ans: "d" },
-                { id: 27, q: "Bạn cần phải rời khỏi máy tính của bạn không sử dụng trong một vài phút, và bạn muốn bảo vệ nó nhưng không muốn đóng ứng dụng. (Chọn tất cả áp dụng.)", a: "Log off", b: "Shut down", c: "Lock", d: "Switch User", ans: "cd" },
-                { id: 28, q: "Câu nào đúng về chức năng undo?", a: "Lặp lại lệnh", b: "Hủy bỏ các hành động vừa thực hiện", c: "Lưu văn bản tự động", d: "Xóa toàn bộ văn bản", ans: "b" },
-                { id: 29, q: "Cho biết phần mở rộng của chương trình Microsoft Excel?", a: "*.pptx", b: ".accdb", c: ".xlsx", d: ".doc, *.docx", ans: "c" },
-                { id: 30, q: "Cho biết ý nghĩa của chức năng Format Painter trong Microsoft Word 2010?", a: "Xóa tất cả các định dạng của phần văn bản được chọn", b: "Sao chép đối tượng trong văn bản", c: "Sao chép tất định dạng của một phần/đối tượng trong văn bản", d: "Tô màu cho một khối và bản", ans: "c" },
-                { id: 31, q: "Các tùy chọn nào sau đây không phải là một nhóm lệnh (Group) nằm trên Ribbon ?", a: "Home", b: "Clipboard", c: "Insert", d: "Review", ans: "b" },
-                { id: 32, q: "Bạn có thể nói gì về một đối tượng đã được lựa chọn trong tài liệu?", a: "Tám ô vuông nhỏ xuất hiện xung quanh đối tượng", b: "các đối tượng thay đổi sang màu đen và màu trắng nếu nó có màu", c: "các đối tượng xuất hiện trong cửa sổ riêng của nó để chỉnh sửa", d: "các đối tượng được đánh dấu nổi bật như khi chọn văn bản thông thường", ans: "a" },
-                { id: 33, q: "Ba đối tượng trong cơ sở dữ liệu Access 2010? (Chọn tất cả áp dụng.)", a: "Table", b: "Query", c: "Report", d: "SQL Script", ans: "abc" },
-                { id: 34, q: "Chức năng nào trong word 2010 cho phép tùy chính khoảng cách giữa các đoạn trong văn bản", a: "Character spacing", b: "Toolbar", c: "Option spacing", d: "Spacing (nằm trong nhóm Paragraph)", ans: "d" },
-                { id: 35, q: "Bất kỳ thành phần phần cứng truyền tải thông tin với một hoặc nhiều người", a: "Thiết bị đầu ra", b: "Thiết bị trỏ", c: "Con trò", d: "Thiết bị đầu vào", ans: "a" },
-                { id: 36, q: "Chuẩn mạng xác định không có máy tính trung tâm hoặc thiết bị trên mạng cần kiểm soát khi dữ liệu có thể được truyền", a: "Chuẩn Ethernet (Ethernet)", b: "server", c: "Latency (thời gian đợi)", d: "T1 line", ans: "a" },
-                { id: 37, q: "Bạn làm gì trong Windows 7 để thay đổi hình nền Desktop hoặc hình ảnh?", a: "Start, Control Panel, Appearance And Personalization -> Personalization", b: "Start, Control Panel, Appearance And Personalization -> Desktop Gadgets", c: "Start, Control Panel, Appearance And Personalization -> Display", d: "Start, Control Panel, Clock, Language Region", ans: "a" },
-                { id: 38, q: "Cho biết phần mở rộng của chương trình Microsoft Word ?", a: "*.pptx", b: "*.doc, .docx", c: "*.xlsx", d: "accdb", ans: "b" },
-                { id: 39, q: "Các phím tắt bàn phím để xóa một tập tin mà bạn lựa chọn trên máy tính của bạn là gì?", a: "Alt + Tab", b: "Phím Shift", c: "Ctrl + C", d: "Del", ans: "d" },
-                { id: 40, q: "Chip ROM có chứa dữ liệu văn bản vĩnh viễn, chỉ thị lệnh, hoặc thông tin ghi trên chip khi chúng được sản xuất.", a: "Kỹ thuật số", b: "PC thẻ", c: "Firmware", d: "AMD", ans: "c" },
-                { id: 41, q: "Chọn 4 loại hiệu ứng cho đối tượng có trong tab Animation (Chọn tất cả áp dụng.)", a: "Entrance", b: "Motion Paths", c: "Emphasis", d: "Exit", ans: "abcd" },
-                { id: 42, q: "Chỉ ra nhiệm vụ cốt lõi quan trọng của hệ điều hành", a: "Tạo bảng tính", b: "Diệt virus", c: "Quản lý thư điện tử", d: "Quản lý tiến trình và tài nguyên phần cứng", ans: "d" },
-                { id: 43, q: "Chế độ hiển thị nào bạn nên áp dụng cho các văn bản mà bạn nhận được từ bên ngoài thông qua email?", a: "Protected View", b: "Read Only View", c: "Full Screen Reading View", d: "Web Layout View", ans: "a" },
-                { id: 44, q: "Bạn có thể dùng công cụ gì để đóng các ứng dụng khi máy tính bị đứng không chạy được nữa?", a: "Microsoft Word", b: "Windows Defender", c: "Microsoft Security Essentials", d: "Task Manager", ans: "d" },
-                { id: 45, q: "BIOS của máy tính là một ...... chứa các thủ tục ở mức thấp nhất.", a: "Socket", b: "Memory", c: "Firmware", d: "Slot", ans: "c" },
-                { id: 46, q: "Các chương trình mở rộng khả năng của trình duyệt web là gì?", a: "Extend", b: "Plug-ins", c: "Add-in", d: "Update", ans: "b" },
-                { id: 47, q: "......... là một phần của giao diện đồ họa (GUI) trong Windows cho phép người dùng thêm gỡ phần mềm, thiết lập hệ thống.", a: "Action Center", b: "Windows Explorer", c: "Phần mềm người dùng", d: "Control panel", ans: "d" },
-                { id: 48, q: "Chip với 2 nhân xử lý riêng biệt được gọi là gì?", a: "Xử lý đơn nhân", b: "Bộ vi xử lý đa lõi nói chung", c: "Xử lý lõi kép", d: "Yếu tố hình thức", ans: "c" },
-                { id: 49, q: "Chương trình nào sau đây là một ví dụ của trình duyệt web?", a: "OneDrive", b: "Skype", c: "Internet Explorer", d: "Microsoft Word", ans: "c" },
-                { id: 50, q: "Bạn muốn di chuyển một thư mục vào vị trí khác. Two lệnh nào để bạn thực hiện nhiệm vụ này? (Chọn tất cả áp dụng.)", a: "Move", b: "Paste", c: "Copy", d: "Cut", ans: "bd" },
-                { id: 51, q: "Adapter chuyển đổi dữ liệu xuất của máy tính thành tín hiệu video hiển thị trên màn hình được gọi là gì?", a: "Cổng USB", b: "Card video", c: "Bo mạch chủ", d: "Card điều hợp", ans: "b" },
-                ...Array.from({length: 9}, (_, i) => ({
-                    id: 52 + i,
-                    q: `Câu hỏi bổ sung số ${52 + i} cho Đề 1`,
-                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
-                    ans: "a"
-                }))
+                { id: 10, q: "Bạn đang xem xét các tiêu chuẩn không dây có sẵn trên router không dây của bạn. Lựa chọn nào sau đây là tiêu chuẩn hợp lệ của 802.11?", a: "802.11n", b: "802.11cd", c: "802.11t", d: "802.11ac", ans: "ad" },
+                { id: 11, q: "Bộ xử lý của máy tính làm gì?", a: "Lưu trữ các dữ liệu của bạn dưới các hình thức của các tập tin và thư mục", b: "Thực thi các câu lệnh được truyển đi bởi các phần mềm bạn chạy", c: "Kết nối máy tính vào mạng", d: "Xử lý và tạo ra những hình ảnh được hiển thị bằng máy tính của bạn", ans: "d" },
+                { id: 12, q: "BIOS là gì?", a: "Phần mềm được chạy khi hệ điều hành khởi động", b: "Hệ thống xuất nhập cơ bản", c: "Firmware phụ trách việc khởi tạo và kiểm tra tất cả các thành phần phần cứng của máy tính", d: "Firmware với giao diện người dùng", ans: "bcd" },
+                { id: 13, q: "Bạn có thể loại bỏ các ứng dụng cài đặt từ đâu?", a: "Start ➢ Default Programs", b: "Start ➢ Control Panel ➢ System And Security", c: "Start ➢ Control Panel ➢ Programs", d: "Start ➢ Control Panel ➢ Uninstall A Program", ans: "d" },
+                { id: 14, q: "Bạn muốn sử dụng Task Manager để xem cách sử dụng bộ nhớ RAM và lịch sử sử dụng. Mục gì trong Task Manager cung cấp một biểu đồ chi tiết này?", a: "Services", b: "Processes", c: "Resource Monitor", d: "Performance", ans: "d" },
+                { id: 15, q: "Bạn vừa mua một bộ định tuyến không dây mới và muốn tăng cường an ninh. Lựa chọn nào sau đây cung cấp mức độ bảo mật cao nhất?", a: "WPA2", b: "TCP / IP", c: "WEP", d: "WPA", ans: "a" },
+                { id: 16, q: "Bạn vừa mua một bộ định tuyến không dây mới và muốn tăng cường an ninh. Lựa chọn nào sau đây cung cấp mức độ bảo mật cao nhất?", a: "WPA", b: "WPA2", c: "WEP", d: "TCP / IP", ans: "b" },
+                { id: 17, q: "Ba đối tượng trong cơ sở dữ liệu Access 2010?", a: "Print, Undo, Redo", b: "Undo, Redo, Save", ans: "b" },
+                { id: 18, q: "Bạn nên kiểm tra gì trước khi cài đặt trình điều khiển (driver) cho một thành phần phần cứng của máy tính?", a: "Trình điều khiển đó có tương thích với các phiên bản chính xác của hệ điều hành bạn đang sử dụng", b: "Trình điều khiển đó đã được phát hành trong 30 ngày qua", c: "Trình điều khiển đó có được tạo ra bởi nhà sản xuất đã sản xuất ra thành phần phần cứng bạn đang sử dụng.", d: "Trình điều khiển đó có được làm cho đúng thành phần phần cứng mà bạn đang sử dụng", ans: "ad" },
+                { id: 19, q: "BIOS là gì? (Chọn tất cả áp dụng.)", a: "Firmware phụ trách việc khởi tạo và kiểm tra tất cả các thành phần phần cứng của máy tính", b: "Hệ thống xuất nhập cơ bản", c: "Phần mềm được chạy khi hệ điều hành khởi động", d: "Firmware với giao diện người dùng", ans: "abd" },
+                { id: 20, q: "Cho biết phần mở rộng của chương trình Microsoft PowerPoint?", a: "*.pptx", b: "*.accdb", c: "*.doc, *.docx", d: "*.xlsx", ans: "a" },
+                { id: 21, q: "Các loại phần mềm nào là nguyên nhân gây ra hiệu suất máy tính không mong muốn?", a: "Careware", b: "Malware", c: "Registerware", d: "Shareware", ans: "b" },
+                { id: 22, q: "Bạn nên đặt màn hình máy tính trên bàn của bạn như thế nào?", a: "Đặt nó trực tiếp trên bàn của bạn.", b: "Đặt nó cách ít nhất là 20 inch từ đôi mắt của bạn.", c: "Vị trí của nó ngang tầm mắt.", d: "If máy tính rộng 20 inch trở lên, vị trí trên cùng của nó trên tầm mắt khỏang 3 inch.", ans: "bcd" },
+                { id: 23, q: "Cho biết phần mở rộng của chương trình Microsoft Access?", a: "*.accdb", b: "*.pptx", c: "*.doc, *.docx", d: "*.xlsx", ans: "a" },
+                { id: 24, q: "Chọn phát biểu đúng nhất về việc sử dụng mẫu thiết kế (themes) trong MS Powerpoint", a: "Người dùng có thể tạo ra một số themes mới và áp dụng trên nhiều bản trình chiếu.", b: "Người dùng có thể tạo ra một số themes mới và chỉ có thể áp dụng trên bản trình chiếu đang mở.", c: "Người dùng chỉ có thể sử dụng các themes sẵn có trong thư viện của chương trình", d: "Người dùng không thể sử dụng một themes bên ngoài vào bài báo cáo của mình", ans: "a" },
+                { id: 25, q: "Bảng mạch nhỏ mà chip RAM được tổ chức trong một khe cắm bộ nhớ trên bo mẹ.", a: "Bộ nhớ.", b: "Đồng hồ ngoại vi", c: "Chu kỳ", d: "Các mô-đun bộ nhớ", ans: "d" },
+                { id: 26, q: "Biên dịch và thực hiện các lệnh cơ bản cho hoạt động của máy tính.", a: "PCI bus.", b: "Xử lý", c: "SCSI", d: "Thẻ PC", ans: "b" },
+                { id: 27, q: ".....là một ngôn ngữ được sử dụng bởi các máy tính để giao tiếp, trao đổi thông tin với nhau qua việc sử dụng hệ thống mạng?", a: "máy chủ(server)", b: "giao thức(protocol)", c: "trình duyệt(browser)", d: "công cụ tìm kiếm(search engine)", ans: "b" },
+                { id: 28, q: "Bạn đang xem xét các tiêu chuẩn không dây có sẵn trên router không dây của bạn. Lựa chọn nào sau đây là tiêu chuẩn hợp lệ của 802.11? (Chọn tất cả áp dụng)", a: "802.11ac", b: "802.11t", c: "802.11cd", d: "802.11n", ans: "ad" },
+                { id: 29, q: "Bạn thường có thể tùy chỉnh những gì khi cài đặt một ứng dụng?", a: "Shortcut nào được cài đặt", b: "Thư mục cài đặt", c: "EULA", d: "Khi loại bỏ các ứng dụng", ans: "b" },
+                { id: 30, q: "Bạn đang chơi một trò chơi trên máy tính của bạn. Các hình ảnh không hiển thị một cách chính xác và màn hình bị đóng băng. Thành phần nào bị lỗi", a: "Thiết bị nhập", b: "Card âm thanh", c: "Card đồ họa", d: "Bo mạch chủ", ans: "c" },
+                { id: 31, q: "Bạn có thể sử dụng công cụ gì để kiểm tra xem một ứng dụng có tương thích với phiên bản Windows của bạn không?", a: "Compatibility Mode", b: "Safe Mode", c: "Microsoft Fix It Solution Center", d: "Windows Compatibility Center", ans: "d" },
+                { id: 32, q: "Bạn cần phải rời khỏi máy tính của bạn không sử dụng trong một vài phút, và bạn muốn bảo vệ nó. Bạn không muốn phải đóng tất cả các ứng dụng của bạn hoặc lưu công việc của bạn đang làm bởi vì bạn sẽ trở lại làm việc ngay lập tức. Lựa chọn nào sau đây sẽ giúp bạn làm điều này?", a: "Log off", b: "Shut down", c: "Lock", d: "Switch User", ans: "cd" },
+                { id: 33, q: "Câu nào đúng về chức năng undo?", a: "Lặp lại lệnh", b: "Hủy bỏ các hành động vừa thực hiện", ans: "b" },
+                { id: 34, q: "Cho biết phần mở rộng của chương trình Microsoft Excel?", a: "*.pptx", b: "*.accdb", c: "*.xlsx", d: "*.doc, *.docx", ans: "c" },
+                { id: 35, q: "Cho biết ý nghĩa của chức năng Format Painter trong Microsoft Word 2010?", a: "Xóa tất cả các định dạng của phần văn bản được chọn", b: "Sao chép đối tượng trong văn bản", c: "Sao chép tất định dạng của một phần/đốitượng trong văn bản", d: "Tô màu cho một khối vă bản", ans: "c" },
+                { id: 36, q: "Các tùy chọn nào sao đây không phải là ví dụ của Ribbon ?", a: "Home", b: "Clipboard", c: "Insert", d: "Review", ans: "b" },
+                { id: 37, q: "Bạn có thể nói gì về một đối tượng đã được lựa chọn trong tài liệu?", a: "Tám ô vuông nhỏ xuất hiện xung quanh đối tượng", b: "các đối tượng thay đổi sang màu đen và màu trắng nếu nó có màu", c: "các đối tượng xuất hiện trong cửa sổ riêng của nó để chỉnh sửa", d: "các đối tượng được đánh dấu nổi bật như khi chọn văn bản thông thường", ans: "a" },
+                { id: 38, q: "Các chức năng của một VPN là gì?", a: "Mã hóa các gói dữ liệu từ các thiết bị gửi và nhận", a2: "Bảo vệ một mạng từ khác", a3: "Tạo một kết nối point-to-point trên mạng công cộng", a4: "Mã hóa các gói dữ liệu từ các thiết bị nhận và gửi", ans: "a3" },
+                { id: 39, q: "Ba đối tượng trong cơ sở dữ liệu Access 2010?", a: "Report", b: "Query", c: "SQL", d: "Table", ans: "abd" },
+                { id: 40, q: "Chức năng nào trong word 2010 cho phép tùy chỉnh khoảng cách giữa các đoạn trong văn bản", a: "Character spacing", b: "Toolbar", c: "Option spacing", d: "Spacing", ans: "d" },
+                { id: 41, q: "Bất kỳ thành phần phần cứng truyền tải thông tin với một hoặc nhiều người", a: "Thiết bị đầu ra", b: "Thiết bị trỏ", c: "Con trỏ", d: "Thiết bị đầu vào", ans: "a" },
+                { id: 42, q: "Chuẩn mạng xác định không có máy tính trung tâm hoặc thiết bị trên mạng cần kiểm soát khi dữ liệu có thể được truyền", a: "Chuẩn Ethernet (Ethernet)", b: "server", c: "Latency (thài gian đợi)", d: "T1 line", ans: "a" },
+                { id: 43, q: "Bạn làm gì trong Windows 7 để thay đổi hình nền Desktop hoặc hình ảnh?", a: "Start, Control Panel, Appearance And Personalization Personalization", b: "Start, Control Panel, Appearance And Personalization Desktop Gadgets", c: "Start, Control Panel, Appearance And Personalization Display", d: "Start, Control Panel, Clock, Language Region", ans: "a" },
+                { id: 44, q: "Cho biết phần mở rộng của chương trình Microsoft Word ?", a: "*.pptx", b: "*.doc, *.docx", c: "*.xlsx", d: "*.accdb", ans: "b" },
+                { id: 45, q: "Cách nào sau đây sẽ loại bỏ hoàn toàn các tập tin từ máy tính của bạn để nó không còn có thể được phục hồi?", a: "Làm rỗng Recycle Bin.", b: "Chọn các tập tin, nhấn Shift + Delete trên bàn phím của bạn, và ghi đè lên phần của ổ đĩa đã lưu nhiều lần với nội dung của các tập tin khác.", c: "Sử dụng một ứng dụng như CCleaner hoặc File Shredder để xóa sạch không gian trống trên đĩa cứng của bạn nhiều lần để xóa dữ liệu không còn khả năng phục hồi.", d: "Chọn tập tin và nhấn Shift + Delete trên bàn phím của bạn.", ans: "bc" },
+                { id: 46, q: "Các phím tắt bàn phím để xóa một tập tin mà bạn lựa chọn trên máy tính của bạn là gì?", a: "Alt + Tab", b: "Phím Shift", c: "Ctrl + C", d: "Del", ans: "d" },
+                { id: 47, q: "Chip ROM có chứa dữ liệu văn bản vĩnh viễn, chỉ thị lệnh, hoặc thông tin ghi trên chip khi chúng được sản xuất.", a: "Kỹ thuật số", b: "PC thẻ", c: "Firmware", d: "AMD.", ans: "c" },
+                { id: 48, q: "Các phím tắt cho các lệnh Copy là gì?", a: "Ctrl + V", b: "Ctrl + C", c: "Ctrl + Z", d: "Alt + F4", ans: "b" },
+                { id: 49, q: "Chọn 4 loại hiệu ứng cho đối tượng có trong tab Animation", a: "Motion Paths", b: "Exit", c: "Fast", d: "Entrance", e: "Emphasis", f: "Slow", ans: "abde" },
+                { id: 50, q: "Chỉ ra nhiệm vụ của hệ điều hành", a: "Tạo bảng tính", b: "Diệt virus", c: "Quản lý thư điện tử", d: "Quản lý tiến trình", ans: "d" },
+                { id: 51, q: "Các loại phần mềm nào là nguyên nhân gây ra hiệu suất máy tính không mong muốn?", a: "Registerware", b: "Shareware", c: "Careware", d: "Malware", ans: "d" },
+                { id: 52, q: "Chế độ hiển thị nào bạn nên áp dụng cho các văn bản mà bạn nhận được từ bên ngoài thông qua email?", a: "Protected View", b: "Read Only View", c: "Full Screen Reading View", d: "Web Layout View", ans: "a" },
+                { id: 53, q: "Bạn có thể dùng công cụ gì để đóng các ứng dụng khi máy tính bị đứng không chạy được nữa?", a: "Microsoft Word", b: "Windows Defender", c: "Microsoft Security Essentials", d: "Task Manager", ans: "d" },
+                { id: 54, q: "BIOS của máy tính là một ……. chứa các thủ tục ở mức thấp nhất. Nó cho phép máy tính có thể chạy, kích hoạt máy khởi động, chuẩn bị môi trường để chuyển điều khiển cho hệ điều hành trong bộ nhớ RAM.", a: "Socket", b: "Memory", c: "Firmware", d: "Slot", ans: "c" },
+                { id: 55, q: "Các chương trình mở rộng khả năng của trình duyệt web là gì?", a: "Extend", b: "Plug-ins", c: "Update", d: "Add-in", ans: "b" },
+                { id: 56, q: "…….. là một phần của giao diện đồ họa (GUI) trong Windows. Cho phép người dùng thiết lập hệ thống bằng cách thêm phần cứng mới (Adding new hardware), thêm hoặc gỡ bỏ chương trình (Adding or Removing programs), và chỉnh sửa tài khoản người dùng (User accounts), tùy chỉnh âm thanh và hiển thị (Sound, Display).", a: "Action Center", b: "Windows Explorer", c: "Phần mềm người dùng", d: "Control panel", ans: "d" },
+                { id: 57, q: "Chip với 2 nhân xử lý riêng biệt.", a: "Xử lý", b: "Bộ vi xử lý đa lõi", c: "Xử lý lõi kép", d: "Yếu tố hình thức", ans: "c" },
+                { id: 58, q: "Chương trình nào sau đây là một ví dụ của trình duyệt web?", a: "OneDrive", b: "Skype", c: "Internet Explorer", d: "Microsoft Word", ans: "c" },
+                { id: 59, q: "Bạn muốn di chuyển một thư mục vào vị trí khác. Hai lệnh nào để bạn thực hiện nhiệm vụ này?", a: "Move", b: "Paste", c: "Copy", d: "Cut", ans: "bd" },
+                { id: 60, q: "Adapter chuyển đổi dữ liệu xuất của máy tính thành tín hiệu video đi thông qua một cáp với một màn hình, hiển thị hình ảnh trên màn hình. Còn gọi là ________", a: "Cổng USB", b: "Card video", c: "Bo mạch chủ", d: "Card điều hợp.", ans: "b" }
             ],
             2: [
-                { id: 61, q: "Đối tượng nào dùng để thực hiện hành động nhập bản ghi mới, xóa, sửa bản ghi trong Access?", a: "Form", b: "Query", c: "Report", d: "Table", ans: "a" },
-                { id: 62, q: "Khi đo tốc độ của bộ vi xử lý, 1 hertz đại diện cho cái gì?", a: "Một chu kỳ tính toán trên phút", b: "Một bịt trên giây", c: "Một lệnh máy tính trên phút", d: "Một lệnh máy tính trên giây", ans: "d" },
-                { id: 63, q: "Khi máy tính ở chế độ này, các chương trình đang mở sẽ được lưu vào trong bộ nhớ RAM và máy tạm nghỉ tiết kiệm điện?", a: "Sleep(tạm nghỉ)", b: "Hibernate(ngủ đông)", c: "Shut down", d: "Restart", ans: "a" },
-                { id: 64, q: "Khi tạo ra các bảng trong cơ sở dữ liệu Access thì ta nên thực hiện theo trình tự sau:", a: "Tạo liên kết, tạo khóa chính, nhập liệu", b: "Tạo khóa chính, tạo liên kết, nhập liệu", c: "Tạo khóa chính, nhập liệu, tạo liên kết", d: "Nhập liệu, tạo khóa chính, liên kết", ans: "b" },
-                { id: 65, q: "GUI là viết tắt của cụm từ công nghệ nào?", a: "Good User Interface", b: "Great User Interface", c: "Graphics User Interaction", d: "Graphical User Interface", ans: "d" },
-                { id: 66, q: "Hình thức truyền thông nào là tốt nhất khi sự hòi đáp không cần khẩn cấp?", a: "Email", b: "gửi tin nhắn tức thời", c: "tin nhắn văn bản", d: "Blog", ans: "b" },
-                { id: 67, q: "Đặc điểm chính của virus máy tính là gì?", a: "Nó có thể giám sát webcam của bạn.", b: "Nó có thể làm hỏng dữ liệu trên máy tính của bạn.", c: "Nó có thể đăng nhập bằng cách tự động nhấn bàn phím.", d: "Nó tự sao chép mà không được sự đồng ý của người dùng.", ans: "b" },
-                { id: 68, q: "Dữ liệu đã được chế biến thành một hình thức hữu ích đối với người dùng được gọi là:", a: "Chuột", b: "Dữ liệu đầu ra", c: "Cảm ứng", d: "Bút", ans: "b" },
-                { id: 70, q: "Gói dịch vụ (service pack) trong Windows được định nghĩa là gì?", a: "Một tập hợp các bản cập nhật phần mềm.", b: "Một chế độ tắt máy được thiết kế để tiết kiệm pin", c: "Một hình thức của phần mềm gián điệp.", d: "Một hệ điều hành nhúng", ans: "a" },
-                ...Array.from({length: 50}, (_, i) => ({
-                    id: 71 + i,
-                    q: `Câu hỏi bổ sung số ${11 + i} cho Đề 2`,
-                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
-                    ans: "a"
-                }))
+                { id: 61, q: "Đối tượng nào dùng để thực hiện hành động nhập bản ghi mới, xóa, sửa bản ghi?", a: "Form", b: "Query", c: "Report", d: "Table", ans: "a" },
+                { id: 62, q: "Khi đo tốc độ của bộ vi xử lý, 1 hertz đại diện cho cái gì?", a: "Một chu kỳ tính toán trên phút", b: "Một bit trên giây", c: "Một lệnh máy tính trên phút", d: "Một lệnh máy tính trên giây", ans: "d" },
+                { id: 63, q: "Khi máy tính ở chế độ này, các chương trình đang mở sẽ được lưu vào trong bộ nhớ?", a: "Sleep(tạm nghỉ)", b: "Hibernate(ngủ đông)", ans: "a" },
+                { id: 64, q: "Khi tạo ra các bảng trong cơ sở dữ liệu Access thì ta nên thực hiện theo trình tự sau", a: "A) Tạo liên kết, tạo khóa chính, nhập liệu", b: "B) Tạo khóa chính, tạo liên kết, nhập liệu", c: "C) Tạo khóa chính, nhập liệu, tạo liên kết", d: "D) Nhập liệu, tạo khóa chính, liên kết", ans: "b" },
+                { id: 65, q: "GUI là viết tắt của?", a: "Good User Interface", b: "Great User Interface", c: "Graphics User Interaction", d: "Graphical User Interface", ans: "d" },
+                { id: 66, q: "Hình thức truyền thông nào là tốt nhất khi sự hồi đáp không cần khẩn cấp?", a: "Email", b: "gửi tin nhắn tức thời", c: "tin nhắn văn bản", d: "Blog", ans: "b" },
+                { id: 67, q: "Đặc điểm chính của virus là gì?", a: "Nó có thể giám sát webcam của bạn.", b: "Nó có thể làm hỏng dữ liệu trên máy tính của bạn.", c: "Nó có thể đăng nhập bằng cách tự động nhấn bàn phím.", d: "Nó tự sao chép mà không được sự đồng ý của người dùng.", ans: "b" },
+                { id: 68, q: "Dữ liệu đã được chế biến thành một hình thức hữu ích", a: "a. Chuột", b: "b. Dữ liệu đầu ra", c: "c. Cảm ứng", d: "d. Bút", ans: "b" },
+                { id: 69, q: "Khái niệm nào cho biết hệ điều hành thực thi nhiều tiến trình khác nhau cùng lúc?", a: "Đa phiên", b: "Đơn nhiệm", c: "Đa người dùng", d: "Đa nhiệm", ans: "d" },
+                { id: 70, q: "Gói dịch vụ (service pack) là gì?", a: "Một tập hợp các bản cập nhật phần mềm.", b: "Một chế độ tắt máy được thiết kế để tiết kiệm pin", c: "Một hình thức của phần mềm gián điệp.", d: "Một hệ điều hành nhúng", ans: "a" },
+                { id: 71, q: "Đề cập đến một chip vi xử lý máy tính cá nhân.", a: "Bộ vi xử lý.", b: "Xử lý đa lõi", c: "Khe cắm bộ nhớ", d: "FireWire trung tâm", ans: "a" },
+                { id: 72, q: "Khi nào thì bạn nên bấm phím Enter để nhập văn bản?", a: "khi bạn đến cuối của mỗi dòng ở lề phải", b: "Khi bạn đến cuối của dòng đầu tiên để bắt đầu viết từ cho mỗi dòng sau", c: "Khi bạn đến cuối của một đoạn văn hoặc khi bạn muốn chèn một dòng trống", d: "khi lần đầu tiên bạn mở tài liệu để di chuyển con trỏ văn bản ra khỏi khu vực tiêu đề", ans: "c" },
+                { id: 73, q: "Chuột có sử dụng các thiết bị, chẳng hạn như cảm biến quang học hoặc laser, phát ra và cảm nhận được ánh sáng để phát hiện chuyển động của chuột", a: "a. Chuột quang", b: "b. Bút", c: "c. Chuột laser", d: "d. Bút kỹ thuật số", ans: "a" },
+                { id: 74, q: "Khi bật máy tính lên, bạn thấy màn hình máy tính của bạn là màu đen, bạn nên làm gì để khắc phục vấn đề này? (Chọn tất cả áp dụng.)", a: "Kiểm tra xem màn hình được kết nối đúng với máy tính chưa.", b: "Kiểm tra xem màn hình có bị bụi bẩn không.", c: "Kiểm tra xem màn hình được bật chưa.", d: "Kiểm tra xem màn hình đã được gắn đúng vào ổ cắm điện không", ans: "acd" },
+                { id: 75, q: "Hiệu ứng chuyển trang slide là?", a: "Switch slide", b: "Animations", c: "Switch page", d: "Transition", ans: "d" },
+                { id: 76, q: "Khi nào bạn sư dụng Quick Style để áp dụng định dạng?", a: "Khi các chủ đề không có sẵn để sử dụng", b: "Khi bạn muốn định dạng chi tiết các loại văn bản như tiêu đề, nhan đề, vv", c: "Khi bản trình chiếu chỉ bao gồm các văn bản đơn thuần", d: "Khi bạn cần phải xác định các thanh dữ liệu đucợ trình bày trong 1 biểu đồ", ans: "b" },
+                { id: 77, q: "Đơn vị đo tốc độ mạng?", a: "Gbps(tỉ bít trên giây)", b: "bps(bít trên giây), Kbps(kilo bít trên giây)", c: "Tất cả đơn vị đo ở trên", d: "Mbps(triệu bít trên giây)", ans: "c" },
+                { id: 78, q: "Khi trình bày Table trong Word 2010, để gõ kí tự Tab bạn thực hiện thao tác nào?", a: "Alt + Tab", b: "Tab", c: "Shift + Tab", d: "Ctrl + Tab", ans: "d" },
+                { id: 79, q: "Đơn vị đo lường thường được sử dụng để chỉ dung lượng RAM được lắp trong một máy tính là gì?", a: "MHz", b: "GB", c: "MB", d: "GHz", ans: "b" },
+                { id: 80, q: "Điều gì xảy ra khi bạn sử dụng các nút Reply All thay vì trả lời cho việc gửi trả lời vào một email mà bạn nhận được?", a: "Bạn trả lời cho chính mình.", b: "Bạn trả lời cho tất cả mọi người bao gồm trong danh sách gửi email, không bao gồm người gửi.", c: "Bạn chỉ trả lời cho người gửi email.", d: "Bạn trả lời cho tất cả những người được đưa vào danh sách gửi email, bao gồm cả người gửi.", ans: "d" },
+                { id: 81, q: "Đâu là thiết bị lưu trữ dữ liệu", a: "SRAM", b: "CCD", c: "HDD", d: "DRAM", ans: "c" },
+                { id: 82, q: "Hệ điều hành nào sau đây hỗ trợ TCP/IP như là một giao thức mạng?", a: "Windows, Mac OS, Linux/ Unix", b: "Unix và Linux", c: "Mac OS", d: "Chỉ dành cho Windows", ans: "a" },
+                { id: 83, q: "Đâu là hệ điều hành đơn người sử dụng (single user)?", a: "Windows XP", b: "MS-DOS", c: "Unix/Linux", d: "Windows Vista", ans: "b" },
+                { id: 84, q: "Công nghệ đầu đọc quang học có liên quan đến máy tính đọc được đánh máy in, hoặc in ký tự, từ các tài liệu thông thường và chuyển các hình ảnh cho một hình thức mà một máy tính có thể xử lý.", a: "a. Nhận dạng ký tự quang học (OCR)", b: "b. Nhận dạng giọng nói", c: "c. Bảng tương tác", d: "d. Máy rút tiền tự động (ATM)", ans: "a" },
+                { id: 85, q: "Đầu đọc quang học sử dụng tia laser để đọc mã vạch bằng cách sử dụng mô hình ánh sáng đi qua các dòng mã vạch", a: "a. MICR đọc", b: "b. Màn hình cảm ứng", c: "c. Đầu đọc RFID", d: "d. Máy quét mã vạch", ans: "d" },
+                { id: 86, q: "Firmware là gì?", a: "Driver (phần mềm điều khiển thiết bị ngoại vi)", b: "Hệ điều hành", c: "Trình duyệt web", d: "Phần mềm đầu tiên chạy trên thiết bị phần cứng khi nó được bật lên", ans: "d" },
+                { id: 87, q: "Hệ thống số thập phân.", a: "Con người sử dụng để tính", b: "Thực hiện", c: "Mở rộng rất nhiều", d: "Giải mã", ans: "a" },
+                { id: 88, q: "Hệ điều hành (Windows) làm gì?", a: "Quản lý các tập tin và thư mục trên máy tính", b: "Khởi động máy tính khi tôi cần sử dụng và tắt nó khi tôi làm việc xong", c: "Cho phép giao tiếp giữa người sử dụng, các ứng dụng phần mềm, và các phần cứng bên trong máy tính", d: "Hiển thị hình ảnh trên màn hình máy tính", ans: "c" },
+                { id: 89, q: "Để sắp xếp và lọc dữ liệu trong Excel ta dùng chức năng nào sau đây?", a: "Find and Filter", b: "Find and replace", c: "Sort and Filter", ans: "c" },
+                { id: 90, q: "Firmware là gì?", a: "A. Driver (phần mềm điều khiển thiết bị ngoại vi)", b: "B. Hệ điều hành", c: "C. Phần mềm đầu tiên chạy trên thiết bị phần cứng khi nó được bật lên", d: "D. Trình duyệt web", ans: "c" },
+                { id: 91, q: "Hai tổ hợp phím tắt nào mà bạn có thể sử dụng để sao chép và dán một tập tin vào một vị trí khác?", a: "Ctrl + C và Ctrl + X", b: "Ctrl + X và Ctrl + V", c: "Ctrl + C và Ctrl + V", d: "Ctrl + X và Ctrl + P", ans: "c" },
+                { id: 92, q: "Dùng toán tử tìm kiếm “tên site:” để làm gì?", a: "A. Có kết quả về một chủ đề nhất định", b: "B. Có kết quả từ một trang web hoặc tên miền nhất định", c: "C. Không bao gồm các kết quả từ một trang web hoặc tên miền nhất định", d: "D. Giúp bạn tìm thấy giá trên một tên miền nhất định", ans: "b" },
+                { id: 93, q: "Dạng view nào thường dùng để trình bày, thiết kế nội dung trong quá trình soạn thảo slide trong MS Powerpoint 2010", a: "Slide show", b: "Normal", c: "List", d: "Grid", ans: "b" },
+                { id: 94, q: "Kết nối tạm thời : sử dụng một hay nhiều đường dây điện thoại tương đương (analog) cho việc truyền thông.", a: "dial-up line", b: "T1 line", c: "dedicated line", d: "dial-up modem", ans: "a" },
+                { id: 95, q: "Dual-core và quad-core.", a: "Bộ vi xử lí đa lõi", b: "2 bộ vi xử lý đa lõi chung", c: "Bộ xử lí đa lõi", d: "Vi xử lý quad-core", ans: "b" },
+                { id: 96, q: "Kết nối nào là kết nối không dây?", a: "4G LTE/3G GPRS", b: "Hotspot", c: "Parallel", d: "RJ45", ans: "a" },
+                { id: 97, q: "Đâu là thiết bị vừa nhập, vừa xuất?", a: "Màn hình cảm ứng", b: "Ổ cứng, chip, ram", c: "Màn hình, máy in", d: "Bàn phím, chuột, chuột cảm ứng", ans: "a" },
+                { id: 98, q: "Dùng toán tử tìm kiếm “tên site\:” để làm gì?", a: "Không bao gồm các kết quả từ một trang web hoặc tên miền nhất định", b: "Giúp bạn tìm thấy giá trên một tên miền nhất định", c: "Có kết quả về một chủ đề nhất định", d: "Có kết quả từ một trang web hoặc tên miền nhất định", ans: "d" },
+                { id: 99, q: "Hãy chỉ ra đâu là phát biểu đúng về địa chỉ trong Excel 2010", a: "Địa chỉ một ô trong excel là địa chỉ cấu tạo từ địa chỉ cột và địa chỉ hàng", b: "D4 là địa chỉ cột 4(cột D) và dòng 4", c: "D4 không phải là địa chỉ ô trong excel", ans: "ab" },
+                { id: 100, q: "Giả sử hai bảng có quan hệ 1-n với nhau, muốn xóa mẫu tin trên bảng cha (bảng 1) sao cho các mẫu tin có quan hệ ở bảng con (bảng n) cũng tự động xóa theo, thì trong liên kết (Relationship) của hai bảng này ta chọn", a: "A) Cascade Update Related Fields", b: "B) Enforce Referential Integrity", c: "C) Không thể thực hiện được", d: "D) Cascade Delete Related Records", ans: "d" },
+                { id: 101, q: "Để lấy dữ liệu từ bảng “Phatsinh” thêm vào cuối bảng “Chungtu”, ta dùng", a: "A) Update Query", b: "B) Make-Table Query", c: "C) Append Query", d: "D) Select Query", ans: "c" },
+                { id: 102, q: "Html là viết tắt của ?", a: "Hypertext Management Logic", b: "Help Management Links", c: "Hypertext Markup Language", d: "Hypertext Markup Links", ans: "c" },
+                { id: 103, q: "Dòng Intel Core.", a: "Máy tính cá nhân hiệu suất cao hiện nay có thể sử dụng một bộ xử lý trong", b: "Người tính bằng cách sử dụng", c: "Lõi xử lý, hoặc chỉ đơn giản là cốt lõi", d: "Kết nối nam và cổng", ans: "a" },
+                { id: 104, q: "Công cụ nào để xem chính xác một báo cáo sẽ trông như thê nào khi in ra?", a: "View Normal", b: "Page Layout", c: "Chỉ in ra mới biết", d: "Print preview", ans: "d" },
+                { id: 105, q: "Đâu là thiết bị xuất?", a: "Bàn phím, chuột, chuột cảm ứng", b: "Tất cả đều sai", c: "Ổ cứng, chip, ram", d: "Màn hình, máy in", ans: "d" },
+                { id: 106, q: "Đánh dấu phát biểu xác định các đặc tính của một công cụ tìm kiếm phân cấp.", a: "Công cụ tìm kiếm phân cấp đi qua các trang web và biên dịch thông tin về nội dung của các trang này", b: "Kết quả tài trợ bị cấm", c: "Chỉ mục của công cụ tìm kiếm phân cấp được cập nhật hàng tháng hoặc mỗi tháng hai lần", d: "Công cụ tìm kiếm phân cấp có một giới hạn tìm kiếm hàng ngày tùy thuộc vào người sử dụng", ans: "a" },
+                { id: 107, q: "Có những loại phần mềm nào?", a: "Phần mềm đi kèm (bundling); Phần mềm cao cấp (premium)", b: "Phần mềm chia sẽ(shareware); Phần mềm miễn phí(freeware)", c: "Tất cả đều đúng", d: "Phần mềm mã nguồn mở (Open Source); Phần mềm công cộng (public domain software)", ans: "c" },
+                { id: 108, q: "Điều gì xảy ra khi bạn nhấn Ctrl+N trong một chương trình Office?", a: "Xuất hiện màn hình tạo một file mới", b: "Một phiên làm việc mới của chương trình được bắt đầu", c: "Một tập tin mới để trống được tạo", d: "Màn hình lưu trữ một tài liệu mới xuất hiện", ans: "b" },
+                { id: 109, q: "Đâu là thiết bị nhập?", a: "Bàn phím, chuột, chuột cảm ứng", b: "Không có đáp án nào đúng", c: "Ổ cứng, chip, ram", d: "Màn hình, máy in", ans: "a" },
+                { id: 110, q: "Công nghệ nào cho phép người dùng có thể truy cập Internet ở bất cứ nơi đâu?", a: "VPN", b: "ISDN", c: "cellular", d: "ADSL", ans: "c" },
+                { id: 111, q: "Cổng external SATA. Cổng với mục đích đặc biệt cho phép bạn kết nối một SATA gắn ngoài (Serial Advanced Technology Attachment).", a: "Cổng eSATA", b: "Cổng USB", c: "Card màn hình.", d: "USB 3.0", ans: "a" },
+                { id: 112, q: "Internet là gì? (Chọn tất cả các câu đúng.)", a: "A. Một mạng với nhiều máy tính và các thiết bị", b: "B. Các mạng vật lý của máy tính và các thiết bị trên khắp thế giới", c: "C. Mỗi website và trang web trên thế giới", d: "D. Các mạng toàn cầu kết nối với nhau sử dụng giao thức truyền thông tiêu chuẩn", ans: "bd" },
+                { id: 113, q: "Có khả năng đại diện cho gần như tất cả các ngôn ngữ chữ viết hiện hành của thế giới.", a: "Đồng hồ tăng tốc độ.", b: "Giải mã", c: "Bộ mã hoá Unicode", d: "Các hệ thống hoạt động", ans: "c" },
+                { id: 114, q: "Chương trình nào sau đây là một ví dụ của trình duyệt web?", a: "A. Internet Explorer", b: "B. Skype", c: "C. OneDrive", d: "D. Microsoft Word", ans: "a" },
+                { id: 115, q: "Khi bạn bật máy tính , hệ thống sẽ hiển thị cái gì trước tiên?", a: "kết nối mạng", b: "Hệ điều hành", c: "kết nối điên", d: "Chương trình phần mềm được cài đặt", ans: "b" },
+                { id: 116, q: "Đặc điểm chính của hệ thống truyền giọng nói trên giao thức IP (Voice over Internet Protocol- VoIP)", a: "Phụ thuộc vào loại mạng vật lý hỗ trợ nó", b: "Không trả thêm bất kỳ một khoảng chi phí nào", c: "Chỉ thực hiện được phần mềm", d: "Phụ thuộc vào phần cứng sử dụng", ans: "b" },
+                { id: 117, q: "Để xem các chương trình được cài đặt trên hệ thống của bạn, với tùy chọn từ nút Start bạn sẽ sử dụng?", a: "Search", b: "Documents", c: "Danh sách các mục trong Quick Start", d: "All Programs", ans: "d" },
+                { id: 118, q: "Hành động nào ngăn sự quá nóng của bộ vi xử lý (Processor)?", a: "Thiết lập cấu hình sạc nguồn ở chế độ tiết kiệm điện", b: "Thiết lập chế độ ngủ đông (hibernate) mỗi hai giờ", c: "Không đóng nắp máy (case)", d: "Thêm không gian trống trong case máy tính", ans: "d" },
+                { id: 119, q: "Điều gì xảy ra khi bạn chọn một file, nhấn phím Delete trên bàn phím của bạn, và xác nhận rằng bạn muốn xóa các tập tin? (Chọn tất cả các câu đúng.)", a: "Các tập tin vẫn còn trên đĩa cứng của bạn, bằng cách sử dụng không gian đĩa còn trống.", b: "Các tập tin được đưa vào Recycle Bin, nơi bạn có thể phục hồi nếu cần thiết.", c: "Các tập tin không còn có thể được phục hồi.", d: "Các tập tin được xóa khỏi máy tính của bạn.", ans: "ab" },
+                { id: 120, q: "Internet là gì? (Chọn tất cả các câu đúng.)", a: "Các mạng toàn cầu kết nhau mà sử dụng giao thức truyền thông theo một tiêu chuẩn để trao đổi dữ liệu và thông tin giữa chúng", b: "Các mạng vật lý của máy tính và các thiết bị trên khắp thế giới", c: "Mỗi website và trang web trên thế giới", d: "Một mạng với nhiều máy tính và các thiết bị", ans: "ab" }
             ],
             3: [
-                { id: 121, q: "Là bộ mã hóa được sử dụng rộng rãi nhất để đại diện cho dữ liệu văn bản văn phòng.", a: "Đơn vị logic số học (ALU)", b: "Centrino 2 điện thoại di động công nghệ", c: "ASCII \"American Standard Code of Information interchange\".", d: "Phép tính số học", ans: "c" },
-                { id: 122, q: "Lựa chọn nào sau đây là một ví dụ chính xác về cấu trúc một URL?", a: "http://www.microsoft.com", b: "john.smith@email.com", c: "C:\\Windows\\System32", d: "#twitter", ans: "a" },
-                { id: 123, q: "Kiểu bộ nhớ nào sau đây là bộ nhớ không bị mất dữ liệu khi tắt điện? (Chọn tất cả áp dụng.)", a: "SSD", b: "RAM", c: "DVD", d: "đĩa flash USB", ans: "acd" },
-                { id: 124, q: "Mạng đơn giản, ít tốn kém với số lượng kết nối không quá 10 máy tính gọi là mạng gì?", a: "home network - mạng gia đình", b: "Chuẩn Ethernet (Ethernet)", c: "Mạng đồng đẳng (peer-to-peer network)", d: "Network - mạng nói chung", ans: "c" },
-                { id: 125, q: "Một giá trị số trong Excel có thể được xem là một chuỗi ký tự dạng text nếu có ký tự nào đứng trước?", a: "Exclamation(!)", b: "Hash(#)", c: "Apostrophe(')", d: "Tilde(~)", ans: "c" },
-                ...Array.from({length: 55}, (_, i) => ({
-                    id: 126 + i,
-                    q: `Câu hỏi bổ sung số ${6 + i} cho Đề 3`,
-                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
-                    ans: "a"
-                }))
+                { id: 121, q: "Là bộ mã hóa được sử dụng rộng rãi nhất để đại diện cho dữ liệu.", a: "Đơn vị logic số học (ALU)", b: "Centrino 2 điện thoại di động công nghệ", c: "ASCII \"American Standard Code of Information interchange\".", d: "Phép tính số học", ans: "c" },
+                { id: 122, q: "Lựa chọn nào sau đây là ví dụ về một URL?", a: "http://www.microsoft.com", b: "john.smith@email.com", c: "☺", d: "#twitter", ans: "a" },
+                { id: 123, q: "Lựa chọn nào sau đây là hệ điều hành?", a: "D. Skype", b: "A. Bing", c: "B. Facebook", d: "C. Android", ans: "d" },
+                { id: 124, q: "Lựa chọn nào là một nút trên Internet (Internet node)?", a: "Dịch vụ lưu trữ và duy trì trang web (Hosting)", b: "Chương trình phòng chống virus máy tính (antivirus application)", c: "Hệ thống tên miền (DNS)", d: "Máy chủ (Server)", ans: "d" },
+                { id: 125, q: "Lựa chọn nào sau đây là phần mở rộng của file tài liệu soạn thảo bởi chương trình ứng dụng Microsoft Word 2010:", a: "Docx", b: "Pptx", c: "Xlsx", d: "Txt", ans: "a" },
+                { id: 126, q: "Lệnh nào sau đây mà bạn có thể sử dụng để kiểm tra kết nối giữa hai thiết bị trên mạng", a: "FTP", b: "ping", c: "ipconfig", d: "Google", ans: "b" },
+                { id: 127, q: "L1 và L2 cache là gì?", a: "Các mô-đun bộ nhớ", b: "Hệ thống bus", c: "2 loại SOF cache.", d: "2 loại bộ nhớ cache", ans: "d" },
+                { id: 128, q: "Lựa chọn nào sau đây là một ví dụ về một mạng WAN?", a: "A. Các mạng trong nhà của bạn", b: "C. Các mạng trong tòa nhà văn phòng của bạn", c: "D. Internet", d: "B. FTP", ans: "c" },
+                { id: 129, q: "Lệnh nào sau đây mà bạn có thể sử dụng để kiểm tra kết nối giữa hai thiết bị trên mạng?", a: "D. Google", b: "C. ipconfig", c: "A. ping", d: "B. FTP", ans: "c" },
+                { id: 130, q: "Lịch sử duyệt web trong trình duyệt web là gì?", a: "Một bản ghi đầy đủ các website và các trang web mà bạn đã truy cập", b: "Một bản ghi đầy đủ các website và các trang web mà bạn đã không truy cập vào Web", c: "Các trang web mà bạn đã đăng nhập vào", d: "Một bản ghi đầy đủ các email mà bạn đã nhận được", ans: "a" },
+                { id: 131, q: "Lựa chọn nào sao đây là hệ điều hành?", a: "Hardware", b: "Android", c: "Windows", d: "Microsoft Office", ans: "bc" },
+                { id: 132, q: "Lựa chọn nào sau đây là một ví dụ về một mạng WAN?", a: "Các mạng trong nhà của bạn", b: "TELNET", c: "Internet", d: "Các mạng trong tòa nhà văn phòng của bạn", ans: "c" },
+                { id: 133, q: "Loại chip RAM phải được tái nạp năng lượng liên tục hoặc mất nội dung của nó.", a: "FireWire", b: "RAM động (DRAM).", c: "Hầu hết các bộ nhớ RAM là", d: "Unicode", ans: "b" },
+                { id: 134, q: "Kiểu bộ nhớ nào sau đây là bộ nhớ không bị mất dữ liệu khi tắt điện? (Chọn tất cả áp dụng.)", a: "DVD", b: "Ổ đĩa flash USB", c: "SSD", d: "RAM", ans: "abc" },
+                { id: 135, q: "Mạng đơn giản, ít tốn kém với số lượng kết nối không quá 10 máy tính.", a: "home network – mạng gia đình", b: "Chuẩn Ethernet (Ethernet)", c: "Mạng đồng đẳng (peer-to-peer network)", d: "Network – mạng", ans: "c" },
+                { id: 136, q: "Lựa chọn nào sau đây là công cụ tìm kiếm? (Chọn tất cả áp dụng.)", a: "A. Facebook", b: "B. Google", c: "C. Bing", d: "D. Yahoo!", ans: "bcd" },
+                { id: 137, q: "Máy tính sẽ thực hiện việc gì khi bạn khởi động một chương trình ứng dụng?", a: "Lưu trữ các tập tin làm việc trước đó của chương trình ứng dụng", b: "Kiểm tra dung lượng còn trống trên ổ đĩa cứng", c: "Nạp một bản sao của các chỉ dẫn hoạt động của chương trình vào bộ nhớ RAM", d: "Đóng tất cả các chương trình ứng dụng khác đang được mở", ans: "c" },
+                { id: 138, q: "Kiểu kết nối Internet nào có khả năng truyền với tốc độ nhanh nhất?", a: "Cáp quang", b: "Vệ tinh", c: "POTS", d: "Cáp đồng trục", e: "ISDN", ans: "a" },
+                { id: 139, q: "Khoảng 1 nghìn tỷ byte.", a: "Bóng bán dẫn", b: "Gigahertz (GHz)", c: "Gigabyte (GB)", d: "Terabyte (TB)", ans: "d" },
+                { id: 140, q: "Lệnh nào sau đây được sử dụng để hiển thị tất cả các cấu hình IP trên một hệ thống Windows?", a: "B. tracert", b: "A. ipconfig", c: "C. ipconfig / all", d: "D. ping", ans: "c" },
+                { id: 141, q: "Làm thế nào để lưu lại một trang web để bạn nhanh chóng truy cập vào nó sau này?", a: "Lưu nó thành một tài liệu.", b: "Gửi email.", c: "In trang web đó.", d: "Lưu nó vào mục yêu thích (Favorites).", ans: "d" },
+                { id: 142, q: "Lựa chọn nào sau đây là đặc điểm của các hệ điều hành hiện đại? (Chọn tất cả áp dụng.)", a: "A. Thời gian thực.", b: "B. Đa nhiệm.", c: "C. Không thể học được.", d: "D. Có thể được sử dụng trong một thời gian hạn chế.", ans: "ab" },
+                { id: 143, q: "Lựa chọn nào sau đây là hệ điều hành?", a: "Android", b: "Facebook", c: "Bing", d: "Skype", ans: "a" },
+                { id: 144, q: "Lựa chọn nào sau đây là ví dụ về một địa chỉ email?", a: "A. http://www.microsoft.com", b: "B. #hashtag", c: "C. Instagram", d: "D. John.Smith@example.com", ans: "d" },
+                { id: 145, q: "Lựa chọn nào sau đây là công cụ tìm kiếm? (Chọn tất cả áp dụng.)", a: "A. Facebook", b: "B. Google", c: "C. Bing", d: "D. Yahoo!", ans: "bcd" },
+                { id: 146, q: "Một giá trị số có thể được xem là giá trị nhãn nếu có ….. đứng trước?", a: "Exclamation(!)", b: "Hash(#)", c: "Apostrophe(‘)", d: "Tilde(~)", ans: "c" },
+                { id: 147, q: "Lựa chọn nào sau đây là ví dụ của các mật khẩu mạnh? (Chọn tất cả áp dụng.)", a: "A. 1234567", b: "B. hellokitty", c: "C. H3Ll0K1ttY", d: "D. Th1s1 $ Year2015", ans: "d" },
+                { id: 148, q: "Lựa chọn nào sau đây là đặc điểm của email? (Chọn tất cả áp dụng.)", a: "A. Cho phép bạn làm video chat với người khác", b: "Cho phép bạn trao đổi tin nhắn kỹ thuật số với những người khác", c: "Yêu cầu một tên người dùng và mật khẩu để được sử dụng", d: "Yêu cầu bạn cung cấp địa chỉ email của người mà bạn muốn gửi tin nhắn cho", ans: "bcd" },
+                { id: 149, q: "Lựa chọn nào sau đây là chương trình trình chiếu?", a: "Microsoft PowerPoint", b: "Google", c: "Microsoft Word", d: "Mozilla Firefox", ans: "a" },
+                { id: 150, q: "Lựa chọn nào sau đây là những đặc điểm của lưu trữ đám mây?", a: "Dữ liệu của bạn có thể được truy cập từ các máy tính và các thiết bị khác nhau với một kết nối Internet miễn là bạn có các thông tin chính xác để truy cập nó.", b: "Dữ liệu của bạn được lưu trữ trên một máy chủ vật lý duy nhất.", c: "Dữ liệu của bạn có thể được phục hồi chỉ trong một thời gian giới hạn.", d: "Dữ liệu của bạn có thể được phục hồi từ bất cứ nơi nào bất cứ lúc nào không cần kết nối mạng.", ans: "a" },
+                { id: 151, q: "Lựa chọn nào sau đây là đặc điểm của các hệ điều hành hiện đại?", a: "Đa nhiệm.", b: "Thời gian thực.", c: "Không thể học được.", d: "Có thể được sử dụng trong một thời gian hạn chế.", ans: "ab" },
+                { id: 152, q: "Lựa chọn nào sau đây là ví dụ về một URL?", a: "john.smith@email.com", b: "B. #twitter", c: "C. ☺", d: "D. http://www.microsoft.com", ans: "d" },
+                { id: 153, q: "Lựa chọn nào sau đây là công cụ tìm kiếm?", a: "Facebook", b: "Google", c: "Bing", d: "Yahoo!", ans: "bcd" },
+                { id: 154, q: "Làm thế nào bạn có thể biết nếu có những cập mới cho hệ điều hành Microsoft Windows 7 của bạn?", a: "Microsoft có một chương trình trong phần mềm của nó có thể được cấu hình để phát hiện và cài đặt tất cả các bản cập nhật.", b: "Microsoft gửi thư đến người dùng", c: "Microsoft gửi mail đến người sử dụng sau mỗi 15 ngày", d: "Microsoft không đưa ra thông báo cập nhật", ans: "a" },
+                { id: 155, q: "Kiểu bộ nhớ nào nhỏ hơn, nhanh hơn, giảm thời gian chờ và lưu trữ dữ liệu của vi xử lý cho các hoạt động tiếp theo mà không cần truy cập vào nhớ RAM", a: "Bộ nhớ Cache", b: "Bộ nhớ ảo", c: "Bộ nhớ tĩnh", d: "Bộ nhớ động", ans: "a" },
+                { id: 156, q: "Mỗi dòng dữ liệu trong một bảng dữ liệu (Datasheet) được gọi là gì?", a: "Table", b: "Database", c: "Record", d: "Field", ans: "c" },
+                { id: 157, q: "Lựa chọn nào đại diện cho các giải pháp để giải quyết các vấn đề chung của phần cứng?", a: "Gỡ bỏ các thành phần phần cứng để tìm lỗi", b: "Khôi phục lại cấu hình máy tính về thời điểm trước", c: "Khởi động lại máy tính ở chế độ Safe mode sử dụng chức năng mạng", d: "Chống phân mảnh ổ cứng để tăng dung lượng đĩa trống", ans: "a" },
+                { id: 158, q: "Kiểu bộ nhớ nào sau đây là bộ nhớ KHÔNG bị mất dữ liệu khi tắt điện?", a: "SSD", b: "CACHE", c: "RAM", d: "SRAM", ans: "a" },
+                { id: 159, q: "Máy in tinh vi sản xuất bản vẽ chất lượng cao như bản thiết kế, bản đồ và sơ đồ mạch sử dụng một hàng dây điện dương (gọi là styli) để vẽ một mô hình điện trên giấy tráng đặc biệt và sau đó hợp nhất mực để hiện ra mô hình.", a: "a. Máy quét", b: "b. Bút", c: "c. Loa", d: "d. Máy vẽ", ans: "d" },
+                { id: 160, q: "Lệnh nào sau đây được sử dụng để hiển thị tất cả các cấu hình IP trên một hệ thống Windows?", a: "tracert", b: "ping", c: "ipconfig", d: "ipconfig / all", ans: "d" }
             ],
             4: [
-                { id: 181, q: "Mối quan hệ định lượng chính xác giữa đơn vị Bit và Byte trong máy tính là gì?", a: "1 bit = 2 bytes", b: "1 bit = 24 byte", c: "1 byte = 8 bit", d: "1 bit = 8 bytes", ans: "c" },
-                { id: 182, q: "Những thiết bị nào sau đây được phân loại là thiết bị xuất? (Chọn tất cả áp dụng.)", a: "Màn hình", b: "Loa", c: "Microphone", d: "Bàn phím", ans: "ab" },
-                { id: 183, q: "Quy định nhập kiểu dữ liệu Text tự động đổi thành chữ thường trong Access sử dụng mã định dạng nào?", a: ">", b: "<", c: "@", d: "&", ans: "b" },
-                { id: 184, q: "Một truy vấn thực hiện hành động thêm, xóa hoặc cập nhật dữ liệu hàng loạt được gọi là gì?", a: "Total query", b: "Action query", c: "Select query", d: "Parameter query", ans: "b" },
-                { id: 185, q: "Phần mở rộng nào sau đây không liên quan đến tệp đồ họa hay bảng tính mà Excel có thể lưu?", a: "Xla", b: "BMP", c: "xls", d: "xlsx", ans: "b" },
-                ...Array.from({length: 55}, (_, i) => ({
-                    id: 186 + i,
-                    q: `Câu hỏi bổ sung số ${6 + i} cho Đề 4`,
-                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
-                    ans: "a"
-                }))
+                { id: 161, q: "Mã nguồn mở là gì?", a: "A. Một bản quyền thương mại cho phần mềm", b: "B. Một loại phần cứng", c: "C. Một loại bản quyền phần mềm", d: "D. Một trình duyệt web", ans: "c" },
+                { id: 162, q: "Một giấy phép theo trung tâm(site license) là gì?", a: "Giấy phép cài đặt và sử dụng chương trình phần mềm trên nhiều máy tính tại một địa điểm", b: "Giấy phép cài đặt và sử dụng chương trình phần mềm trên một máy tính cụ thể ở bất kỳ vị trí nào", c: "Giấy phép cài đặt và sử dụng chương trình phần mềm trên nhiều máy tính ở bất kỳ vị trí nào", d: "Giấy phép cài đặt và sử dụng chương trình phần mềm trên một máy tính cụ thể ở một địa điểm", ans: "a" },
+                { id: 163, q: "Loại máy tính nào cung cấp dịch vụ khác nhau cho các máy khách kết nối với nhau trên mạng?", a: "Switch", b: "Máy chủ", c: "Rack", d: "Máy trạm", ans: "b" },
+                { id: 164, q: "Một hệ điều hành nắm giữ các thông tin từ Clipboard trong bao lâu?", a: "A. Cho đến khi bạn cập nhật hệ điều hành", b: "B. Cho đến khi bạn nhấn Alt + F4 trên bàn phím", c: "C. Cho đến khi bạn sử dụng một công cụ tìm kiếm để sao chép thông tin đó", d: "D. Cho đến khi bạn sử dụng lệnh Paste", ans: "d" },
+                { id: 165, q: "Lượng thời gian cần thiết cho quá trình đọc dữ liệu, chỉ thị lệnh, và thông tin từ bộ nhớ. Truy cập dữ liệu trong bộ nhớ có thể được nhiều hơn 20.000 mục nhanh hơn truy cập vào dữ liệu trên đĩa cứng.", a: "Thời gian truy xuất", b: "Giải quyết.", c: "Bóng bán dẫn", d: "RIMM", ans: "a" },
+                { id: 166, q: "May tinh", a: "Choi", b: "ngủ", c: "Nghe nhac", d: "nghỉ", ans: "c" },
+                { id: 167, q: "Mạng tốc độ cao kết nối đến LAN trong 1 khu vực đô thị, thành phố và xử lý số lượng lớn kết nối hoạt động thông qua khu vực đó.", a: "Mạng client/server –client/server network.", b: "Mạng cục bộ – Local area network (LAN).", c: "Mạng đô thị (thành phố…) – metropolitan area network (MAN)", d: "Mạng gia đình –home network.", ans: "c" },
+                { id: 168, q: "Mã nguồn mở là gì?", a: "Một loại bản quyền phần mềm", b: "Một trình duyệt web", c: "Một bản quyền thương mại cho phần mềm", d: "Một loại phần cứng", ans: "a" },
+                { id: 169, q: "LAN đại diện cho:", a: "A. Local area network (mạng cục bộ)", b: "B. Wide area network (mạng diện rộng)", c: "C. Legal area network (mạng diện pháp lý)", d: "D. Local area nature (tính chất khu vực địa phương)", ans: "a" },
+                { id: 170, q: "Lựa chọn nào sau đây là đặc điểm của một quảng cáo banner? (Chọn tất cả áp dụng.)", a: "A. Một quảng cáo được nhúng vào một trang web", b: "B. Một quảng cáo được nhúng vào một website", c: "C. Một công cụ để thu hút nhiều lượt truy cập đến trang web của nhà quảng cáo", d: "D. Một công cụ để giảm lượng truy cập của trang web của nhà quảng cáo", ans: "ac" },
+                { id: 171, q: "Làm thế nào bạn có thể tăng dung lượng không gian trống trên đĩa cứng của máy tính? (Chọn tất cả áp dụng.)", a: "Right-click vào file và chọn Delete.", b: "Chọn tập tin và nhấn Shift + Delete trên bàn phím của bạn.", c: "Chọn tập tin và nhấn Ctrl + Delete trên bàn phím của bạn.", d: "Chọn tập tin và nhấn phím Delete trên bàn phím của bạn.", ans: "b" },
+                { id: 172, q: "LAN đại diện cho?", a: "Local area network (mạng cục bộ)", b: "Local area nature (tính chất khu vực địa phương)", c: "Wide area network (mạng diện rộng)", d: "Legal area network (mạng diện pháp lý)", ans: "a" },
+                { id: 173, q: "Loại máy tính thường dùng để chạy chuyên môn hóa và được dùng để chia sẽ tài nguyên, quản lý nguồn dữ liệu lớn?", a: "tablet", b: "desktop", c: "netbook", d: "server", ans: "d" },
+                { id: 174, q: "Loại chuột sử dụng một cảm biến laser", a: "a. Chuột laser", b: "b. Máy in laser", c: "c. Mã vạch", d: "d. Chuột không khí", ans: "a" },
+                { id: 175, q: "Lựa chọn nào là triệu chứng lỗi của bộ nhớ RAM", a: "Hệ thống chỉ cho phép người quản trị truy nhập", b: "Hệ thống khởi động chính xác nhưng không có âm thanh", c: "Hệ thống không khởi động và bạn nghe thấy tiếng kêu bip lặp đi lặp lại.", d: "Hệ thống luôn khởi động ở chế độ Safe mode", ans: "c" },
+                { id: 176, q: "Lựa chọn nào đại diện cho các giải pháp để giải quyết các vấn đề chung của phần cứng?", a: "Gỡ bỏ các thành phần phần cứng để tìm lỗi", b: "Khôi phục lại cấu hình máy tính về thời điểm trước", c: "Khởi động lại máy tính ở chế độ Safe mode sử dụng chức năng mạng", d: "Chống phân mảnh ổ cứng để tăng dung lượng đĩa trống", ans: "a" },
+                { id: 177, q: "Kiểu bộ nhớ nào sau đây là bộ nhớ không bị mất dữ liệu khi tắt điện? (Chọn tất cả áp dụng.)", a: "A. SSD", b: "B. RAM", c: "C. DVD", d: "D. Ổ đĩa flash USB", ans: "acd" },
+                { id: 178, q: "Mô hình mạng (topology network) trong đó cáp tạo thành một vòng khép kín với các máy tính và thiết bị được sắp xếp theo vòng.", a: "ring network", b: "home network.", c: "star network.", d: "Network.", ans: "a" },
+                { id: 179, q: "Kiểu dữ liệu nào dưới đây không phải là kiểu dữ liệu hợp lệ trong Excel?", a: "Character", b: "Number", c: "Label", d: "Date/Time", ans: "a" },
+                { id: 180, q: "Khu vực nào trong cửa sổ Excel cho phép nhập các giá trị và công thức?", a: "Menu bar", b: "Standard Tool bar", c: "Formula bar", d: "Title bar", ans: "c" }
             ],
             5: [
-                { id: 241, q: "Trong các dạng địa chỉ sau đây, dạng địa chỉ nào là địa chỉ tuyệt đối cố định khối trong Excel?", a: "B$2:D$8", b: "B$2$:D$8$", c: "$B2:$D8", d: "$B$2:$D$8", ans: "d" },
-                { id: 242, q: "Trong cơ sở dữ liệu Access, trường dữ liệu nào có khả năng tự động tăng giá trị tuần tự khi thêm bản ghi mới?", a: "Auto Number", b: "Auto value", c: "Auto Increment", d: "Auto Evaluate", ans: "a" },
-                { id: 243, q: "Trong Excel, thông báo lỗi dạng #REF! hiển thị nhằm cảnh báo cho người dùng biết hiện tượng gì?", a: "Khi ô tham chiếu là rỗng", b: "Khi một ô chứa định dạng tiền tệ sai", c: "Khi ô tham chiếu đến vị trí không hợp lệ", d: "Khi chia cho số 0", ans: "c" },
-                { id: 244, q: "Tốc độ truyền tải dữ liệu mạng nào dưới đây đại diện cho tốc độ truyền tải nhanh nhất?", a: "3000000 bps", b: "3 Gbps", c: "300 Kbps", d: "300 Mbps", ans: "b" },
-                { id: 245, q: "Thiết bị mạng nội bộ LAN nào có thể dùng để kết nối hai hệ thống riêng lẻ hoặc nhiều phân đoạn mạng lại với nhau?", a: "hub", b: "bridge", c: "switch", d: "router", ans: "c" },
-                ...Array.from({length: 55}, (_, i) => ({
-                    id: 246 + i,
-                    q: `Câu hỏi bổ sung số ${6 + i} cho Đề 5`,
-                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
-                    ans: "a"
-                }))
+                { id: 181, q: "Những ứng dụng nào sau bạn có thể sử dụng để thực hiện cuộc gọi để truyền âm thanh và video trên Internet?", a: "A. Bing", b: "B. FTP", c: "C. Skype", d: "D. Google", ans: "c" },
+                { id: 182, q: "Những yêu cầu hệ thống cho bạn biết điều gì?", a: "A. Cấu hình phần cứng trên máy tính của bạn cần có để chạy một ứng dụng với hiệu suất tối đa", b: "B. Cấu hình phần cứng tối thiểu và tài nguyên phần mềm khác trên máy tính của bạn cần có để chạy một ứng dụng", c: "C. Cấu hình tốt nhất trên máy tính của bạn nên có để chạy một ứng dụng", d: "D. Cấu hình phần mềm tối thiểu trên máy tính của bạn cần có để chạy một ứng dụng", ans: "b" },
+                { id: 183, q: "Phương pháp nào nhanh nhất cho phép bạn xem hai hay nhiều website trên trình duyệt.", a: "Mở một thẻ mới và nhập địa chỉ của website", b: "Nhập địa chỉ mới của website vào thanh đ/c trên trang hiện tại", c: "Thiết lập một màn hình riêng rẽ để mở một cửa sổ mới.", d: "Bắt đầu một phiên làm việc khác trên trình duyệt", ans: "a" },
+                { id: 184, q: "Quan hệ giữa bit và byte như thế nào là đúng?", a: "1 bit = 2 bytes", b: "1 bit = 24 byte", c: "1 byte = 8 bit", d: "1 bit = 8 bytes", ans: "c" },
+                { id: 185, q: "Những phát biểu nào là Đúng khi nói về tùy chọn Change trong công cụ Uninstall a program", a: "Khi chỉnh sửa một chương trình, nó trở thành chương trình nguyên bản trong Windows 7", b: "Khi thay đổi một chương trình, nó không xuất hiện trong cửa sổ danh sách các chương trình", c: "Thay đổi một chương trình bao gồm các tùy chọn cài đặt và gỡ bỏ của một ứng dụng", d: "Tất cả các chương trình hiển thị trong cửa sổ chương trình hoặc các đặc tính của chúng có thể thay đổi hoặc sửa chữa", ans: "c" },
+                { id: 186, q: "Số lượng điểm ảnh theo chiều ngang và theo chiều dọc trong một thiết bị hiển thị", a: "a. Giám sát", b: "b. Đầu ra", c: "c. Độ phân giải", d: "d. Chuột", ans: "c" },
+                { id: 187, q: "Quan hệ giữa bit và byte như thế nào là đúng", a: "1 bit = 24 byte", b: "1 bit = 2 bytes", c: "1 bit = 8 bytes", d: "1 byte = 8 bit", ans: "d" },
+                { id: 188, q: "Sự khác biệt giữa biểu mẫu (form) và báo cáo (report)?", a: "Các biểu mẫu nhận dữ liệu đầu vào trong khi báo cáo xuất dữ liệu", b: "Các biểu mẫu xuất dữ liệu trong khi báo cáo nhận dữ liệu đầu vào", c: "Các biểu mẫu có thể tạo ra bởi người sử dụng trong khi báo cáo đucợ thiết đặt bới Microsoft", ans: "a" },
+                { id: 189, q: "Phần mềm chia sẻ (shareware)−Phiên bản dùng thử của phần mềm mà bạn có thể tải về miễn phí −Có chức năng hoặc thời gian truy cập chương trình hạn chế −Nếu thích chương trình, nộp lệ phí danh nghĩa để bỏ các hạn chế. Cho biết khái niệm trên đúng hay sai?", a: "Sai", b: "Đúng", ans: "b" },
+                { id: 190, q: "Những ký tự nào sau đây có thể được sử dụng để thực hiện tìm kiếm trên Google? (Chọn tất cả áp dụng.)", a: "A. $", b: "B. \\", c: "C. ^", d: "D. \"\"", ans: "ad" },
+                { id: 191, q: "Những thiết bị nào sau đây được xem là thiết bị xuất? (Chọn tất cả áp dụng.)", a: "A. Màn hình", b: "B. Loa", c: "C. Microphone", d: "D. Bàn phím", ans: "ab" },
+                { id: 192, q: "Phát biểu nào là đúng đối với các địa chỉ email", a: "Các địa chỉ email được tạo thành bởi hai phần chính: tên người dùng và tên miền. Cả hai phần được phân cách bởi ký hiệu #", b: "Tên người dùng của địa chỉ email được cấp bởi nhà cung cấp (supplier)", c: "Các địa chỉ email được tạo thành bởi hai phần chính: tên người dùng và tên miền. Cả hai phần được phân cách bởi ký hiệu @", d: "Có thể có tên người dùng giống nhau trong cùng một tên miền", ans: "c" },
+                { id: 193, q: "Chương trình nào sau đây bạn có thể sử dụng để xem các ứng dụng đang chạy trên máy tính Windows của bạn?", a: "A. Windows Update", b: "B. Windows Media Player", c: "C. Task Manager", d: "D. Control Panel", ans: "c" },
+                { id: 194, q: "Phát biểu nào sau đây là sai trong Microsoft Excel 2010:", a: "Khi nhập dữ liệu vào bảng tính, theo mặc định thì dữ liệu kiểu Date/Time canh lề phải", b: "Khi nhập dữ liệu vào bảng tính, theo mặc định thì dữ liệu kiểu luận lý (true/false) canh giữa", c: "Khi nhập dữ liệu vào bảng tính, theo mặc định thì dữ liệu kiểu số sẽ canh thẳng lề trái", d: "Khi nhập dữ liệu vào bảng tính, theo mặc định thì dữ liệu kiểu text canh thẳng lề trái", ans: "c" },
+                { id: 195, q: "Những máy tính và thiết bị di động làm việc trên một mạng dựa vào máy chủ (server) cho nguồn tài nguyên của nó.", a: "clients.", b: "Latency (thời gian đợi)", c: "SMS", d: "WiMAX", ans: "a" },
+                { id: 196, q: "Nếu bạn thường xuyên ghé thăm một vài trang web, bạn có thể thực hiện điều gì sau?", a: "Đánh dấu mỗi trang", b: "Xóa mỗi trang từ thư mục History để nó sẽ trở nên kích hoạt", c: "Cài điều khiển ActiveX cho mỗi trang", d: "định nghĩa mỗi trang thành trang chủ của trình duyệt.", ans: "a" },
+                { id: 197, q: "Muốn thiết lập quan hệ giữa các bảng, ta thực hiện lệnh", a: "A) Edit\\Tool…", b: "B) Insert\\Relationships", c: "C) View\\Relationships", d: "D) Tool\\Relationships", ans: "d" },
+                { id: 198, q: "Một khóa chính phải", a: "A) Có giá trị duy nhất (không trùng nhau)", b: "B) Không được rỗng", c: "C) Xác định duy nhất một mẫu tin", d: "D) Có giá trị duy nhất (không trùng nhau); không được rỗng; xác định duy nhất một mẫu tin", ans: "d" },
+                { id: 199, q: "Những hoạt động nào sau đây có thể được thực hiện with một ứng dụng giải trí cá nhân?", a: "Soạn thảo văn bản", b: "Tạo cơ sở dữ liệu", c: "Xem phim", d: "Soạn nhạc", ans: "c" },
+                { id: 200, q: "Người và máy tính giao tiếp với nhau thông qua", a: "Chuột.", b: "Bàn phím.", c: "Đĩa cứng.", d: "Hệ điều hành.", ans: "d" },
+                { id: 201, q: "Những đơn vị đo lường nào sau đây bạn sử dụng để đo dung lượng lưu trữ trên một đĩa cứng?", a: "Số lượng lõi", b: "GHz", c: "SSD", d: "GB", ans: "d" },
+                { id: 202, q: "Phím nào bạn dùng để chọn các đoạn văn bản không liền kề nhau?", a: "Alt", b: "Shift", c: "Fn", d: "Ctrl", ans: "d" },
+                { id: 203, q: "Những đơn vị đo lường nào sau đây bạn sử dụng để đo dung lượng lưu trữ trên một đĩa cứng?", a: "A. GHz", b: "B. GB", c: "C. Số lượng lõi", d: "D. SSD", ans: "b" },
+                { id: 204, q: "Phương pháp xử lý có sử dụng nhiều bộ xử lý đồng thời để thực hiện một chương trình duy nhất hoặc nhiệm vụ, để tăng tốc độ thời gian xử lý.", a: "Cổng nối tiếp", b: "Xử lý lõi kép", c: "Xử lý song song", d: "Xử lý", ans: "c" },
+                { id: 205, q: "Một phần của bus mà truyền dữ liệu thực tế.", a: "PCI bus", b: "Khoang ổ đĩa", c: "Bus dữ liệu", d: "Địa chỉ bus", ans: "c" },
+                { id: 206, q: "Phỉ báng khác với vu khống như thế nào?", a: "Kết quả của việc vu khống bị phạt tiền nhiều hơn.", b: "Vu khống chỉ xảy ra khi có những điều nói sai bằng lời nói trong khi đó phỉ báng là bằng văn bản.", c: "Không có sự khác biệt.", d: "Phỉ báng chỉ áp dụng khi nói về những người nổi tiếng.", ans: "b" },
+                { id: 207, q: "Phát biểu nào là đúng khi nói đến CPU", a: "CPU nhắm đến phần mềm người sử dụng", b: "CPU là viết tắt của Processing Unit", c: "CPU được tạo bởi bộ nhớ RAM và ROM", d: "CPU thường được tích hợp với một chip gọi là vi xử lý", ans: "d" },
+                { id: 208, q: "Chương trình nào sau đây bạn có thể sử dụng để xem các ứng dụng đang chạy trên máy tính Windows của bạn?", a: "A. Windows Update", b: "B. Windows Media Player", c: "C. Task Manager", d: "D. Control Panel", ans: "c" },
+                { id: 209, q: "Qui định nhập kiểu Text tự động đổi thành chữ thường sử dụng mã Format là", a: "A) >", b: "B) <", c: "C) @", d: "D) &", ans: "b" },
+                { id: 210, q: "Một truy vấn thêm, xóa hoặc cập nhật dữ liệu được gọi là?", a: "Total query", b: "Action query", c: "Select query", d: "Parameter query", ans: "b" },
+                { id: 211, q: "Những thành phần phần cứng nào sau đây là thiết bị ngoại vi của máy tính để bàn? (Chọn tất cả áp dụng.)", a: "A. SSD", b: "B. Loa", c: "C. Webcam", d: "D. Card âm thanh", ans: "bc" },
+                { id: 212, q: "Phát biểu nào là ĐÚNG khi nói đến bộ nhớ ROM và RAM", a: "Bộ nhớ RAM là bộ nhớ đọc và ghi, trong khi ROM là bộ nhớ chỉ đọc", b: "RAM và ROM hai bộ nhớ truy cập ngẫu nhiên", c: "Bộ nhớ ROM thường được sử dụng bởi các chương trình và ứng dụng để lưu trữ tạm thời các kết quả của quá trình thực hiện. Bộ nhớ RAM được dùng để lưu các phần mềm cơ sở trên các thiết bị máy tính", d: "RAM là bộ nhớ không biến động. Nói cách khác, bộ nhớ RAM không bị xóa khi máy tính đã tắt, Bộ nhớ ROM bị xóa khi máy tính tắt.", ans: "a" },
+                { id: 213, q: "Phím nào được dùng kết hợp trong khi chọn các đoạn văn bản không liền kề nhau?", a: "Ctrl", b: "Alt", c: "Shift", d: "Fn", ans: "a" },
+                { id: 214, q: "RAM viết tắt của cụm từ nào dưới đây?", a: "StoRage of Memory", b: "Random Output Measure", c: "Resources of Memory", d: "Random Access Memory", ans: "d" },
+                { id: 215, q: "Những phát biểu nào là đúng", a: "Tốc độ của hệ thống chỉ nhanh như tốc độ của bộ vi xử lý", b: "Một máy tính với bộ vi xử lý có tốc độ 2 GHz thì có tốc độ gấp đôi máy tính có vi xử lý tốc độ 1GHz", c: "Tốc độ của một bộ vi xử lý được đo bằng Hertz (Hz)", d: "Một bộ vi xử lý có số Gigahertz (GHz) lớn thì nhanh hơn bộ vi xử lý với kiến trúc khác có số Gigahertz nhỏ hơn", ans: "c" },
+                { id: 216, q: "Những loại máy tính nào sau đây có phần cứng rất mạnh và được sử dụng để cung cấp các dịch vụ chuyên nghiệp cho các máy tính khác trên mạng?", a: "A. Máy Tính Xách Tay", b: "B. Máy tính bảng", c: "C. Điện thoại thông minh", d: "D. Máy chủ", ans: "d" },
+                { id: 217, q: "Những thiết bị nào sau đây được xem là thiết bị xuất?", a: "Màn hình", b: "Webcam", c: "Microphone", d: "Bàn phím", ans: "a" },
+                { id: 218, q: "Một phần tỉ của một giây.", a: "Card âm thanh", b: "Đơn vị kiểm soát", c: "Bus mở rộng", d: "Một nano giây (ns) .", ans: "d" },
+                { id: 219, q: "Sử dụng …….. trước một từ để báo với các công cụ tìm kiếm loại trừ tất cả các trang có chứa từ đó", a: "Dấu trừ -", b: "Từ Without", c: "Dấu ngoặc móc {}", d: "Dấu ngoặc đơn ()", ans: "a" },
+                { id: 220, q: "Một tập hợp các trang liên kết thông tin với nhau về một công ty cụ thể, một người, sản phẩm hay dịch vụ nào đó là?", a: "Một máy chủ web", b: "Một trang web", c: "Internet", d: "Một nhà cung cấp dịch vụ Internet(ISP)", ans: "b" },
+                { id: 221, q: "Nhanh hơn 10 lần so với USB 2.0.", a: "Unicode", b: "bay", c: "Byte.", d: "USB 3.0", ans: "d" },
+                { id: 222, q: "Những thông tin nào sau đây được hiển thị cho mỗi kết quả tìm kiếm khi tìm kiếm trên Google hay Bing? (Chọn tất cả áp dụng.)", a: "A. Các tiêu đề", b: "B. Các màu", c: "C. Các URL", d: "D. Các mô tả", ans: "acd" },
+                { id: 223, q: "ROM là viết tắt cụm từ nào sau đây?", a: "Resources of Memory", b: "Từ thực đơn Start", c: "Random Output Measure", d: "Read Only Memory", ans: "d" },
+                { id: 224, q: "Muốn tạo ra bảng với dữ liệu nguồn lấy từ những Table hoặc Query, ta sử dụng loại Query nào sau đây", a: "A) Update Query", b: "B) Make Table Query", c: "C) Append Query", d: "D) Select Query", ans: "b" },
+                { id: 225, q: "Mục tiêu chính của một hệ điều hành là:", a: "Để quản lý truy cập của người dùng", b: "Làm máy tính hấp dẫn hơn", c: "Cho phép người sử dụng máy tính đúng cách", d: "Tách người sử dụng khỏi sự phức tạp của phần cứng", ans: "d" },
+                { id: 226, q: "Một tập hợp các điều kiện mà một bộ lọc dùng để xác định các bản ghi để hiển thị gọi là?", a: "Điều kiện (tiêu chuẩn)-Criteria", b: "Truy vấn Query", c: "Datasheet", ans: "a" },
+                { id: 227, q: "Phần mềm Microsoft Excel là:", a: "Phần mềm soạn thảo văn bản", b: "Phần mềm quản lý cơ sở dữ liệu quan hệ", c: "Phần mềm chỉnh sửa hình ảnh", d: "Phần mềm xử lý bảng thực hiện tính toán và xây dựng các số liệu thống kê trực quan có trong bảng", ans: "d" },
+                { id: 228, q: "Phần mở rộng của file tài liệu với chương trình ứng dụng Microsoft Word 2010 là:", a: "Xlsx", b: "Pptx", c: "Docx", d: "Txt", ans: "c" },
+                { id: 229, q: "Những phát biểu nào là Đúng khi nói về tùy chọn Change trong công cụ Uninstall a program", a: "Tần cả các chương trình hiển thị trong cửa sổ chương trình hoặc các đặc tính của chúng có thể thay đổi hoặc sửa chữa", b: "Khi thay đổi một chương trình, nó không xuất hiện trong cửa sổ danh sách các chương trình", c: "Thay đổi một chương trình bao gồm các tùy chọn cài đặt và gỡ bỏ của một ứng dụng", d: "Khi chỉnh sửa một chương trình, nó trở thành chương trình nguyên bản trong Windows 7", ans: "c" },
+                { id: 230, q: "Những vùng dữ liệu nào được tự động điền vào của các chương trình email hoặc dịch vụ khi gửi một email?", a: "Date", b: "From", c: "To", d: "Subject", ans: "ab" },
+                { id: 231, q: "Muốn thay đổi đồng loạt một giá trị nào đó trong Field thành giá trị khác, chọn cách nào là thích hợp nhất", a: "A) Dùng Make Table Query", b: "B) Dùng Update Query", c: "C) Mở Table, dùng thao tác tìm và thay đổi đồng loạt", d: "D) Dùng Append Query", ans: "b" },
+                { id: 232, q: "Phím nào dưới đây để thực hiện việc kiểm tra chính tả (Spelling)?", a: "F9", b: "F3", c: "F5", d: "F7", ans: "d" },
+                { id: 233, q: "Những loại máy tính nào sau đây có phần cứng rất mạnh và được sử dụng để cung cấp các dịch vụ chuyên nghiệp cho các máy tính khác trên mạng?", a: "Điện thoại thông minh", b: "Máy Tính Xách Tay", c: "Máy tính bảng", d: "Máy chủ", ans: "d" },
+                { id: 234, q: "Nhanh hơn các nhiệm vụ chuyển dữ liệu, mà kết quả trong các chương trình chạy nhanh hơn.", a: "Tốc độ đồng hồ", b: "Bus tốc độ cao.", c: "Cung cấp điện", d: "FireWire trung tâm.", ans: "b" },
+                { id: 235, q: "Phân biệt trang tính (sheet-bảng tính) và một sổ tính (book)?", a: "sổ tính là thuật ngữ được sử dụng khi bạn dùng nhiều hơn một trang tính trong một file", b: "sổ tính có thể được chia sẽ tự động bởi những người khác", c: "trang tính có thể được sử dụng trong các chương trình bảng tính khác", d: "sổ tính là toàn bộ tập tin chứa các trang tính", ans: "d" },
+                { id: 236, q: "Người và máy tính giao tiếp với nhau thông qua", a: "Bàn phím.", b: "Hệ điều hành.", c: "Đĩa cứng.", d: "Chuột.", ans: "b" },
+                { id: 237, q: "Sau khi chọn 1 mẫu Template được định nghĩa trước, tùy chọn nào sao đây để thay đổi màu nền?", a: "Color Effect", b: "Animation Scheme", c: "Design Template", d: "Color Scheme", ans: "ad" },
+                { id: 238, q: "Safe Mode là gì?", a: "Giao thức mạng", b: "Một cách khác để khởi động lại Windows mà chỉ nạp những yếu tố cần thiết nhất cho các chức năng cơ bản của Windows.", c: "Thông báo lỗi trên Windows", d: "Quá trình cập nhật firmware trên một thiết bị phần cứng", ans: "b" },
+                { id: 239, q: "Một siêu liên kết (hyperlink) là gì?", a: "Một tham chiếu tới dữ liệu có thể được truy cập bằng cách nhấp chuột vào nó", b: "Đoạn văn bản hiển thị trong một màu sắc khác nhau bởi các trình duyệt web", c: "Địa chỉ mạng của một trang web", d: "Địa chỉ của một website hoặc một trang web trên WWW", ans: "a" },
+                { id: 240, q: "Phần mở rộng nào sau đây không liên quan đến tập tin bảng tính mà Microsoft Excel 2010 có thể xử lý và lưu trữ:", a: "Xla", b: "BMP", c: "xls", d: "xlsx", ans: "b" }
             ],
             6: [
-                { id: 301, q: "Trong phần mềm Microsoft Word 2010, cách nào dùng để ẩn/hiện nhanh thanh công cụ Ribbon?", a: "Nhấp đúp chuột vào thanh thước đo ruler", b: "Nhấn nút phải chuột tại một thẻ bất kỳ trên thanh Ribbon -> Chọn Minimize the Ribbon", c: "Nhấn tổ hợp phím Ctrl + Shift + F4", d: "Nhấn tổ hợp phím Ctrl + F5", ans: "b" },
-                { id: 302, q: "URL là gì? (Chọn tất cả áp dụng.)", a: "Địa chỉ của một Website hoặc một trang web trên WWW", b: "Uniform Resource Locator", c: "Các vị trí mạng của một máy tính", d: "Địa chỉ của một máy chủ web (WebServer)", ans: "ab" },
-                { id: 303, q: "Việc sử dụng đúng các ký hiệu (dấu sao *) khi tìm kiếm trên Google hay Bing có ý nghĩa gì?", a: "Đặt một từ hoặc cụm từ trong dấu ngoặc kép.", b: "Tìm giá chính xác của sản phẩm.", c: "Thêm nó như là một đại diện cho bất kỳ nội dung từ ngữ chưa biết.", d: "Tìm các chủ đề thịnh hành xã hội.", ans: "c" },
-                { id: 304, q: "Trong Microsoft Word 2010, tổ hợp phím tắt nào dùng để thay đổi font chữ cho văn bản đã chọn?", a: "Ctrl + Shift + P", b: "Ctrl + H", c: "Ctrl + O", d: "Ctrl + Shift + K", ans: "a" },
-                { id: 305, q: "Tùy chọn nào dưới đây là tập hợp các bộ định dạng thiết lập sẵn, đặt tên và lưu lại để dùng lại?", a: "View", b: "Style", c: "Format", d: "Toolbar", ans: "b" },
-                ...Array.from({length: 55}, (_, i) => ({
-                    id: 306 + i,
-                    q: `Câu hỏi bổ sung số ${6 + i} cho Đề 6`,
-                    a: "Đáp án A", b: "Đáp án B", c: "Đáp án C", d: "Đáp án D",
-                    ans: "a"
-                }))
+                { id: 241, q: "Thiết bị kết nối với hệ thống và được điều khiển bởi bộ vi xử lý trong máy tính.", a: "Khoang ổ đĩa", b: "Ngoại vi.", c: "RAM", d: "firmware.", ans: "b" },
+                { id: 242, q: "Thiết bị đầu ra trông giống như một máy in hoặc bản sao nhưng cung cấp các chức năng của một máy in, máy quét, máy copy và có thể là một máy fax", a: "c. Máy in nonimpact", b: "a. Thiết bị trỏ", c: "b. In kim", d: "d. Thiết bị ngoại vi đa chức năng", ans: "d" },
+                { id: 243, q: "Thiết bị nào sau đây được xem là phần cứng bên trong máy tính? (Chọn tất cả áp dụng.)", a: "RAM", b: "C. CPU", c: "D. Máy in", d: "B. Chuột (Mouse)", ans: "ab" },
+                { id: 244, q: "Tại sao bạn đổi tên một trang tính (bảng tính)?", a: "Để trợ giúp cho việc xác định các nội dung", b: "Để giúp xác định trang tính này như một Sổ tính 2010", c: "Để có thể thêm một màu sắc cho bảng tính tiếp sau nó", d: "Để cho phù hợp với tên của sổ tính", ans: "a" },
+                { id: 245, q: "Tại sao bạn nên chọn 1 chủ đề (Theme) đã được tích hợp trong phần mềm để áp dụng cho bản trình chiếu?", a: "Để thêm 1 chương trình âm thanh cho bản trình chiếu", b: "Để sử dụng một bài thuyết trình đã được tạo trước với các tiêu chuẩn cho một chủ đề ví dụ như tiếp thị", c: "Để đạt được 1 thể thống nhất cho các phông chữ và màu sắc", ans: "c" },
+                { id: 246, q: "Thay đổi màn hình nền desktop trong nhóm nào sau trong Control Panel?", a: "Appearance and Personalization", b: "Clock, Language, and Region", c: "Network and Internet", d: "User Accounts", ans: "a" },
+                { id: 247, q: "Trong Microsoft Excel 2010, phần mở rộng mặc định của tập tin bảng tính là:", a: "xls", b: "Xlsx", c: "xslx", d: "xlxs", ans: "b" },
+                { id: 248, q: "Thành phần nào quyết định việc khởi động máy tính?", a: "ROM-BIOS", b: "RAM", c: "CPU", ans: "a" },
+                { id: 249, q: "Trong hệ điều hành Windows, để phục hồi tất cả các đối tượng trong Recycle Bin (thùng rác) ta nháy phải chuột tại Recycle Bin và chọn lệnh:", a: "Delete", b: "Restore", c: "Redo", d: "Undo Delete", ans: "b" },
+                { id: 250, q: "Tên của các tính năng mà bạn có thể sử dụng để quản lý các tập tin trong bộ Office?", a: "Choose File", b: "Backstage View", c: "Office File Manager", d: "Windows Explorer", ans: "b" },
+                { id: 251, q: "Trong Microsoft office 2010, ba nút mặc định trên Quick Access Toolbar trước khi bạn tùy biến là?", a: "New, Redo, Save", b: "Undo, Redo, Save", c: "Print, Undo, Redo", d: "Open, Undo, Save", ans: "b" },
+                { id: 252, q: "Trong Microsoft Power Point 2010, khi đang đứng ở slide đầu tiên của bản trình chiếu, để chuyển chế độ hiển thị từ bình thường sang dạng trình chiếu người dùng thao tác:", a: "Nhấn vào biểu tượng slide show ở bên trái góc dưới của màn hình", b: "Nhấn F5 trên bàn phím", c: "Nhấn Alt+F5 trên bàn phím", d: "Nhấn Control+F5 trên bàn phím", ans: "b" },
+                { id: 253, q: "Thiết bị đầu ra mà có văn bản và hình ảnh hiển thị trên màn hình máy tính hiển thị trên một màn hình lớn hơn để người xem có thể nhìn thấy hình ảnh rõ ràng", a: "c. Nhãn hiệu máy in", b: "b. Màn hình LCD", c: "d. Máy chiếu (projector)", d: "a. Dòng máy in", ans: "c" },
+                { id: 254, q: "Tại sao bạn nên sao lưu dữ liệu của bạn? (Chọn tất cả áp dụng.)", a: "A. Để mất nó khi máy tính của bạn bị hỏng", b: "B. Để có thể khôi phục lại khi máy tính của bạn bị hỏng", c: "C. Để có thể khôi phục lại khi máy tính của bạn bị mất cắp", d: "D. Để có nó trong lưu trữ đám mây", ans: "bc" },
+                { id: 255, q: "Thiết bị nào sau đây được xem là phần cứng bên trong máy tính? (Chọn tất cả áp dụng.)", a: "C. CPU", b: "RAM", c: "B. Chuột (Mouse)", d: "D. Máy in", ans: "ab" },
+                { id: 256, q: "Trong Microsoft Excel 2010, khi cần chọn các cột liền kề trên cùng một sheet của bảng tính ta thực hiện:", a: "Nhấn Ctrl và giữ nguyên kết hợp nhấn chuột trái để kéo các vùng dữ liệu đó.", b: "Nhấn Shift và thả ra giữa các lần chọn các cột dữ liệu khác nhau", c: "Nhấn Shift vào tiêu đề cột, giữ và rê chuột sang các cột cần chọn", d: "Nhấn Ctrl + Shift và nhấn chuột trái để thực hiện thao tác quét các cột cần chọn.", ans: "c" },
+                { id: 257, q: "Trong Microsoft Excel 2010, khi bạn muốn đoạn văn bản dài tại ô A1 thành có nhiều dòng thì bạn dùng chức năng", a: "Để chuột ở vị trí muốn xuống dòng và nhấn phím tổ hợp Alt+End", b: "Để chuột ở vị trí muốn xuống dòng và nhấn phím tổ hợp Ctrl+Alt", c: "Để chuột ở vị trí muốn xuống dòng và nhấn phím tổ hợp Enter+ Alt", d: "Wrap text", ans: "d" },
+                { id: 258, q: "Trong các dạng địa chỉ sau đây, địa chỉ nào khi copy công thức đến vị trí khác trong cùng trang tính (Worksheet) vẫn không thay đổi địa chỉ tham chiếu tại vị trí mới.", a: "B$2:D$8", b: "B$2$:D$8$", c: "$B2:$D8", d: "$B$2:$D$8", ans: "d" },
+                { id: 259, q: "Thiết bị nào KHÔNG phải là thiết bị ngoại vi của máy tính để bàn?", a: "Máy nghe nhạc MP3", b: "Chuột", c: "Loa", d: "Máy in", ans: "a" },
+                { id: 260, q: "Thao tác nào sau đây được dùng để chọn nhiều đối tượng không liên tiếp nhau trong hệ điều hành Windows?", a: "Nháy chuột vào từng đối tượng.", b: "Nháy phải chuột tại từng đối tượng.", c: "Nhấn giữ phím Ctrl và nháy chuột vào từng đối tượng.", d: "Nhấn giữ phím Shift và nháy chuột vào từng đối tượng.", ans: "c" },
+                { id: 261, q: "Tại sao biểu đồ đem lại nhiều cách mô tả dữ liệu hơn so với một bảng?", a: "Một biểu đồ minh họa xu hướng hay dáng điệu dữ liệu rõ ràng hơn", b: "Nhiều dữ liệu có thể xuất hiện trên biểu đồ so với bảng", c: "Một biểu đồ có nhiều màu sắc hơn", d: "Biểu đồ có thể được in trên một tờ giấy lớn hơn so với một bảng", ans: "a" },
+                { id: 262, q: "Trong Microsoft PowerPoint 2010, chọn phát biểu đúng nhất về việc sử dụng mẫu thiết kế (themes):", a: "Người dùng không thể sử dụng một themes bên ngoài vào bài báo cáo của mình", b: "Người dùng có thể tạo ra một số themes mới và chỉ có thể áp dụng trên bản trình chiếu đang mở.", c: "Người dùng chỉ có thể sử dụng các themes sẵn có trong thư viện của chương trình", d: "Người dùng có thể tạo ra một số themes mới và áp dụng trên nhiều bản trình chiếu", ans: "d" },
+                { id: 263, q: "Thiết bị nào được thay thế khi dùng màn hình cảm ứng", a: "Máy in", b: "Máy quét", c: "Microphone", d: "Chuột", ans: "d" },
+                { id: 264, q: "Trong Microsoft Excel 2010, khi nhập công thức cho một ô, trong công thức có sử dụng một hàm tính toán nhưng bị sai tên thì thông báo lỗi là:", a: "# VALUE", b: "#N/A", c: "FALSE", d: "#NAME", ans: "d" },
+                { id: 265, q: "Trong hệ điều hành Windows, muốn đóng (thoát) cửa sổ chương trình ứng dụng đang làm việc ta:", a: "Nhấn tổ hợp phím Alt + F4.", b: "Nhấn tổ hợp phím Ctrl + F3", c: "Vao bảng chọn Edit à Office Clipboard...", d: "Nhấn tổ hợp phím Shift + F4.", ans: "a" },
+                { id: 266, q: "Thiết bị truyền thông có thể chuyển đổi từ tín hiệu kỹ thuật số sang tín hiệu tương đương và tín hiệu tương đương có thể chuyển sang tín hiệu kỹ thuật số, vì thế dữ liệu có thể truyền tải qua đường dây điện thoại.", a: "dial-up modem", b: "wireless modem", c: "digital modem", d: "ISDN modem", ans: "a" },
+                { id: 267, q: "Tên của bộ công cụ và lệnh dọc theo phía trên của word 2010 được gọi là gì?", a: "Ribbon", b: "Command tab", c: "Microsoft Office Strip", ans: "a" },
+                { id: 268, q: "Trong khi soạn thảo văn bản với Microsoft word 2010, Xuống dòng và không kết thúc đoạn, sử dụng tổ hợp phím nào sau đây:", a: "Alt + Enter", b: "Shift+Enter", c: "Ctrl + Enter", d: "Shift+tab", ans: "b" },
+                { id: 269, q: "Trong khi soạn thảo văn bản với Microsoft word 2010, nếu kết thúc 1 đoạn (Paragraph) và muốn sang 1 đoạn mới", a: "Bấm phím Enter", b: "Bấm tổ hợp phím Shift + Enter", c: "Bấm tổ hợp phím Ctrl – Enter", d: "Word 2010 tự động, không cần bấm phím", ans: "a" },
+                { id: 270, q: "Theo mặc định, mỗi sổ tính (Workbook) có 3 trang tính Sheet1, Sheet2, Sheet3. Để chèn thêm 1 trang tính mới giữa Sheet 1 và Sheet 3, tùy chọn nào dưới đây là thao tác sẽ sử dụng?", a: "Nhấp chuột phải vào Sheet 3 và chọn insert", b: "Không có thao tác nào đúng", c: "Nhấp chuột phải vào Sheet 2 và chọn insert", d: "Nhấp chuột phải vào Sheet 1 và chọn insert", ans: "c" },
+                { id: 271, q: "Thiết bị ngoại vi là gì?", a: "Các thành phần phần cứng bên trong của máy tính", b: "Các thành phần phần cứng bên ngoài có thể được kết nối với máy tính", c: "Một loại công cụ tìm kiếm", d: "Một loại phần mềm", ans: "b" },
+                { id: 272, q: "Trang web thương mại được tổ chức bởi ISP liên quan đến tên miền nào?", a: "net", b: "com", c: "edu", d: "gov", ans: "a" },
+                { id: 273, q: "Thiết bị đầu ra âm thanh phát ra âm thanh", a: "d. Loa", b: "a. Máy in", c: "b. Bút", d: "c. Điểm ảnh", ans: "a" },
+                { id: 274, q: "Trong hệ điều hành Windows, muốn khôi phục đối tượng đã xóa, ta mở cửa sổ Recycle Bin, chọn đối tượng muốn khôi phục và", a: "Nháy Edit và Delete.", b: "Nháy File và Delete.", c: "Nháy Edit và Restore.", d: "Nháy File và Restore.", ans: "d" },
+                { id: 275, q: "Trong Microsoft Word 2010, bật chế độ “Show/Hide ¶”, kí tự đặc biệt ¶ xuất hiện trong văn bản có ý nghĩa gì:", a: "Đại diện cho phím Enter để kết thúc đoạn (paragraph)", b: "Đại diện cho tổ hợp phím Shift+Enter", c: "Đại diện cho phím Tab", d: "Đại diện cho tổ hợp phím Alt+Enter", ans: "a" },
+                { id: 276, q: "Trong Excel, một tập tin mà trên đó bạn làm việc (tính toán, vẽ đồ thị, …) và lưu trữ dữ liệu được gọi là?", a: "Document", b: "WorkSheet", c: "Presentation", d: "WorkBook", ans: "d" },
+                { id: 277, q: "Tại sao bạn muốn tùy chỉnh một phong cách trình bày dấu hoa thị (bullet style) cho một danh sách?", a: "Để thay đổi phong cách danh sách từ dấu hoa thị thành đánh số", b: "Để thay đổi phong cách danh sách từ đánh số sang dấu hoa thị", c: "Để thụt lề trái cho danh sách", d: "Để tạo ra một hình thức trình bày khác cho tài liệu", ans: "d" },
+                { id: 278, q: "Trong Microsoft Excel 2010, tổ hợp phím nào sau đây dùng để đóng bảng tính hiện hành đang mở:", a: "Ctrl + W", b: "Alt +W", c: "Ctrl + V", d: "Shift + W", ans: "a" },
+                { id: 279, q: "Trong hệ điều hành Windows, thuộc tính nào dưới đây dùng đề hiển thị thanh công việc (Taskbar) trên các cửa sổ chương trình?", a: "Auto-Hide the Taskbar", b: "Keep the Taskbar on top of other Windows", c: "Lock the Taskbar", d: "Show the clock", ans: "b" },
+                { id: 280, q: "Trong Microsoft Excel, dạng địa chỉ nào sau đây là địa chỉ tuyệt đối:", a: "$B$2:$D$8", b: "B$2$:D$8$", c: "$B2:$D8", d: "B$2:D$8", ans: "a" },
+                { id: 281, q: "Trong các dạng địa chỉ sau đây, địa chỉ nào khi copy công thức đến vị trí khác trong cùng trang tính (Worksheet) vẫn không thay đổi địa chỉ tham chiếu tại vị trí mới.", a: "$B$2:$D$8", b: "B$2$:D$8$", c: "B$2:D$8", d: "$B2:$D8", ans: "a" },
+                { id: 282, q: "Trong Microsoft office 2010, ba nút mặc định trên Quick Access Toolbar trước khi bạn tùy biến là?", a: "Open, Undo, Save", b: "New, Redo, Save", c: "Undo, Redo, Save", d: "Print, Undo, Redo", ans: "c" },
+                { id: 283, q: "Trong access, trường dữ liệu nào có thế tăng giá trị một cách tự động?", a: "Auto Number", b: "Auto value", c: "Auto Increment", d: "Auto Evaluate", ans: "a" },
+                { id: 284, q: "Trong Microsoft Excel, dạng địa chỉ sau đây, địa chỉ nào là địa chỉ tuyệt đối?", a: "B$2$:D$8$", b: "$B$2:$D$8", c: "B$2:D$8", d: "$B2:$D8", ans: "b" },
+                { id: 285, q: "Toán tử tìm kiếm là gì trong bối cảnh của công cụ tìm kiếm?", a: "Những từ có thể được thêm vào công cụ tìm kiếm để tìm giá trực tuyến", b: "Những từ có thể được thêm vào công cụ tìm kiếm để tăng số lượng các kết quả tìm kiếm", c: "Những từ có thể được thêm vào công cụ tìm kiếm để giúp thu hẹp kết quả của bạn", d: "Những từ có thể được thêm vào công cụ tìm kiếm để làm phức tạp việc tìm kiếm hơn", ans: "c" },
+                { id: 286, q: "Trình duyệt web là gì?", a: "Phần mềm được sử dụng để duyêt các website và các trang web được tìm thấy trên World Wide Web.", b: "Một ứng dụng mà bạn có thể sử dụng để gửi các thông tin email", c: "Một ứng dụng sẽ hiển thị một trang web trên một máy tính hoặc thiết bị di động", d: "Một ứng dụng mà bạn có thể sử dụng để truy cập Internet", ans: "a" },
+                { id: 287, q: "Thiết bị nào là máy tính dễ dàng di chuyển gồm một phần cứng duy nhất có màn hình cảm ứng hoặc đa cảm ứng thay vì sử dụng một bàn phím riêng biệt?", a: "Máy tính xách tay", b: "Notebook", c: "Máy tính bảng", d: "Điện thoại thông minh", ans: "c" },
+                { id: 288, q: "Trong Excel thông báo lỗi #REF! Có nghĩa là gì?", a: "Khi ô tham chiếu là rỗng", b: "Khi 1 ô có định dạng là tiền tệ nhưng lại chứa dữ liệu loại text", c: "Khi ô tham chiếu không hợp lệ", d: "Khi 1 ô chứa một số với 2 dấu chấm thập phân", ans: "c" },
+                { id: 289, q: "Tại sao bạn có thể muốn thiết lập một trang web như là một trang ưa thích (favorite)?", a: "Để ghi lại nội dung trang web trong lịch sử web", b: "Để đánh dấu các trang web như trang chủ sẽ xuất hiện khi bạn khởi động trình duyệt", c: "Để tự động thêm trang web vào danh sách ứng dụng truyền thông xã hội ưa thích của bạn", d: "Để đánh dấu địa chỉ website giúp bạn nhanh chóng truy cập vào trang này bất cứ lúc nào", ans: "d" },
+                { id: 290, q: "Trình duyệt web là gì? (Chọn tất cả áp dụng.)", a: "A. Một ứng dụng mà bạn có thể sử dụng để truy cập Internet", b: "B. Phần mềm được sử dụng để duyêt các website và các trang web được tìm thấy trên World Wide Web.", c: "C. Một ứng dụng mà bạn có thể sử dụng để gửi các thông tin email", d: "D. Một ứng dụng sẽ hiển thị một trang web trên một máy tính hoặc thiết bị di động", ans: "bd" },
+                { id: 291, q: "Trong Microsoft Excel 2010, khi cần lựa chọn một lúc nhiều ô/khối ô không liền nhau trong bảng tính, lựa chọn nào sau đây đúng:", a: "Nhấn Shift trên bàn phím kết hợp với thao tác click chuột trái vào các ô cần chọn", b: "Nhấn và rê chuột trên vùng cần chọn", c: "Nhấn Alt trên bàn phím kết hợp với thao tác click chuột trái vào các ô cần chọn.", d: "Nhấn Ctrl trên bàn phím kết hợp với thao tác click chuột trái vào các ô cần chọn", ans: "d" },
+                { id: 292, q: "Tiện ích nào sau đây có thể bảo vệ máy tính của bạn khỏi bị tấn công?", a: "Disk check – kiểm tra lỗi ổ đĩa", b: "Disk compression- nén đĩa", c: "Disk defragmentation - chống phân mãnh ổ đĩa", d: "Antivirus software – phần mềm diệt virus", ans: "d" },
+                { id: 293, q: "Trong Microsoft Power Point 2010, bài thuyết trình được lưu thành file với phần mở rộng:", a: "docx", b: "pptx", c: "pdf", d: "xlsx", ans: "b" },
+                { id: 294, q: "Trong hệ điều hành Windows, để xem danh sách các tài liệu (tệp) vừa thao tác gần nhất, ta:", a: "Nháy File và Open Near Documents", b: "Nháy Start và My Documents", c: "Nháy File và Open Recent Documents", d: "Nháy Start và My Recent Documents", ans: "d" },
+                { id: 295, q: "Trong Microsoft Power Point 2010, phần mở rộng của tập tin trình chiếu là:", a: "DOCX", b: "BMP", c: "TXT", d: "PPTX", ans: "d" },
+                { id: 296, q: "Tốc độ truyền tải dữ liệu nào dưới đây là nhanh nhất?", a: "3000000 bps", b: "3 Gbps", c: "300 Kbps", d: "300 Mbps", ans: "b" },
+                { id: 297, q: "Thành phần bên trong nào thực hiện các tính toán và các phép toán logic?", a: "ROM –BIOS", b: "Bộ vi xử lý", c: "Bo mạch chủ", d: "Các chip RAM", ans: "b" },
+                { id: 298, q: "Trang tổ chức phi lợi nhuận liên quan đến tên miền nào?", a: "gov", b: "org", c: "edu", d: "com", ans: "b" },
+                { id: 299, q: "Trong Microsoft Excel, các địa chỉ ô $A1, B$5 thuộc kiểu địa chỉ gì:", a: "Địa chỉ hỗn hợp", b: "Địa chỉ tuyệt đối", c: "Địa chỉ tương đối", d: "Địa chỉ tuyệt đối của một khối ô", ans: "a" },
+                { id: 300, q: "Thiết bị LAN nào có thể kết nối hai hệ thống riêng lẻ hoặc nhiều mạng với nhau?", a: "hub", b: "bridge", c: "switch", d: "router", ans: "c" }
+            ],
+            7: [
+                { id: 361, q: "Trong phần mềm Microsoft Word 2010, cách nào dùng để ẩn/hiện thanh Ribbon?", a: "Nhấp đúp chuột vào thanh ruler", b: "Nhấn nút phải chuột tại một thẻ bất kỳ trên thanh Ribbon/Chọn Minimize the Ribbon", c: "Nhấn tổ hợp phím Ctrl + Shift+F4", d: "Nhấn tổ hợp phím Ctrl + F5", ans: "b" },
+                { id: 362, q: "URL là gì? (Chọn tất cả áp dụng.)", a: "A. Địa chỉ của một Website hoặc một trang web trên WWW", b: "B. Uniform Resource Locator", c: "C. Các vị trí mạng của một máy tính", d: "D. Địa chỉ của một máy chủ web (WebServer)", ans: "ab" },
+                { id: 363, q: "Việc sử dụng đúng các * (dấu sao) khi tìm kiếm trên Google hay Bing có ý nghĩa gì?", a: "A. Thêm nó để đặt một từ hoặc cụm từ trong dấu ngoặc kép.", b: "B. Thêm nó như là công cụ để tìm giá.", c: "C. Thêm nó như là một đại diện cho bất kỳ nội dung chưa biết.", d: "D. Thêm nó để tìm các chủ đề theo xu hướng trên các mạng xã hội như Twitter.", ans: "c" },
+                { id: 364, q: "Trong Microsoft word 2010, tổ hợp phím phím tắt nào sau đây có thể dùng để thay đổi font chữ cho phần văn bản đã chọn?", a: "Ctrl + Shift + P", b: "Ctrl + H", c: "Ctrl + O", d: "Ctrl + Shift + K", ans: "a" },
+                { id: 365, q: "Tùy chọn nào dưới đây là các bộ đinh dạng được thiết lập, đặt tên và lưu lại?", a: "View", b: "Style", c: "Format", d: "Toolbar", ans: "b" },
+                { id: 366, q: "With Microsoft Word 2010, khi bạn nhìn thấy biểu tượng ¶ trong văn bản, biểu tượng đó có ý nghĩa gì:", a: "Khi bạn đã nhấn phím Enter", b: "Hiện kí hiệu đánh dấu đoạn văn bản", c: "Ký tự này xuất hiện tự động khi bạn tạo một tài liệu mới", d: "Bạn đã nhấn phím Tab", ans: "b" },
+                { id: 367, q: "Trong Microsoft Excel 2010, khi độ rộng dữ liệu kiểu số trong ô lớn hơn chiều rộng của ô thì ô đó sẽ hiển tự các ký tự:", a: "*", b: "#", c: "?", d: "@", ans: "b" },
+                { id: 368, q: "Trong Microsoft Word 2010, để di chuyển con trỏ văn bản đến đầu đoạn văn bản tiếp theo, ta sử dụng:", a: "Phím Home", b: "Tổ hợp phím Ctrl + Home", c: "Phím Page Down", d: "Tổ hợp phím Ctrl + Down Arrow", ans: "d" },
+                { id: 369, q: "WWW là viết tắt của:", a: "Wild Wild West", b: "World Wide WAN", c: "World Wide Fund for Nature", d: "World Wide Web", ans: "d" },
+                { id: 370, q: "Lựa chọn nào sau đây là hệ điều hành?", a: "Android", b: "Skype", c: "Bing", d: "Facebook", ans: "a" },
+                { id: 371, q: "Lựa chọn nào đại diện cho các giải pháp để giải quyết các vấn đề chung của phần cứng?", a: "Khởi động lại máy tính ở chế độ Safe mode sử dụng chức năng mạng", b: "Chống phân mảnh ổ cứng để tăng dung lượng đĩa trống", c: "Khôi phục lại cấu hình máy tính về thời điểm trước", d: "Gỡ bỏ các thành phần phần cứng để tìm lỗi", ans: "d" },
+                { id: 372, q: "Trong Powerpoint 2010, khi tạo mới một bản trình diễn:", a: "Trình diễn vừa tạo ra luôn trống", b: "Sử dụng một trình dựa trên một trình diễn có sẵn", c: "Trình diễn tạo ra có thể là một trình diễn trống (Blank presentation), một khuôn mẫu (Template) hoặc từ một tập tin trình chiếu có sẵn.", d: "Trình diễn tạo ra có thể là một trình diễn trống (Blank presentation), một khuôn mẫu (Template) có sẵn hoặc từ một tập tin Microsoft Word", ans: "d" },
+                { id: 373, q: "Trong Microsoft Word 2010, lựa chọn nào sau đây sẽ mở hộp thoại của chức năng tìm kiếm và thay thế trong văn bản?", a: "Thẻ Insert/chọn Text box", b: "Double click vào bất kỳ vị trí nào trên thanh trạng thái và sau đó chọn Replace.", c: "Thẻ Home/Nhóm Editing/chọn Replace (hoặc bấm tổ hợp phím Ctrl+H)", d: "Bấm tổ hợp phím CTRL + F", ans: "c" },
+                { id: 374, q: "Trong Microsoft Word 2010, thao tác nào sao đây là sai khi bạn muốn chọn toàn bộ (Select all) nội dung văn bản:", a: "Insert/ Select/ Select All", b: "Đặt chuột ở vị trí đầu văn bản, nhấn giữ phím Shift và đưa chuột phải đến vị trí cuối văn bản khối cần chọn.", c: "Home/ Select/ Select All", d: "Bấm tổ hợp Ctrl-A", ans: "a" },
+                { id: 375, q: "Tùy chọn nào dưới đây có thể sử dụng đê chia cửa sổ thành 2 phần khác nhau?", a: "Window(Split", b: "Format ( Window", c: "View ( Window(Split", d: "View(Split", ans: "c" },
+                { id: 376, q: "Trong Word 2010, muốn kẻ đường thẳng cho thật thẳng, phải nhấn phím gì trước khi kéo chuột.", a: "Alt + Shift", b: "Ctrl + Alt", c: "Shift", d: "Ctrl", ans: "d" },
+                { id: 377, q: "Ý nghĩa của Recycle Bin (thùng rác) là gì?", a: "Cho biết bạn có thể xóa một số thư mục cũ hơn", b: "Một khu vực lưu trữ tạm thời cho các tập tin và thư mục bị xóa", c: "Lưu trữ các tập tin đã bị xóa hoặc thư mục được tạo ra bởi những người chia sẽ máy tính của bạn", d: "Cho biết bạn có các tập tin cũ sẽ bị xóa", ans: "b" },
+                { id: 378, q: "Làm thế nào để lưu lại một trang web để bạn nhanh chóng truy cập vào nó sau này?", a: "Gửi email.", b: "Lưu nó thành một tài liệu.", c: "Lưu nó vào mục yêu thích (Favorites).", d: "In trang web đó.", ans: "c" },
+                { id: 379, q: "Khi nào bạn sư dụng Quick Style để áp dụng định dạng?", a: "Khi bạn cần phải xác định các thanh dữ liệu đucợ trình bày trong 1 biểu đồ", b: "Khi bạn muốn định dạng chi tiết các loại văn bản như tiêu đề, nhan đề, vv", c: "Khi các chủ đề không có sẵn để sử dụng", d: "Khi bản trình chiếu chỉ bao gồm các văn bản đơn thuần", ans: "b" },
+                { id: 380, q: "Lệnh nào sau đây mà bạn có thể sử dụng để kiểm tra kết nối giữa hai thiết bị trên mạng", a: "Google", b: "ping", c: "FTP", d: "ipconfig", ans: "b" },
+                { id: 381, q: "Trong Microsoft Word 2010, thanh Quick Access Toolbar có tác dụng gì?", a: "Chỉ dùng để xoá nội dung văn bản nhanh hơn", b: "Chỉ dùng để chèn hình ảnh vào văn bản", c: "Dùng để thoát nhanh microsoft word", d: "Giúp người dùng có thể thao tác một vài chức năng nhanh chóng và tức thời", ans: "d" },
+                { id: 382, q: "Lựa chọn nào sau đây là chương trình trình chiếu?", a: "Microsoft Word", b: "Microsoft PowerPoint", c: "Mozilla Firefox", d: "Google", ans: "b" },
+                { id: 383, q: "Trong Microsoft Word 2010, lựa chọn nào sau đây khi muốn xuống dòng mà không kết thúc đoạn?", a: "Bấm tổ hợp phím Ctrl+Enter", b: "Bấm tổ hợp phím Alt+Enter", c: "Bấm tổ hợp phím Shift+Enter", d: "Bấm phím Enter", ans: "c" },
+                { id: 384, q: "Trong MS Word 2010, khi bấm tổ hợp phím nào sẽ thực hiện đóng cửa sổ văn bản hiện hành?", a: "Ctrl –W", b: "Shift –W", c: "Alt -W", d: "Ctrl -V", ans: "a" },
+                { id: 385, q: "Trong MS Word 2010, khi bấm tổ hợp phím nào sẽ thực hiện đóng cửa sổ văn bản hiện hành?", a: "Alt -W", b: "Ctrl –W", c: "Ctrl -V", d: "Shift –W", ans: "b" },
+                { id: 386, q: "LAN đại diện cho:", a: "C. Legal area network (mạng diện pháp lý)", b: "D. Local area nature (tính chất khu vực địa phương)", c: "A. Local area network (mạng cục bộ)", d: "B. Wide area network (mạng diện rộng)", ans: "c" },
+                { id: 387, q: "Internet là gì? (Chọn tất cả áp dụng.)", a: "Các mạng toàn cầu kết nối với nhau mà sử dụng giao thức truyền thông theo một tiêu chuẩn để trao đổi dữ liệu và thông tin giữa chúng", b: "Mỗi website và trang web trên thế giới", c: "Các mạng vật lý của máy tính và các thiết bị (điện thoại thông minh, máy tính bảng, vv) trên khắp thế giới", d: "Một mạng với nhiều máy tính và các thiết bị", ans: "bc" },
+                { id: 388, q: "Tuyên bố nào về các ổ đĩa trạng thái rắn là chính xác?", a: "Ổ đĩa thể rắn không có bộ phận chuyển động.", b: "Ổ đĩa thể rắn có dung lượng lớn hơn so với ổ đĩa từ tính.", c: "Ổ đĩa thể rắn là ít tốn kém hơn so với các ổ đĩa từ tính tương đối nhỏ.", d: "Ổ đĩa thể rắn không bao giờ được mang ra ngoài.", ans: "a" },
+                { id: 389, q: "Hiệu ứng chuyển trang slide là?", a: "Switch slide", b: "Transition", c: "Switch page", d: "Animations", ans: "b" },
+                { id: 390, q: "Lựa chọn nào sau đây là ví dụ về một URL?", a: "D. http://www.microsoft.com", b: "B. #twitter", c: "C. ☺", d: "john.smith@email.com", ans: "a" },
+                { id: 391, q: "Trong Microsoft Word 2010, khi bấm tổ hợp phím Ctrl + N?", a: "Mở cửa sổ để nhập tài liệu mới", b: "Mở hộp thoại để cung cấp thông tin cho việc lưu trữ tài liệu mới", c: "Đóng cửa sổ hiện hành", d: "Đặt tên lại cho file tài liệu", ans: "a" },
+                { id: 392, q: "Loại máy tính thường dùng để chạy chuyên môn hóa và được dùng để chia sẽ tài nguyên, quản lý nguồn dữ liệu lớn?", a: "server", b: "netbook", c: "desktop", d: "tablet", ans: "a" },
+                { id: 393, q: "Trong Word, phím tắt nào được sử dụng để di chuyển nhanh về đầu dòng?", a: "PgDn-Page Down", b: "Ctrl+ Down Arrow", c: "Home", d: "Ctrl+Home", ans: "c" },
+                { id: 394, q: "Khi bạn bật máy tính , hệ thống sẽ hiển thị cái gì trước tiên?", a: "Hệ điều hành", b: "Chương trình phần mềm được cài đặt", c: "kết nối điên", d: "kết nối mạng", ans: "a" },
+                { id: 395, q: "Tùy chọn nào dưới đây cho phép thiết lập thời gian cho mỗi đối tượng trong PowerPoint ?", a: "View, slide sorter", b: "Transition", c: "Slide show, custom animaotion", ans: "c" },
+                { id: 396, q: "Windows Update là gì?", a: "B. Virus Windows", b: "A. Công cụ để giữ Android được cập nhật", c: "D. Công cụ khôi phục dữ liệu cho Windows", d: "C. Công cụ để giữ Windows cập nhật", ans: "d" },
+                { id: 397, q: "Lựa chọn nào sau đây là ví dụ của các mật khẩu mạnh? (Chọn tất cả áp dụng.)", a: "A. 1234567", b: "B. hellokitty", c: "C. H3Ll0K1ttY", d: "D. Th1s1 $ Year2015", ans: "d" },
+                { id: 398, q: "WWW là viết tắt của:", a: "D. World Wide Fund for Nature", b: "A. Wild Wild West", c: "C. World Wide Web", d: "B. World Wide WAN", ans: "c" },
+                { id: 399, q: "Tùy chọn nào dùng để thiết lập mặc định cách ngày tháng được hiển thị trong excel?", a: "Định dạng ngày mặc định trong Format Cells", b: "Cài đặt mặc định thông qua việc cài đặt Office", g: "Mục Advanced trong Excel Options", d: "Region and Language trong Control panel", ans: "d" },
+                { id: 400, q: "Trong Microsoft Word 2010, nhóm công cụ nào trong thanh Ribbon có chứa chức năng cho phép bạn thay đổi khoảng cách dòng?", a: "Paragraph", b: "Font", c: "Page Setup", d: "Drawing", ans: "a" },
+                { id: 401, q: "Máy tính sẽ thực hiện việc gì khi bạn khởi động một chương trình ứng dụng?", a: "Đóng tất cả các chương trình ứng dụng khác đang được mở", b: "Kiểm tra dung lượng còn trống trên ổ đĩa cứng", c: "Lưu trữ các tập tin làm việc trước đó của chương trình ứng dụng", d: "Nạp một bản sao của các chỉ dẫn hoạt động của chương trình vào bộ nhớ RAM", ans: "d" },
+                { id: 402, q: "Lựa chọn nào sau đây là công cụ tìm kiếm? (Chọn tất cả áp dụng.)", a: "A. Facebook", b: "B. Google", c: "C. Bing", d: "D. Yahoo!", ans: "bcd" },
+                { id: 403, q: "Trong Microsoft Word 2010, khi chọn một đối tượng (Object) trong văn bản thì:", a: "Các đối tượng xuất hiện trong cửa sổ riêng của nó để chỉnh sửa", b: "Tám ô vuông nhỏ xuất hiện xung quanh đối tượng", c: "Các đối tượng được được đánh dấu nổi bật như khi chọn văn bản thông thường", d: "Các đối tượng thay đổi sang màu đen và màu trắng nếu nó có màu", ans: "b" },
+                { id: 404, q: "Trong Microsoft word 2010, khi bấm tổ hợp phím Ctrl + C sẽ thực hiện hành động nào sau đây:", a: "Các mục được chọn sẽ hiển thị màu với màu sắc được lựa chọn cuối cùng trong bảng màu", b: "Các mục được chọn sẽ bị loại bỏ khỏi vị trí hiện tại của chúng", c: "Canh giữa các mục được chọn so với các lề", d: "Sao chép các mục đang được chọn vào Clipboard", ans: "d" },
+                { id: 405, q: "Trong Power transient 2010, để hiển thị một bản trình bày chứa ba khung: Outline, Slide and Notes, bạn dùng", a: "Slide Show", b: "Normal", c: "Reading View", d: "Slide Sorter", ans: "b" },
+                { id: 406, q: "Trong PowerPoint 2010, dùng tổ hợp phím Ctrl + D để làm gì?", a: "Chỉnh sưa slide đang chọn", b: "Nhân bản slide đang chọn", c: "Xóa slide đnag chọn", d: "Thêm mới một slide", ans: "b" },
+                { id: 407, q: "Web là gì?", a: "Một giao thức mạng", b: "Toàn bộ Internet", c: "Một loại phần mềm", d: "Một hệ thống của trang web được kết nối bằng các đường link", ans: "d" },
+                { id: 408, q: "Một giấy phép theo trung tâm (site license) là gì?", a: "Giấy phép cài đặt và sử dụng chương trình phần mềm trên nhiều máy tính tại một địa điểm", b: "Giấy phép cài đặt và sử dụng chương trình phần mềm trên một máy tính cụ thể ở bất kỳ vị trí nào", c: "Giấy phép cài đặt và sử dụng chương trình phần mềm trên một máy tính cụ thể ở một địa điểm", d: "Giấy phép cài đặt và sử dụng chương trình phần mềm trên nhiều máy tính ở bất kỳ vị trí nào", ans: "a" },
+                { id: 409, q: "Trong Microsoft Word 2010, thanh công cụ Quick Access", a: "Chỉ dùng để thoát nhanh Microsoft word", b: "Chỉ dùng để chèn nhanh hình ảnh vào văn bản", c: "Chỉ dùng để xoá nhanh nội dung trong văn bản", d: "Giúp người dùng thực hiện nhanh một số chức năng thông dụng", ans: "d" },
+                { id: 410, q: "Khu vực nào trong cửa sổ Excel cho phép nhập các giá trị và công thức?", a: "Standard Tool bar", b: "Title bar", c: "Formula bar", d: "Menu bar", ans: "c" },
+                { id: 411, q: "Mạng tốc độ cao kết nối đến LAN trong 1 khu vực đô thị, thành phố và xử lý số lượng lớn kết nối hoạt động thông qua khu vực đó.", a: "Mạng gia đình –home network.", b: "Mạng client/server –client/server network.", c: "Mạng đô thị (thành phố…) – metropolitan area network (MAN)", d: "Mạng cục bộ – Local area network (LAN).", ans: "c" },
+                { id: 412, q: "Khi tạo ra các bảng trong cơ sở dữ liệu Access thì ta nên thực hiện theo trình tự sau", a: "D) Nhập liệu, tạo khóa chính, liên kết", b: "C) Tạo khóa chính, nhập liệu, tạo liên kết", c: "A) Tạo liên kết, tạo khóa chính, nhập liệu", d: "B) Tạo khóa chính, tạo liên kết, nhập liệu", ans: "d" },
+                { id: 413, q: "Trong Microsoft Word 2010, cách nào sau đây dùng để viết (bỏ) chữ chỉ số trên?", a: "Bấm tổ hợp phím CTRL+SHIFT +\"=\"", b: "Bấm tổ hợp phím SHIFT +\"=\"", c: "Bấm tổ hợp phím CTRL +\"T\"", d: "Bấm tổ hợp phím ALT và F8", ans: "a" },
+                { id: 414, q: "Lệnh nào sau đây được sử dụng để hiển thị tất cả các cấu hình IP trên một hệ thống Windows?", a: "A. ipconfig", b: "B. tracert", c: "C. ipconfig / all", d: "D. ping", ans: "c" },
+                { id: 415, q: "Trong Microsoft Word 2010, tổ hợp phím nào sau đây để mở hộp thoại open (mở file)?", a: "Ctrl + O", b: "Ctrl + K", c: "Shift + P", d: "Ctrl + H", ans: "a" },
+                { id: 416, q: "Tùy chọn nào dưới đây là nhóm (Group) trong tab Insert trên Ribbon?", a: "Paragraph", b: "Illustration", c: "Font", d: "Page layout", ans: "b" },
+                { id: 417, q: "Một phần của bus mà truyền dữ liệu thực tế.", a: "Khoang ổ đĩa", b: "PCI bus", c: "Bus dữ liệu", d: "Địa chỉ bus", ans: "c" },
+                { id: 418, q: "URL viết tắt của cụm từ nào?", a: "Uniform Resource Locator", b: "Under Resource Locator", g: "Uniform Resize Locator", d: "Uniform Resource Locate", ans: "a" },
+                { id: 419, q: "Trong quá trình thiết lập quan hệ giữa các bảng, để kiểm tra ràng buộc toàn vẹn về phụ thuộc tồn tại thì ta chọn mục", a: "A) Enforce Referential Integrity", b: "B) Cascade Update Related Fields", c: "C) Cascade Delete Related Record", d: "D) Primary Key", ans: "a" },
+                { id: 420, q: "Loại chuột sử dụng một cảm biến laser", a: "b. Máy in laser", b: "d. Chuột không khí", c: "c. Mã vạch", d: "a. Chuột laser", ans: "d" }
+            ],
+            8: [
+                { id: 421, q: "Ý nghĩa của Recycle Bin (thùng rác) là gì?", a: "Lưu trữ các tập tin đã bị xóa hoặc thư mục được tạo ra bởi những người chia sẽ máy tính của bạn", b: "Một khu vực lưu trữ tạm thời cho các tập tin và thư mục bị xóa", c: "Cho biết bạn có thể xóa một số thư mục cũ hơn", d: "Cho biết bạn có các tập tin cũ sẽ bị xóa", ans: "b" },
+                { id: 422, q: "Trong phần mềm Microsoft Word 2010, cách nào dùng để ẩn/hiện thanh Ribbon?", a: "Nhấn nút phải chuột tại một thẻ bất kỳ trên thanh Ribbon/Chọn Minimize the Ribbon", b: "Nhấn tổ hợp phím Ctrl + Shift+F4", c: "Nhấp đúp chuột vào thanh ruler", d: "Nhấn tổ hợp phím Ctrl + F5", ans: "a" },
+                { id: 423, q: "Các phím tắt cho các lệnh Copy là gì?", a: "Ctrl + C", b: "Ctrl + Z", c: "Alt + F4", d: "Ctrl + V", ans: "a" },
+                { id: 424, q: "Kết nối tạm thời : sử dụng một hay nhiều đường dây điện thoại tương đương (analog) cho việc truyền thông.", a: "dial-up line", b: "dial-up modem", c: "T1 line", d: "dedicated line", ans: "a" },
+                { id: 425, q: "Cho biết phần mở rộng của chương trình Microsoft Access?", a: "*.accdb", b: "*.xlsx", c: "*.doc, *.docx", d: "*.pptx", ans: "a" },
+                { id: 426, q: "Thiết bị LAN nào có thể kết nối hai hệ thống riêng lẻ hoặc nhiều mạng với nhau?", a: "hub", b: "bridge", c: "router", d: "switch", ans: "d" },
+                { id: 427, q: "Những đơn vị đo lường nào sau đây bạn sử dụng để đo dung lượng lưu trữ trên một đĩa cứng?", a: "A. GHz", b: "B. GB", c: "C. Số lượng lõi", d: "D. SSD", ans: "b" },
+                { id: 428, q: "Trong Microsoft Excel, dạng địa chỉ sau đây, địa chỉ nào là địa chỉ tuyệt đối?", a: "$B$2:$D$8", b: "B$2:D$8", c: "$B2:$D8", d: "B$2$:D$8$", ans: "a" },
+                { id: 429, q: "Thiết bị truyền thông có thể chuyển đổi từ tín hiệu kỹ thuật số sang tín hiệu tương đương và tín hiệu tương đương có thể chuyển sang tín hiệu kỹ thuật số, vì thế dữ liệu có thể truyền tải qua đường dây điện thoại.", a: "ISDN modem", b: "digital modem", c: "dial-up modem", d: "wireless modem", ans: "c" },
+                { id: 430, q: "Phần mở rộng nào sau đây không liên quan đến tập tin bảng tính mà Micfrosoft Excel 2010 có thể xử lý và lưu trữ:", a: "BMP", b: "Xla", c: "xls", d: "xlsx", ans: "a" },
+                { id: 431, q: "Đơn vị đo lường thường được sử dụng để chỉ dung lượng RAM được lắp trong một máy tính là gì?", a: "MHz", b: "GB", c: "GHz", d: "MB", ans: "b" },
+                { id: 432, q: "Qui định nhập kiểu Text tự động đổi thành chữ thường sử dụng mã Fomat là", a: "A) >", b: "B) <", c: "C) @", d: "D) &", ans: "b" },
+                { id: 433, q: "Người và máy tính giao tiếp với nhau thông qua", a: "Chuột.", b: "Bàn phím.", g: "Hệ điều hành.", d: "Đĩa cứng.", ans: "g" },
+                { id: 434, q: "Dữ liệu đã được chế biến thành một hình thức hữu ích", a: "d. Bút", b: "a. Chuột", c: "b. Dữ liệu đầu ra", d: "c. Cảm ứng", ans: "c" },
+                { id: 435, q: "Loại chuột sử dụng một cảm biến laser", a: "a. Chuột laser", b: "c. Mã vạch", c: "d. Chuột không khí", d: "b. Máy in laser", ans: "a" },
+                { id: 436, q: "Trong Microsoft office 2010, ba nút mặc định trên Quick Access Toolbar trước khi bạn tùy biến là?", a: "Print, Undo, Redo", b: "Undo, Redo, Save", c: "Open, Undo, Save", d: "New, Redo, Save", ans: "b" },
+                { id: 437, q: "Đơn vị đo tốc độ mạng?", a: "Gbps(tỉ bít trên giây)", b: "Tất cả đơn vị đo ở trên", c: "Mbps(triệu bít trên giây)", d: "bps(bít trên giây), Kbps(kilo bít trên giây)", ans: "b" },
+                { id: 438, q: "Trong PowerPoint 2010, dùng tổ hợp phím Ctrl +D để làm gì?", a: "Thêm mới một slide", b: "Chỉnh sưa slide đang chọn", c: "Nhân bản slide đang chọn", d: "Xóa slide đnag chọn", ans: "c" },
+                { id: 439, q: "May tinh", a: "ngủ", b: "nghỉ", c: "Nghe nhac", d: "Choi", ans: "c" },
+                { id: 440, q: "Kết nối nào là kết nối không dây?", a: "RJ45", b: "Parallel", g: "Hotspot", d: "4G LTE/3G GPRS", ans: "d" },
+                { id: 441, q: "Đầu đọc quang học sử dụng tia laser để đọc mã vạch bằng cách sử dụng mô hình ánh sáng đi qua các dòng mã vạch", a: "b. Màn hình cảm ứng", b: "d. Máy quét mã vạch", c: "a. MICR đọc", d: "c. Đầu đọc RFID", ans: "b" },
+                { id: 442, q: "Điều gì xảy ra khi bạn chọn một file, nhấn phím Delete trên bàn phím của bạn, và xác nhận rằng bạn muốn xóa các tập tin? (Chọn tất cả các câu đúng.)", a: "Các tập tin không còn có thể được phục hồi.", b: "Các tập tin được xóa khỏi máy tính của bạn.", c: "Các tập tin vẫn còn trên đĩa cứng của bạn, bằng cách sử dụng không gian đĩa còn trống.", d: "Các tập tin được đưa vào Recycle Bin, nơi bạn có thể phục hồi nếu cần thiết.", ans: "cd" },
+                { id: 443, q: "Adapter chuyển đổi dữ liệu xuất của máy tính thành tín hiệu video đi thông qua một cáp với một màn hình, hiển thị hình ảnh trên màn hình. Còn gọi là ________", a: "Bo mạch chủ", b: "Card điều hợp.", c: "Card video", d: "Cổng USB", ans: "c" },
+                { id: 444, q: "Dòng Intel Core.", a: "Người tính bằng cách sử dụng", b: "Lõi xử lý, hoặc chỉ đơn giản là cốt lõi", c: "Máy tính cá nhân hiệu suất cao hiện nay có thể sử dụng một bộ xử lý trong", d: "Kết nối nam và cổng", ans: "c" },
+                { id: 445, q: "Phần mở rộng của file tài liệu với chương trình ứng dụng Microsoft Word 2010 là:", a: "Pptx", b: "Docx", c: "Txt", d: "Xlsx", ans: "b" },
+                { id: 446, q: "Chỉ ra nhiệm vụ của hệ điều hành", a: "Tạo bảng tính", b: "Quản lý tiến trình", c: "Diệt virus", d: "Quản lý thư điện tử", ans: "b" },
+                { id: 447, q: "BCC có ý nghĩa gì khi bạn soạn email?", a: "Một bản sao nội dung với thông tin bí mật của người gửi", b: "Một bản sao nội dung", c: "Người nhận liệt kê trong trường BCC nhận được một bản sao của tin nhắn nhưng không được hiển thị trên bản sao bất kỳ người nhận khác, bao gồm tất cả những người nhận trong trường BCC.", d: "Người nhận liệt kê trong trường BCC nhận được một bản sao của tin nhắn và được hiển thị trên bản sao những người nhận khác.", ans: "c" },
+                { id: 448, q: "Bạn đang xem xét các tiêu chuẩn không dây có sẵn trên router không dây của bạn. Lựa chọn nào sau đây là tiêu chuẩn hợp lệ của 802.11?", a: "802.11t", b: "802.11n", c: "802.11ac", d: "802.11cd", ans: "bc" },
+                { id: 449, q: "Nhanh hơn 10 lần so với USB 2.0.", a: "USB 3.0", b: "bay", c: "Unicode", d: "Byte.", ans: "a" },
+                { id: 450, q: "URL viết tắt của cụm từ nào?", a: "Uniform Resource Locate", b: "Uniform Resize Locator", c: "Uniform Resource Locator", d: "Under Resource Locator", ans: "c" },
+                { id: 451, q: "Trong Microsoft Excel 2010, khi độ rộng dữ liệu kiểu số trong ô lớn hơn chiều rộng của ô thì ô đó sẽ hiển tự các ký tự:", a: "*", b: "#", c: "@", d: "?", ans: "b" },
+                { id: 452, q: "Trong Microsoft Word 2010, bật chế độ “Show/Hide ¶”, kí tự đặc biệt ¶ xuất hiện trong văn bản có ý nghĩa gì:", a: "Đại diện cho tổ hợp phím Alt+Enter", b: "Đại diện cho phím Enter để kết thúc đoạn (paragraph)", c: "Đại diện cho tổ hợp phím Shift+Enter", d: "Đại diện cho phím Tab", ans: "b" },
+                { id: 453, q: "Windows Update là gì?", a: "D. Công cụ khôi phục dữ liệu cho Windows", b: "A. Công cụ để giữ Android được cập nhật", c: "C. Công cụ để giữ Windows cập nhật", d: "B. Virus Windows", ans: "c" },
+                { id: 454, q: "Đâu là thiết bị lưu trữ dữ liệu", a: "HDD", b: "DRAM", c: "CCD", d: "SRAM", ans: "a" },
+                { id: 455, q: "Một truy vấn thêm, xóa hoặc cập nhật dữ liệu được gọi là?", a: "Total query", b: "Parameter query", c: "Action query", d: "Select query", ans: "c" },
+                { id: 456, q: "Thiết bị đầu ra trông giống như một máy in hoặc bản sao nhưng cung cấp các chức năng của một máy in, máy quét, máy copy và có thể là một máy fax", a: "b. In kim", b: "a. Thiết bị trỏ", c: "d. Thiết bị ngoại vi đa chức năng", d: "c. Máy in nonimpact", ans: "c" },
+                { id: 457, q: "Phát biểu nào là đúng khi nói đến CPU", a: "CPU nhắm đền phần mềm người sử dụng", b: "CPU được tạo bởi bộ nhớ RAM và ROM", c: "CPU thường được tích hợp với một chip gọi là vi xử lý", d: "CPU là viết tắt của Processing Unit", ans: "c" },
+                { id: 458, q: ".....là một ngôn ngữ được sử dụng bởi các máy tính để giao tiếp, trao đổi thông tin với nhau qua việc sử dụng hệ thống mạng?", a: "giao thức(protocol)", b: "công cụ tìm kiếm(search engine)", c: "trình duyệt(browser)", d: "máy chủ(server)", ans: "a" },
+                { id: 459, q: "Phát biểu nào là đúng đối với các địa chỉ email", a: "Các địa chỉ email được tạo thành bởi hai phần chính: tên người dùng và tên miền. Cả hai phần được phân cách bởi ký hiệu #", b: "Các địa chỉ email được tạo thành bởi hai phần chính: tên người dùng và tên miền. Cả hai phần được phân cách bởi ký hiệu @", c: "Tên người dùng của địa chỉ email được cấp bởi nhà cung cấp (supplier)", d: "Có thể có tên người dùng giống nhau trong cùng một tên miền", ans: "b" },
+                { id: 460, q: "Bạn có thể sử dụng công cụ gì để kiểm tra xem một ứng dụng có tương thích với phiên bản Windows của bạn không?", a: "Safe Mode", b: "Microsoft Fix It Solution Center", c: "Compatibility Mode", d: "Windows Compatibility Center", ans: "d" },
+                { id: 461, q: "Một siêu liên kết (hyperlink) là gì?", a: "Một tham chiếu tới dữ liệu có thể được truy cập bằng cách nhấp chuột vào nó", b: "Địa chỉ của một website hoặc một trang web trên WWW", c: "Đoạn văn bản hiển thị trong một màu sắc khác nhau bởi các trình duyệt web", d: "Địa chỉ mạng của một trang web", ans: "a" },
+                { id: 462, q: "Những máy tính và thiết bị di động làm việc trên một mạng dựa vào máy chủ (server) cho nguồn tài nguyên của nó.", a: "Latency (thời gian đợi)", b: "WiMAX", c: "SMS", d: "clients.", ans: "d" },
+                { id: 463, q: "Hệ điều hành (Windows) làm gì?", a: "Hiển thị hình ảnh trên màn hình máy tính", b: "Cho phép giao tiếp giữa người sử dụng, các ứng dụng phần mềm, và các phần cứng bên trong máy tính", c: "Khởi động máy tính khi tôi cần sử dụng và tắt nó khi tôi làm việc xong", d: "Quản lý các tập tin và thư mục trên máy tính", ans: "b" },
+                { id: 464, q: "Tên của các tính năng mà bạn có thể sử dụng để quản lý các tập tin trong bộ Office?", a: "Office File Manager", b: "Windows Explorer", c: "Backstage View", d: "Choose File", ans: "c" },
+                { id: 465, q: "Trong Microsoft Word 2010, nhóm công cụ nào trong thanh Ribbon có chứa chức năng cho phép bạn thay đổi khoảng cách dòng?", a: "Font", b: "Page Setup", c: "Drawing", d: "Paragraph", ans: "d" },
+                { id: 466, q: "Trong Microsoft Power Point 2010, khi đang đứng ở slide đầu tiên của bản trình chiếu, để chuyển chế độ hiển thị từ bình thường sang dạng trình chiếu người dùng thao tác:", a: "Nhấn vào biểu tượng slide show ở bên trái góc dưới của màn hình", b: "Nhấn Alt+F5 trên bàn phím", c: "Nhấn F5 trên bàn phím", d: "Nhấn Control+F5 trên bàn phím", ans: "c" },
+                { id: 467, q: "Hình thức truyền thông nào là tốt nhất khi sự hồi đáp không cần khẩn cấp?", a: "tin nhắn văn bản", b: "gửi tin nhắn tức thời", c: "Email", d: "Blog", ans: "b" },
+                { id: 468, q: "Hãy chỉ ra đâu là phát biểu đúng về địa chỉ trong Excel 2010", a: "D4 là địa chỉ cột 4(cột D) và dòng 4", b: "Địa chỉ một ô trong excel là địa chỉ cấu tạo từ địa chỉ cột và địa chỉ hàng", g: "D4 không phải là địa chỉ ô trong excel", ans: "ab" },
+                { id: 469, q: "Tại sao biểu đồ đem lại nhiều cách mô tả dữ liệu hơn sơ với một bảng?", a: "Biểu đồ có thể được in trên một tờ giấy lớn hơn so với một bảng", b: "Nhiều dữ liệu có thể xuất hiện trên biểu đồ so với bảng", c: "Một biểu đồ minh họa xu hướng hay dáng điệu dữ liệu rõ ràng hơn", d: "Một biểu đồ có nhiều màu sắc hơn", ans: "c" },
+                { id: 470, q: "Trong Powerpoint 2010, khi tạo mới một bản trình diễn:", a: "Sử dụng một trình dựa trên một trình diễn có sẵn", b: "Trình diễn tạo ra có thể là một trình diễn trống (Blank presentation), một khuôn mẫu (Template) có sẵn hoặc từ một tập tin Microsoft Word", c: "Trình diễn tạo ra có thể là một trình diễn trống (Blank presentation), một khuôn mẫu (Template) hoặc từ một tập tin trình chiếu có sẵn.", d: "Trình diễn vừa tạo ra luôn trống", ans: "b" },
+                { id: 471, q: "Trong quá trình thiết lập quan hệ giữa các bảng, để kiểm tra ràng buộc toàn vẹn về phụ thuộc tồn tại thì ta chọn mục", a: "A) Enforce Referential Integrity", b: "D) Primary Key", c: "B) Cascade Update Related Fields", d: "C) Cascade Delete Related Record", ans: "a" },
+                { id: 472, q: "Lựa chọn nào đại diện cho các giải pháp để giải quyết các vấn đề chung của phần cứng?", a: "Khởi động lại máy tính ở chế độ Safe mode sử dụng chức năng mạng", b: "Khôi phục lại cấu hình máy tính về thời điểm trước", c: "Gỡ bỏ các thành phần phần cứng để tìm lỗi", d: "Chống phân mảnh ổ cứng để tăng dung lượng đĩa trống", ans: "c" },
+                { id: 473, q: "Trong các dạng địa chỉ sau đây, địa chỉ nào khi copy công thức đến vị trí khác trong cùng trang tính (Wordsheet) vẫn không thay đổi địa chỉ tham chiếu tại vị trí mới.", a: "$B$2:$D$8", b: "$B2:$D8", c: "B$2$:D$8$", d: "B$2:D$8", ans: "a" },
+                { id: 474, q: "LAN đại diện cho?", a: "Wide area network (mạng diện rộng)", b: "Local area nature (tính chất khu vực địa phương)", c: "Legal area network (mạng diện pháp lý)", d: "Local area network (mạng cục bộ)", ans: "d" },
+                { id: 475, q: "Trình duyệt web là gì? (Chọn tất cả áp dụng.)", a: "A. Một ứng dụng mà bạn có thể sử dụng để truy cập Internet", b: "C. Một ứng dụng mà bạn có thể sử dụng để gửi các thông tin email", c: "D. Một ứng dụng sẽ hiển thị một trang web trên một máy tính hoặc thiết bị di động", d: "B. Phầm mềm được sử dụng để duyêt các website và các trang web được tìm thấy trên World Wide Web.", ans: "cd" },
+                { id: 476, q: "Phần mềm chia sẻ (shareware)−Phiên bản dùng thử của phần mềm mà bạn có thể tải về miễn phí −Có chức năng hoặc thời gian truy cập chương trình hạn chế −Nếu thích chương trình, nộp lệ phí danh nghĩa để bỏ các hạn chế. Cho biết khái niệm trên đúng hay sai?", a: "Đúng", b: "Sai", ans: "a" },
+                { id: 477, q: "Trong Microsoft Excel 2010, khi bạn muốn đoạn văn bản dài tại ô A1 thành có nhiều dòng thì bạn dùng chức năng", a: "Wrap text", b: "Để chuột ở vị trí muốn xuống dòng và nhấn phím tổ hợp Ctrl+Alt", c: "Để chuột ở vị trí muốn xuống dòng và nhấn phím tổ hợp Enter+ Alt", d: "Để chuột ở vị trí muốn xuống dòng và nhấn phím tổ hợp Alt+End", ans: "a" },
+                { id: 478, q: "Chuẩn mạng xác định không có máy tính trung tâm hoặc thiết bị trên mạng cần kiểm soát khi dữ liệu có thể được truyền", a: "Chuẩn Ethernet (Ethernet)", b: "Latency (thời gian đợi)", c: "T1 line", d: "server", ans: "a" },
+                { id: 479, q: "Lựa chọn nào sau đây là hệ điều hành?", a: "B. Facebook", b: "A. Bing", g: "C. Android", d: "D. Skype", ans: "g" },
+                { id: 480, q: "Bạn vừa mua một bộ định tuyến không dây mới và muốn tăng cường an ninh. Lựa chọn nào sau đây cung cấp mức độ bảo mật cao nhất?", a: "TCP / IP", b: "WPA2", c: "WEP", d: "WPA", ans: "b" }
             ]
         };
 
@@ -314,7 +619,6 @@
                 }
           }, [isDarkMode]);
 
-          // LỚP BẢO MẬT MÔN HỌC CHỐNG ĐĂNG NHẬP ĐỒNG THỜI + PHÂN QUYỀN ADMIN
           useEffect(() => {
             let sessionRef = null;
             const deviceToken = getOrCreateDeviceToken();
@@ -324,7 +628,6 @@
                     const ADMIN_EMAIL = "ngocyen@cucdang.com"; 
                     const userEmail = currentUser.email.toLowerCase();
 
-                    // Nếu không phải là tài khoản Admin hệ thống thì bắt buộc phải chứa đuôi phân quyền của môn Tin học
                     if (userEmail !== ADMIN_EMAIL) {
                         if (!userEmail.includes(".tinhocdaura")) {
                             setAuthError("Tài khoản này không có quyền truy cập môn Tin học!");
@@ -397,15 +700,6 @@
               }
           };
 
-          const shuffleArray = (array) => {
-            const newArray = [...array];
-            for (let i = newArray.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-            }
-            return newArray;
-          };
-
           const saveHistoryToLocal = (finalScore, finalWrong, totalQuestions, partId, answers) => {
             const newRecord = {
               id: Date.now(),
@@ -445,9 +739,9 @@
               q: item.q,
               correct: item.ans, 
               isMultiple: item.ans.length > 1, 
-              options: shuffleArray([
+              options: [
                 { key: 'a', text: item.a }, { key: 'b', text: item.b }, { key: 'c', text: item.c }, { key: 'd', text: item.d }
-              ])
+              ].filter(o => o.text !== undefined)
             }));
             setQuestions(formatted);
             setCurrentPart(part);
@@ -649,18 +943,19 @@
 
           if (!currentPart) {
             const menuItems = [
-                { id: 1, label: "Đề Số 01 (60 Câu)", sub: "Cấu trúc đề số 1", color: "emerald" },
-                { id: 2, label: "Đề Số 02 (60 Câu)", sub: "Cấu trúc đề số 2", color: "teal" },
-                { id: 3, label: "Đề Số 03 (60 Câu)", sub: "Cấu trúc đề số 3", color: "sky" },
-                { id: 4, label: "Đề Số 04 (60 Câu)", sub: "Cấu trúc đề số 4", color: "blue" },
-                { id: 5, label: "Đề Số 05 (60 Câu)", sub: "Cấu trúc đề số 5", color: "indigo" },
-                { id: 6, label: "Đề Số 06 (60 Câu)", sub: "Cấu trúc đề số 6", color: "emerald" }
+                { id: 1, label: "Đề 01", sub: "" },
+                { id: 2, label: "Đề 02", sub: "" },
+                { id: 3, label: "Đề 03", sub: "" },
+                { id: 4, label: "Đề 04", sub: "" },
+                { id: 5, label: "Đề 05", sub: "" },
+                { id: 6, label: "Đề 06", sub: "" },
+                { id: 7, label: "Đề 07", sub: "" },
+                { id: 8, label: "Đề 08", sub: "" }
             ];
             return (
               <div className="min-h-screen flex flex-col relative w-full">
                 <QuizPointHeader />
                 
-                {/* BANNER THƯƠNG HIỆU */}
                 <div className="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950 text-white shadow-xl relative overflow-hidden text-center pt-28 pb-16 md:pt-32 md:pb-20">
                     <div className="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_60%)] animate-pulse-slow"></div>
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:30px_30px]"></div>
@@ -677,13 +972,12 @@
                                 TIN HỌC ĐẦU RA PHẦN 1
                             </h1>
                             <p className="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">
-                                Ngân hàng 360 câu hỏi lý thuyết
+                                Ngân hàng 480 câu hỏi lý thuyết phân chia 8 đề
                             </p>
                         </div>
                     </div>
                 </div>
 
-                {/* NÚT QUAY VỀ TRANG CHỦ */}
                 <div className="absolute top-4 right-16 sm:top-6 sm:right-24 z-50 pointer-events-auto">
                     <button onClick={handleGoHome} className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-md">
                         <Home size={16}/> Quay về trang chủ
@@ -692,7 +986,6 @@
 
                 <div className="max-w-6xl mx-auto px-4 py-8 flex-1 w-full -mt-10 relative z-20 space-y-10">
                   
-                  {/* HỌA TIẾT TRANG TRÍ */}
                   <div className="max-w-2xl mx-auto h-14 flex items-center justify-between px-8 rounded-2xl border shadow-sm glass-panel border-white/40 dark:border-slate-800/60 overflow-hidden relative group">
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-brand-500/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                         <div className="flex items-center gap-2">
@@ -716,7 +1009,6 @@
                         </div>
                   </div>
 
-                  {/* THÔNG TIN TÁC GIẢ */}
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md py-3 px-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm max-w-xl mx-auto">
                         <div className="flex items-center gap-2 font-bold text-xs sm:text-sm">
                             <User size={16} className="text-brand-500" /> 
@@ -729,7 +1021,6 @@
                         </div>
                   </div>
 
-                  {/* BANNER QUẢNG CÁO TÍCH HỢP */}
                   <div className="bg-gradient-to-r from-brand-600 to-teal-700 text-white p-6 rounded-3xl shadow-xl max-w-3xl mx-auto border border-brand-500/30 overflow-hidden relative group text-center">
                         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
                             <Sparkles size={100} />
@@ -753,8 +1044,7 @@
                         </div>
                   </div>
 
-                  {/* GRID KHỐI ĐỀ THI */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                     {menuItems.map((item) => {
                         return (
                             <button key={item.id} onClick={() => startQuiz(item.id)} className="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-brand-500 dark:hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-center gap-3">
@@ -768,7 +1058,6 @@
                     })}
                   </div>
 
-                  {/* LỊCH SỬ LÀM BÀI TRỰC TIẾP TẠI TRÌNH DUYỆT */}
                   <div className="glass-panel p-6 rounded-3xl shadow-sm max-w-2xl mx-auto w-full text-left">
                     <div className="flex justify-between items-center mb-6 px-2">
                       <h2 className="text-sm font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2"><History className="text-slate-400" size={18} /> Lịch sử kết quả làm bài</h2>
@@ -779,7 +1068,7 @@
                         {history.map((record) => (
                           <div key={record.id} className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
                             <div className="flex-1 w-full sm:w-auto">
-                              <div className="font-black text-sm text-slate-700 dark:text-slate-300 uppercase tracking-tight">Đề thi số {record.part}</div>
+                              <div className="font-black text-sm text-slate-700 dark:text-slate-300 uppercase tracking-tight">Đề {record.part}</div>
                               <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 italic">{record.date}</div>
                             </div>
                             <div className="flex items-center gap-4">
@@ -808,7 +1097,7 @@
                     <div className="absolute inset-0 bg-yellow-400 blur-xl opacity-30 rounded-full"></div>
                     <Award className="w-20 h-20 text-yellow-500 relative z-10 animate-bounce-slow" />
                   </div>
-                  <h2 className="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Hoàn Thành Bài Thi!</h2>
+                  <h2 className="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Hoàn Thành Bài Ôn Tập!</h2>
                   <div className="grid grid-cols-2 gap-4 mb-8 mt-6">
                     <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100 dark:border-emerald-900/50"><p className="text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider mb-1">Đúng</p><p className="text-4xl font-black text-emerald-600 dark:text-emerald-400">{score}</p></div>
                     <div className="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-2xl border border-rose-100 dark:border-rose-900/50"><p className="text-rose-500 dark:text-rose-400 text-xs font-extrabold uppercase tracking-wider mb-1">Sai / Thiếu</p><p className="text-4xl font-black text-rose-500 dark:text-rose-400">{wrongScore}</p></div>
@@ -828,9 +1117,9 @@
                 <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-enter">
                   <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100 dark:border-slate-800">
                     <h3 className="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Nộp bài & kết thúc?</h3>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 font-medium mb-6">Kết quả đề thi hiện tại của bạn sẽ được lưu giữ lại hệ thống.</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 font-medium mb-6">Kết quả bài làm hiện tại của bạn sẽ được lưu giữ lại hệ thống.</p>
                     <div className="flex gap-3">
-                      <button onClick={() => setIsConfirming(false)} className="flex-1 py-3 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors">Tiếp tục thi</button>
+                      <button onClick={() => setIsConfirming(false)} className="flex-1 py-3 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors">Tiếp bài làm</button>
                       <button onClick={confirmFinish} className="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">Nộp bài ngay</button>
                     </div>
                   </div>
