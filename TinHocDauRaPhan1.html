@@ -1,15 +1,11 @@
-<!DOCTYPE html>
+<NGUYỄN VĂN LƯỢNG ĐẸP TRAI HẸHẸ>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trắc nghiệm Tin học Đại cương - QuizPoint Studio</title>
     
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -75,7 +71,8 @@
         .animate-enter { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-f0fdf4 via-e0f2fe to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 min-h-screen text-slate-800 dark:text-slate-100">
+<body class="bg-gradient-to-br from-[#f0fdf4] via-[#e0f2fe] to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 min-h-screen text-slate-800 dark:text-slate-100">
+    
     <div id="root"></div>
 
     <script>
@@ -92,45 +89,8 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.database();
-    </script>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-
-        // --- ICON COMPONENTS ---
-        const IconWrapper = ({ children, size = 24, className = "" }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
-        );
-
-        const CheckCircle = (props) => <IconWrapper {...props}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></IconWrapper>;
-        const XCircle = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></IconWrapper>;
-        const ArrowLeft = (props) => <IconWrapper {...props}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></IconWrapper>;
-        const RotateCcw = (props) => <IconWrapper {...props}><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></IconWrapper>;
-        const Award = (props) => <IconWrapper {...props}><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></IconWrapper>;
-        const History = (props) => <IconWrapper {...props}><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></IconWrapper>;
-        const Trash2 = (props) => <IconWrapper {...props}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></IconWrapper>;
-        const Home = (props) => <IconWrapper {...props}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></IconWrapper>;
-        const LogOut = (props) => <IconWrapper {...props}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></IconWrapper>;
-        const Eye = (props) => <IconWrapper {...props}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></IconWrapper>;
-        const ChevronLeft = (props) => <IconWrapper {...props}><polyline points="15 18 9 12 15 6"/></IconWrapper>;
-        const ChevronRight = (props) => <IconWrapper {...props}><polyline points="9 18 15 12 9 6"/></IconWrapper>;
-        const Sparkles = (props) => <IconWrapper {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></IconWrapper>;
-        const Sun = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></IconWrapper>;
-        const Moon = (props) => <IconWrapper {...props}><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></IconWrapper>;
-        const User = (props) => <IconWrapper {...props}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></IconWrapper>;
-        const Phone = (props) => <IconWrapper {...props}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .81 2.71A2 2 0 0 1 22 16.92z"/></IconWrapper>;
-        const Presentation = (props) => <IconWrapper {...props}><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></IconWrapper>;
-        const Layers = (props) => <IconWrapper {...props}><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></IconWrapper>;
-        const Target = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></IconWrapper>;
-        const Monitor = (props) => <IconWrapper {...props}><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></IconWrapper>;
-        const Lock = (props) => <IconWrapper {...props}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></IconWrapper>;
-        const Mail = (props) => <IconWrapper {...props}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></IconWrapper>;
-        const ShieldAlert = (props) => <IconWrapper {...props}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></IconWrapper>;
-
-        // ============================================================================
-        // DỮ LIỆU ĐỀ THI - PHÂN CHIA HOÀN CHỈNH 8 ĐỀ (TỔNG CỘNG ĐÚNG 480 CÂU THỰC TẾ)
-        // ============================================================================
-        const TEST_DATA = {
+         const TEST_DATA = {
             1: [
                 { id: 1, q: "Các chức năng của một VPN là gì?", a: "Bảo vệ một mạng từ khác", b: "Tạo một kết nối point-to-point trên mạng công cộng", c: "Mã hóa các gói dữ liệu từ các thiết bị gửi và nhận", d: "Mã hóa các gói dữ liệu từ các thiết bị nhận và gửi", ans: "b" },
                 { id: 2, q: "__________ lưu giữ các chỉ lệnh khởi đầu vì nó cho phép các máy tính dễ dàng để cập nhật nội dung của nó.", a: "Bộ nhớ flash.", b: "2 loại SOF bộ nhớ cache.", c: "Kết nối và cổng", d: "Hầu hết các máy tính sử dụng bộ nhớ flash để", ans: "d" },
@@ -629,6 +589,35 @@
 ]
         };
 
+        let state = {
+            user: null,
+            loading: true,
+            emailInput: "",
+            passwordInput: "",
+            authError: "",
+            isKicked: false,
+            isDarkMode: false,
+            currentPart: null,
+            currentQuestionIndex: 0,
+            score: 0,
+            wrongScore: 0,
+            showResult: false,
+            selectedOptions: [],
+            isSubmitted: false,
+            questions: [],
+            shuffledOptions: [],
+            isConfirming: false,
+            sessionAnswers: [],
+            reviewMode: false,
+            reviewData: [],
+            history: []
+        };
+
+        try {
+            const saved = localStorage.getItem('it_basic_local_history');
+            state.history = saved ? JSON.parse(saved) : [];
+        } catch (e) { state.history = []; }
+
         const getOrCreateDeviceToken = () => {
             let token = localStorage.getItem("qp_device_token_itbasic");
             if (!token) {
@@ -638,632 +627,475 @@
             return token;
         };
 
-        const QuizApp = () => {
-          const [user, setUser] = useState(null);
-          const [loading, setLoading] = useState(true);
-          const [emailInput, setEmailInput] = useState("");
-          const [passwordInput, setPasswordInput] = useState("");
-          const [authError, setAuthError] = useState("");
-          const [isKicked, setIsKicked] = useState(false);
-          const [isDarkMode, setIsDarkMode] = useState(false);
+        function toggleDarkMode() {
+            state.isDarkMode = !state.isDarkMode;
+            document.documentElement.classList.toggle('dark', state.isDarkMode);
+            render();
+        }
 
-          const [currentPart, setCurrentPart] = useState(null);
-          const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-          const [score, setScore] = useState(0);
-          const [wrongScore, setWrongScore] = useState(0); 
-          const [showResult, setShowResult] = useState(false);
-          
-          const [selectedOptions, setSelectedOptions] = useState([]); 
-          const [isSubmitted, setIsSubmitted] = useState(false); 
-          
-          const [questions, setQuestions] = useState([]);
-          const [shuffledOptions, setShuffledOptions] = useState([]);
-          const [isConfirming, setIsConfirming] = useState(false); 
-          const [sessionAnswers, setSessionAnswers] = useState([]); 
-          const [reviewMode, setReviewMode] = useState(false);
-          const [reviewData, setReviewData] = useState([]); 
-          
-          const [history, setHistory] = useState(() => {
-            try {
-              const saved = localStorage.getItem('it_basic_local_history'); 
-              const parsed = saved ? JSON.parse(saved) : [];
-              return Array.isArray(parsed) ? parsed : [];
-            } catch (e) { return []; }
-          });
+        function render() {
+            const root = document.getElementById('root');
+            
+            if (state.loading) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-500 mb-4"></div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium text-sm">Đang kiểm tra cổng kết nối bảo mật Cloud...</p>
+                    </div>`;
+                return;
+            }
 
-          useEffect(() => {
-                if (isDarkMode) {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
+            if (!state.user) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-6 flex flex-col items-center justify-center relative w-full">
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            <button onclick="toggleDarkMode()" class="p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 pointer-events-auto active:scale-95">
+                                ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                            </button>
+                        </header>
+                        <div class="w-full max-w-md p-8 sm:p-10 rounded-3xl shadow-2xl border bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/80 animate-enter mt-14">
+                            <div class="text-center mb-8">
+                                <div class="inline-flex p-3 bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-emerald-400 rounded-2xl mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                <h2 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Đăng nhập môn học</h2>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 font-bold mt-1 uppercase tracking-wider">Trắc nghiệm Tin học đầu ra Phần 1</p>
+                            </div>
+                            ${state.isKicked ? `
+                                <div class="mb-4 p-3 bg-rose-50 dark:bg-rose-950/40 border-l-4 border-rose-500 text-rose-700 dark:text-rose-400 text-xs font-semibold rounded-r-xl flex items-start gap-2 animate-enter">
+                                    <svg class="flex-shrink-0 mt-0.5 animate-pulse text-rose-600" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    <p>Tài khoản vừa bị khóa vì phát hiện đăng nhập cùng lúc từ một thiết bị khác!</p>
+                                </div>` : ''}
+                            <form onsubmit="handleLogin(event)" class="space-y-5">
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Tài khoản Email</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                                        <input type="email" id="emailInput" placeholder="abc...@quizpointstudio.com" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.emailInput}" required />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Mật mã bảo mật</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                        <input type="password" id="passwordInput" placeholder="••••••••" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.passwordInput}" required />
+                                    </div>
+                                </div>
+                                <div id="authError" class="text-xs font-bold text-rose-500 bg-rose-50 dark:bg-rose-950/30 p-3 rounded-lg border border-rose-100 dark:border-rose-900/40 hidden"></div>
+                                <button type="submit" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition-all text-sm uppercase tracking-wider">Xác nhận đăng nhập</button>
+                            </form>
+                            <div class="text-center mt-6">
+                                <button onclick="window.location.href='./index.html'" class="text-xs text-slate-400 hover:text-brand-600 dark:hover:text-emerald-400 font-bold transition-all hover:underline">← Quay lại danh mục trang chủ</button>
+                            </div>
+                        </div>
+                    </div>`;
+                if(state.authError) {
+                    const errDiv = document.getElementById('authError');
+                    errDiv.innerText = state.authError;
+                    errDiv.classList.remove('hidden');
                 }
-          }, [isDarkMode]);
+                return;
+            }
 
-          useEffect(() => {
-            let sessionRef = null;
-            const deviceToken = getOrCreateDeviceToken();
+            if (state.reviewMode) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-4 sm:p-6 lg:p-8 bg-slate-50/50 dark:bg-slate-950/20 w-full flex flex-col items-center">
+                        <div class="w-full max-w-4xl space-y-6">
+                            <div class="glass-panel p-4 rounded-2xl shadow-sm sticky top-4 z-10 flex justify-between items-center mb-8">
+                                <button onclick="setReviewMode(false)" class="flex items-center gap-2 text-brand-700 dark:text-emerald-400 font-extrabold transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> <span>Quay lại</span></button>
+                                <h2 class="text-xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Chi tiết bài làm</h2>
+                                <div class="w-8"></div> 
+                            </div>
+                            <div class="space-y-8 pb-10">
+                                ${state.reviewData.map((item, index) => {
+                                    const userAnsArr = item.s ? item.s.split('') : [];
+                                    const correctAnsArr = item.c ? item.c.split('') : [];
+                                    const isItemCorrect = item.s === item.c;
+                                    return `
+                                        <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 ${!isItemCorrect ? 'ring-2 ring-red-500/20' : ''}">
+                                            <div class="flex gap-4 mb-2">
+                                                <span class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg ${isItemCorrect ? 'bg-gradient-to-br from-emerald-400 to-emerald-600' : 'bg-gradient-to-br from-red-400 to-red-600'}">${index + 1}</span>
+                                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 leading-relaxed">${item.q}</h3>
+                                            </div>
+                                            <div class="pl-14 mb-4 text-xs font-bold text-brand-600 dark:text-emerald-400">
+                                                 ${item.c.length > 1 ? "☑ Câu hỏi này tích chọn nhiều đáp án đúng" : "🔘 Câu hỏi này chọn một đáp án duy nhất"}
+                                            </div>
+                                            <div class="space-y-3 pl-0 sm:pl-14">
+                                                ${item.o.map(opt => {
+                                                    const isOptCorrect = correctAnsArr.includes(opt.key);
+                                                    const isOptSelected = userAnsArr.includes(opt.key);
+                                                    let optionClass = "p-4 rounded-xl border flex justify-between items-center font-semibold text-sm ";
+                                                    if (isOptCorrect) optionClass += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 shadow-sm";
+                                                    else if (isOptSelected) optionClass += "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 shadow-sm";
+                                                    else optionClass += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600 opacity-70";
+                                                    return `
+                                                        <div class="${optionClass}">
+                                                            <span>${opt.text}</span>
+                                                            ${isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                                            ${isOptSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                                        </div>`;
+                                                }).join('')}
+                                            </div>
+                                        </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
 
-            const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-                if (currentUser) {
-                    const ADMIN_EMAIL = "ngocyen@cucdang.com"; 
-                    const userEmail = currentUser.email.toLowerCase();
+            if (!state.currentPart) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col relative w-full items-center">
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            <button onclick="toggleDarkMode()" class="p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 pointer-events-auto active:scale-95">
+                                ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                            </button>
+                        </header>
+                        
+                        <div class="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950 text-white shadow-xl relative overflow-hidden text-center pt-28 pb-16 md:pt-32 md:pb-20">
+                            <div class="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_60%)] animate-pulse-slow"></div>
+                            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:30px_30px]"></div>
+                            <div class="absolute top-6 right-[25%] opacity-30 text-yellow-300 animate-bounce-slow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                            <div class="absolute bottom-8 left-[20%] opacity-30 text-emerald-300 animate-float"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                            <div class="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center gap-4 relative z-10">
+                                <div class="p-3 bg-white/5 rounded-2xl backdrop-blur-md border border-white/10 animate-float inline-block shadow-xl"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+                                <div class="space-y-2">
+                                    <h1 class="pt-2 text-4xl md:text-5xl font-black tracking-tight uppercase bg-gradient-to-r from-white via-emerald-300 to-slate-200 bg-clip-text text-transparent drop-shadow-lg">TIN HỌC ĐẦU RA PHẦN 1</h1>
+                                    <p class="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">Ngân hàng 480 câu hỏi lý thuyết phân chia 8 đề</p>
+                                </div>
+                            </div>
+                        </div>
 
-                    if (userEmail !== ADMIN_EMAIL) {
-                        if (!userEmail.includes(".tinhocdaura")) {
-                            setAuthError("Tài khoản này không có quyền truy cập môn Tin học!");
-                            auth.signOut();
-                            setUser(null);
-                            setLoading(false);
-                            return;
-                        }
+                        <div class="absolute top-4 right-16 sm:top-6 sm:right-24 z-50 pointer-events-auto">
+                            <button onclick="handleGoHome()" class="flex items-center gap-2 px-4 py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Quay về trang chủ</button>
+                        </div>
+
+                        <div class="max-w-6xl mx-auto px-4 py-8 w-full -mt-10 relative z-20 space-y-10 flex flex-col items-center">
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md py-3 px-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm w-full max-w-xl">
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-brand-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Tên: <span class="text-brand-600 dark:text-emerald-400 font-extrabold">Nguyễn Văn Lượng</span></span></div>
+                                <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-amber-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .81 2.71A2 2 0 0 1 22 16.92z"/></svg><span>LH: <span class="font-mono text-slate-900 dark:text-white font-black">0333738861</span></span></div>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-brand-600 to-teal-700 text-white p-6 rounded-3xl shadow-xl border border-brand-500/30 overflow-hidden relative group text-center w-full max-w-3xl">
+                                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                                <div class="relative z-10 flex flex-col items-center gap-4">
+                                    <div class="flex items-center justify-center gap-3"><svg class="text-yellow-300 animate-pulse" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg><span class="font-bold text-lg sm:text-xl leading-tight">Nhận làm Quiz Ôn Tập & PowerPoint Cơ Bản</span></div>
+                                    <div class="flex flex-wrap justify-center gap-4 mt-1">
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Hệ thống Quiz</span></div>
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span>Thiết kế PPT</span></div>
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg><span>Tài liệu học tập</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full">
+                                ${[1, 2, 3, 4, 5, 6, 7, 8].map(num => `
+                                    <button onclick="startQuiz(${num})" class="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-brand-500 dark:hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-center gap-3">
+                                      <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 shadow-inner group-hover:bg-brand-500 dark:group-hover:bg-emerald-500 group-hover:text-white text-brand-500 transition-all duration-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+                                      <div>
+                                        <div class="font-black text-sm text-slate-800 dark:text-slate-200 tracking-tight leading-tight">Đề 0${num}</div>
+                                        <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 uppercase tracking-wide"></div>
+                                      </div>
+                                    </button>`).join('')}
+                            </div>
+
+                            <div class="glass-panel p-6 rounded-3xl shadow-sm max-w-2xl mx-auto w-full text-left">
+                                <div class="flex justify-between items-center mb-6 px-2">
+                                  <h2 class="text-sm font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg> Lịch sử kết quả làm bài</h2>
+                                  ${state.history.length > 0 ? `<button onclick="clearHistory()" class="text-rose-500 hover:text-rose-700 p-2 hover:bg-rose-50 rounded-lg transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>` : ''}
+                                </div>
+                                ${state.history.length === 0 ? `<div class="text-center py-8 text-slate-400 dark:text-slate-600 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold italic">Chưa có lịch sử làm đề lưu trữ</div>` : `
+                                  <div class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    ${state.history.map((record, index) => `
+                                      <div class="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
+                                        <div class="flex-1 w-full sm:w-auto">
+                                          <div class="font-black text-sm text-slate-700 dark:text-slate-300 uppercase tracking-tight">Đề ${record.part}</div>
+                                          <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 italic">${record.date}</div>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="text-right">
+                                                <div class="text-sm font-black"><span class="text-emerald-600 dark:text-emerald-400">${record.score} Đ</span><span class="text-rose-500 ml-1.5">/ ${record.wrong} S</span></div>
+                                                <div class="text-[10px] font-extrabold text-slate-400 tracking-wide">/${record.total} CÂU</div>
+                                            </div>
+                                            <button onclick="viewHistoryDetail(${index})" class="p-2 bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-emerald-400 rounded-xl hover:bg-brand-100 dark:hover:bg-slate-700 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                                        </div>
+                                      </div>`).join('')}
+                                  </div>`}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (state.showResult) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex items-center justify-center p-4 text-center w-full">
+                        <div class="bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl shadow-2xl max-w-md w-full border border-slate-100 dark:border-slate-800 animate-enter">
+                          <div class="relative inline-block mb-6">
+                            <div class="absolute inset-0 bg-yellow-400 blur-xl opacity-30 rounded-full"></div>
+                            <svg class="w-20 h-20 text-yellow-500 relative z-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                          </div>
+                          <h2 class="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Hoàn Thành Bài Ôn Tập!</h2>
+                          <div class="grid grid-cols-2 gap-4 mb-8 mt-6">
+                            <div class="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100"><p class="text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider mb-1">Đúng</p><p class="text-4xl font-black text-emerald-600 dark:text-emerald-400">${state.score}</p></div>
+                            <div class="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-2xl border border-rose-100"><p class="text-rose-500 dark:text-rose-400 text-xs font-extrabold uppercase tracking-wider mb-1">Sai / Thiếu</p><p class="text-4xl font-black text-rose-500 dark:text-rose-400">${state.wrongScore}</p></div>
+                          </div>
+                          <button onclick="resetQuiz()" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white rounded-xl font-extrabold text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Về màn hình chính</button>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            // GIAO DIỆN KHỐI LÀM TRẮC NGHIỆM[cite: 4]
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const progress = ((state.currentQuestionIndex + 1) / state.questions.length) * 100;
+
+            root.innerHTML = `
+                <!-- POPUP XÁC NHẬN NỘP BÀI -->
+                <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 ${state.isConfirming ? 'block' : 'hidden'} animate-enter">
+                  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100">
+                    <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Nộp bài & kết thúc?</h3>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 font-medium mb-6">Kết quả bài làm hiện tại của bạn sẽ được lưu giữ lại hệ thống.</p>
+                    <div class="flex gap-3">
+                      <button onclick="setConfirming(false)" class="flex-1 py-3 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors">Tiếp bài làm</button>
+                      <button onclick="confirmFinish()" class="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">Nộp bài ngay</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-h-screen flex flex-col items-center p-4 sm:p-6 w-full max-w-3xl mx-auto relative justify-start">
+                    <div class="w-full flex justify-between items-center mb-6 pt-2">
+                        <button onclick="requestFinish()" class="p-2.5 rounded-xl text-slate-400 hover:text-rose-500 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+                        <div class="glass-panel px-4 py-2 rounded-full border text-xs font-bold text-slate-600 dark:text-slate-300 tracking-wide uppercase">Câu ${state.currentQuestionIndex + 1} / ${state.questions.length}</div>
+                        <div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 px-3 py-1.5 rounded-xl"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${state.score}</div>
+                    </div>
+                    
+                    <div class="w-full mb-8">
+                        <div class="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all rounded-full" style="width: ${progress}%"></div></div>
+                    </div>
+                    
+                    <div class="w-full bg-white dark:bg-slate-900 p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800/60 mb-24 relative overflow-hidden animate-enter">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-emerald-600"></div>
+                        <div class="mb-6">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <span class="inline-block bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-slate-100">ID: #${currentQ.id}</span>
+                                <span class="text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-full ${currentQ.isMultiple ? 'bg-amber-50 text-amber-600 border border-amber-200' : 'bg-teal-50 text-teal-600 border border-teal-200'}">
+                                    ${currentQ.isMultiple ? "☑ Tích chọn nhiều đáp án" : "🔘 Chọn một đáp án"}
+                                </span>
+                            </div>
+                            <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 leading-snug tracking-tight">${currentQ.q}</h2>
+                        </div>
+                        
+                        <div class="space-y-3.5">
+                            ${state.shuffledOptions.map((option) => {
+                                const isSelected = state.selectedOptions.includes(option.key);
+                                const isOptCorrect = currentQ.correct.split('').includes(option.key);
+                                let containerClass = "w-full p-5 rounded-2xl border text-left font-semibold transition-all flex justify-between items-center relative overflow-hidden text-sm ";
+                                
+                                if (state.isSubmitted) {
+                                  if (isOptCorrect) containerClass += "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 ring-2 ring-emerald-200";
+                                  else if (isSelected) containerClass += "border-rose-500 bg-rose-50 dark:bg-rose-950/30 text-rose-800 ring-2 ring-rose-200";
+                                  else containerClass += "border-slate-100 text-slate-400 opacity-50";
+                                } else {
+                                  if (isSelected) containerClass += "border-teal-500 bg-teal-50/60 dark:bg-slate-800/80 text-teal-900 dark:text-teal-300 ring-2 ring-teal-200 shadow-sm";
+                                  else containerClass += "border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-brand-50/35";
+                                }
+
+                                return `
+                                    <button onclick="handleOptionSelect('${option.key}', ${currentQ.isMultiple})" ${state.isSubmitted ? 'disabled' : ''} class="${containerClass}">
+                                        <div class="flex items-center gap-4 relative z-10">
+                                            <div class="w-5 h-5 flex items-center justify-center border-2 flex-shrink-0 rounded-md ${isSelected ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 bg-white dark:bg-slate-900'}">
+                                                ${isSelected ? '<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>' : ''}
+                                            </div>
+                                            <span>${option.text}</span>
+                                        </div>
+                                        ${state.isSubmitted && isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                        ${state.isSubmitted && isSelected && !isOptCorrect ? '<svg class="text-rose-600 dark:text-rose-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                    </button>`;
+                            }).join('')}
+                        </div>
+                        
+                        ${!state.isSubmitted && state.selectedOptions.length > 0 ? `
+                            <div class="mt-6 flex justify-end">
+                                <button onclick="checkAnswerSubmission()" class="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl text-xs uppercase tracking-wider shadow-md">
+                                    Xác nhận đáp án
+                                </button>
+                            </div>` : ''}
+                    </div>
+
+                    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-100 dark:border-slate-900/60 flex justify-center items-center gap-4 z-20">
+                        <button onclick="prevQuestion()" ${state.currentQuestionIndex === 0 ? 'disabled' : ''} class="w-14 h-14 rounded-2xl flex items-center justify-center border text-slate-600 dark:text-slate-400 disabled:opacity-25"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+                        <button onclick="nextQuestion()" ${!state.isSubmitted ? 'disabled' : ''} class="flex-1 max-w-md h-14 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 disabled:bg-slate-100 disabled:text-slate-400 bg-brand-600 text-white">
+                            ${state.currentQuestionIndex === state.questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        auth.onAuthStateChanged((currentUser) => {
+            if (currentUser) {
+                const ADMIN_EMAIL = "ngocyen@cucdang.com";
+                const userEmail = currentUser.email.toLowerCase();
+                if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".tinhocdaura")) {
+                    state.authError = "Tài khoản này không có quyền truy cập môn Tin học!";
+                    auth.signOut();
+                    state.user = null;
+                } else {
+                    const token = getOrCreateDeviceToken();
+                    const sessionRef = db.ref(`active_sessions/mon_tin_hoc/${currentUser.uid}`);
+                    if (!state.user) {
+                        sessionRef.set({ deviceToken: token, lastLogin: firebase.database.ServerValue.TIMESTAMP, email: currentUser.email });
                     }
-
-                    const cleanUid = currentUser.uid;
-                    sessionRef = db.ref(`active_sessions/mon_tin_hoc/${cleanUid}`);
-
-                    if (!user) {
-                        sessionRef.set({
-                            deviceToken: deviceToken,
-                            lastLogin: firebase.database.ServerValue.TIMESTAMP,
-                            email: currentUser.email
-                        });
-                    }
-
-                    sessionRef.on("value", (snapshot) => {
-                        const data = snapshot.val();
-                        if (data && data.deviceToken !== deviceToken) {
-                            setIsKicked(true);
+                    sessionRef.on("value", (snap) => {
+                        const val = snap.val();
+                        if (val && val.deviceToken !== token) {
+                            state.isKicked = true;
                             auth.signOut();
-                            setUser(null);
+                            state.user = null;
+                            render();
                         }
                     });
-
-                    setUser(currentUser);
-                } else {
-                    setUser(null);
-                    if (sessionRef) sessionRef.off();
+                    state.user = currentUser;
                 }
-                setLoading(false); 
+            } else {
+                state.user = null;
+            }
+            state.loading = false;
+            render();
+        });
+
+        function handleLogin(e) {
+            e.preventDefault();
+            state.authError = "";
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            state.emailInput = email; state.passwordInput = password;
+
+            auth.signInWithEmailAndPassword(email, password).catch(err => {
+                state.authError = "Tài khoản hoặc mật khẩu không chính xác.";
+                render();
             });
-            return () => {
-                unsubscribe();
-                if (sessionRef) sessionRef.off();
-            };
-          }, [user]);
+        }
 
-          const handleLogin = (e) => {
-              e.preventDefault();
-              setAuthError("");
-              setIsKicked(false);
-              if (!emailInput || !passwordInput) {
-                  setAuthError("Vui lòng điền đầy đủ tài khoản và mật khẩu.");
-                  return;
-              }
-              auth.signInWithEmailAndPassword(emailInput, passwordInput)
-                .catch(err => {
-                    if(err.code === "auth/user-not-found" || err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
-                        setAuthError("Tài khoản hoặc mật khẩu không chính xác.");
-                    } else {
-                        setAuthError("Lỗi máy chủ bảo mật: " + err.message);
-                    }
-                });
-          };
-
-          const handleGoHome = () => {
-              if (window.confirm("Bạn có chắc muốn rời môn học và quay về trang chủ không?")) {
-                  if (user) {
-                      db.ref(`active_sessions/mon_tin_hoc/${user.uid}`).remove();
-                  }
-                  auth.signOut().then(() => {
-                      window.location.href = "./index.html";
-                  });
-              }
-          };
-
-          const saveHistoryToLocal = (finalScore, finalWrong, totalQuestions, partId, answers) => {
-            const newRecord = {
-              id: Date.now(),
-              date: new Date().toLocaleString('vi-VN'),
-              part: partId,
-              score: finalScore,
-              wrong: finalWrong,
-              total: totalQuestions,
-              details: answers.map(q => ({
-                id: q.id,
-                q: q.q,
-                o: q.options || [],
-                s: q.userSelected, 
-                c: q.correct
-              }))
-            };
-            const updatedHistory = [newRecord, ...history];
-            setHistory(updatedHistory);
-            try {
-              localStorage.setItem('it_basic_local_history', JSON.stringify(updatedHistory));
-            } catch (e) {
-              localStorage.setItem('it_basic_local_history', JSON.stringify(updatedHistory.slice(0, 30)));
+        function handleGoHome() {
+            if (window.confirm("Bạn có chắc muốn rời môn học và quay về trang chủ không?")) {
+                if (state.user) db.ref(`active_sessions/mon_tin_hoc/${state.user.uid}`).remove();
+                auth.signOut().then(() => { window.location.href = "./index.html"; });
             }
-          };
+        }
 
-          const clearHistory = () => {
-            if (window.confirm('Bạn có chắc muốn xóa toàn bộ lịch sử kết quả không?')) {
-              setHistory([]);
-              localStorage.removeItem('it_basic_local_history');
-            }
-          };
-
-          const startQuiz = (part) => {
+        function startQuiz(part) {
             const raw = TEST_DATA[part] || [];
-            const formatted = raw.map(item => ({
-              id: item.id,
-              q: item.q,
-              correct: item.ans, 
-              isMultiple: item.ans.length > 1, 
-              options: [
-                { key: 'a', text: item.a }, { key: 'b', text: item.b }, { key: 'c', text: item.c }, { key: 'd', text: item.d }
-              ].filter(o => o.text !== undefined)
+            state.questions = raw.map(item => ({
+                id: item.id, q: item.q, correct: item.ans, isMultiple: item.ans.length > 1,
+                options: [{ key: 'a', text: item.a }, { key: 'b', text: item.b }, { key: 'c', text: item.c }, { key: 'd', text: item.d }].filter(o => o.text !== undefined)
             }));
-            setQuestions(formatted);
-            setCurrentPart(part);
-            setCurrentQuestionIndex(0);
-            setScore(0);
-            setWrongScore(0);
-            setSessionAnswers([]);
-            setShowResult(false);
-            setSelectedOptions([]);
-            setIsSubmitted(false);
-            if(formatted.length > 0) setShuffledOptions(formatted[0].options);
-          };
+            state.currentPart = part; state.currentQuestionIndex = 0; state.score = 0; state.wrongScore = 0;
+            state.sessionAnswers = []; state.showResult = false; state.selectedOptions = []; state.isSubmitted = false;
+            if (state.questions.length > 0) state.shuffledOptions = state.questions[0].options;
+            render();
+        }
 
-          const changeQuestion = (newIndex) => {
-            setCurrentQuestionIndex(newIndex);
-            const newQ = questions[newIndex];
-            const existingAnswer = sessionAnswers.find(a => a.id === newQ.id);
-            if (existingAnswer) {
-              setShuffledOptions(existingAnswer.options);
-              setSelectedOptions(existingAnswer.userSelected.split(''));
-              setIsSubmitted(true);
-            } else {
-              setShuffledOptions(newQ.options);
-              setSelectedOptions([]);
-              setIsSubmitted(false);
-            }
-          };
-
-          const handleOptionSelect = (optionKey, isMultiple) => {
-            if (isSubmitted) return; 
+        function handleOptionSelect(key, isMultiple) {
+            if (state.isSubmitted) return;
             if (isMultiple) {
-                if (selectedOptions.includes(optionKey)) {
-                    setSelectedOptions(selectedOptions.filter(k => k !== optionKey));
+                if (state.selectedOptions.includes(key)) {
+                    state.selectedOptions = state.selectedOptions.filter(k => k !== key);
                 } else {
-                    setSelectedOptions([...selectedOptions, optionKey]);
+                    state.selectedOptions.push(key);
                 }
             } else {
-                setSelectedOptions([optionKey]);
+                state.selectedOptions = [key];
             }
-          };
+            render();
+        }
 
-          const checkAnswerSubmission = () => {
-            if (selectedOptions.length === 0 || isSubmitted) return;
-            const currentQ = questions[currentQuestionIndex];
-            
-            const userAnsStr = [...selectedOptions].sort().join('');
+        function checkAnswerSubmission() {
+            if (state.selectedOptions.length === 0 || state.isSubmitted) return;
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const userAnsStr = [...state.selectedOptions].sort().join('');
             const correctAnsStr = currentQ.correct.split('').sort().join('');
             const correct = userAnsStr === correctAnsStr;
             
-            setIsSubmitted(true);
-            if (correct) setScore(s => s + 1); else setWrongScore(s => s + 1);
-            setSessionAnswers(prev => [...prev, { ...currentQ, userSelected: userAnsStr, options: shuffledOptions }]);
-          };
+            state.isSubmitted = true;
+            if (correct) state.score++; else state.wrongScore++;
+            state.sessionAnswers.push({ ...currentQ, userSelected: userAnsStr, options: state.shuffledOptions });
+            render();
+        }
 
-          const nextQuestion = () => {
-            if (currentQuestionIndex < questions.length - 1) changeQuestion(currentQuestionIndex + 1);
-            else {
-              setShowResult(true);
-              saveHistoryToLocal(score, wrongScore, questions.length, currentPart, sessionAnswers);
+        function nextQuestion() {
+            if (state.currentQuestionIndex < state.questions.length - 1) {
+                state.currentQuestionIndex++;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                if (existing) {
+                    state.shuffledOptions = existing.options;
+                    state.selectedOptions = existing.userSelected.split('');
+                    state.isSubmitted = true;
+                } else {
+                    state.shuffledOptions = newQ.options; state.selectedOptions = []; state.isSubmitted = false;
+                }
+                render();
+            } else {
+                state.showResult = true;
+                saveHistoryToLocal();
+                render();
             }
-          };
+        }
 
-          const prevQuestion = () => { if (currentQuestionIndex > 0) changeQuestion(currentQuestionIndex - 1); };
+        function prevQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                state.currentQuestionIndex--;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                state.shuffledOptions = existing.options;
+                state.selectedOptions = existing.userSelected.split('');
+                state.isSubmitted = true;
+                render();
+            }
+        }
 
-          const requestFinish = () => setIsConfirming(true);
-          const confirmFinish = () => {
-            setShowResult(true);
-            saveHistoryToLocal(score, wrongScore, questions.length, currentPart, sessionAnswers);
-            setIsConfirming(false);
-          };
-          const resetQuiz = () => { setCurrentPart(null); setQuestions([]); setReviewMode(false); };
+        function saveHistoryToLocal() {
+            const record = {
+                id: Date.now(), date: new Date().toLocaleString('vi-VN'), part: state.currentPart,
+                score: state.score, wrong: state.wrongScore, total: state.questions.length,
+                details: state.sessionAnswers.map(q => ({ id: q.id, q: q.q, o: q.options || [], s: q.userSelected, c: q.correct }))
+            };
+            state.history.unshift(record);
+            try { localStorage.setItem('it_basic_local_history', JSON.stringify(state.history)); } catch (e) {}
+        }
 
-          const currentQ = questions[currentQuestionIndex];
+        function clearHistory() {
+            if (window.confirm('Bạn có chắc muốn xóa toàn bộ lịch sử kết quả không?')) {
+                state.history = []; localStorage.removeItem('it_basic_local_history'); render();
+            }
+        }
 
-          const QuizPointHeader = () => (
-            <header className="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
-                <div className="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
-                    <div className="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md transform hover:rotate-12 transition-transform">
-                        <Target size={20} />
-                    </div>
-                    <div className="flex flex-col items-start">
-                        <span className="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
-                        <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
-                    </div>
-                </div>
+        function viewHistoryDetail(index) {
+            state.reviewData = state.history[index].details || []; state.reviewMode = true; render();
+        }
 
-                <button 
-                    onClick={() => setIsDarkMode(!isDarkMode)}
-                    className="p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 hover:scale-105 transition-transform pointer-events-auto active:scale-95"
-                    title="Thay đổi giao diện"
-                >
-                    {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-                </button>
-            </header>
-          );
+        function setReviewMode(val) { state.reviewMode = val; render(); }
+        function requestFinish() { state.isConfirming = true; render(); }
+        function setConfirming(val) { state.isConfirming = val; render(); }
+        function confirmFinish() { state.showResult = true; state.isConfirming = false; saveHistoryToLocal(); render(); }
+        function resetQuiz() { state.currentPart = null; state.questions = []; state.reviewMode = false; render(); }
 
-          if (loading) {
-            return (
-              <div className="min-h-screen flex flex-col items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-500 mb-4"></div>
-                <p className="text-slate-500 dark:text-slate-400 font-medium text-sm">Đang kiểm tra cổng kết nối bảo mật Cloud...</p>
-              </div>
-            )
-          }
-
-          if (!user) {
-            return (
-              <div className="min-h-screen p-6 flex flex-col items-center justify-center relative">
-                <QuizPointHeader />
-                <div className="w-full max-w-md p-8 sm:p-10 rounded-3xl shadow-2xl border bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/80 animate-enter mt-14">
-                    <div className="text-center mb-8">
-                        <div className="inline-flex p-3 bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-emerald-400 rounded-2xl mb-3"><Lock size={32} /></div>
-                        <h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Đăng nhập môn học</h2>
-                        <p className="text-xs text-slate-400 dark:text-slate-500 font-bold mt-1 uppercase tracking-wider">Trắc nghiệm Tin học đầu ra Phần 1</p>
-                    </div>
-
-                    {isKicked && (
-                        <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-950/40 border-l-4 border-rose-500 text-rose-700 dark:text-rose-400 text-xs font-semibold rounded-r-xl flex items-start gap-2 animate-enter">
-                            <ShieldAlert size={18} className="flex-shrink-0 mt-0.5 animate-pulse text-rose-600" />
-                            <p>Tài khoản vừa bị khóa vì phát hiện đăng nhập cùng lúc từ một thiết bị khác!</p>
-                        </div>
-                    )}
-                    
-                    <form onSubmit={handleLogin} className="space-y-5">
-                        <div>
-                            <label className="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Tài khoản Email</label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><Mail size={18} /></div>
-                                <input type="email" placeholder="abc...@quizpointstudio.com" value={emailInput} onChange={e => setEmailInput(e.target.value)} className="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" required />
-                            </div>
-                        </div>
-                        <div>
-                            <label className="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Mật mã bảo mật</label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><Lock size={18} /></div>
-                                <input type="password" placeholder="••••••••" value={passwordInput} onChange={e => setPasswordInput(e.target.value)} className="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" required />
-                            </div>
-                        </div>
-                        {authError && <p className="text-xs font-bold text-rose-500 bg-rose-50 dark:bg-rose-950/30 p-3 rounded-lg border border-rose-100 dark:border-rose-900/40">{authError}</p>}
-                        <button type="submit" className="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition-all text-sm uppercase tracking-wider">Xác nhận đăng nhập</button>
-                    </form>
-                    <div className="text-center mt-6">
-                        <button onClick={() => window.location.href="./index.html"} className="text-xs text-slate-400 hover:text-brand-600 dark:hover:text-emerald-400 font-bold transition-all hover:underline">← Quay lại danh mục trang chủ</button>
-                    </div>
-                </div>
-              </div>
-            )
-          }
-          
-          if (reviewMode) {
-            return (
-              <div className="min-h-screen p-4 sm:p-6 lg:p-8 bg-slate-50/50 dark:bg-slate-950/20">
-                <div className="max-w-4xl mx-auto space-y-6">
-                  <div className="glass-panel p-4 rounded-2xl shadow-sm sticky top-4 z-10 flex justify-between items-center mb-8">
-                    <button onClick={() => setReviewMode(false)} className="flex items-center gap-2 text-brand-700 dark:text-emerald-400 hover:text-brand-900 font-extrabold transition-colors"><ArrowLeft size={20} /> <span>Quay lại</span></button>
-                    <h2 className="text-xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Chi tiết bài làm</h2>
-                    <div className="w-8"></div> 
-                  </div>
-                  <div className="space-y-8 pb-10">
-                    {reviewData.map((item, index) => {
-                      const userAnsArr = item.s ? item.s.split('') : [];
-                      const correctAnsArr = item.c ? item.c.split('') : [];
-                      const isItemCorrect = item.s === item.c;
-                      const options = Array.isArray(item.o) ? item.o : [];
-                      return (
-                        <div key={index} className={`bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 ${!isItemCorrect ? 'ring-2 ring-red-500/20' : ''}`}>
-                          <div className="flex gap-4 mb-2">
-                            <span className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg ${isItemCorrect ? 'bg-gradient-to-br from-emerald-400 to-emerald-600' : 'bg-gradient-to-br from-red-400 to-red-600'}`}>{index + 1}</span>
-                            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 leading-relaxed">{item.q}</h3>
-                          </div>
-                          <div className="pl-14 mb-4 text-xs font-bold text-brand-600 dark:text-emerald-400">
-                             {item.c.length > 1 ? "☑ Câu hỏi này tích chọn nhiều đáp án đúng" : "🔘 Câu hỏi này chọn một đáp án duy nhất"}
-                          </div>
-                          <div className="space-y-3 pl-0 sm:pl-14">
-                            {options.map((opt, i) => {
-                              const isOptCorrect = correctAnsArr.includes(opt.key);
-                              const isOptSelected = userAnsArr.includes(opt.key);
-                              let optionClass = "p-4 rounded-xl border flex justify-between items-center font-semibold text-sm ";
-                              if (isOptCorrect) optionClass += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 shadow-sm";
-                              else if (isOptSelected && !isOptCorrect) optionClass += "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 shadow-sm";
-                              else optionClass += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600 opacity-70";
-                              return (
-                                <div key={i} className={optionClass}>
-                                  <span>{opt.text}</span>
-                                  {isOptCorrect && <CheckCircle size={20} className="text-emerald-600 dark:text-emerald-400" />}
-                                  {isOptSelected && !isOptCorrect && <XCircle size={20} className="text-red-600 dark:text-red-400" />}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            );
-          }
-
-          if (!currentPart) {
-            const menuItems = [
-                { id: 1, label: "Đề 01", sub: "" },
-                { id: 2, label: "Đề 02", sub: "" },
-                { id: 3, label: "Đề 03", sub: "" },
-                { id: 4, label: "Đề 04", sub: "" },
-                { id: 5, label: "Đề 05", sub: "" },
-                { id: 6, label: "Đề 06", sub: "" },
-                { id: 7, label: "Đề 07", sub: "" },
-                { id: 8, label: "Đề 08", sub: "" }
-            ];
-            return (
-              <div className="min-h-screen flex flex-col relative w-full">
-                <QuizPointHeader />
-                
-                <div className="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950 text-white shadow-xl relative overflow-hidden text-center pt-28 pb-16 md:pt-32 md:pb-20">
-                    <div className="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_60%)] animate-pulse-slow"></div>
-                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:30px_30px]"></div>
-
-                    <div className="absolute top-6 right-[25%] opacity-30 text-yellow-300 animate-bounce-slow"><Sparkles size={16} /></div>
-                    <div className="absolute bottom-8 left-[20%] opacity-30 text-emerald-300 animate-float"><Sparkles size={22} /></div>
-
-                    <div className="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center gap-4 relative z-10">
-                        <div className="p-3 bg-white/5 rounded-2xl backdrop-blur-md border border-white/10 animate-float inline-block shadow-xl">
-                            <Monitor size={36} className="text-emerald-400" />
-                        </div>
-                        <div className="space-y-2">
-                            <h1 className="pt-2 text-4xl md:text-5xl font-black tracking-tight uppercase bg-gradient-to-r from-white via-emerald-300 to-slate-200 bg-clip-text text-transparent drop-shadow-lg">
-                                TIN HỌC ĐẦU RA PHẦN 1
-                            </h1>
-                            <p className="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">
-                                Ngân hàng 480 câu hỏi lý thuyết phân chia 8 đề
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="absolute top-4 right-16 sm:top-6 sm:right-24 z-50 pointer-events-auto">
-                    <button onClick={handleGoHome} className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-md">
-                        <Home size={16}/> Quay về trang chủ
-                    </button>
-                </div>
-
-                <div className="max-w-6xl mx-auto px-4 py-8 flex-1 w-full -mt-10 relative z-20 space-y-10">
-                  
-                  <div className="max-w-2xl mx-auto h-14 flex items-center justify-between px-8 rounded-2xl border shadow-sm glass-panel border-white/40 dark:border-slate-800/60 overflow-hidden relative group">
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-brand-500/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                        <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981]"></span>
-                            <span className="w-2 h-3 rounded-full bg-emerald-400/60 dark:bg-emerald-500/40"></span>
-                            <span className="w-2 h-4 rounded-full bg-emerald-400/40 dark:bg-emerald-500/20"></span>
-                            <div className="w-8 h-px bg-slate-300 dark:bg-slate-700 ml-2 hidden sm:block"></div>
-                        </div>
-                        <div className="flex items-center gap-3 text-slate-300 dark:text-slate-700">
-                            <div className="w-1.5 h-1.5 rounded-full border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900"></div>
-                            <div className="w-12 h-px bg-gradient-to-r from-slate-300 to-brand-400 dark:from-slate-700 dark:to-brand-600"></div>
-                            <Sparkles size={16} className="text-brand-500/80 dark:text-emerald-500/60" />
-                            <div className="w-12 h-px bg-gradient-to-l from-slate-300 to-brand-400 dark:from-slate-700 dark:to-brand-600"></div>
-                            <div className="w-1.5 h-1.5 rounded-full border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900"></div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-8 h-px bg-slate-300 dark:bg-slate-700 mr-2 hidden sm:block"></div>
-                            <span className="w-2 h-4 rounded-full bg-sky-400/40 dark:bg-sky-500/20"></span>
-                            <span className="w-2 h-3 rounded-full bg-sky-400/60 dark:bg-sky-500/40"></span>
-                            <span className="w-2 h-2 rounded-full bg-sky-500 shadow-[0_0_10px_#38bdf8]"></span>
-                        </div>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md py-3 px-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm max-w-xl mx-auto">
-                        <div className="flex items-center gap-2 font-bold text-xs sm:text-sm">
-                            <User size={16} className="text-brand-500" /> 
-                            <span>Tên: <span className="text-brand-600 dark:text-emerald-400 font-extrabold">Nguyễn Văn Lượng</span></span>
-                        </div>
-                        <div className="w-px h-4 bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
-                        <div className="flex items-center gap-2 font-bold text-xs sm:text-sm">
-                            <Phone size={16} className="text-amber-500" /> 
-                            <span>LH: <span className="font-mono text-slate-900 dark:text-white font-black">0333738861</span></span>
-                        </div>
-                  </div>
-
-                  <div className="bg-gradient-to-r from-brand-600 to-teal-700 text-white p-6 rounded-3xl shadow-xl max-w-3xl mx-auto border border-brand-500/30 overflow-hidden relative group text-center">
-                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
-                            <Sparkles size={100} />
-                        </div>
-                        <div className="relative z-10 flex flex-col items-center gap-4">
-                            <div className="flex items-center justify-center gap-3">
-                                <Sparkles size={24} className="text-yellow-300 animate-pulse" />
-                                <span className="font-bold text-lg sm:text-xl leading-tight">Nhận làm Quiz Ôn Tập & PowerPoint Cơ Bản</span>
-                            </div>
-                            <div className="flex flex-wrap justify-center gap-4 mt-1">
-                                 <div className="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold">
-                                    <CheckCircle size={16} className="text-emerald-300" /> <span>Hệ thống Quiz</span>
-                                 </div>
-                                 <div className="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold">
-                                    <Presentation size={16} className="text-sky-300" /> <span>Thiết kế PPT</span>
-                                 </div>
-                                 <div className="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold">
-                                    <Layers size={16} className="text-orange-300" /> <span>Tài liệu học tập</span>
-                                 </div>
-                            </div>
-                        </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                    {menuItems.map((item) => {
-                        return (
-                            <button key={item.id} onClick={() => startQuiz(item.id)} className="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-brand-500 dark:hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-center gap-3">
-                              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 shadow-inner group-hover:bg-brand-500 dark:group-hover:bg-emerald-500 group-hover:text-white text-brand-500 transition-all duration-300"><Monitor size={24} /></div>
-                              <div>
-                                <div className="font-black text-sm text-slate-800 dark:text-slate-200 tracking-tight leading-tight">{item.label}</div>
-                                <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 uppercase tracking-wide">{item.sub}</div>
-                              </div>
-                            </button>
-                        )
-                    })}
-                  </div>
-
-                  <div className="glass-panel p-6 rounded-3xl shadow-sm max-w-2xl mx-auto w-full text-left">
-                    <div className="flex justify-between items-center mb-6 px-2">
-                      <h2 className="text-sm font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2"><History className="text-slate-400" size={18} /> Lịch sử kết quả làm bài</h2>
-                      {history.length > 0 && <button onClick={clearHistory} className="text-rose-500 hover:text-rose-700 p-2 hover:bg-rose-50 rounded-lg transition-colors"><Trash2 size={18} /></button>}
-                    </div>
-                    {history.length === 0 ? <div className="text-center py-8 text-slate-400 dark:text-slate-600 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold italic">Chưa có lịch sử làm đề lưu trữ</div> : (
-                      <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                        {history.map((record) => (
-                          <div key={record.id} className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
-                            <div className="flex-1 w-full sm:w-auto">
-                              <div className="font-black text-sm text-slate-700 dark:text-slate-300 uppercase tracking-tight">Đề {record.part}</div>
-                              <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 italic">{record.date}</div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <div className="text-right">
-                                    <div className="text-sm font-black"><span className="text-emerald-600 dark:text-emerald-400">{record.score} Đ</span><span className="text-rose-500 ml-1.5">/ {record.wrong} S</span></div>
-                                    <div className="text-[10px] font-extrabold text-slate-400 tracking-wide">/{record.total} CÂU</div>
-                                </div>
-                                <button onClick={() => { setReviewData(record.details || []); setReviewMode(true); }} className="p-2 bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-emerald-400 rounded-xl hover:bg-brand-100 dark:hover:bg-slate-700 transition-colors"><Eye size={18} /></button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                </div>
-              </div>
-            );
-          }
-
-          if (showResult) {
-            return (
-              <div className="min-h-screen flex items-center justify-center p-4 text-center">
-                <div className="bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl shadow-2xl max-w-md w-full border border-slate-100 dark:border-slate-800 animate-enter">
-                  <div className="relative inline-block mb-6">
-                    <div className="absolute inset-0 bg-yellow-400 blur-xl opacity-30 rounded-full"></div>
-                    <Award className="w-20 h-20 text-yellow-500 relative z-10 animate-bounce-slow" />
-                  </div>
-                  <h2 className="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Hoàn Thành Bài Ôn Tập!</h2>
-                  <div className="grid grid-cols-2 gap-4 mb-8 mt-6">
-                    <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100 dark:border-emerald-900/50"><p className="text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider mb-1">Đúng</p><p className="text-4xl font-black text-emerald-600 dark:text-emerald-400">{score}</p></div>
-                    <div className="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-2xl border border-rose-100 dark:border-rose-900/50"><p className="text-rose-500 dark:text-rose-400 text-xs font-extrabold uppercase tracking-wider mb-1">Sai / Thiếu</p><p className="text-4xl font-black text-rose-500 dark:text-rose-400">{wrongScore}</p></div>
-                  </div>
-                  <button onClick={resetQuiz} className="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white rounded-xl font-extrabold text-xs uppercase tracking-wider shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"><RotateCcw size={18} /> Về màn hình chính</button>
-                </div>
-              </div>
-            );
-          }
-
-          const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
-          const currentQCorrectArr = currentQ.correct.split('');
-
-          return (
-            <div className="min-h-screen flex flex-col items-center p-4 sm:p-6 w-full max-w-3xl mx-auto relative justify-start">
-              {isConfirming && (
-                <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-enter">
-                  <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100 dark:border-slate-800">
-                    <h3 className="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Nộp bài & kết thúc?</h3>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 font-medium mb-6">Kết quả bài làm hiện tại của bạn sẽ được lưu giữ lại hệ thống.</p>
-                    <div className="flex gap-3">
-                      <button onClick={() => setIsConfirming(false)} className="flex-1 py-3 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors">Tiếp bài làm</button>
-                      <button onClick={confirmFinish} className="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">Nộp bài ngay</button>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              <div className="w-full flex justify-between items-center mb-6 pt-2">
-                <button onClick={requestFinish} className="p-2.5 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-all"><LogOut size={22} /></button>
-                <div className="glass-panel px-4 py-2 rounded-full border text-xs font-bold text-slate-600 dark:text-slate-300 tracking-wide uppercase">Câu {currentQuestionIndex + 1} / {questions.length}</div>
-                <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/30 px-3 py-1.5 rounded-xl"><CheckCircle size={16} /> {score}</div>
-              </div>
-              
-              <div className="w-full mb-8">
-                <div className="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner"><div className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all duration-300 ease-out rounded-full" style={{ width: `${progress}%` }} /></div>
-              </div>
-              
-              <div className="w-full bg-white dark:bg-slate-900 p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800/60 mb-24 relative overflow-hidden animate-enter">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-emerald-600"></div>
-                <div className="mb-6">
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                        <span className="inline-block bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-slate-100 dark:border-slate-700/50">ID: #{currentQ.id}</span>
-                        <span className={`text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-full ${currentQ.isMultiple ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 border border-amber-200/50' : 'bg-teal-50 dark:bg-teal-950/40 text-teal-600 border border-teal-200/50'}`}>
-                            {currentQ.isMultiple ? "☑ Tích chọn nhiều đáp án" : "🔘 Chọn một đáp án"}
-                        </span>
-                    </div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 leading-snug tracking-tight">{currentQ.q}</h2>
-                </div>
-                
-                <div className="space-y-3.5">
-                  {shuffledOptions.map((option, idx) => {
-                    const isSelected = selectedOptions.includes(option.key);
-                    const isOptCorrect = currentQCorrectArr.includes(option.key);
-                    
-                    let containerClass = "w-full p-5 rounded-2xl border text-left font-semibold transition-all duration-200 flex justify-between items-center relative overflow-hidden text-sm ";
-                    
-                    if (isSubmitted) {
-                      if (isOptCorrect) containerClass += "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300 ring-2 ring-emerald-200/50";
-                      else if (isSelected && !isOptCorrect) containerClass += "border-rose-500 bg-rose-50 dark:bg-rose-950/30 text-rose-800 dark:text-rose-300 ring-2 ring-rose-200/50";
-                      else containerClass += "border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600 opacity-50";
-                    } else {
-                      if (isSelected) containerClass += "border-teal-500 bg-teal-50/60 dark:bg-slate-800/80 text-teal-900 dark:text-teal-300 ring-2 ring-teal-200/50 shadow-sm";
-                      else containerClass += "border-slate-100 dark:border-slate-800 hover:border-brand-400 dark:hover:border-emerald-500 hover:bg-brand-50/30 dark:hover:bg-slate-800/50 cursor-pointer active:scale-[0.995] text-slate-600 dark:text-slate-300";
-                    }
-                    
-                    return (
-                      <button key={idx} onClick={() => handleOptionSelect(option.key, currentQ.isMultiple)} disabled={isSubmitted} className={containerClass}>
-                        <div className="flex items-center gap-4 relative z-10">
-                            <div className={`w-5 h-5 flex items-center justify-center border-2 flex-shrink-0 transition-colors rounded-md ${isSelected ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900'}`}>
-                                {isSelected && (
-                                    <svg className="w-3 h-3 fill-current" viewBox="0 0 20 20">
-                                        <path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/>
-                                    </svg>
-                                )}
-                            </div>
-                            <span>{option.text}</span>
-                        </div>
-                        {isSubmitted && isOptCorrect && <CheckCircle className="text-emerald-600 dark:text-emerald-400 flex-shrink-0 ml-4" size={22} />}
-                        {isSubmitted && isSelected && !isOptCorrect && <XCircle className="text-rose-600 dark:text-rose-400 flex-shrink-0 ml-4" size={22} />}
-                      </button>
-                    );
-                  })}
-                </div>
-                
-                {!isSubmitted && selectedOptions.length > 0 && (
-                    <div className="mt-6 flex justify-end">
-                        <button onClick={checkAnswerSubmission} className="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl shadow-md hover:shadow-lg transition-all text-xs uppercase tracking-wider">
-                            Xác nhận đáp án
-                        </button>
-                    </div>
-                )}
-              </div>
-              
-              <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-100 dark:border-slate-900/60 flex justify-center items-center gap-4 z-20">
-                <button onClick={prevQuestion} disabled={currentQuestionIndex === 0} className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all ${currentQuestionIndex === 0 ? 'bg-slate-50 dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-300 dark:text-slate-700' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-400'}`}><ChevronLeft size={24} /></button>
-                <button onClick={nextQuestion} disabled={!isSubmitted} className={`flex-1 max-w-md h-14 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 transition-all transform active:scale-95 ${!isSubmitted ? 'bg-slate-100 dark:bg-slate-900 text-slate-400 dark:text-slate-600 shadow-none' : 'bg-brand-600 text-white shadow-emerald-500/20'}`}>
-                    {currentQuestionIndex === questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <ChevronRight size={20} />
-                </button>
-              </div>
-            </div>
-          );
-        };
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<QuizApp />);
+        window.addEventListener('DOMContentLoaded', () => { render(); });
     </script>
 </body>
 </html>
