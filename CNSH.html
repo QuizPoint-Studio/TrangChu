@@ -1,5 +1,5 @@
 <NGUYỄN VĂN LƯỢNG ĐẸP TRAI HẸHẸ>
-<html lang="vi">
+    <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,18 +67,9 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        
-        /* HIỆU ỨNG TRƯỢT PHÓNG TO CAO CẤP CHO THẺ CÂU HỎI */
-        @keyframes dynamicSlideUp {
-            0% { opacity: 0; transform: translateY(24px) scale(0.98); filter: blur(3px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-        .animate-question-card { 
-            animation: dynamicSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
-        }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-enter { animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
 <body class="bg-gradient-to-br from-[#f0fdf4] via-[#e0f2fe] to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 min-h-screen text-slate-800 dark:text-slate-100">
@@ -126,7 +117,7 @@
                 { id: 22, q: "Đâu KHÔNG phải là một ứng dụng của nuôi cấy mô tế bào thực vật được nhắc đến trong tài liệu?", a: "Tạo ra được một số lượng lớn cá thể đồng nhất trong thời gian ngắn", b: "Làm sạch nguồn virus cho cây bằng nuôi cấy đỉnh sinh trưởng", c: "Tạo giống đột biến và tạo ngân hàng gen", d: "Sản xuất kháng sinh penicillin trên quy mô công nghiệp", ans: "d" },
                 { id: 23, q: "Đâu là một trong những ưu điểm của phương pháp nhân giống vô tính in-vitro?", a: "Nhân nhanh với hệ số nhân cao, tạo giống đồng nhất, tiết kiệm không gian", b: "Hoàn toàn loại bỏ hiện tượng biến dị kiểu hình", c: "Chi phí đầu tư ban đầu cực kỳ thấp", d: "Áp dụng đồng đều cho tất cả mọi chủng loại thực vật trên thế giới", ans: "a" },
                 { id: 24, q: "Một trong những ưu điểm về thời gian sản xuất của nuôi cấy mô là gì?", a: "Chỉ sản xuất được vào mùa xuân", b: "Có thể sử dụng sản xuất quanh năm", c: "Thời gian tạo cây con kéo dài nhiều năm", d: "Phụ thuộc vào chu kỳ ra hoa tự nhiên của cây mẹ", ans: "b" },
-                { id: 25, q: "Đâu là nhược điểm của phương pháp nuôi cấy mô được liệt kê trong tài liệu?", a: "Hệ số nhân giống quá thấp", b: "Sản phẩm tạo ra không đồng nhất về mặt di truyền", c: "Hạn chế về chủng loại sản phẩm, chi phí sản xuất cao, có khả năng xuất hiện biến dị kiểu hình", d: "Làm tăng kích thước của cây con gấp nhiều lần ngoài kiểm soát", ans: "c" },
+                { id: 25, q: "Đâu là nhược điểm của phương pháp nuôi cấy mô được liệt kê trong tài liệu?", a: "Hạn chế về chủng loại sản phẩm, chi phí sản xuất cao, có khả năng xuất hiện biến dị kiểu hình", b: "Sản phẩm tạo ra không đồng nhất về mặt di truyền", c: "Hạn chế về chủng loại sản phẩm, chi phí sản xuất cao, có khả năng xuất hiện biến dị kiểu hình", d: "Làm tăng kích thước của cây con gấp nhiều lần ngoài kiểm soát", ans: "c" },
                 { id: 26, q: "Theo bảng nguồn gốc mẫu cấy, kích thước tiêu chuẩn của mẫu Đỉnh sinh trưởng (Meristem) là bao nhiêu?", a: "0,5 – 1 mm", b: "0,5 - 1 cm", c: "1 - 2 cm", d: "2 - 3 cm", ans: "a" },
                 { id: 27, q: "Mẫu cấy Đỉnh sinh trưởng (Meristem) được tách từ thành phần nào?", a: "Chóp đỉnh có chứa một phần thân", b: "Tế bào đỉnh sinh trưởng", c: "Chồi bên có chứa một phần thân, lá và chồi nách", d: "Phiến lá non cắt nhỏ", ans: "b" },
                 { id: 28, q: "Kích thước mẫu cấy tiêu chuẩn của Chồi đỉnh (Shoot tips) và Chồi bên (Axillary bud) là bao nhiêu?", a: "0,5 – 1 mm", b: "0,5 - 1 cm", c: "1 - 2 cm", d: "0,1 - 0,5 mm", ans: "b" },
@@ -144,7 +135,7 @@
                 { id: 40, q: "Bước thứ 5 (bước cuối cùng) trong quy trình nuôi cấy mô thực vật là gì?", a: "Nhân nhanh chồi trong ống nghiệm", b: "Khử trùng mẫu vật bằng hóa chất", c: "Thích ứng cây in vitro ngoài điều kiện tự nhiên", d: "Chuẩn bị cây làm vật liệu gốc", ans: "c" },
                 { id: 41, q: "Ứng dụng quan trọng hàng đầu của nuôi cấy đỉnh sinh trưởng là gì?", a: "Tạo ra cây sạch virus", b: "Tạo dòng cây đa bội thể kích thước lớn", c: "Kích thích cây ra hoa sớm", d: "Dung hợp các loài xa nhau về mặt phân loại", ans: "a" },
                 { id: 42, q: "Loại chồi nào hình thành ở các vị trí bất kỳ, ví dụ trên rễ hoặc sau khi cây bị thương, bị đốn/chặt?", a: "Chồi đỉnh (Terminal)", b: "Chồi nách (Axillary)", c: "Chồi bất định (Adventitious)", d: "Chồi ngủ", ans: "c" },
-                { id: 43, q: "Kiểu nuôi cấy nào thực chất là nuôi cấy đỉnh sinh trưởng KHÔNG kèm lá mầm?", a: "Nuôi cấy đỉnh chồi", b: "Nuôi cấy mô phân sinh", c: "Nuôi cấy đỉnh sinh trưởng đầy đủ", d: "Nuôi cấy bao phấn", ans: "b" },
+                { id: 43, q: "Kiểu nuôi cấy nào thực chất là nuôi cấy đỉnh sinh trưởng KHÔNG kèm lá mầm?", a: "Nuôi cấy đỉnh chồi", b: "Nuôi cấy mô phân sinh", c: "Nuôi cấy đỉnh sinh trưởng đầy đủ", d: "Nuôi cấy bao phantom", ans: "b" },
                 { id: 44, q: "Kiểu nuôi cấy đỉnh sinh trưởng nào bao gồm chóp sinh trưởng và một số mầm lá?", a: "Nuôi cấy mô phân sinh", b: "Nuôi cấy đỉnh sinh trưởng", c: "Nuôi cấy chồi bên rời", d: "Nuôi cấy protoplast", ans: "b" },
                 { id: 45, q: "Kiểu nuôi cấy đỉnh sinh trưởng nào thường được dùng phổ biến để nhân nhanh in-vitro?", a: "Nuôi cấy mô phân sinh không lá mầm", b: "Nuôi cấy phôi non lai xa", c: "Nuôi cấy đỉnh chồi", d: "Nuôi cấy hạt phấn rời", ans: "c" },
                 { id: 46, q: "Trong quy trình nhân giống cây lan bằng đỉnh sinh trưởng, hóa chất nào được sử dụng để khử trùng mẫu with nồng độ 2% trong thời gian 25 phút?", a: "Cồn 70%", b: "Dung dịch Ca(OCl)2", c: "Hỗn hợp Phenol và Chloroform", d: "Dung dịch TE lạnh", ans: "b" },
@@ -152,9 +143,9 @@
                 { id: 48, q: "Cấu trúc cụm chồi gồm nhiều thể chồi hình thành trong quy trình nhân giống lan in-vitro được gọi là gì?", a: "Callus (Mô sẹo)", b: "Protocorme", c: "Phôi sinh dưỡng", d: "Rễ mầm rời", ans: "b" },
                 { id: 49, q: "Trong môi trường nhân chồi hoa lan, cụm chồi ban đầu được thao tác tách thành mấy miếng?", a: "Tách làm 2 miếng", b: "Tách làm 4 - 6 miếng", c: "Tách làm 10 miếng", d: "Để nguyên không tách", ans: "b" },
                 { id: 50, q: "Tiêu chuẩn cây lan con in-vitro hoàn chỉnh trước khi chuyển ra vườn ươm là gì?", a: "Cao 2-3 cm, chưa có lá", b: "Cao 5-7 cm, có 3-4 lá và đã ra rễ", c: "Cây cao trên 15 cm, đã ra hoa", d: "Khối mô sẹo callus chưa phân hóa", ans: "b" },
-                { id: 51, q: "Phương pháp nuôi cấy nào được ứng dụng nhằm 'Khắc phục tính bất hợp trong khi lai xa giữa các loài'?", a: "Nuôi cấy bao phấn", b: "Nuôi cấy hạt phấn rời", c: "Nuôi cấy phôi", d: "Nuôi cấy đỉnh chồi ngủ", ans: "c" },
-                { id: 52, q: "Ý nghĩa lớn nhất của phương pháp nuôi cấy bao phấn hoặc hạt phấn trong cải tạo giống cây trồng là gì?", a: "Tạo ra cây sạch hoàn toàn các loại virus bệnh", b: "Tạo ra các dòng đồng hợp tử ngay từ thế hệ đầu tiên thông qua cây đơn bội, giúp rút ngắn thời gian tạo giống mới", c: "Kích thích khối u phát triển để thu nhận opine", d: "Tăng hệ số nhân vô tính lên gấp hàng triệu lần", ans: "b" },
-                { id: 53, q: "Hóa chất nhuộm nào được sử dụng trong sơ đồ nuôi cấy bao phấn để xác định giai đoạn phát triển (GĐPT) của hạt phấn?", a: "Ethidium Bromide (EtBr)", b: "Nhuộm acetoarmine", c: "Chất phát huỳnh quang màu xanh", d: "Dung dịch CTAB kiềm", ans: "b" },
+                { id: 51, q: "Phương pháp nuôi cấy nào được ứng dụng nhằm 'Khắc phục tính bất hợp trong khi lai xa giữa các loài'?", a: "Nuôi cấy bao phantom", b: "Nuôi cấy hạt phấn rời", c: "Nuôi cấy phôi", d: "Nuôi cấy đỉnh chồi ngủ", ans: "c" },
+                { id: 52, q: "Ý nghĩa lớn nhất của phương pháp nuôi cấy bao phantom hoặc hạt phấn trong cải tạo giống cây trồng là gì?", a: "Tạo ra cây sạch hoàn toàn các loại virus bệnh", b: "Tạo ra các dòng đồng hợp tử ngay từ thế hệ đầu tiên thông qua cây đơn bội, giúp rút ngắn thời gian tạo giống mới", c: "Kích thích khối u phát triển để thu nhận opine", d: "Tăng hệ số nhân vô tính lên gấp hàng triệu lần", ans: "b" },
+                { id: 53, q: "Hóa chất nhuộm nào được sử dụng trong sơ đồ nuôi cấy bao phantom để xác định giai đoạn phát triển (GĐPT) của hạt phấn?", a: "Ethidium Bromide (EtBr)", b: "Nhuộm acetoarmine", c: "Chất phát huỳnh quang màu xanh", d: "Dung dịch CTAB kiềm", ans: "b" },
                 { id: 54, q: "Bộ nhiễm sắc thể của mô và cây con thu được trực tiếp từ nuôi cấy hạt phấn trong môi trường dinh dưỡng ban đầu là gì?", a: "Bộ nhiễm sắc thể lưỡng bội (2n)", b: "Bộ nhiễm sắc thể đơn bội (n)", c: "Bộ nhiễm sắc thể tam bội (3n)", d: "Bộ nhiễm sắc thể tứ bội (4n)", ans: "b" },
                 { id: 55, q: "Công đoạn nào biến đổi mô đơn bội (n) hoặc cây con đơn bội (n) thành cây lưỡng bội thuần chủng (2n)?", a: "Công đoạn phản phân hóa tế bào", b: "Công đoạn tủa trong isopropanol", c: "Công đoạn lưỡng bội hóa", d: "Công đoạn chuyển gen gián tiếp", ans: "c" }
             ],
@@ -167,12 +158,12 @@
                 { id: 61, q: "Ba công đoạn cốt lõi của phương pháp tách chiết DNA cơ bản là gì?", a: "Ly tâm -> Điện di -> Giải trình tự", b: "Phá vỡ màng tế bào và màng nhân -> Loại bỏ tạp chất -> Tủa DNA", c: "Thiết kế mồi -> PCR -> Cắt bằng enzyme giới hạn", d: "Chọn vector -> Gắn linker -> Nối bằng ligase", ans: "b" },
                 { id: 62, q: "Dung dịch nào được sử dụng để loại bỏ tạp chất trong phương pháp tách chiết DNA cơ bản?", a: "Dung dịch cồn EtOH 70%", b: "Dung dịch đệm TE kiềm", c: "Dung dịch phenol và chloroform", d: "Dung dịch muối khoáng đa lượng MS", ans: "c" },
                 { id: 63, q: "Quy trình tách chiết DNA bằng CTAB sử dụng khối lượng mẫu lá ban đầu là bao nhiêu?", a: "0.1g mẫu", b: "1.0g mẫu", c: "5.0g mẫu", d: "10g mẫu", ans: "a" },
-                { id: 64, q: "Ở bước đầu tiên của quy trình tách chiết CTAB, mẫu lá được nghiền với chất gì?", a: "Dung dịch TE hòa tan tủa", b: "Nitrogen lỏng", c: "Khí helium áp suất cao", d: "Isopropanol lạnh", ans: "b" },
+                { id: 64, q: "Ở bước đầu tiên của quy trình tách chiết CTAB, mẫu lá được nghiền with chất gì?", a: "Dung dịch TE hòa tan tủa", b: "Nitrogen lỏng", c: "Khí helium áp suất cao", d: "Isopropanol lạnh", ans: "b" },
                 { id: 65, q: "Sau khi thêm dung dịch CTAB vào hỗn hợp mẫu nghiền, tube mẫu được ủ trong block nhiệt ở điều kiện nào?", a: "Ủ ở 37°C trong 1 giờ", b: "Ủ ở 72°C trong 2 phút", c: "Ủ ở 60°C trong 10 phút", d: "Ủ ở 94°C trong 1 phút", ans: "c" },
                 { id: 66, q: "Hỗn hợp hóa chất PCI được thêm vào ở bước 4 của quy trình tách chiết CTAB là viết tắt của:?", a: "Phenol Chloroform Isoamylalcohol", b: "Potassium Chloride Iodine", c: "Polyethylene Glycol Insulin", d: "Phosphate Carbonate Isopropanol", ans: "a" },
                 { id: 67, q: "Tốc độ ly tâm được quy định đồng nhất ở các bước 5, 9, 11 trong quy trình tách chiết DNA bằng CTAB là bao nhiêu?", a: "< 5.000 vòng/phút", b: "8.500 vòng/phút", c: "> 12.000 vòng/phút", d: "30.000 vòng/phút", ans: "c" },
                 { id: 68, q: "Ở bước số 7 của quy trình CTAB, lượng 2-propanol (isopropanol) lạnh cần thêm vào dịch nổi được tính toán theo tỷ lệ nào?", a: "Bằng đúng thể tích dịch nổi hút được", b: "Gấp 2 lần thể tích dịch nổi", c: "0.6 lần thể tích dịch nổi", d: "Chỉ thêm 500μl cố định", ans: "c" },
-                { id: 69, q: "Điều kiện thời gian và nhiệt độ để ủ tủa DNA với 2-propanol lạnh ở bước 8 là gì?", a: "Ủ ở 60°C trong 10 phút", b: "Ủ ở nhiệt độ phòng trong 5 phút", c: "Ủ ở -20°C trong thời gian >1 giờ", d: "Ủ ở 72°C trong 2 phút", ans: "c" },
+                { id: 69, q: "Điều kiện thời gian và nhiệt độ để ủ tủa DNA with 2-propanol lạnh ở bước 8 là gì?", a: "Ủ ở 60°C trong 10 phút", b: "Ủ ở nhiệt độ phòng trong 5 phút", c: "Ủ ở -20°C trong thời gian >1 giờ", d: "Ủ ở 72°C trong 2 phút", ans: "c" },
                 { id: 70, q: "Dung dịch nào được dùng để rửa loại bỏ dịch nổi và làm sạch tủa DNA ở bước 10 của quy trình CTAB?", a: "Dung dịch CTAB nguyên chất", b: "Hỗn hợp PCI độc hại", c: "Dung dịch EtOH 70% (cồn 70%)", d: "Dung dịch đệm Tris-HCl 10X", ans: "c" },
                 { id: 71, q: "Tủa DNA sau khi làm khô ở nhiệt độ phòng sẽ được hòa tan bằng 100µl dung dịch nào?", a: "Dung dịch đệm TE", b: "Khí nitrogen lỏng", c: "Dung dịch đường sucrose tạo ngọt", d: "Dung dịch agar tạo đặc", ans: "a" },
                 { id: 72, q: "Định nghĩa chính xác của kỹ thuật PCR (Polymerase Chain Reaction) là gì?", a: "Kỹ thuật dung hợp hai tế bào trần bằng xung điện", b: "Thử nghiệm nhân bản một đoạn DNA trong ống nghiệm dựa vào các chu kỳ nhiệt", c: "Phương pháp giải trình tự chuỗi base bằng hóa chất cắt đặc hiệu", d: "Kỹ thuật nuôi cấy mô phân sinh đỉnh sinh trưởng sạch bệnh", ans: "b" },
@@ -186,8 +177,8 @@
                 { id: 80, q: "Bốn loại dNTP đóng vai trò nguyên liệu cấu trúc mạch DNA mới bổ sung trong phản ứng chuỗi polymerase gồm những gì?", a: "dATP, dCTP, dGTP, dTTP", b: "ddATP, ddCTP, ddGTP, ddTTP", c: "ATP, APS, luciferin, oxyluciferin", d: "Sucrose, Agar, Thiamin, Myo-inositol", ans: "a" },
                 { id: 81, q: "Thành phần hóa học cấu thành nên dung dịch đệm PCR buffer nồng độ 10X gồm những chất nào?", a: "Phenol, Chloroform và Isoamylalcohol", b: "Tris HCl 100mM (pH 8.3) và KCl 500 mM", c: "NH4NO3 1650mg và KNO3 1900mg", d: "Ammonium sulfate và phức hệ Fe-EDTA", ans: "b" },
                 { id: 82, q: "Vai trò cốt lõi của kỹ thuật điện di (Electrophoresis) trong phân tích phân tử là gì?", a: "Nhân dòng hệ gen lên gấp hàng tỷ lần dựa vào chu kỳ nhiệt", b: "Dùng để tách, phân tích các phân tử như DNA, RNA hay protein dựa trên đặc điểm vật lý của chúng như: kích thước, hình dạng", c: "Gắn các đoạn oligonucleotide ngắn vào đầu bằng của vector hở", d: "Khử trùng bề mặt dụng cụ thủy tinh trong ống nghiệm", ans: "b" },
-                { id: 83, q: "Loại khuôn đỡ nào được ứng dụng phổ biến để phân tách hiệu quả các phân tử DNA hoặc RNA có kích thước lớn từ 20 bp - 20 kb?", a: "Giấy lọc cellulose acetate", b: "Gel polyacrylamide", c: "Agarose gel (Gel agarose)", d: "Tinh bột thạch MS", ans: "c" },
-                { id: 84, q: "Khuôn đỡ Gel polyacrylamide được tài liệu định hướng ưu tiên sử dụng để phân tách các đối tượng nào?", a: "Phân tử protein và các phân tử DNA có chiều dài ngắn <1kb", b: "Các đoạn DNA mạch kép kích thước lớn từ 20 kb trở lên", c: "Nhiễm sắc thể nguyên vẹn của thực vật Một lá mầm", d: "Hạt phấn rời ở giai đoạn phát triển túi phấn", ans: "a" },
+                { id: 83, q: "Loại khuôn đỡ nào được ứng dụng phổ biến nhất để phân tách hiệu quả các phân tử DNA hoặc RNA có kích thước lớn từ 20 bp - 20 kb?", a: "Giấy lọc cellulose acetate", b: "Gel polyacrylamide", c: "Agarose gel (Gel agarose)", d: "Tinh bột thạch MS", ans: "c" },
+                { id: 84, q: "Khuôn đỡ Gel polyacrylamide được tài liệu định hướng ưu tiên sử dụng để phân tách các đối tượng nào?", a: "Phân tử protein và các phân tử DNA có chiều dài ngắn <1kb", b: "Các đoạn DNA mạch kép kích thước lớn từ 20 kb trở lên", c: "Nhiễm sắc thể nguyên vẹn của thực vật Một lá mầm", d: "Hạt phấn rời ở giai đoạn phát triển túi phantom", ans: "a" },
                 { id: 85, q: "Thiết bị nào được dùng để tra chính xác mẫu DNA cần phân tích vào các giếng thạch của bản gel điện di?", a: "Nồi hấp tiệt trùng Autoclave", b: "Máy ly tâm tốc độ cao >12.000 vòng", c: "Thiết bị Micropipette", d: "Súng bắn gen dòng khí nén", ans: "c" },
                 { id: 86, q: "Để quan sát và chụp lại hình ảnh các vạch sản phẩm DNA trên bản gel sau khi chạy điện di, người ta đặt bản gel dưới loại ánh sáng nào?", a: "Ánh sáng mặt trời tự nhiên ngoài trời", b: "Ánh sáng huỳnh quang đèn LED vàng", c: "Ánh sáng tử ngoại (tia cực tím / UV)", d: "Tia laser màu cam đơn sắc", ans: "c" },
                 { id: 87, q: "Ba phương pháp xác định trình tự DNA được liệt kê trong sơ đồ phân loại của tài liệu là gì?", a: "Phương pháp CTAB, phương pháp MS, phương pháp lỏng lắc", b: "Phương pháp Maxam-Gilbert, phương pháp Sanger, máy tự động", c: "Phương pháp gián tiếp, phương pháp trực tiếp, súng bắn gen", d: "Phương pháp đầu bằng, phương pháp đầu dính, đoạn nối linker", ans: "b" },
@@ -233,7 +224,7 @@
                 { id: 126, q: "Hiện tượng trên bề mặt thạch (agar) xuất hiện một lớp nhầy màu trắng đục, nhão như cháo, có mùi hôi là dấu hiệu của:", a: "Nhiễm nấm sợi.", b: "Hóa nâu mẫu cấy.", c: "Nhiễm vi khuẩn.", d: "Hiện tượng thủy tinh thể.", ans: "c" },
                 { id: 127, q: "Biện pháp phòng trị khi môi trường nuôi cấy bị nhiễm vi khuẩn trong quá trình thao tác là gì?", a: "Cho thêm than hoạt tính vào môi trường.", b: "Dùng kháng sinh để thêm vào môi trường nuôi cấy (kháng sinh thường dùng là pennicylin).", c: "Tăng cường độ ánh sáng và giảm nhiệt độ phòng nuôi.", d: "Sử dụng cồn 70% lau trực tiếp lên bề mặt mô sẹo.", ans: "b" },
                 { id: 128, q: "Hiện tượng xảy ra tại vị trí mẫu tiếp xúc with môi trường nuôi cấy xuất hiện màu nâu đen, ban đầu lợt sau đậm dần và lớn dần theo thời gian gọi là hiện tượng gì?", a: "Nhiễm vi khuẩn sinh mủ.", b: "Hóa nâu.", c: "Thủy tinh thể tế bào.", d: "Thiếu hụt đạm dinh dưỡng.", ans: "b" },
-                { id: 129, q: "Nguyên nhân chính gây ra hiện tượng hóa nâu mẫu cấy là:", a: "Do môi trường nuôi cấy bị nhiễm khuẩn từ dụng cụ cấy.", b: "Do cây có chứa nhiều chất tanin (hydroxyphenol) làm ức chế sinh trưởng của cây.", c: "Do sự hạn chế trao đổi khí giữa mẫu và môi trường ngoài.", d: "Do nồng độ đạm trong thạch agar quá cao.", ans: "b" },
+                { id: 129, q: "Nguyênuyan chính gây ra hiện tượng hóa nâu mẫu cấy là:", a: "Do môi trường nuôi cấy bị nhiễm khuẩn từ dụng cụ cấy.", b: "Do cây có chứa nhiều chất tanin (hydroxyphenol) làm ức chế sinh trưởng của cây.", c: "Do sự hạn chế trao đổi khí giữa mẫu và môi trường ngoài.", d: "Do nồng độ đạm trong thạch agar quá cao.", ans: "b" },
                 { id: 130, q: "Cách khắc phục hiện tượng hóa nâu mẫu cấy trong nuôi cấy mô tế bào là gì?", a: "Bổ sung kháng sinh Pennicylin vào thạch nuôi cấy.", b: "Cho than hoạt tính vào môi trường (than sẽ hấp thụ phenol) hoặc dùng mẫu cấy non, hạn chế gây vết thương mẫu cấy khi thực hiện cấy chuyền.", c: "Tăng nồng độ đạm và bổ sung thêm chất khí C2H2.", d: "Đưa mẫu cấy vào tủ ấm duy trì ở mức nhiệt độ 37°C.", ans: "b" },
                 { id: 131, q: "Bệnh sinh lý 'Hiện tượng thủy tinh thể' ở mẫu cấy biểu hiện qua những triệu chứng nào?", a: "Xuất hiện một lớp nhầy màu trắng đục, nhão như cháo, có mùi hôi.", b: "Vết cắt có màu nâu đen lan rộng theo thời gian.", c: "Thân, lá phồng to, chứa nhiều nước, nhìn trong suốt.", d: "Hệ thống rễ mọc ngược và biến dạng.", ans: "c" },
                 { id: 132, q: "Nguyên nhân gây ra hiện tượng thủy tinh thể ở mẫu cấy là gì?", a: "Do môi trường nuôi cấy bị nhiễm vi khuẩn trong quá trình thao tác.", b: "Do sự hạn chế trao đổi khí giữa mẫu và môi trường bên ngoài (hoặc sự trao đổi khí giữa mẫu cấy và môi trường ngoài bị dừng lại).", c: "Do lạm dụng quá nhiều hóa chất khử trùng mạnh như HgCl2.", d: "Do lượng than hoạt tính bổ sung vào môi trường vượt quá mức quy định.", ans: "b" },
@@ -275,9 +266,9 @@
                 { id: 166, q: "Vai trò chủ yếu của dung dịch đệm PCR buffer trong phản ứng PCR là gì?", a: "Cung cấp thêm năng lượng carbon thay thế cho đường kính.", b: "Giúp ổn định pH, đảm bảo môi trường hoạt động cho enzyme ổn định và tăng hoạt tính tối đa.", c: "Biến tính mạch kép DNA ở nhiệt độ phòng mà không cần nhiệt độ.", d: "Gắn các đuôi polyC và polyG vào hai đầu của phân tử DNA lạ.", ans: "b" },
                 { id: 167, q: "Thành phần đầy đủ của dung dịch đệm PCR buffer nồng độ 10X bao gồm chất nào?", a: "Phenol 100mM và Chloroform 500mM.", b: "Tris HCI 100mM (pH 8.3) và KCI 500 mM.", c: "NaClO 10% và HgCl2 1%.", d: "Agarose 1% và Polyacrylamide 10%.", ans: "b" },
                 { id: 168, q: "Nguyên tắc cơ bản đầu tiên của kỹ thuật tách chiết (ly trích) DNA là gì?", a: "Loại bỏ tạp chất bằng dung dịch hữu cơ hữu hiệu.", b: "Phá vỡ màng tế bào và màng nhân.", c: "Tủa DNA trong môi trường kiềm đặc NaOH.", d: "Chạy điện di trên tấm khuôn đỡ gel agarose.", ans: "b" },
-                { id: 169, q: "Phương pháp cơ học và hóa học tương ứng được dùng để phá vỡ màng tế bào và màng nhân là gì?", a: "Ly tâm tốc độ cao và ủ trong block nhiệt 60°C.", b: "Cơ học (nghiền tế bào) và Hóa học (chất tẩy, chất gây mất ổn định màng).", c: "Ngâm cồn 70% và nhỏ dung dịch đệm TE.", d: "Metyl hóa vùng hạn chế và dùng nuclease S1.", ans: "b" },
+                { id: 169, q: "Phương pháp cơ học và hóa học tương ứng được dùng để phá vỡ màng tế bào và màng nhân là gì?", a: "Ly tâm 10 phút ở tốc độ >12.000 vòng/phút.", b: "Cơ học (nghiền tế bào) và Hóa học (chất tẩy, chất gây mất ổn định màng).", c: "Ngâm cồn 70% và nhỏ dung dịch đệm TE.", d: "Metyl hóa vùng hạn chế và dùng nuclease S1.", ans: "b" },
                 { id: 170, q: "Dung dịch hữu cơ nào được sử dụng để loại bỏ tạp chất ra khỏi dịch chiết DNA?", a: "Dung dịch ethanol và isopropanol.", b: "Dung dịch phenol và chloroform.", c: "Tris HCI và KCI.", d: "Javen và thủy ngân clorua.", ans: "b" },
-                { id: 171, q: "Để thu nhận tủa DNA sau khi loại bỏ tạp chất, người ta tiến hành tủa trong các dung dịch hóa chất nào?", a: "Dung dịch kiềm NaOH 1N.", b: "Tủa trong ethanol hoặc tủa trong isopropanol.", c: "Dung dịch đệm TE hoặc đệm PCR buffer.", d: "Axit Abscisic đậm đặc.", ans: "b" },
+                { id: 171, q: "Để thu nhận tủa DNA sau khi loại bỏ tạp chất, người ta tiến hành tủa trong các dung dịch hóa chất nào?", a: "Dung dịch kiềm NaOH 1N.", b: "Tủa trong ethanol hoặc tủa trong isopropanol.", c: "Dung dịch đệm TE hoặc đệm PCR buffer.", d: "Axit Abscisid đậm đặc.", ans: "b" },
                 { id: 172, q: "Trong quy trình tách chiết DNA bằng phương pháp CTAB (Bước 1), khối lượng mẫu lá tươi được dùng để nghiền với nitrogen lỏng là bao nhiêu?", a: "0.1g mẫu.", b: "1.0g mẫu.", c: "5.0g mẫu.", d: "10g mẫu.", ans: "a" },
                 { id: 173, q: "Sau khi thêm 1ml dung dịch CTAB vào mẫu nghiền ở bước 2, hỗn hợp cần được xử lý tiếp như thế nào ở bước 3?", a: "Ly tâm 10 phút ở tốc độ >12.000 vòng/phút.", b: "Trong block nhiệt ở 60°C trong 10 phút.", c: "Thêm 0.6 lần thể tích 2-propanol lạnh và lắc đều.", d: "Hòa tan hoàn toàn bằng 100µl dung dịch đệm TE.", ans: "b" },
                 { id: 174, q: "Hỗn hợp dung dịch 'PCI' được thêm vào ở bước số 4 của quy trình tách chiết đại diện cho các hóa chất nào?", a: "Phenol chloroform isoamylalchol.", b: "Primer Cipher Intersept.", c: "Penicylin Calcium Iodine.", d: "Polymerase Cytokinin Indole.", ans: "a" },
@@ -296,15 +287,15 @@
                 { id: 187, q: "Enzyme cắt giới hạn là loại enzyme tìm thấy ở vi sinh vật có khả năng thực hiện chức năng gì?", a: "Gắn các nucleotide tự do vào đầu mút mạch đơn DNA.", b: "Cắt các liên kết phosphodiester trong phân tử DNA ở những vị trí nhất định tùy từng enzym, tạo thành những đoạn DNA có hai đầu hạn chế.", c: "Phá vỡ liên kết hydro màng nhân tế bào lá thực vật.", d: "Xúc tác cho sự chín siêu tốc của các quả chua.", ans: "b" },
                 { id: 188, q: "Enzyme cắt giới hạn Loại II có đặc tính hoạt động đặc trưng nào khiến chúng được ứng dụng nhiều nhất?", a: "Di chuyển trên DNA đến cách vị trí nhận biết 1000-5000 nucleotide rồi mới cắt.", b: "Enzym nhận biết trình tự và cắt ngay vị trí đó.", c: "Nhận biết một trình tự và cắt DNA ở vị trí cách đó khoảng 20 nucleotide.", d: "Chỉ cắt các liên kết hydro bám ở đầu 5' của đoạn mồi PCR.", ans: "b" },
                 { id: 189, q: "Hai kiểu cắt cơ bản phân chia theo cấu trúc đầu mút phân tử DNA của enzyme giới hạn là gì?", a: "Cắt đầu thẳng và Cắt đầu chéo.", b: "Cắt đầu bằng và Cắt đầu dính hay đầu lệch.", c: "Cắt đầu mồi xuôi và Cắt đầu mồi ngược.", d: "Cắt liên kết hydro và Cắt liên kết hóa trị hữu cơ.", ans: "b" },
-                { id: 190, q: "Trong sinh học phân tử, một Vector chuyển gen được hiểu là gì?", a: "Một chủng vi khuẩn có khả năng kháng lại tất cả các loại thuốc diệt cỏ phổ rộng.", b: "Một phân tử DNA có khả năng mang một đoạn DNA ngoại lai và khi xâm nhập vào loại tế bào chủ thích hợp thì có khả năng tự tái bản độc lập với hệ gen của tế bào chủ.", c: "Một thiết bị sử dụng áp lực xung khí trơ bắn hạt kim loại vào mô.", d: "Một phương tiện mang thông tin di truyền không có khả năng tự nhân bản.", ans: "b" },
+                { id: 190, q: "Trong sinh học phân tử, một Vector chuyển gen được hiểu là gì?", a: "Một chủng vi khuẩn có khả năng kháng lại tất cả các loại thuốc diệt cỏ phổ rộng.", b: "Một phân tử DNA có khả năng mang một đoạn DNA ngoại lai và khi xâm nhập vào loại tế bào chủ thích hợp thì có khả năng tự tái bản độc lập with hệ gen của tế bào chủ.", c: "Một thiết bị sử dụng áp lực xung khí trơ bắn hạt kim loại vào mô.", d: "Một phương tiện mang thông tin di truyền không có khả năng tự nhân bản.", ans: "b" },
                 { id: 191, q: "Dựa vào nguồn gốc, các loại vector được phân chia thành những nhóm cụ thể nào?", a: "Vector đa lượng và Vector vi lượng.", b: "Các vector là những plasmid, các vector là phage, các vector lai nhân tạo như: cosmid, bluescript.", c: "Vector tách dòng và Vector biểu hiện (vector tổng hợp).", d: "Vector gián tiếp Agrobacterium và Vector trực tiếp súng bắn gen.", ans: "b" },
                 { id: 192, q: "Dựa vào chức năng ứng dụng, người ta chia vector thành những nhóm phân loại nào?", a: "Vector đầu bằng và Vector đầu dính.", b: "Vector tách dòng (có kèm theo sự biểu hiện hoặc không biểu hiện của protein) và Vector biểu hiện (vector tổng hợp).", c: "Vector vi khuẩn và Vector virus.", d: "Vector đơn bản sao và Vector đa bản sao.", ans: "b" },
                 { id: 193, q: "Trong phương pháp nối các đoạn DNA nhờ enzyme nối, điều kiện kỹ thuật để cắt mở vòng vector plasmid và cắt đoạn DNA lai tương thích là gì?", a: "Phải dùng hai loại enzyme RE khác loại hoàn toàn để cắt tạo đầu bằng.", b: "Cắt DNA bằng enzym RE loại II cùng loại với enzym cắt plasmid (EcoRI) để tạo ra các vết cắt giống nhau.", c: "Phải xử lý DNA lai bằng hóa chất PEG nồng độ cao trước khi trộn.", d: "Phải nuôi cấy cả hai đoạn trong dung dịch đệm PCR buffer chứa vi khuẩn sống.", ans: "b" },
-                { id: 194, q: "Hợp chất hữu cơ nào tham gia xúc tác gắn ghép đoạn DNA cài với plasmid ở bước tạo plasmid tái tổ hợp?", a: "Enzyme Exonuclease.", b: "Ủ các DNA đoạn cài với plasmid với sự có mặt của enzym DNA ligase.", c: "Hóa chất Metyl hóa gốc hydrocarbon.", d: "Nuclease S1 mạch đơn.", ans: "b" },
+                { id: 194, q: "Hợp chất hữu cơ nào tham gia xúc tác gắn ghép đoạn DNA cài với plasmid ở bước tạo plasmid tái tổ hợp?", a: "Enzyme Exonuclease.", b: "Ủ các DNA đoạn cài with plasmid với sự có mặt của enzym DNA ligase.", c: "Hóa chất Metyl hóa gốc hydrocarbon.", d: "Nuclease S1 mạch đơn.", ans: "b" },
                 { id: 195, q: "Bản chất của các đoạn nối 'Linker' sử dụng trong phương pháp tạo DNA tái tổ hợp số 2 là gì?", a: "Các chuỗi protein ngắn có hoạt tính xúc tác mạnh như enzyme nối.", b: "Những đoạn DNA dài 10 đến 15 nucleotide, được tổng hợp bằng phương pháp hóa học, sao cho ở giữa mỗi linker phải có trình tự nhận biết bởi một enzym cắt hạn chế loại II.", c: "Các vi hạt kim loại bằng Vàng hoặc Vonfram có bọc DNA trần.", d: "Các phân tử RNA mạch đơn biểu hiện tính kháng thuốc diệt cỏ.", ans: "b" },
                 { id: 196, q: "Khi tạo vector tái tổ hợp bằng phương pháp dùng Linker, bước xử lý hóa học nào được áp dụng để bảo vệ vùng hạn chế có trong đoạn cDNA sợi đôi trước khi bổ sung enzyme cắt giới hạn?", a: "Khử trùng sơ bộ bằng dung dịch NaCIO.", b: "Metyl hóa các vùng hạn chế có trong đoạn cDNA sợi đôi được nhận biết bởi enzym EcoRI.", c: "Ủ với dung dịch hữu cơ Phenol Chloroform Isoamylalcohol.", d: "Siêu âm ở tần số phát sóng cơ học 20kHz.", ans: "b" },
                 { id: 197, q: "Phương pháp sử dụng enzyme terminal transferase (ETT) hoạt động dựa trên nguyên tắc đặc tính sinh học nào?", a: "Khả năng cắt liên kết phosphodiester cách vị trí nhận biết 20 nucleotide.", b: "Dựa vào đặc tính của enzym terminal transferase có khả năng gắn cùng một loại nucleotide vào đầu 3'(OH) của phân tử DNA.", c: "Khả năng làm bất hoạt gen sinh khí ethylene của các loại quả thực vật.", d: "Khả năng chịu nhiệt độ cao lên tới 95°C tương tự như Taq polymerase.", ans: "b" },
-                { id: 198, q: "Trong quy trình ETT (Bước 2), đoạn DNA lạ và plasmid mở vòng lần lượt được ủ với loại nucleotide nào để tạo các đuôi homopolymer tương ứng?", a: "DNA lạ tạo đuôi polyA; Plasmid tạo đuôi polyT.", b: "Ủ DNA lạ với nucleotide dCTP tạo đuôi polyC; Ủ plasmid với nucleotide dGTP tạo đuôi polyG.", c: "DNA lạ với dGTP để tạo đuôi polyG; Plasmid với dCTP để tạo đuôi polyC.", d: "Cả hai đoạn đều được ủ chung với hỗn hợp đầy đủ 4 loại nucleotide dNTPs.", ans: "b" },
+                { id: 198, q: "Trong quy trình ETT (Bước 2), đoạn DNA lạ và plasmid mở vòng lần lượt được ủ with loại nucleotide nào để tạo các đuôi homopolymer tương ứng?", a: "DNA lạ tạo đuôi polyA; Plasmid tạo đuôi polyT.", b: "Ủ DNA lạ với nucleotide dCTP tạo đuôi polyC; Ủ plasmid với nucleotide dGTP tạo đuôi polyG.", c: "DNA lạ với dGTP để tạo đuôi polyG; Plasmid với dCTP để tạo đuôi polyC.", d: "Cả hai đoạn đều được ủ chung với hỗn hợp đầy đủ 4 loại nucleotide dNTPs.", ans: "b" },
                 { id: 199, q: "Trình tự đuôi homopolymer của DNA lạ và plasmid bắt cặp bổ sung với nhau theo nguyên tắc nào ở bước 3?", a: "---AAAA 3'/3'TTTT---", b: "Các đầu mút của homopolymer có trình tự bổ sung (---GGGG 3'/3'CCCC---) sẽ bắt cặp với nhau.", c: "---CCCC 3'/3'AAAA---", d: "---TTTT 3'/3'GGGG---", ans: "b" },
                 { id: 200, q: "Ở bước 4 của phương pháp ETT, enzyme nào được bổ sung để lấp đầy các nucleotide trống và nối kín mạch liên kết?", a: "Chỉ dùng duy nhất một loại enzyme cắt RE loại I.", b: "Bổ sung enzym DNA-polymerase I và Enzym ligase nối liên kết phosphodiester.", c: "Enzyme Terminal Transferase kết hợp với chất đệm đun nóng ở 72°C.", d: "Enzyme Luciferase cùng với cơ chất Adenosine 5'phosphosulfate (APS).", ans: "b" },
                 { id: 201, q: "Ưu điểm nổi bật nhất của phương pháp tạo DNA tái tổ hợp bằng enzyme terminal transferase (ETT) là gì?", a: "Tiết kiệm chi phí mua máy chu kỳ nhiệt đắt tiền cho phòng thí nghiệm.", b: "Ghép DNA lạ đầu bằng vào plasmid để tạo DNA tái tổ hợp và chế tác được DNA đầu lệch từ DNA đầu bằng.", c: "Hoàn toàn không xảy ra hiện tượng câm gen hay ảnh hưởng lẫn nhau giữa các bản sao gen.", d: "Giúp chuyển gen trực tiếp qua bầu nhụy hoa tự nhiên mà không cần vi thao tác.", ans: "b" },
@@ -320,16 +311,16 @@
                 { id: 211, q: "Hạn chế lớn nhất khi ứng dụng phương pháp Xung điện trực tiếp là gì?", a: "Chi phí mua hóa chất hữu cơ Phenol quá tốn kém cho phòng thí nghiệm.", b: "Tỷ lệ các tế bào được chuyển gene còn thấp; Sức sống của tế bào giảm đột ngột khi bị sốc điện; Việc tái sinh ở một số loài rất khó khăn.", c: "Dễ xảy ra hiện tượng dung hợp bừa bãi giữa các tế bào trần tạo ra cơ thể đa bội lệch.", d: "Gen mục tiêu bị các protein virulent của tế bào đào thải ngay lập tức.", ans: "b" },
                 { id: 212, q: "Hóa chất nào được ứng dụng trong phương pháp nạp gen trực tiếp vào tế bào trần (protoplast) nhờ khả năng thay đổi cấu trúc màng ở nồng độ cao?", a: "Polyethylene glycol (PEG) hoặc canxi phosphat.", b: "Thủy ngân clorua (HgCl2).", c: "Hỗn hợp dung dịch Phenol và Chloroform.", d: "Kháng sinh Pennicylin hòa tan.", ans: "a" },
                 { id: 213, q: "Nhược điểm đặc trưng của phương pháp chuyển gene trực tiếp nhờ hóa chất (PEG) là gì?", a: "Thiết bị súng bắn vô cùng đắt tiền, không phải phòng thí nghiệm nào cũng đầu tư được.", b: "Tần số chuyển gene rất thấp do không kiểm soát được quá trình chuyển gene; Dễ xảy ra hiện tượng dung hợp TB trần; Tái sinh tế bào trần sau chuyển gene khó khăn.", c: "Mỗi lần thao tác chỉ có thể xử lý chính xác được cho duy nhất một tế bào đơn lẻ.", d: "Làm bất hoạt hoàn toàn quá trình quang hô hấp tự nhiên của toàn bộ cây con.", ans: "b" },
-                { id: 214, q: "Nguyên tắc cơ học của phương pháp Vi tiêm (Microinjection) trong công nghệ chuyển gen thực vật là gì?", a: "Trộn hỗn hợp tế bào với dung dịch đạn kim loại rồi dùng xung khí trơ đẩy mạnh.", b: "Một lượng nhỏ DNA được tiêm trực tiếp vào nhân tế bào phôi trần hoặc tế bào nguyên vẹn một cách cơ học dưới kính hiển vi.", c: "Nhỏ dung dịch plasmid trực tiếp dọc theo đường mọc của ống phấn hoa.", d: "Cắm đầu máy phát sóng cơ học sâu 3mm vào dung dịch huyền phù chứa protoplast.", ans: "b" },
+                { id: 214, q: "Nguyên tắc cơ học của phương pháp Vi tiêm (Microinjection) trong công nghệ chuyển gen thực vật là gì?", a: "Trộn hỗn hợp tế bào với dung dịch đạn kim loại rồi dùng xung khí trơ đẩy mạnh.", b: "Một lượng nhỏ DNA được tiêm trực tiếp vào nhân tế bào phôi trần hoặc tế bào nguyên vẹn một cách cơ học dưới kính hiển vi.", c: "Nhỏ dung dịch plasmid trực tiếp dọc theo đường mọc của ống phấn hoa.", d: "Cắm đầu máy phát sóng cơ học tần số gia tốc 20kHz vào dung dịch huyền phù chứa protoplast.", ans: "b" },
                 { id: 215, q: "Mặt hạn chế lớn nhất cản trở việc ứng dụng đại trà phương pháp Vi tiêm là gì?", a: "Gây chết tế bào hàng loạt do tác động sốc điện cao áp.", b: "Mỗi lần tiêm chỉ được một phát tiêm và chỉ with một tế bào; Cần dùng các thiết bị có độ chính xác cao và cần kỹ năng phức tạp của người sử dụng.", c: "Phổ ký chủ bị giới hạn nghiêm ngặt, tuyệt đối không áp dụng được cho hạt phấn.", d: "Dễ gây ra hiện tượng câm gen chéo do số lượng bản sao tích hợp quá lớn.", ans: "b" },
-                { id: 216, q: "Điểm đặc biệt của phương pháp Chuyển gen qua ống phấn (Pollen tube pathway) là gì?", a: "Phải tạo tế bào trần bằng hóa chất hữu cơ mạnh CTAB.", b: "Là phương pháp chuyển không qua nuôi cấy invitro, các DNA ngoại lai được chuyển trực tiếp bằng đường ống phấn, chui vào bầu nhụy cái vào lúc hạt phấn mọc qua vòi nhụy và lúc đưa tinh vào thụ tinh.", c: "Sử dụng sóng cơ học tần số 20kHz tác động trực tiếp lên bao phấn hoa.", d: "Gen mục tiêu được bọc trong các hạt kim loại nặng Vonfram trước khi nhỏ vào nhụy.", ans: "b" },
-                { id: 217, q: "Trong phương pháp chuyển gen bằng kĩ thuật siêu âm, các thông số kỹ thuật chuẩn của máy phát sóng được quy định như thế nào?", a: "Tần số 94°C, thời gian kéo dài 20 - 30 chu kỳ nhiệt.", b: "Tiến hành cắm đầu máy siêu âm vào dung dịch huyền phù khoảng 3mm và cho máy phát với tần số 20kHz, thời gian 600-900 ms.", c: "Tần số phát xung điện cao thế duy trì liên tục trong thời gian >1 giờ.", d: "Phát sóng huỳnh quang đánh dấu với 4 loại phân tử phát sáng ddNTPs.", ans: "b" },
+                { id: 216, q: "Điểm đặc biệt của phương pháp Chuyển gen qua ống phấn (Pollen tube pathway) là gì?", a: "Phải tạo tế bào trần bằng hóa chất hữu cơ mạnh CTAB.", b: "Là phương pháp chuyển không qua nuôi cấy invitro, các DNA ngoại lai được chuyển trực tiếp bằng đường ống phấn, chui vào bầu nhụy cái vào lúc hạt phấn mọc qua vòi nhụy và lúc đưa tinh vào thụ tinh.", c: "Sử dụng sóng cơ học tần số 20kHz tác động trực tiếp lên bao phantom hoa.", d: "Gen mục tiêu được bọc trong các hạt kim loại nặng Vonfram trước khi nhỏ vào nhụy.", ans: "b" },
+                { id: 217, q: "Trong phương pháp chuyển gen bằng kĩ thuật siêu âm, các thông số kỹ thuật chuẩn của máy phát sóng được quy định như thế nào?", a: "Tần số 94°C, thời gian kéo dài 20 - 30 chu kỳ nhiệt.", b: "Tiến hành cắm đầu máy siêu âm vào dung dịch huyền phù khoảng 3mm và cho máy phát with tần số 20kHz, thời gian 600-900 ms.", c: "Tần số phát xung điện cao thế duy trì liên tục trong thời gian >1 giờ.", d: "Phát sóng huỳnh quang đánh dấu với 4 loại phân tử phát sáng ddNTPs.", ans: "b" },
                 { id: 218, q: "Hướng chính trong tạo giống nhờ chuyển nạp gen phục vụ lợi ích cho con người hiện nay bao gồm mục tiêu nào?", a: "Chuyển gen kháng bệnh, kháng thuốc diệt cỏ, kháng sâu hại và côn trùng, chuyển gen tăng giá trị dinh dưỡng, hay màu sắc cho hoa quả...", b: "Tăng kích thước bao bì đóng gói quả và rút ngắn thời gian xử lý hóa chất hữu cơ Phenol.", c: "Giúp cây con chuyển hoàn toàn sang trạng thái ký sinh dị dưỡng trong ống nghiệm.", d: "Biến đổi cấu trúc màng tế bào thực vật thành màng tế bào vi sinh vật chịu nhiệt.", ans: "a" },
                 { id: 219, q: "Thành tựu tạo giống cà chua chuyển gen có đặc điểm gì nổi bật hỗ trợ quá trình bảo quản?", a: "Được chuyển gen kháng thuốc diệt cỏ từ cây thuốc lá.", b: "Cà chua chuyển gen sinh etilen đã bị làm bất hoạt khiến quá trình chín của quả bị chậm lại nên có thể chuyển đi xa hoặc để lâu hơn.", c: "Bổ sung thêm hàm lượng dinh dưỡng beta-carotene cao vào vỏ quả.", d: "Tăng nồng độ chất độc tanin để ức chế hoàn toàn các vi khuẩn hoại sinh.", ans: "b" },
                 { id: 220, q: "Giống lúa gạo vàng (Golden rice) là một thành tựu nổi bật của công nghệ chuyển gen hướng tới mục tiêu nào sau đây?", a: "Kháng lại sâu đục thân 5 vạch bằng phương pháp xung điện.", b: "Kháng thuốc diệt cỏ phổ rộng khi trồng ngoài đồng ruộng.", c: "Giúp tăng hàm lượng dinh dưỡng.", d: "Giảm tính mẫn cảm với điều kiện thời tiết lạnh giá của mùa đông.", ans: "c" },
                 { id: 221, q: "Thành tựu tạo giống lúa chống lại sâu đục thân 5 vạch và cuốn lá được thực hiện bằng phương pháp chuyển gen trực tiếp cụ thể nào?", a: "Phương pháp súng bắn gen bắn thẳng vào phôi non của hạt.", b: "Phương pháp xung điện nạp gen vào protoplast.", c: "Phương pháp chuyển gen gián tiếp nhờ vi khuẩn Agrobacterium.", d: "Phương pháp chuyển gen trực tiếp qua bầu nhụy bằng đường ống phấn hoa.", ans: "b" },
                 { id: 222, q: "Giống ngô chống được sâu đục thân ngô châu Âu được tạo ra nhờ ứng dụng phương pháp bắn gen vào đối tượng cấu trúc nào?", a: "Vi tiêm trực tiếp vào nhân tế bào hợp tử.", b: "Sử dụng hóa chất PEG gây dung hợp tế bào trần.", c: "Phương pháp bắn gen vào phôi non.", d: "Kỹ thuật siêu âm tần số cao 20kHz trong dung dịch huyền phù.", ans: "c" },
-                { id: 223, q: "Giống cây trồng nào được chuyển gen giảm tính mẫn cảm với lạnh bằng phương pháp nhờ vi khuẩn Agrobacterium?", a: "Cây bông vải.", b: "Cây đậu tương.", c: "Thuốc lá.", d: "Cây đu đủ.", ans: "c" }
+                { id: 223, q: "Giống cây trồng nào được chuyển gen giảm tính mẫn cảm with lạnh bằng phương pháp nhờ vi khuẩn Agrobacterium?", a: "Cây bông vải.", b: "Cây đậu tương.", c: "Thuốc lá.", d: "Cây đu đủ.", ans: "c" }
             ]
         };
 
@@ -354,8 +345,7 @@
             sessionAnswers: [],
             reviewMode: false,
             reviewData: [],
-            history: [],
-            lastAnimatedQuestionIndex: -1 // Quản lý vòng đời hiệu ứng đổi câu hỏi
+            history: []
         };
 
         try {
@@ -497,6 +487,7 @@
             if (!state.currentPart) {
                 root.innerHTML = `
                     <div class="min-h-screen flex flex-col relative w-full items-center">
+                        
                         <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
                             <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
                                 <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
@@ -505,9 +496,19 @@
                                     <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
                                 </div>
                             </div>
-                            <button onclick="toggleDarkMode()" class="p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 pointer-events-auto active:scale-95">
-                                ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
-                            </button>
+                            
+                            <div class="flex items-center gap-2 pointer-events-auto">
+                                <!-- NÚT QUAY VỀ TRANG CHỦ FIX THEO HÌNH image_3944aa.png (CÓ RESPONSIVE CHỮ) -->
+                                <button onclick="handleGoHome()" class="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-md active:scale-95">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                    <span class="hidden sm:inline">Quay về trang chủ</span>
+                                    <span class="sm:hidden">Trang chủ</span>
+                                </button>
+                                
+                                <button onclick="toggleDarkMode()" class="p-2 sm:p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 active:scale-95">
+                                    ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                                </button>
+                            </div>
                         </header>
                         
                         <div class="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950 text-white shadow-xl relative overflow-hidden text-center pt-40 pb-16 md:pt-32 md:pb-20">
@@ -526,14 +527,10 @@
                                     </svg>
                                 </div>
                                 <div class="space-y-2">
-                                    <h1 class="pt-2 text-3xl md:text-5xl font-black tracking-tight uppercase bg-gradient-to-r from-white via-emerald-300 to-slate-200 bg-clip-text text-transparent drop-shadow-lg">CNSH TRONG SẢN XUẤT CÂY TRỒNG</h1>
-                                    <p class="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">Ngân hàng 223 câu hỏi tổng ôn lý thuyết chia làm 4 bộ đề</p>
-                                </div>
+                                 <h1 style="line-height: 1.35 !important;" class="pt-2 text-3xl md:text-5xl font-black uppercase bg-gradient-to-r from-white via-emerald-300 to-slate-200 bg-clip-text text-transparent drop-shadow-lg">CNSH TRONG SẢN XUẤT CÂY TRỒNG</h1>
+    <p class="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">Ngân hàng 223 câu hỏi tổng ôn lý thuyết chia làm 4 bộ đề</p>
+</div>
                             </div>
-                        </div>
-
-                        <div class="absolute top-4 right-16 sm:top-6 sm:right-24 z-50 pointer-events-auto">
-                            <button onclick="handleGoHome()" class="flex items-center gap-2 px-4 py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Quay về trang chủ</button>
                         </div>
 
                         <div class="max-w-6xl mx-auto px-4 py-8 w-full -mt-10 relative z-20 space-y-10 flex flex-col items-center">
@@ -621,16 +618,8 @@
                 return;
             }
 
-            // GIAO DIỆN KHỐI LÀM TRẮC NGHIỆM - NÂNG CẤP HIỆU ỨNG THÔNG MINH KHÔNG CHỚP MẮT
             const currentQ = state.questions[state.currentQuestionIndex];
             const progress = ((state.currentQuestionIndex + 1) / state.questions.length) * 100;
-
-            // KIỂM TRA ĐỔI CÂU HỎI ĐỂ ĐƯA HIỆU ỨNG TRƯỢT MƯỢT MÀ VÀO VÒNG ĐỜI RENDER
-            let cardAnimationClass = "";
-            if (state.currentQuestionIndex !== state.lastAnimatedQuestionIndex) {
-                cardAnimationClass = "animate-question-card";
-                state.lastAnimatedQuestionIndex = state.currentQuestionIndex;
-            }
 
             root.innerHTML = `
                 <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 ${state.isConfirming ? 'block' : 'hidden'}">
@@ -655,62 +644,63 @@
                         <div class="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all rounded-full" style="width: ${progress}%"></div></div>
                     </div>
                     
-                    <!-- THẺ CONTAINER CHỨA HIỆU ỨNG TRƯỢT HÀNH TRÌNH ĐỔI CÂU THÔNG MINH CHỐNG BLINK -->
-                    <div class="w-full bg-white dark:bg-slate-900 p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800/60 mb-24 relative overflow-hidden ${cardAnimationClass}">
+                    <div class="w-full bg-white dark:bg-slate-900 p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800/60 mb-24 relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-emerald-600"></div>
-                        <div class="mb-6">
-                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                                <span class="inline-block bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-slate-100">ID: #${currentQ.id}</span>
-                                <span class="text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-full ${currentQ.isMultiple ? 'bg-amber-50 text-amber-600 border border-amber-200' : 'bg-teal-50 text-teal-600 border border-teal-200'}">
-                                    ${currentQ.isMultiple ? "☑ Tích chọn nhiều đáp án" : "🔘 Chọn một đáp án"}
-                                </span>
+                        
+                        <div>
+                            <div class="mb-6">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                    <span class="inline-block bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-slate-100">ID: #${currentQ.id}</span>
+                                    <span class="text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-full ${currentQ.isMultiple ? 'bg-amber-50 text-amber-600 border border-amber-200' : 'bg-teal-50 text-teal-600 border border-teal-200'}">
+                                        ${currentQ.isMultiple ? "☑ Tích chọn nhiều đáp án" : "🔘 Chọn một đáp án"}
+                                    </span>
+                                </div>
+                                <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 leading-snug tracking-tight">${currentQ.q}</h2>
                             </div>
-                            <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 leading-snug tracking-tight">${currentQ.q}</h2>
-                        </div>
-                        
-                        <div class="space-y-3.5">
-                            ${state.shuffledOptions.map((option) => {
-                                const isSelected = state.selectedOptions.includes(option.key);
-                                const isOptCorrect = currentQ.correct.split('').includes(option.key);
-                                
-                                // BỔ SUNG HIỆU ỨNG CO GIÃN HAPTIC KHI NGƯỜI DÙNG CLICK CHỌN ĐÁP ÁN (ACTIVE:SCALE)
-                                let containerClass = "w-full p-5 rounded-2xl border text-left font-semibold transition-all duration-200 transform active:scale-[0.98] flex justify-between items-center relative overflow-hidden text-sm ";
-                                
-                                if (state.isSubmitted) {
-                                  containerClass += " active:scale-100 cursor-not-allowed "; // Khóa haptic sau khi submit
-                                  if (isOptCorrect) containerClass += "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 ring-2 ring-emerald-200 shadow-inner";
-                                  else if (isSelected) containerClass += "border-rose-500 bg-rose-50 dark:bg-rose-950/30 text-rose-800 ring-2 ring-rose-200 shadow-inner";
-                                  else containerClass += "border-slate-100 text-slate-400 opacity-50";
-                                } else {
-                                  if (isSelected) containerClass += "border-emerald-500 bg-emerald-50/60 dark:bg-slate-800/80 text-emerald-900 dark:text-teal-300 ring-2 ring-emerald-200 shadow-md -translate-y-0.5";
-                                  else containerClass += "border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-brand-50/40 hover:border-brand-200 hover:shadow-sm hover:-translate-y-0.5";
-                                }
+                            
+                            <div class="space-y-3.5">
+                                ${state.shuffledOptions.map((option) => {
+                                    const isSelected = state.selectedOptions.includes(option.key);
+                                    const isOptCorrect = currentQ.correct.split('').includes(option.key);
+                                    
+                                    let containerClass = "w-full p-5 rounded-2xl border text-left font-semibold transition-all duration-200 transform active:scale-[0.98] flex justify-between items-center relative overflow-hidden text-sm ";
+                                    
+                                    if (state.isSubmitted) {
+                                      containerClass += " active:scale-100 cursor-not-allowed "; 
+                                      if (isOptCorrect) containerClass += "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-inner";
+                                      else if (isSelected) containerClass += "border-rose-500 bg-rose-50 dark:bg-rose-950/30 text-rose-800 ring-2 ring-rose-200 shadow-inner";
+                                      else containerClass += "border-slate-100 text-slate-400 opacity-50";
+                                    } else {
+                                      if (isSelected) containerClass += "border-emerald-500 bg-emerald-50/60 dark:bg-slate-800/80 text-emerald-900 dark:text-teal-300 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-md -translate-y-0.5";
+                                      else containerClass += "border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-brand-50/40 hover:border-brand-200 hover:shadow-sm hover:-translate-y-0.5";
+                                    }
 
-                                return `
-                                    <button onclick="handleOptionSelect('${option.key}', ${currentQ.isMultiple})" ${state.isSubmitted ? 'disabled' : ''} class="${containerClass}">
-                                        <div class="flex items-center gap-4 relative z-10">
-                                            <div class="w-5 h-5 flex items-center justify-center border-2 flex-shrink-0 rounded-md transition-colors ${isSelected ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 bg-white dark:bg-slate-900'}">
-                                                ${isSelected ? '<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>' : ''}
+                                    return `
+                                        <button onclick="handleOptionSelect('${option.key}', ${currentQ.isMultiple})" ${state.isSubmitted ? 'disabled' : ''} class="${containerClass}">
+                                            <div class="flex items-center gap-4 relative z-10">
+                                                <div class="w-5 h-5 flex items-center justify-center border-2 flex-shrink-0 rounded-md transition-colors ${isSelected ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 bg-white dark:bg-slate-900'}">
+                                                    ${isSelected ? '<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>' : ''}
+                                                </div>
+                                                <span>${option.text}</span>
                                             </div>
-                                            <span>${option.text}</span>
-                                        </div>
-                                        ${state.isSubmitted && isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400 flex-shrink-0 ml-4 animate-enter" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
-                                        ${state.isSubmitted && isSelected && !isOptCorrect ? '<svg class="text-rose-600 dark:text-rose-400 flex-shrink-0 ml-4 animate-enter" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
-                                    </button>`;
-                            }).join('')}
+                                            ${state.isSubmitted && isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                            ${state.isSubmitted && isSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                        </button>`;
+                                }).join('')}
+                            </div>
+                            
+                            ${!state.isSubmitted && state.selectedOptions.length > 0 ? `
+                                <div class="mt-6 flex justify-end">
+                                    <button onclick="checkAnswerSubmission()" class="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl text-xs uppercase tracking-wider shadow-md transform active:scale-95 transition-transform">
+                                        Xác nhận đáp án
+                                    </button>
+                                </div>` : ''}
                         </div>
-                        
-                        ${!state.isSubmitted && state.selectedOptions.length > 0 ? `
-                            <div class="mt-6 flex justify-end animate-enter">
-                                <button onclick="checkAnswerSubmission()" class="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl text-xs uppercase tracking-wider shadow-md transform active:scale-95 transition-transform">
-                                    Xác nhận đáp án
-                                </button>
-                            </div>` : ''}
                     </div>
 
                     <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-100 dark:border-slate-900/60 flex justify-center items-center gap-4 z-20">
                         <button onclick="prevQuestion()" ${state.currentQuestionIndex === 0 ? 'disabled' : ''} class="w-14 h-14 rounded-2xl flex items-center justify-center border text-slate-600 dark:text-slate-400 disabled:opacity-25 transform active:scale-95 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
-                        <button onclick="nextQuestion()" ${!state.isSubmitted ? 'disabled' : ''} class="flex-1 max-w-md h-14 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 disabled:bg-emerald-600 disabled:text-slate-400 bg-brand-600 text-white transform active:scale-[0.99] transition-all">
+                        <button onclick="nextQuestion()" ${!state.isSubmitted ? 'disabled' : ''} class="flex-1 max-w-md h-14 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 disabled:bg-slate-200 dark:disabled:bg-slate-800/50 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:shadow-none bg-brand-600 text-white disabled:cursor-not-allowed transform active:scale-[0.99] transition-all">
                             ${state.currentQuestionIndex === state.questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                         </button>
                     </div>
@@ -718,36 +708,48 @@
         }
 
         auth.onAuthStateChanged((currentUser) => {
-            if (currentUser) {
-                const ADMIN_EMAIL = "ngocyen@cucdang.com";
-                const userEmail = currentUser.email.toLowerCase();
-                if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".cnsh")) {
-                    state.authError = "Tài khoản này không có quyền truy cập môn CNSH!";
+    if (currentUser) {
+        const ADMIN_EMAIL = "ngocyen@cucdang.com";
+        const userEmail = currentUser.email.toLowerCase();
+        
+        if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".cnsh")) {
+            state.authError = "Tài khoản này không có quyền truy cập môn CNSH!";
+            auth.signOut();
+            state.user = null;
+        } else {
+            const token = getOrCreateDeviceToken();
+            const sessionRef = db.ref(`active_sessions/mon_cnsh/${currentUser.uid}`);
+            
+            const isAdmin = userEmail === ADMIN_EMAIL;
+
+            if (!state.user) {
+                if (!isAdmin) {
+                    sessionRef.set({ 
+                        deviceToken: token, 
+                        lastLogin: firebase.database.ServerValue.TIMESTAMP, 
+                        email: currentUser.email 
+                    });
+                }
+            }
+
+            sessionRef.on("value", (snap) => {
+                const val = snap.val();
+                
+                if (val && val.deviceToken !== token && !isAdmin) {
+                    state.isKicked = true;
                     auth.signOut();
                     state.user = null;
-                } else {
-                    const token = getOrCreateDeviceToken();
-                    const sessionRef = db.ref(`active_sessions/mon_tin_hoc/${currentUser.uid}`);
-                    if (!state.user) {
-                      sessionRef.set({ deviceToken: token, lastLogin: firebase.database.ServerValue.TIMESTAMP, email: currentUser.email });
-                    }
-                    sessionRef.on("value", (snap) => {
-                        const val = snap.val();
-                        if (val && val.deviceToken !== token) {
-                            state.isKicked = true;
-                            auth.signOut();
-                            state.user = null;
-                            render();
-                        }
-                    });
-                    state.user = currentUser;
+                    render();
                 }
-            } else {
-                state.user = null;
-            }
-            state.loading = false;
-            render();
-        });
+            });
+            state.user = currentUser;
+        }
+    } else {
+        state.user = null;
+    }
+    state.loading = false;
+    render();
+});
 
         function handleLogin(e) {
             e.preventDefault();
@@ -777,7 +779,6 @@
             }));
             state.currentPart = part; state.currentQuestionIndex = 0; state.score = 0; state.wrongScore = 0;
             state.sessionAnswers = []; state.showResult = false; state.selectedOptions = []; state.isSubmitted = false;
-            state.lastAnimatedQuestionIndex = -1; // Reset lịch sử hoạt ứng khi bấm đóng/mở đề mới
             if (state.questions.length > 0) state.shuffledOptions = state.questions[0].options;
             render();
         }
