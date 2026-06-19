@@ -754,7 +754,6 @@
                 root.innerHTML = `
                     <div class="min-h-screen flex flex-col relative w-full items-center">
                         
-                        <!-- HEADER ĐỒNG BỘ - FIX CHỐNG CHỒNG NÚT VÀ ĐỔI ICON SANG CỬA THOÁT RA -->
                         <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
                             <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
                                 <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
@@ -785,7 +784,6 @@
                             <div class="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center gap-4 relative z-10">
                                 <div class="p-3 bg-white/5 rounded-2xl backdrop-blur-md border border-white/10 animate-float inline-block shadow-xl"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
                                 <div class="space-y-2">
-                                    <!-- FIX ĐỒNG BỘ CHIỀU CAO CHỮ CHỐNG DÍNH DẤU CHO TIẾNG VIỆT -->
                                     <h1 style="line-height: 1.35 !important;" class="pt-2 text-4xl md:text-5xl font-black uppercase bg-gradient-to-r from-white via-emerald-300 to-slate-200 bg-clip-text text-transparent drop-shadow-lg">TIN HỌC ĐẦU RA PHẦN 1</h1>
                                     <p class="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">Ngân hàng 480 câu hỏi lý thuyết phân chia 8 đề</p>
                                 </div>
@@ -873,7 +871,6 @@
             const progress = ((state.currentQuestionIndex + 1) / state.questions.length) * 100;
 
             root.innerHTML = `
-                <!-- POPUP XÁC NHẬN NỘP BÀI -->
                 <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 ${state.isConfirming ? 'block' : 'hidden'}">
                   <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100">
                     <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Nộp bài & kết thúc?</h3>
@@ -896,7 +893,6 @@
                         <div class="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all rounded-full" style="width: ${progress}%"></div></div>
                     </div>
                     
-                    <!-- THẺ KHUNG HỘP HOÀN TOÀN TĨNH - ĐỒNG BỘ HIỆU ỨNG KHÔNG CHỚP MẮT -->
                     <div class="w-full bg-white dark:bg-slate-900 p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800/60 mb-24 relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-emerald-600"></div>
                         
@@ -951,7 +947,6 @@
                         </div>
                     </div>
 
-                    <!-- FIX ĐỒNG BỘ MÀU NÚT TIẾP THEO KHI KHÓA (DISABLED) CHUẨN UI/UX -->
                     <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-100 dark:border-slate-900/60 flex justify-center items-center gap-4 z-20">
                         <button onclick="prevQuestion()" ${state.currentQuestionIndex === 0 ? 'disabled' : ''} class="w-14 h-14 rounded-2xl flex items-center justify-center border text-slate-600 dark:text-slate-400 disabled:opacity-25 transform active:scale-95 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
                         <button onclick="nextQuestion()" ${!state.isSubmitted ? 'disabled' : ''} class="flex-1 max-w-md h-14 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 disabled:bg-slate-200 dark:disabled:bg-slate-800/50 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:shadow-none bg-brand-600 text-white disabled:cursor-not-allowed transform active:scale-[0.99] transition-all">
