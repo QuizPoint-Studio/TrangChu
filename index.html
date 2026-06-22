@@ -163,21 +163,26 @@
                 </div>
                 <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
                 <div class="flex items-center gap-2 font-bold text-xs sm:text-sm">
-                    <svg class="text-brand-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <svg class="text-brand-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                     <span>Zalo hỗ trợ: <span class="font-mono text-slate-900 dark:text-white font-black">0333738861</span></span>
                 </div>
             </div>
 
-            <div class="max-w-xl mx-auto mb-10 relative animate-enter">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <!-- ĐÃ SỬA: KHU VỰC CHỨA THANH TÌM KIẾM VÀ KHUNG GỢI Ý ĐƯỢC CHỈNH LẠI LAYER CAO NHẤT -->
+            <div class="max-w-xl mx-auto mb-10 relative z-50 animate-enter">
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </div>
+                    <input 
+                        id="search-box"
+                        type="text"
+                        placeholder="Tìm kiếm nhanh tên môn học hoặc mã học phần..."
+                        class="w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 focus:border-brand-500 shadow-sm text-sm font-semibold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-500/20 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600"
+                    />
                 </div>
-                <input 
-                    id="search-box"
-                    type="text"
-                    placeholder="Tìm kiếm nhanh tên môn học hoặc mã học phần..."
-                    class="w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 focus:border-brand-500 shadow-sm text-sm font-semibold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-500/20 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600"
-                />
+                <!-- ĐÃ SỬA: Thêm top-full, w-full và z-[99] bảo đảm luôn hiển thị đè lên trên banner / card bên dưới -->
+                <div id="search-results-wrapper" class="hidden absolute top-full left-0 w-full mt-2 p-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl border border-brand-200 dark:border-slate-800 shadow-xl space-y-1.5 z-[99] animate-enter max-h-72 overflow-y-auto custom-scrollbar"></div>
             </div>
 
             <div 
@@ -316,7 +321,7 @@
                     </h4>
                     <ul class="space-y-2 text-xs text-slate-400 font-medium">
                         <li class="flex items-center gap-2"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Bước 1: Nhập tên môn học cần tìm kiếm ở thanh thông minh.</li>
-                        <li class="flex items-center gap-2"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Bước 2: Click mở khối danh mục để chọn môn học mong muốn.</li>
+                        <li class="flex items-center gap-2"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Bước 2: Click chọn môn học mong muốn từ danh sách.</li>
                         <li class="flex items-center gap-2"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Bước 3: Đăng nhập tài khoảng và mật khẩu.</li>
                         <li class="flex items-center gap-2"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Bước 4: Luyện đề ôn tập.</li>
                     </ul>
@@ -356,13 +361,14 @@
         const subSubjects = {
             "on-thi-chuan-dau-ra": [
                 { name: "ACCESS: Đề ôn đầu ra Access", code: "ACC-01", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#" },
-                { name: "TIN A: Đề ôn đầu ra Tin A", code: "TINA-02", tag: "Luyện", tagColor: "bg-emerald-500", url: "TinHocDauRaPhan1.html" }
+                { name: "TIN A: Đề ôn đầu ra Tin A", code: "TINA-02", tag: "HOT", tagColor: "bg-emerald-500", url: "TinHocDauRaPhan1.html" }
             ],
             "on-tap-mon-hoc": [
-                { name: "Môn 1: Sinh Lý Thực Vật", code: "BIO-301", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#" },
-                { name: "Môn 2: Khí Tượng Nông Nghiệp", code: "BIO-303", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#" },
-                { name: "Môn 3: Rèn Nghề", code: "PRACT-101", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#" },
-                { name: "Môn 3: Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "CNSH.html" }
+                { name: "Môn: Sinh Lý Thực Vật", code: "BIO-301", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#" },
+                { name: "Môn: Khí Tượng Nông Nghiệp", code: "BIO-303", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#" },
+                { name: "Môn: Rèn Nghề", code: "PRACT-101", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#" },
+                { name: "Môn: Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "CNSH.html" },
+                { name: "Môn: Sinh trưởng phát triển và tính chống chịu của thực vật", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "STPT.html" }
             ],
             "noi-dung-yeu-cau": [
                 { name: "Yêu Cầu 1: Phân nhánh tự tạo số 1", code: "REQ-01", tag: "Chưa mở", tagColor: "bg-purple-500", url: "#" },
@@ -379,6 +385,7 @@
         const sunIcon = document.getElementById('sun-icon');
         const moonIcon = document.getElementById('moon-icon');
         const searchBox = document.getElementById('search-box');
+        const searchResultsWrapper = document.getElementById('search-results-wrapper');
         const logoTrigger = document.getElementById('logo-trigger');
         const logoutBtn = document.getElementById('logout-btn');
         const adminPanel = document.getElementById('admin-panel');
@@ -409,6 +416,42 @@
                 moonIcon.classList.remove('hidden');
             }
         });
+
+        function handleInstantSearch() {
+            const query = searchBox.value.trim().toLowerCase();
+            
+            if (!query) {
+                searchResultsWrapper.classList.add('hidden');
+                searchResultsWrapper.innerHTML = "";
+                return;
+            }
+
+            let allItems = [];
+            Object.keys(subSubjects).forEach(key => {
+                allItems = allItems.concat(subSubjects[key]);
+            });
+
+            const matchedItems = allItems.filter(item => 
+                item.name.toLowerCase().includes(query) || 
+                item.code.toLowerCase().includes(query)
+            );
+
+            searchResultsWrapper.classList.remove('hidden');
+
+            if (matchedItems.length === 0) {
+                searchResultsWrapper.innerHTML = `<p class="text-xs text-slate-400 italic p-3 text-center">Không tìm thấy môn học nào khớp</p>`;
+            } else {
+                searchResultsWrapper.innerHTML = matchedItems.map(item => `
+                    <button onclick="goToSubjectLink('${item.url}')" class="w-full text-left px-3.5 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50/95 dark:bg-slate-800/90 hover:bg-brand-50 dark:hover:bg-brand-950/60 hover:text-brand-700 dark:hover:text-emerald-400 rounded-xl flex items-center justify-between group transition-all border border-slate-100 dark:border-slate-800/80 shadow-sm">
+                        <div class="flex flex-col gap-0.5">
+                            <span class="text-slate-400 dark:text-slate-500 font-mono text-[10px] tracking-wider">${item.code}</span>
+                            <span>${item.name}</span>
+                        </div>
+                        <span class="text-[9px] text-white px-2 py-0.5 rounded-md font-extrabold uppercase ${item.tagColor}">${item.tag}</span>
+                    </button>
+                `).join('');
+            }
+        }
 
         function renderSubjectLists() {
             Object.keys(subSubjects).forEach(sectionId => {
@@ -477,6 +520,8 @@
 
         searchBox.addEventListener('input', (e) => {
             searchQuery = e.target.value;
+            handleInstantSearch();
+            
             if (searchQuery.trim() !== "") {
                 openSection = "all";
             } else {
@@ -487,6 +532,18 @@
                 });
             }
             renderSubjectLists();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchBox.contains(e.target) && !searchResultsWrapper.contains(e.target)) {
+                searchResultsWrapper.classList.add('hidden');
+            }
+        });
+
+        searchBox.addEventListener('focus', () => {
+            if (searchBox.value.trim() !== "") {
+                searchResultsWrapper.classList.remove('hidden');
+            }
         });
 
         modalOpenTrigger.addEventListener('click', () => formModal.classList.remove('hidden'));
