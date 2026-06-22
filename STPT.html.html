@@ -1,0 +1,761 @@
+<NGUYỄN VĂN LƯỢNG ĐẸP TRAI HẸHẸ>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Sinh Trưởng Phát Triển Và Tính Chống Chịu Của Thực Vật - QuizPoint Studio</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap');
+        body { 
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        html, body, .custom-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar, .custom-scrollbar::-webkit-scrollbar { 
+            display: none;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#f0fdf4] via-[#e0f2fe] to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 min-h-screen text-slate-800 dark:text-slate-100">
+    
+    <div id="root"></div>
+
+    <script>
+       const firebaseConfig = {
+          apiKey: "AIzaSyC-n88rPoijqfE44ZF3ulPZdcGz_rtC3lg",
+          authDomain: "quizpointstuidio.firebaseapp.com",
+          databaseURL: "https://quizpointstuidio-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "quizpointstuidio",
+          storageBucket: "quizpointstuidio.firebasestorage.app",
+          messagingSenderId: "592248583165",
+          appId: "1:592248583165:web:8f7dac2ab36dbf35aadf94",
+          measurementId: "G-T8QQ1HEZGC"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+         const TEST_DATA = {
+            1: [
+                { id: 1, q: "Chu trình phát triển/chu trình sống là chu trình:", a: "Có nhiều giai đoạn theo một trình tự nhất định, không thể đảo ngược", b: "Có hai giai đoạn không theo một trình tự", c: "Có nhiều giai đoạn theo trình tự, có thể đảo ngược", d: "Có hai giai đoạn theo một trình tự nhất định, có thể đảo ngược", ans: "a" },
+                { id: 2, q: "Theo khái niệm về sự phát triển của thực vật, biểu hiện của nó ở mức độ tế bào bao gồm hai chuỗi quá trình nào?", a: "Phân chia tế bào và kéo dài tế bào", b: "Tăng trưởng và phân hóa", c: "Lão hóa và lão suy", d: "Quang hợp và tích lũy dinh dưỡng", ans: "b" },
+                { id: 3, q: "Lão suy là giai đoạn nào sau đây:", a: "Giai đoạn đầu của lão hoá ở thực vật", b: "Giai đoạn giữa của thực vật", c: "Giai đoạn cuối cùng của thực vật", d: "Giai đoạn trước khi lão hoá của thực vật", ans: "c" },
+                { id: 4, q: "Điểm khác biệt cơ bản giữa 'Lão suy' và 'Lão hóa' là gì?", a: "Lão suy là sự thay đổi theo thời gian, không dẫn tới cái chết.", b: "Lão hóa là giai đoạn cuối cùng dẫn đến sự phá hủy tổ chức tế bào.", c: "Lão suy là một chuỗi sự kiện không thể đảo ngược dẫn đến sự chết, trong khi lão hóa chỉ là sự thay đổi theo thời gian.", d: "Cả hai đều là trạng thái dẫn đến sự chết của thực vật 1 năm.", ans: "c" },
+                { id: 5, q: "Cây cao su rụng lá hàng năm là biểu hiện của sự:", a: "Lão suy nghiêm trọng trong cây sẽ chết", b: "Lão suy nhẹ hàng năm cây không chết", c: "Lão hoá nặng cây sẽ chết", d: "Lão hoá hàng năm cây không chết", ans: "d" },
+                { id: 6, q: "Chu trình phát triển theo nghĩa rộng mức tế bào bao gồm:", a: "Xen kẽ tăng trưởng và phát triển", b: "Tăng trưởng liên tục các tế bào và các bộ phận của cây", c: "Phát triển liên tục các tế bào và bộ phận của hoa", d: "Phát triển hoa, trái, hạt", ans: "b" },
+                { id: 7, q: "Sự tăng trưởng về lượng của thực vật (kích thước hoặc trọng lượng) sẽ dừng lại khi nào?", a: "Khi tế bào đang ở vách sơ cấp.", b: "Khi hình thành vách thứ cấp.", c: "Khi thực vật bắt đầu ra hoa.", d: "Khi thực vật ở trạng thái tiềm sinh.", ans: "b" },
+                { id: 8, q: '“Dòng thông tin ba bước” trong kiểm soát sự phát triển thực vật bao gồm các giai đoạn theo thứ tự nào?', a: "Truyền tin -> Nhận tin -> Đáp tin", b: "Nhận tin -> Truyền tin -> Đáp tin", c: "Đáp tin -> Nhận tin -> Truyền tin", d: "Nhận tin -> Đáp tin -> Truyền tin", ans: "b" },
+                { id: 9, q: "Trong thí nghiệm của Darwin (1880) về quang hướng động, vùng nào của diệp tiêu là nơi “Nhận tin” (nhận kích thích ánh sáng)?", a: "Vung kéo dài dưới ngọn.", b: "Vùng rễ.", c: "Đỉnh ngọn diệp tiêu.", d: "Vùng vách thứ cấp.", ans: "c" },
+                { id: 10, q: "Loại hormon nào thường được giải phóng để kích hoạt enzym phân hủy vách tế bào (pectinase, cellulose) tại vùng rụng khi trái hoặc lá già?", a: "Ethylen.", b: "Auxin.", c: "Cytokinin.", d: "Gibberellin.", ans: "a" },
+                { id: 11, q: "Hiện tượng “Hoàng hóa” ở thực vật là triệu chứng xảy ra do thiếu yếu tố nào?", a: "Nhiệt độ.", b: "Nước.", c: "Ánh sáng.", d: "Hormon Auxin.", ans: "c" },
+                { id: 12, q: "Sự phát triển của thực vật do yếu tố nào quyết định:", a: "Yếu tố ngoại sinh thuận lợi", b: "Yếu tố nội sinh quyết định", c: "Yếu tố gen quy định", d: "Cả 3 đều đúng", ans: "d" },
+                { id: 13, q: "Kiểm soát sự phát triển của thực vật bằng giải pháp nào?", a: "Kiểm soát yếu tố ngoại sinh", b: "Kiểm soát yếu tố nội sinh", c: "Kiểm soát yếu tố ngoại sinh hoặc yếu tố nội sinh", d: "Phối hợp kiểm soát yếu tố ngoại sinh và nội sinh", ans: "d" },
+                { id: 14, q: "Yếu tố ngoại sinh nào quyết định sự phát triển của thực vật?", a: "Nhiệt độ", b: "Nhiệt kỳ", c: "Ánh sáng và quang kỳ", d: "Cả 3 tuỳ theo loài thực vật", ans: "d" },
+                { id: 15, q: "Theo nghiên cứu của Went (1944), điều kiện nhiệt độ nào giúp sự tăng trưởng và năng suất của một số loại cây như nho, khoai tây tăng cao?", a: "Nhiệt độ ngày và đêm bằng nhau", b: "Nhiệt độ ban đêm cao hơn ban ngày", c: "Nhiệt độ ban đêm thấp hơn ban ngày (chênh lệch >10°C)", d: "Nhiệt độ luôn duy trì ở mức 40°C.", ans: "c" },
+                { id: 16, q: "Hormon thực vật (Phytohormon) là chất:", a: "Chất dinh dưỡng cần thiết cho thực vật sinh trưởng và phát triển", b: "Được cây tổng hợp với lượng rất lớn và gây tác dụng sinh lý ngay tại nơi được tổng hợp", c: "Vitamin thiết yếu cho thực vật", d: "Chất hữu cơ do thực vật tạo ra ở một nơi nào đó trong cơ thể thực vật và được chuyển tới một nơi khác, ở đó với nồng độ rất thấp, gây ra một phản ứng sinh lý", ans: "d" },
+                { id: 17, q: "Hormon cây trồng do con người tạo ra có đặc điểm gì?", a: "Kích thích sinh trưởng và không gây độc cho con người", b: "Kích thích sinh trưởng và gây độc cho con người", c: "Ức chế sinh trưởng và gây độc cho cây", d: "Kích thích, ức chế sinh trưởng và gây độc cho con người", ans: "d" },
+                { id: 18, q: "Chất nào sau đây được định nghĩa là Phytohormone (Hormon thực vật)?", a: "Chất dinh dưỡng thực vật hấp thụ từ đất.", b: "Các nguyên tố khoáng vi lượng.", c: "Chất hữu cơ do thực vật tạo ra ở một nơi và vận chuyển đến nơi khác để gây ra phản ứng sinh lý ở nồng độ rất thấp.", d: "Các loại vitamin thực vật tổng hợp để tăng trưởng.", ans: "c" },
+                { id: 19, q: "Phát biểu nào sau đây mô tả đúng nhất về sự sinh trưởng thực sự của thực vật theo phân tích động học?", a: "Sự gia tăng kích thước đi kèm sự gia tăng khối lượng khô trong quá trình sinh trưởng", b: "Có sự tăng và giảm, chưa được coi là sự tăng trưởng.", c: "Chỉ được xác định bằng sự gia tăng kích thước tế bào.", d: "Luôn đi kèm với sự phân chia tế bào.", ans: "a" },
+                { id: 20, q: "Điều gì xảy ra với khối lượng khô của hạt khi nó nảy mầm?", a: "Tăng lên đáng kể.", b: "Giảm nhẹ.", c: "Không thay đổi.", d: "Tăng lên rồi sau đó giảm xuống.", ans: "b" },
+                { id: 21, q: "Hiện tượng gì có thể xảy ra với khối lượng khô của cây trồng vào giai đoạn cuối vòng đời?", a: "Tăng lên đáng kể do tích lũy chất dinh dưỡng.", b: "Giảm nhẹ.", c: "Duy trì ổn định.", d: "Biến động không theo quy luật.", ans: "b" },
+                { id: 22, q: "Quá trình lắng đọng lignin trong thành tế bào thực vật dẫn đến đặc điểm nào sau đây?", a: "Tăng khả năng thẩm thấu nước của tế bào", b: "Giảm tính đàn hồi và tăng độ cứng chắc của tế bào", c: "Thúc đẩy quá trình phân chia tế bào", d: "Tăng cường khả năng trao đổi chất giữa các tế bào", ans: "b" },
+                { id: 23, q: "Kiểu tăng trưởng kéo dài tế bào nào sau đây thường được quan sát thấy ở chóp rễ hay chóp ngọn cây?", a: "Tăng trưởng khuếch tán", b: "Tăng trưởng đồng đều", c: "Tăng trưởng ngọn", d: "Tăng trưởng trung gian", ans: "c" },
+                { id: 24, q: "Sự kéo dài đồng dạng của tất cả các tế bào trong một cơ quan đa bào, dẫn đến sự tăng kích thước của toàn bộ cơ quan, được gọi là kiểu tăng trưởng nào?", a: "Tăng trưởng đỉnh ngọn", b: "Tăng trưởng cục bộ", c: "Tăng trưởng đồng đều", d: "Tăng trưởng khuếch tán", ans: "c" },
+                { id: 25, q: "Ở một tế bào thực vật đang tăng trưởng khuếch tán, nếu các vi sợi cellulose trong thành tế bào được sắp xếp một cách ngẫu nhiên, hình dạng tăng trưởng của tế bào sẽ như thế nào?", a: "Kéo dài chủ yếu theo chiều dọc", b: "Kéo dài chủ yếu theo chiều ngang", c: "Tăng trưởng đẳng hướng (đều theo mọi hướng)", d: "Không có sự tăng trưởng đáng kể.", ans: "c" },
+                { id: 26, q: "Loại tế bào nào sau đây có khả năng tăng trưởng mạnh theo chiều dọc do sự sắp xếp của các vi sợi cellulose theo hướng ngang trong thành tế bào của chúng?", a: "Tế bào mô thịt (parenchyma) trong củ", b: "Tế bào biểu bì (epidermal cells) của lá", c: "Tế bào thân và rễ đang kéo dài", d: "Tế bào lông hút của rễ.", ans: "c" },
+                { id: 27, q: "Trong các tế bào mô thịt của quả và củ đang phát triển, sự sắp xếp của các vi sợi cellulose theo hướng dọc sẽ có tác động như thế nào đến hình dạng tăng trưởng của tế bào?", a: "Tế bào sẽ kéo dài chủ yếu theo chiều dọc", b: "Tế bào sẽ tăng trưởng đẳng hướng", c: "Tế bào sẽ kéo dài chủ yếu theo chiều ngang", d: "Tế bào sẽ ngừng tăng trưởng.", ans: "c" },
+                { id: 28, q: "Hiện tượng quang hướng động là phản ứng sinh trưởng của cây đối với yếu tố môi trường nào?", a: "Nồng độ chất dinh dưỡng trong đất", b: "Độ ẩm của không khí", c: "Ánh sáng", d: "Nhiệt độ", ans: "c" },
+                { id: 29, q: "Trong hiện tượng quang hướng động thuận ở thân cây, sự phân bố không đều của hormone nào sau đây đóng vai trò chính trong việc gây ra sự uốn cong về phía ánh sáng?", a: "Ethylene", b: "Abscisic acid (ABA)", c: "Auxin", d: "Cytokinin", ans: "c" }
+            ],
+            2: [
+                { id: 30, q: "Địa hướng động là phản ứng tăng trưởng của cây đối với yếu tố môi trường nào?", a: "Ánh sáng", b: "Nước", c: "Trọng lực", d: "Phân bón", ans: "c" },
+                { id: 31, q: "Hiện tượng địa hướng động nghịch ở cành, thân của cây (khi giâm hom) được giải thích như thế nào về vai trò của hormone auxin?", a: "Trọng lực làm auxin phân bố đều ở tất cả các phía của thân, kích thích sự sinh trưởng thẳng đứng", b: "Trọng lực làm auxin tập trung ở phía trên của thân, ức chế sự kéo dài tế bào ở phía đó và khiến thân mọc thẳng lên", c: "Trọng lực làm auxin tập trung ở phía dưới của thân, kích thích sự kéo dài tế bào mạnh hơn ở phía dưới, đẩy thân mọc ngược hướng trọng lực", d: "Auxin không đóng vai trò quan trọng trong địa hướng động của thân.", ans: "c" },
+                { id: 32, q: "Các phytohormone có đặc điểm gì đặc trưng? (Mẹo: Phytohormone chủ yếu là chất điều hòa sinh trưởng)", a: "Tổng hợp protein", b: "Chỉ được tổng hợp trong cây", c: "Ức chế quá trình sinh trưởng cây trồng", d: "Kích thích quá trình sinh trưởng cây trồng", ans: "d" },
+                { id: 33, q: "Chất điều hòa sinh trưởng thuộc loại nào?", a: "Chất xúc tác sinh học", b: "Chất dinh dưỡng cho cây", c: "Chất có hoạt tính sinh học", d: "Chất kích thích hoặc ức chế sinh học", ans: "d" },
+                { id: 34, q: "Độ mềm của quả khi chín là do phân hủy các chất nào? (Mẹo: Quả mềm do phân hủy pectin + hemicellulose + cellulose, trong đó pectin là chính)", a: "Phân hủy pectin", b: "Phân hủy cellulose", c: "Phân hủy hemicellulose", d: "Tất cả các chất trên", ans: "d" },
+                { id: 35, q: "Trong nuôi cấy mô muốn tạo chồi để cây hoàn chỉnh cần bổ sung thêm nhóm hormone nào? (Mẹo: Cytokinin giúp tạo chồi, trẻ hóa)", a: "Cytokinin", b: "Auxin", c: "Gibberellin", d: "ABA", ans: "a" },
+                { id: 36, q: "Trạng thái miên trạng/ngủ nghỉ của hạt được điều chỉnh hiệu quả nhất bằng tỷ lệ nào? (Mẹo: ABA gây ngủ, GA phá ngủ kích thích nảy mầm)", a: "ABA / Gibberellin", b: "ABA / Auxin", c: "ABA / Etylen", d: "ABA / Cytokinin", ans: "a" },
+                { id: 37, q: "Auxin di chuyển hữu cực là hình thức di chuyển như thế nào? (Mẹo: Auxin vận chuyển hữu cực từ ngọn xuống gốc)", a: "Từ dưới lên chủ động cần ATP", b: "Từ lá này sang lá khác thụ động không cần ATP", c: "Từ lá xuống cành, thân, rễ chủ động", d: "Từ lá xuống cành, thân, rễ bị động", ans: "c" },
+                { id: 38, q: "Vai trò sinh lý quan trọng nào sau đây thuộc về Gibberellin?", a: "Kích thích sự nảy mầm của hạt, củ", b: "Kích thích sự hình thành quả và tạo quả không hạt", c: "Làm cho cây ngày dài ra hoa trong điều kiện ngày ngắn", d: "Tất cả các ý trên đều đúng", ans: "d" },
+                { id: 39, q: "Trạng thái lão hóa tế bào và trẻ hóa tế bào được điều chỉnh hiệu quả nhất bằng tỷ lệ nào? (Mẹo: ABA -> già hóa, lão hóa; Cytokinin -> trẻ hóa)", a: "ABA / Gibberellin", b: "ABA / Auxin", c: "ABA / Etylen", d: "ABA / Cytokinin", ans: "d" },
+                { id: 40, q: "Nơi tổng hợp gibberellin chủ yếu trong cơ thể thực vật là ở đâu?", a: "Rễ, lá và hạt non", b: "Chồi và đọt non", c: "Mầm hoa", d: "Tất cả đều sai", ans: "a" },
+                { id: 41, q: "Trong cơ thể thực vật, Axit Abscisic (ABA) được tích lũy nhiều nhất ở bộ phận nào? (Mẹo: ABA tích lũy mạnh khi cây bị stress hoặc ngủ nghỉ)", a: "Lá, chồi non", b: "Rễ, thân", c: "Cơ quan đang ngủ nghỉ", d: "Tất cả các ý trên đều đúng", ans: "d" },
+                { id: 42, q: "Trái cây hình thành và sinh trưởng được sau khi thụ tinh chủ yếu là do nguồn Auxin từ đâu?", a: "Auxin trong phôi hạt", b: "Auxin trong cây được vận chuyển đến bầu nhụy", c: "Auxin từ vòi nhụy", d: "Auxin từ bầu nhụy", ans: "a" },
+                { id: 43, q: "Khi tiến hành cắt bỏ chồi ngọn, chồi bên lập tức sinh trưởng mạnh là do sự thay đổi nào? (Mẹo: Cắt ngọn làm mất ưu thế ngọn)", a: "Tăng IAA", b: "Tăng GA", c: "Giảm IAA", d: "Giảm chất ức chế", ans: "c" },
+                { id: 44, q: "Để ứng dụng tạo quả không hạt bằng Auxin, nhà vườn cần tiến hành xử lý vào thời điểm nào?", a: "Thụ phấn thụ tinh xong", b: "Hoa chưa nở", c: "Hoa nở chưa thụ tinh", d: "Hoa nở", ans: "c" },
+                { id: 45, q: "Chất điều hòa sinh trưởng nào có tác dụng kích thích ra hoa ngày dài trong điều kiện ngày ngắn? (Mẹo: GA giúp cây ra hoa trong điều kiện không thuận lợi)", a: "Cytokinin", b: "Ethylen", c: "Auxin", d: "Gibberelline", ans: "d" },
+                { id: 46, q: "Nguyên tắc cốt lõi nào cần tuân thủ khi sử dụng chất điều hòa sinh trưởng cho cây trồng?", a: "Không thay thế dinh dưỡng khoáng", b: "Xác định đúng nồng độ khi sử dụng", c: "Xác định giai đoạn sinh trưởng phát triển của cây", d: "Tất cả các nguyên tắc trên đều đúng", ans: "d" },
+                { id: 47, q: "Loại hormone thực vật nào thường được nông dân Việt Nam sử dụng phổ biến nhất để kích thích ra rễ nhanh cho cành chiết và cành giâm?", a: "Gibberellin (GA)", b: "Auxin (như ANA, AIB)", c: "Abscisic Acid (ABA)", d: "Ethylene", ans: "b" },
+                { id: 48, q: "Để kích thích xoài hoặc chuối chín nhanh và đồng đều sau khi thu hoạch, người ta thường sử dụng chất nào? (Mẹo: Ethylene là hormone làm chín quả)", a: "Cytokinin", b: "Auxin", c: "Ethylene", d: "Acid Jasmonic", ans: "c" },
+                { id: 49, q: "Trong sản xuất lúa giống, để phá bỏ trạng thái ngủ nghỉ (miên trạng) giúp hạt nảy mầm nhanh và đều, người ta thường tác động hormone nào? (Mẹo: GA giúp phá ngủ hạt)", a: "Gibberellin (GA)", b: "Auxin", c: "Abscisic Acid (ABA)", d: "Cytokinin", ans: "a" },
+                { id: 50, q: "Tại sao khi trồng cây cảnh hoặc cây ăn quả, việc “bấm ngọn” lại giúp cây ra nhiều cành bên hơn?", a: "Vì làm giảm hàm lượng Cytokinin ở chồi bên.", b: "Vì loại bỏ nguồn tổng hợp Auxin chính, làm giảm ưu thế ngọn.", c: "Vì kích thích Ethylene gây rụng lá già.", d: "Vì tăng cường sự tích lũy ABA tại thân chính.", ans: "b" },
+                { id: 51, q: "Để kích thích cho cây dứa (thơm) ra hoa trái vụ đồng loạt tại các vùng chuyên canh ở Việt Nam, biện pháp nào thường được áp dụng? (Mẹo: Ethylene kích thích dứa ra hoa đồng loạt)", a: "Phun Auxin nồng độ cao", b: "Xử lý Ethrel (chất giải phóng Ethylene) hoặc đất đèn", c: "Bón nhiều phân đạm", d: "Phun Cytokinin để làm trẻ hóa cây.", ans: "b" },
+                { id: 52, q: "Khi gặp điều kiện khô hạn kéo dài, tại sao lá cây thường có hiện tượng đóng khí khổng để bảo vệ cây khỏi mất nước? (Mẹo: ABA đóng khí khổng chống mất nước)", a: "Do hàm lượng GA tăng cao đột ngột", b: "Do sự tích lũy Acid Abscisic (ABA) trong lá", c: "Do Auxin kích thích bơm proton hoạt động mạnh", d: "Do sự giảm sút của Ethylene.", ans: "b" },
+                { id: 53, q: "Trong kỹ thuật nuôi cấy mô tế bào thực vật (in-vitro), để tạo ra một cây hoàn chỉnh từ mô sẹo (callus), quy trình phối hợp hormone thường là:", a: "Chỉ dùng Auxin nồng độ cao", b: "Dùng nồng độ Auxin cao để ra rễ, sau đó bổ sung Cytokinin để ra chồi", c: "Dùng nồng độ Cytokinin cao ngay từ đầu để tạo rễ", d: "Không cần bổ sung hormone, chỉ cần vitamin.", ans: "b" },
+                { id: 54, q: "Tại Việt Nam, để làm cho các loại rau như bắp cải, su hào có thể ra hoa trong điều kiện khí hậu không đủ độ lạnh cần thiết, nông dân thường sử dụng hormone nào? (Mẹo: GA thay thế xử lý lạnh giúp cây ra hoa)", a: "Ethylene", b: "Gibberellin (GA)", c: "Auxin", d: "Cytokinin", ans: "b" },
+                { id: 55, q: "Trong nghề trồng nho tại Ninh Thuận, việc xử lý GA3 vào thời điểm nào sau đây sẽ giúp tăng năng suất và tạo quả không hạt hiệu quả nhất? (Mẹo: GA3 tăng đậu quả + tạo quả không hạt)", a: "Khi cây đang ngủ nghỉ mùa đông", b: "Phun lên hoa trước khi thụ phấn và giai đoạn quả non", c: "Khi quả đã chín hoàn toàn", d: "Phun vào bộ rễ của cây.", ans: "b" },
+                { id: 56, q: "Để ngăn ngừa sự rụng sớm của quả non nhằm tăng năng suất, người sản xuất cần điều chỉnh sự cân bằng hormone theo hướng nào? (Mẹo: Auxin ức chế tầng rời -> giảm rụng quả)", a: "Tăng hàm lượng ABA và Ethylene trong cuống quả", b: "Duy trì hàm lượng Auxin cao ở vùng cuống quả để ức chế tầng rời", c: "Phun nồng độ GA cực cao để làm khô cuống quả", d: "Cắt tỉa hết lá non xung quanh quả.", ans: "b" },
+                { id: 57, q: "Quang chu kỳ (photoperiod) là yếu tố môi trường nào có ảnh hưởng đáng kể đến sự sinh trưởng và phát triển của thực vật?", a: "Nhiệt độ trung bình ngày đêm", b: "Lượng mưa hàng năm", c: "Thời gian chiếu sáng hàng ngày", d: "Thành phần chất dinh dưỡng trong đất", ans: "c" }
+            ],
+            3: [
+                { id: 58, q: "Quá trình sinh học nào sau đây ở cơ thể thực vật chịu ảnh hưởng rõ rệt nhất bởi yếu tố quang chu kỳ?", a: "Quá trình thoát hơi nước", b: "Quá trình hấp thụ nước ở rễ", c: "Quá trình ra hoa", d: "Quá trình quang hợp", ans: "c" },
+                { id: 59, q: "Một loài cây chỉ ra hoa khi thời gian chiếu sáng trong ngày ngắn hơn ngưỡng thời gian tới hạn nhất định. Loài cây này được phân loại là:", a: "Cây ngày dài (CND) đêm ngắn liên tục", b: "Cây bất định (CBĐ)", c: "Cây ngày ngắn (CNN) đêm dài liên tục", d: "Tất cả các loại cây trên", ans: "c" },
+                { id: 60, q: "Loại cây nào sau đây có khả năng ra hoa trong nhiều điều kiện độ dài ngày khác nhau, miễn là chúng có đủ dinh dưỡng và đạt đến giai đoạn trưởng thành nhất định?", a: "Cây ngày ngắn như cây lúa", b: "Cây ngày dài như cây mì", c: "Cây bất định như cây cà chua", d: "Cả cây ngày ngắn và cây ngày dài", ans: "c" },
+                { id: 61, q: "Nếu một loài cây có nguồn gốc từ vùng ôn đới và thường ra hoa vào mùa hè khi ngày dài, nó rất có thể thuộc nhóm cây nào sau đây?", a: "Cây ngày ngắn", b: "Cây bất định", c: "Cây ngày dài", d: "Cây trung tính", ans: "c" },
+                { id: 62, q: "Hiện tượng quang gián đoạn đề cập đến việc làm gián đoạn giai đoạn nào trong chu kỳ quang của cây và nó có ảnh hưởng đáng kể đến cây ngày ngắn?", a: "Giai đoạn chiếu sáng ban ngày bằng một khoảng tối ngắn", b: "Giai đoạn tối ban đêm bằng một khoảng chiếu sáng ngắn", c: "Cả giai đoạn sáng và tối bằng các khoảng thời gian ngược lại", d: "Tổng thời gian chiếu sáng trong ngày.", ans: "b" },
+                { id: 63, q: "Tại sao việc bắn pháo sáng vào giữa đêm có thể ngăn chặn sự ra hoa ở cây mía (một cây ngày ngắn)?", a: "Ánh sáng từ pháo sáng làm tăng tổng thời gian chiếu sáng trong ngày, vượt quá ngưỡng tới hạn của cây ngày ngắn.", b: "Ánh sáng từ pháo sáng gây ra sự tăng nhiệt độ đột ngột, ức chế quá trình hình thành mầm hoa.", c: "Ánh sáng từ pháo sáng làm gián đoạn giai đoạn tối liên tục cần thiết cho cây ngày ngắn để kích thích ra hoa.", d: "Âm thanh lớn từ pháo sáng gây stress cho cây, ngăn chặn quá trình sinh sản ra hoa.", ans: "c" },
+                { id: 64, q: "Đối với cây ngày dài, việc chiếu một khoảng sáng ngắn vào giữa đêm tối sẽ có tác động như thế nào đến quá trình ra hoa?", a: "Ức chế hoàn toàn quá trình ra hoa.", b: "Thúc đẩy quá trình ra hoa.", c: "Không có ảnh hưởng đáng kể đến quá trình ra hoa.", d: "Làm trì hoãn thời điểm ra hoa.", ans: "b" },
+                { id: 65, q: "Cơ quan chính nào của cây đóng vai trò là thụ thể cảm nhận tín hiệu quang chu kỳ, từ đó điều khiển các quá trình sinh trưởng và phát triển như sự ra hoa?", a: "Rễ", b: "Thân", c: "Lá", d: "Hoa", ans: "c" },
+                { id: 66, q: "Điều gì cho thấy rằng tín hiệu quang chu kỳ được cảm nhận cục bộ ở một số bộ phận nhất định của cây?", a: "Cây chỉ ra hoa khi toàn bộ cây được chiếu sáng với điều kiện quang chu kỳ phù hợp.", b: "Chỉ cần một vài lá hoặc một cành nhận được tín hiệu quang chu kỳ thích hợp cũng đủ để kích hoạt quá trình ra hoa của toàn bộ cây.", c: "Sự ra hoa luôn bắt đầu từ ngọn sinh trưởng của thân chính.", d: "Rễ cũng có khả năng cảm nhận và phản ứng with quang chu kỳ.", ans: "b" },
+                { id: 67, q: "Theo học thuyết hormone ra hoa, điều kiện tiên quyết nào cần thiết để một cây có thể ra hoa?", a: "Chỉ cần đạt đến giai đoạn trưởng thành nhất định.", b: "Chỉ cần có đủ chất dinh dưỡng khoáng.", c: "Phải trải qua đầy đủ hai điều kiện quang chu kỳ cảm ứng phù hợp với loại cây đó.", d: "Có sự hiện diện đồng thời của cả hormone GA và Antesin.", ans: "d" },
+                { id: 68, q: "Ở cây ngày ngắn (CNN), điều kiện quang chu kỳ nào cần thiết để cảm ứng tạo ra hormone Antesin, một trong hai hormone liên quan đến quá trình ra hoa theo học thuyết hormone ra hoa?", a: "Điều kiện ngày dài (ND)", b: "Điều kiện ngày ngắn (NN)", c: "Điều kiện chiếu sáng liên tục", d: "Điều kiện tối liên tục", ans: "b" },
+                { id: 69, q: "Việc phun bổ sung hormone GA có thể gây ra hiện tượng gì ở cây ngày dài (CND) trồng trong điều kiện ngày ngắn?", a: "Ngăn chặn hoàn toàn quá trình ra hoa.", b: "Thúc đẩy quá trình ra hoa.", c: "Chỉ có tác dụng đối với cây ngày ngắn.", d: "Chỉ có tác dụng đối với cây ngày dài.", ans: "b" },
+                { id: 70, q: "Trong quá trình hình thành trái và hột ở thực vật hột kín, bộ phận nào sau đây là nguồn gốc của phôi nhũ (nội nhũ) có bộ nhiễm sắc thể 3n?", a: "Vách bầu noãn biến đổi dưới tác động của Auxin.", b: "Tế bào noãn cầu (n) thụ tinh với tinh trùng (n).", c: "Nhân phụ (2n) dung hợp với tinh trùng (n).", d: "Vỏ noãn phát triển sau khi thụ tinh.", ans: "c" },
+                { id: 71, q: "Kết quả của quá trình thụ tinh đôi ở thực vật hột kín sẽ tạo ra các sản phẩm nào?", a: "Hợp tử (2n) và phôi tâm (2n).", b: "Hợp tử (2n) và phôi nhũ (nội nhũ 3n).", c: "Phôi (2n) và vỏ hột.", d: "Noãn cầu và nhân phụ.", ans: "b" },
+                { id: 72, q: "Đường cong tăng trưởng của các loại trái như nho, xoài, dứa có đặc điểm gì khác biệt so với táo hay lê?", a: "Tăng trưởng nhanh nhất vào giai đoạn trái sắp chín.", b: "Tăng trưởng theo hình chữ S đơn.", c: "Tăng trưởng theo hình 2 chữ S (Double Sigmoid).", d: "Tăng trưởng liên tục không có giai đoạn nghỉ.", ans: "c" },
+                { id: 73, q: "Loại trái cây nào sau đây có đường cong tăng trưởng theo thời gian hình 2 chữ S?", a: "Táo, lê, cam.", b: "Cà chua, dưa chuột.", c: "Nho, xoài, chùm ruột, dứa/dừa.", d: "Chuối, lê, mít.", ans: "c" },
+                { id: 74, q: "Hormone nào đóng vai trò chủ đạo trong việc kích thích sự kéo dài tế bào trái và đạt đỉnh cao trước khi trái trưởng thành?", a: "Gibberellin (GA).", b: "Abscisic acid (ABA).", c: "Ethylene.", d: "Cytokinin.", ans: "a" },
+                { id: 75, q: "Hiện tượng “trái trinh sinh” (trái không hột) có thể được hình thành do tác động ngoại cảnh tiêu biểu nào sau đây?", a: "Nhiệt độ môi trường xuống thấp (lạnh).", b: "Độ ẩm không khí thấp kéo dài.", c: "Sử dụng phân bón lá quá liều.", d: "Cường độ ánh sáng quá cao.", ans: "a" },
+                { id: 76, q: "Trong sản xuất nông nghiệp, tại sao người ta thường dùng khí CO2 để bảo quản trái cây tươi lâu hơn?", a: "Vì CO2 kích thích sự phân chia tế bào vỏ trái.", b: "Vì CO2 có tác dụng đối nghịch với Ethylene.", c: "Vì CO2 cung cấp dinh dưỡng cho trái sau thu hoạch.", d: "Vì CO2 giúp trái chín đồng loạt hơn.", ans: "b" },
+                { id: 77, q: "Tại sao hột giống thường được khuyến cáo lưu trữ ở độ ẩm khoảng 13% thay vì mức 10% như trạng thái tiềm sinh tự nhiên?", a: "Để duy trì sức sống của phôi hột cho việc làm giống.", b: "Để đảm bảo hột không bị biến dưỡng sinh hóa.", c: "Để ngăn chặn sự phát sinh nhiệt trong khối hột.", d: "Để hột có thể nảy mầm ngay khi gặp ánh sáng.", ans: "a" },
+                { id: 78, q: "Để giữ hột làm giống, độ ẩm của hột thông thường cần được duy trì ở mức ổn định bao nhiêu?", a: "Khoảng 5%.", b: "Khoảng 10%.", c: "Khoảng 13%.", d: "Khoảng 20%.", ans: "c" },
+                { id: 79, q: "Sự khác biệt cơ bản nhất giữa hột của cây Hột trần (Gymnosperm) và cây Hột kín (Angiosperm) là gì?", a: "Cây hột trần không có phôi bên trong hột.", b: "Cây hột kín không có nội nhũ dự trữ dinh dưỡng.", c: "Cây hột trần chỉ nảy mầm trên mặt đất.", d: "Cây hột kín có noãn được bao bọc bởi vỏ noãn (bầu noãn).", ans: "d" },
+                { id: 80, q: "Yếu tố nội sinh nào sau đây đóng vai trò “trung tâm” tổng hợp Auxin để điều khiển sự tăng trưởng của trái sau khi thụ tinh?", a: "Hệ thống mạch dẫn của cuống trái.", b: "Lỗ noãn của hột.", c: "Hột (phôi và phôi nhũ).", d: "Cánh hoa và đài hoa.", ans: "c" },
+                { id: 81, q: "Đặc tính quan trọng nhất của quá trình nảy mầm mà người sản xuất cần lưu ý để tránh làm hỏng hột giống là gì?", a: "Sự thay đổi màu sắc vỏ hột.", b: "Chỉ xảy ra khi có ánh sáng cường độ cao.", c: "Hấp thu nước mạnh, biến dưỡng hóa sinh mạnh và phát sinh nhiệt.", d: "Sự sụt giảm nghiêm trọng của hàm lượng chất dinh dưỡng dự trữ do bị phân hủy hoàn toàn.", ans: "c" },
+                { id: 82, q: "Sự nảy mầm thượng địa (epigeal germination) khác với nảy mầm hạ địa (hypogeal germination) ở đặc điểm cốt lõi nào?", a: "Tử diệp (lá mầm) được đẩy lên khỏi mặt đất nhờ sự kéo dài của trục hạ diệp.", b: "Tử diệp vẫn nằm dưới mặt đất do trục thượng diệp kéo dài.", c: "Rễ mầm không phát triển trong suốt quá trình nảy mầm.", d: "Chỉ xảy ra ở các loài cây thuộc lớp Một lá mầm.", ans: "a" },
+                { id: 83, q: "Khi hột nảy mầm hạ địa (như ở cây đậu hà lan hoặc cây bắp), bộ phận nào sau đây sẽ nằm lại dưới mặt đất?", a: "Chồi mầm.", b: "Trục thượng diệp.", c: "Tử diệp (lá mầm).", d: "Lá thật đầu tiên.", ans: "c" },
+                { id: 84, q: "Trong sự phát triển của hột, giai đoạn “tiềm sinh” (quiescence) được duy trì chủ yếu là do:", a: "Sự thiếu hụt các điều kiện ngoại cảnh thích hợp (nước, nhiệt độ, oxy).", b: "Sự có mặt của các chất ức chế sinh trưởng nội sinh bên trong hột.", c: "Phôi của hột chưa phát triển hoàn chỉnh về mặt hình thái.", d: "Vỏ hột quá cứng ngăn cản tuyệt đối sự hấp thụ nước.", ans: "a" },
+                { id: 85, q: "Điểm khác biệt giữa trạng thái “ngủ nghỉ” (dormancy/miên trạng) và trạng thái “tiềm sinh” (quiescence) của hột là gì?", a: "Hột ở trạng thái tiềm sinh sẽ không nảy mầm ngay cả khi có đủ nước và nhiệt độ thích hợp.", b: "Hột ở trạng thái ngủ nghỉ sẽ nảy mầm ngay lập tức khi được cung cấp đủ nước và oxy.", c: "Hột ở trạng thái ngủ nghỉ không nảy mầm do các nguyên nhân nội sinh, dù điều kiện ngoại cảnh hoàn toàn thuận lợi.", d: "Trạng thái tiềm sinh chỉ xảy ra ở cây Hai lá mầm.", ans: "c" }
+            ],
+            4: [
+                { id: 86, q: "Nguyên nhân nào sau đây có thể dẫn đến hiện tượng ngủ nghỉ (miên trạng) do vỏ hột gây ra?", a: "Vỏ hột không thấm nước hoặc không thấm khí oxy.", b: "Vỏ hột quá cứng cơ học ngăn cản sự phình to của phôi.", c: "Sự hiện diện của các chất ức chế sinh trưởng ở vỏ hột.", d: "Tất cả các nguyên nhân trên đều đúng.", ans: "d" },
+                { id: 87, q: "Phương pháp “phân tầng” (stratification) bằng cách giữ hột trong môi trường ẩm và lạnh được sử dụng để phá bỏ loại ngủ nghỉ nào?", a: "Ngủ nghỉ do vỏ hột quá cứng.", b: "Ngủ nghỉ sinh lý của phôi (do cân bằng hormone thay đổi).", c: "Ngủ nghỉ do phôi chưa phát triển hoàn chỉnh.", d: "Trạng thái tiềm sinh thông thường của hột.", ans: "b" },
+                { id: 88, q: "Biện pháp “gọt, khía hoặc xử lý acid” lên vỏ hột nhằm mục đích gì trong xử lý hột giống?", a: "Kích thích phôi tổng hợp chất độc.", b: "Phá bỏ sự ngủ nghỉ cơ học hoặc tính chống thấm của vỏ hột.", c: "Tiêu diệt hoàn toàn nội nhũ của hột.", d: "Làm tăng hàm lượng chất ức chế ABA trong hột.", ans: "b" },
+                { id: 89, q: "Loại hóa chất nào thường được ứng dụng để “phá miên trạng” giúp hột nảy mầm đồng loạt trong sản xuất?", a: "Dung dịch NaCl nồng độ cao.", b: "Các chất kích thích sinh trưởng như Auxin, GA.", c: "Chất ức chế sinh trưởng ABA.", d: "Khí CO2 nồng độ cao.", ans: "b" },
+                { id: 90, q: "Trong sự hình thành trái và hột của cây hột kín, bộ phận nào sau đây sẽ phát triển thành hột?", a: "Vách bầu noãn.", b: "Bầu noãn.", c: "Noãn.", d: "Cánh hoa.", ans: "c" },
+                { id: 91, q: "Phân tích hiện tượng rụng trái/lá dựa trên “dòng thông tin ba bước”, sự “Đáp tin” xảy ra khi nào?", a: "Khi lượng Auxin và Cytokinin trong trái giảm mạnh.", b: "Khi Ethylen kích hoạt tổng hợp enzyme phân hủy vách tế bào (pectinase, cellulose) tại vùng rụng.", c: "Khi hormon di chuyển dọc theo cuống trái.", d: "Khi trái bắt đầu tích lũy đường.", ans: "b" },
+                { id: 92, q: "Phân tích mối tương quan nghịch giữa rễ và lá, tại sao khi bứng chuyển cây trồng, người nông dân thường thực hiện thao tác cắt tỉa bớt lá?", a: "Để lá không cung cấp quá nhiều vitamin cho rễ.", b: "Để cây tập trung ra hoa ngay lập tức.", c: "Để kích thích nhịp tăng trưởng ngày.", d: "Để giảm sự cạnh tranh dinh dưỡng và giảm thoát hơi nước khi rễ bị tổn thương, chưa kịp phục hồi.", ans: "d" },
+                { id: 93, q: "Để kích thích hột phấn nảy mầm và tạo ống phấn hiệu quả trong điều kiện tự nhiên, yếu tố nào sau đây đóng vai trò quan trọng?", a: "Độ ẩm (dịch tiết của núm nhụy) và các phytohormone.", b: "Hàm lượng khí Oxygen cực cao.", c: "Ánh sáng cường độ mạnh trực tiếp.", d: "Nồng độ muối NaCl trong đất cao.", ans: "a" },
+                { id: 94, q: "Khái niệm “cơ thể và môi trường là một khối thống nhất” trong sinh lý thực vật thể hiện rõ nhất ở đặc điểm nào sau đây?", a: "Cơ thể thực vật hoàn toàn không bị ảnh hưởng bởi điều kiện môi trường.", b: "Thực vật có thể thay đổi cấu trúc di truyền để thích nghi với môi trường.", c: "Sự tồn tại và phát triển của thực vật phụ thuộc vào mối liên hệ mật thiết với điều kiện môi trường.", d: "Môi trường không ảnh hưởng đến các phản ứng sinh lý trong cây.", ans: "c" },
+                { id: 95, q: "Trong các trường hợp sau, trường hợp nào thể hiện tính thích nghi chủ động chứ không phải là tính chống chịu thông thường?", a: "Cây sống được trong môi trường đất nhiễm mặn mà vẫn sinh trưởng bình thường", b: "Cây giảm thoát hơi nước và cuốn lá lại khi gặp hạn hán", c: "Cây sử dụng lông hút hiệu quả để hấp thu nước khi thiếu nước", d: "Cây rụng lá sớm để hạn chế mất nước trong mùa khô", ans: "a" },
+                { id: 96, q: "Tính chịu hạn của thực vật được hiểu chính xác là:", a: "Khả năng của cây không bị ảnh hưởng bởi điều kiện khô hạn", b: "Cây có thể tiếp tục sinh trưởng bình thường dù thiếu nước", c: "Cây có khả năng làm giảm thiểu tổn thương gây ra bởi điều kiện hạn", d: "Cả a, b, c đều đúng", ans: "c" },
+                { id: 97, q: "Dạng hạn nào xảy ra khi nhiệt độ không khí cao và độ ẩm thấp làm cây không hút nước kịp để bù lượng nước mất qua thoát hơi nước?", a: "Hạn sinh lý", b: "Hạn đất", c: "Hạn toàn diện", d: "Hạn không khí", ans: "d" },
+                { id: 98, q: "Điều nào sau đây mô tả đúng nhất về trạng thái hạn toàn diện?", a: "Đất thiếu nước làm rễ cây không hút được nước", b: "Không khí quá khô làm cây héo tạm thời nhưng phục hồi sau tưới", c: "Thiếu nước trong đất, không khí khô làm cây mất nước nghiêm trọng và không phục hồi", d: "Cây không thể hút nước do nhiệt độ không khí xuống quá thấp", ans: "c" },
+                { id: 99, q: "Hạn sinh lý xảy ra trong điều kiện môi trường đặc trưng nào sau đây?", a: "Đất và không khí đều khô hạn nghiêm trọng.", b: "Trời lạnh đột ngột, nồng độ dung dịch đất cao hoặc thiếu oxy làm cây không hút được nước dù nước có trong đất.", c: "Độ ẩm không khí giảm xuống dưới 10%.", d: "Rễ cây bị tổn thương cơ học nên không hấp thu được nước.", ans: "b" },
+                { id: 100, q: "Tác hại của hạn ở mức cơ thể biểu hiện như thế nào ở cây trồng?", a: "Lá cuốn tròn, rễ phát triển mạnh", b: "Toàn cây biểu hiện héo, khô nếu hạn nặng", c: "Khí khổng mở rộng tăng thoát hơi nước", d: "Diệp lục tổng hợp mạnh, tăng tích lũy chất hữu cơ", ans: "b" },
+                { id: 101, q: "Ở mức cơ quan, cây thực vật phản ứng tự vệ với hạn bằng cách nào sau đây?", a: "Bộ lá phát triển lớn, tăng diện tích tiếp xúc ánh sáng", b: "Rễ ngắn lại để hạn chế mất nước", d: "Lá thu gọn, lá cuốn tròn và rễ vươn dài tìm nước", d: "Vỏ cây dày lên để bảo vệ mô mềm", ans: "c" },
+                { id: 102, q: "Tác hại của hạn ở mức tế bào và phân tử bao gồm hiện tượng nguy hiểm nào sau đây?", a: "Tăng độ phân tán chất nguyên sinh", b: "Phá hủy thylakoid, giảm cường độ quang hợp", c: "Giảm độ nhớt của nguyên sinh chất", d: "Tăng khả năng trương nước của tế bào", ans: "b" },
+                { id: 103, q: "Trong các cơ chế sau, cơ chế nào KHÔNG thuộc nhóm “tránh hạn” ở thực vật?", a: "Khí khổng điều chỉnh đóng mở phù hợp", b: "Giảm kích thước lá", c: "Rễ ăn sâu hút nước", d: "Tăng tích lũy hydrat cacbon và acid amin", ans: "d" },
+                { id: 104, q: "Thực vật có khả năng chín sớm để hoàn thành vòng đời trước khi xảy ra mùa hạn thuộc nhóm cơ chế nào?", a: "Tránh hạn", b: "Trốn hạn", c: "Chống chịu hạn", d: "Phục hồi sau hạn", ans: "b" },
+                { id: 105, q: "Khả năng phục hồi sinh trưởng và phát triển của cây sau khi được cung cấp nước trở lại thuộc cơ chế nào?", a: "Tránh hạn", b: "Trốn hạn", c: "Chống chịu hạn", d: "Phục hồi", ans: "d" },
+                { id: 106, q: "Giải pháp tưới nước tiết kiệm trong điều kiện hạn hán giúp thực vật chống chịu hạn bằng cách nào?", a: "Tăng quá trình thoát hơi nước để làm mát cây", b: "Giảm thất thoát nước và duy trì độ ẩm cho rễ", c: "Làm tăng áp suất thẩm thấu của tế bào", d: "Kích thích cây rút ngắn vòng đời", ans: "b" },
+                { id: 107, q: "Việc xử lý hạt giống bằng các nguyên tố vi lượng như Cu, Zn, Mo có tác dụng gì trong điều kiện hạn?", a: "Tăng tốc độ sinh trưởng và phát triển cành", b: "Tăng khả năng hấp thu ánh sáng của lá", c: "Kích thích cây trổ bông sớm", d: "Tăng cường khả năng chống chịu stress hạn cho cây con", ans: "d" },
+                { id: 108, q: "Phương pháp chọn tạo giống chịu hạn là giải pháp hướng tới mục tiêu cốt lõi nào?", a: "Chọn những giống cây sinh trưởng ngắn ngày để trốn hạn", b: "Cải thiện khả năng giữ nước, sử dụng nước hiệu quả trong điều kiện khô hạn", c: "Tăng tỷ lệ thoát hơi nước vào ban ngày", d: "Kích thích quá trình hô hấp mạnh để tiêu hao năng lượng nhanh hơn", ans: "b" },
+                { id: 109, q: "Loại hạn nào xảy ra khi nhiệt độ không khí cao đột ngột (39 – 42°C), độ ẩm giảm mạnh khiến cây thoát nước nhanh hơn hút dẫn đến héo tạm thời?", a: "Hạn đất", b: "Hạn không khí", c: "Hạn toàn diện", d: "Hạn sinh lý", ans: "b" },
+                { id: 110, q: "Độ mặn (Salinity - ký hiệu ‰) được định nghĩa chuẩn khoa học là gì?", a: "Tổng lượng các chất hòa tan (tính bằng gram) chứa trong 1 lít nước.", b: "Tổng lượng các chất hòa tan (tính bằng gram) chứa trong 1 kg nước.", c: "Hàm lượng muối NaCl có trong 100ml dung dịch đất.", d: "Tỷ lệ giữa ion Na+ và Cl- trong dung dịch đất.", ans: "b" },
+                { id: 111, q: "Ở mức độ tế bào, khi thực vật gặp hạn, quá trình trao đổi chất bị đảo lộn theo chiều hướng nguy hại nào?", a: "Chuyển từ phân giải chất hữu cơ sang tổng hợp mạnh mẽ.", b: "Chuyển từ tổng hợp chất hữu cơ sang phân giải, gây tích tụ chất độc NH3.", c: "Tăng cường tổng hợp protein để bảo vệ lục lạp.", d: "Ngừng hoàn toàn quá trình hô hấp để tiết kiệm năng lượng.", ans: "b" },
+                { id: 112, q: "Để tăng tính chống chịu hạn cho cây trồng, phương pháp “tôi luyện hột giống” của Ghenken được thực hiện như thế nào?", a: "Ngâm hột giống trong nước ấm 54°C trước khi gieo", b: "Ngâm ướt hột giống rồi phơi khô kiệt, lặp lại nhiều lần trước khi gieo", c: "Phun hormone ABA nồng độ cao trực tiếp lên hột giống", d: "Ủ hạt giống trong điều kiện thiếu Oxygen hoàn toàn.", ans: "b" },
+                { id: 113, q: "Trong canh tác trên đất nhiễm mặn, loại phân bón nào sau đây nên hạn chế sử dụng tối đa để tránh làm tăng độ độc cho cây?", a: "Phân hữu cơ và phân lân.", b: "Phân bón lá chứa Kali và Silic.", c: "Phân có chứa các ion Natri (Na) và Clo (Cl).", d: "Vôi nung (CaO)", ans: "c" },
+                { id: 114, q: "Giải pháp kỹ thuật nào giúp cải tạo đất mặn kiềm bằng cách tách ion Na+ ra khỏi keo đất để dễ bị rửa trôi ra khỏi tầng đất?", a: "Bón phân đạm Amoni", b: "Sử dụng thạch cao (CaSO4.2H2O) hoặc bột đá vôi (CaCO3)", c: "Tưới nước mặn nồng độ thấp để trung hòa.", d: "Cày sâu để lật lớp đất phèn lên bề mặt.", ans: "b" },
+                { id: 115, q: "Phân tích cơ chế chống chịu mặn của cây lúa dựa trên chỉ tiêu tỷ lệ Na+/K+ trong chồi, cây chịu mặn tốt cần đạt điều kiện gì?", a: "Cây chịu mặn tốt sẽ tích lũy tối đa Na+ trong chồi để thay thế K+.", b: "Cây chịu mặn tốt cần duy trì tỷ lệ Na+/K+ trong chồi < 1 bằng cách ngăn chặn hoặc tái hấp thu Na+.", c: "Cây chịu mặn tốt sẽ chuyển hết K+ từ lá già sang lá non để pha loãng muối.", d: "Tỷ lệ Na+/K+ càng cao thì khả năng điều chỉnh thẩm thấu của cây càng mạnh.", ans: "b" }
+            ]
+        };
+
+        let state = {
+            user: null,
+            loading: true,
+            emailInput: "",
+            passwordInput: "",
+            authError: "",
+            isKicked: false,
+            isDarkMode: false,
+            currentPart: null,
+            currentQuestionIndex: 0,
+            score: 0,
+            wrongScore: 0,
+            showResult: false,
+            selectedOptions: [],
+            isSubmitted: false,
+            questions: [],
+            shuffledOptions: [],
+            isConfirming: false,
+            sessionAnswers: [],
+            reviewMode: false,
+            reviewData: [],
+            history: []
+        };
+
+        try {
+            const saved = localStorage.getItem('stpt_local_history');
+            state.history = saved ? JSON.parse(saved) : [];
+        } catch (e) { state.history = []; }
+
+        const getOrCreateDeviceToken = () => {
+            let token = localStorage.getItem("qp_device_token_stpt");
+            if (!token) {
+                token = "m_stpt_" + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+                localStorage.setItem("qp_device_token_stpt", token);
+            }
+            return token;
+        };
+
+        function toggleDarkMode() {
+            state.isDarkMode = !state.isDarkMode;
+            document.documentElement.classList.toggle('dark', state.isDarkMode);
+            render();
+        }
+
+        function render() {
+            const root = document.getElementById('root');
+            
+            if (state.loading) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-500 mb-4"></div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium text-sm">Đang kiểm tra cổng kết nối bảo mật Cloud...</p>
+                    </div>`;
+                return;
+            }
+
+            if (!state.user) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-6 flex flex-col items-center justify-center relative w-full">
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            <button onclick="toggleDarkMode()" class="p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 pointer-events-auto active:scale-95">
+                                ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                            </button>
+                        </header>
+                        <div class="w-full max-w-md p-8 sm:p-10 rounded-3xl shadow-2xl border bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/80 animate-enter mt-14">
+                            <div class="text-center mb-8">
+                                <div class="inline-flex p-3 bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-emerald-400 rounded-2xl mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                <h2 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Đăng nhập môn học</h2>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 font-bold mt-1 uppercase tracking-wider">Sinh Trưởng & Tính Chống Chịu Thực Vật</p>
+                            </div>
+                            ${state.isKicked ? `
+                                <div class="mb-4 p-3 bg-rose-50 dark:bg-rose-950/40 border-l-4 border-rose-500 text-rose-700 dark:text-rose-400 text-xs font-semibold rounded-r-xl flex items-start gap-2 animate-enter">
+                                    <svg class="flex-shrink-0 mt-0.5 animate-pulse text-rose-600" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    <p>Tài khoản vừa bị khóa vì phát hiện đăng nhập cùng lúc từ một thiết bị khác!</p>
+                                </div>` : ''}
+                            <form onsubmit="handleLogin(event)" class="space-y-5">
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Tài khoản Email</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                                        <input type="email" id="emailInput" placeholder="abc...@quizpointstudio.com" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.emailInput}" required />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Mật mã bảo mật</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                        <input type="password" id="passwordInput" placeholder="••••••••" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.passwordInput}" required />
+                                    </div>
+                                </div>
+                                <div id="authError" class="text-xs font-bold text-rose-500 bg-rose-50 dark:bg-rose-950/30 p-3 rounded-lg border border-rose-100 dark:border-rose-900/40 hidden"></div>
+                                <button type="submit" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition-all text-sm uppercase tracking-wider">Xác nhận đăng nhập</button>
+                            </form>
+                            <div class="text-center mt-6">
+                                <button onclick="window.location.href='./index.html'" class="text-xs text-slate-400 hover:text-brand-600 dark:hover:text-emerald-400 font-bold transition-all hover:underline">← Quay lại danh mục trang chủ</button>
+                            </div>
+                        </div>
+                    </div>`;
+                if(state.authError) {
+                    const errDiv = document.getElementById('authError');
+                    errDiv.innerText = state.authError;
+                    errDiv.classList.remove('hidden');
+                }
+                return;
+            }
+
+            if (state.reviewMode) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-4 sm:p-6 lg:p-8 bg-slate-50/50 dark:bg-slate-950/20 w-full flex flex-col items-center">
+                        <div class="w-full max-w-4xl space-y-6">
+                            <div class="glass-panel p-4 rounded-2xl shadow-sm sticky top-4 z-10 flex justify-between items-center mb-8">
+                                <button onclick="setReviewMode(false)" class="flex items-center gap-2 text-brand-700 dark:text-emerald-400 font-extrabold transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> <span>Quay lại</span></button>
+                                <h2 class="text-xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Chi tiết bài làm</h2>
+                                <div class="w-8"></div> 
+                            </div>
+                            <div class="space-y-8 pb-10">
+                                ${state.reviewData.map((item, index) => {
+                                    const userAnsArr = item.s ? item.s.split('') : [];
+                                    const correctAnsArr = item.c ? item.c.split('') : [];
+                                    const isItemCorrect = item.s === item.c;
+                                    return `
+                                        <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 ${!isItemCorrect ? 'ring-2 ring-red-500/20' : ''}">
+                                            <div class="flex gap-4 mb-2">
+                                                <span class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg ${isItemCorrect ? 'bg-gradient-to-br from-emerald-400 to-emerald-600' : 'bg-gradient-to-br from-red-400 to-red-600'}">${index + 1}</span>
+                                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 leading-relaxed">${item.q}</h3>
+                                            </div>
+                                            <div class="pl-14 mb-4 text-xs font-bold text-brand-600 dark:text-emerald-400">
+                                                 ${item.c.length > 1 ? "☑ Câu hỏi này tích chọn nhiều đáp án đúng" : "🔘 Câu hỏi này chọn một đáp án duy nhất"}
+                                            </div>
+                                            <div class="space-y-3 pl-0 sm:pl-14">
+                                                ${item.o.map(opt => {
+                                                    const isOptCorrect = correctAnsArr.includes(opt.key);
+                                                    const isOptSelected = userAnsArr.includes(opt.key);
+                                                    let optionClass = "p-4 rounded-xl border flex justify-between items-center font-semibold text-sm ";
+                                                    if (isOptCorrect) optionClass += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 shadow-sm";
+                                                    else if (isOptSelected) optionClass += "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 shadow-sm";
+                                                    else optionClass += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600 opacity-70";
+                                                    return `
+                                                        <div class="${optionClass}">
+                                                            <span>${opt.text}</span>
+                                                            ${isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                                            ${isOptSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                                        </div>`;
+                                                }).join('')}
+                                            </div>
+                                        </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (!state.currentPart) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col relative w-full items-center">
+                        
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 pointer-events-auto">
+                                <button onclick="handleGoHome()" class="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-md active:scale-95">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                    <span class="hidden sm:inline">Quay về trang chủ</span>
+                                    <span class="sm:hidden">Trang chủ</span>
+                                </button>
+                                
+                                <button onclick="toggleDarkMode()" class="p-2 sm:p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 active:scale-95">
+                                    ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                                </button>
+                            </div>
+                        </header>
+                        
+                        <div class="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950 text-white shadow-xl relative overflow-hidden text-center pt-40 pb-16 md:pt-32 md:pb-20">
+                            <div class="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_60%)] animate-pulse-slow"></div>
+                            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:30px_30px]"></div>
+                            <div class="absolute top-6 right-[25%] opacity-30 text-yellow-300 animate-bounce-slow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                            <div class="absolute bottom-8 left-[20%] opacity-30 text-emerald-300 animate-float"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                            <div class="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center gap-4 relative z-10">
+                                <div class="p-3 bg-white/5 rounded-2xl backdrop-blur-md border border-white/10 animate-float inline-block shadow-xl">
+                                    <svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22V10"/>
+                                        <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                        <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                        <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                        <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <div class="space-y-2">
+                                    <h1 style="line-height: 1.35 !important;" class="pt-2 text-3xl md:text-5xl font-black uppercase bg-gradient-to-r from-white via-emerald-300 to-slate-200 bg-clip-text text-transparent drop-shadow-lg">SINH TRƯỞNG PHÁT TRIỂN & TÍNH CHỐNG CHỊU</h1>
+                                    <p class="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">Ngân hàng 115 câu hỏi tổng ôn lý thuyết chia làm 4 bộ đề</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="max-w-6xl mx-auto px-4 py-8 w-full -mt-10 relative z-20 space-y-10 flex flex-col items-center">
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md py-3 px-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm w-full max-w-xl">
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-brand-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Tên: <span class="text-brand-600 dark:text-emerald-400 font-extrabold">Nguyễn Văn Lượng</span></span></div>
+                                <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-amber-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .81 2.71A2 2 0 0 1 22 16.92z"/></svg><span>LH: <span class="font-mono text-slate-900 dark:text-white font-black">0333738861</span></span></div>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-brand-600 to-teal-700 text-white p-6 rounded-3xl shadow-xl border border-brand-500/30 overflow-hidden relative group text-center w-full max-w-3xl">
+                                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                                <div class="relative z-10 flex flex-col items-center gap-4">
+                                    <div class="flex items-center justify-center gap-3"><svg class="text-yellow-300 animate-pulse" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg><span class="font-bold text-lg sm:text-xl leading-tight">Nhận làm Quiz Ôn Tập & PowerPoint Cơ Bản</span></div>
+                                    <div class="flex flex-wrap justify-center gap-4 mt-1">
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Hệ thống Quiz</span></div>
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span>Thiết kế PPT</span></div>
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg><span>Tài liệu học tập</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full">
+                                ${[1, 2, 3, 4].map(num => `
+                                    <button onclick="startQuiz(${num})" class="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-brand-500 dark:hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-center gap-3">
+                                      <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 shadow-inner group-hover:bg-brand-500 dark:group-hover:bg-emerald-500 group-hover:text-white text-brand-500 transition-all duration-300">
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 22V10"/>
+                                            <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                            <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                            <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                            <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                         </svg>
+                                      </div>
+                                      <div>
+                                        <div class="font-black text-sm text-slate-800 dark:text-slate-200 tracking-tight leading-tight">Đề 0${num}</div>
+                                        <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 uppercase tracking-wide"></div>
+                                      </div>
+                                    </button>`).join('')}
+                            </div>
+
+                            <div class="glass-panel p-6 rounded-3xl shadow-sm max-w-2xl mx-auto w-full text-left">
+                                <div class="flex justify-between items-center mb-6 px-2">
+                                  <h2 class="text-sm font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg> Lịch sử kết quả làm bài</h2>
+                                  ${state.history.length > 0 ? `<button onclick="clearHistory()" class="text-rose-500 hover:text-rose-700 p-2 hover:bg-rose-50 rounded-lg transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>` : ''}
+                                </div>
+                                ${state.history.length === 0 ? `<div class="text-center py-8 text-slate-400 dark:text-slate-600 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold italic">Chưa có lịch sử làm đề lưu trữ</div>` : `
+                                  <div class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    ${state.history.map((record, index) => `
+                                      <div class="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
+                                        <div class="flex-1 w-full sm:w-auto">
+                                          <div class="font-black text-sm text-slate-700 dark:text-slate-300 uppercase tracking-tight">Đề ${record.part}</div>
+                                          <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 italic">${record.date}</div>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="text-right">
+                                                <div class="text-sm font-black"><span class="text-emerald-600 dark:text-emerald-400">${record.score} Đ</span><span class="text-rose-500 ml-1.5">/ ${record.wrong} S</span></div>
+                                                <div class="text-[10px] font-extrabold text-slate-400 tracking-wide">/${record.total} CÂU</div>
+                                            </div>
+                                            <button onclick="viewHistoryDetail(${index})" class="p-2 bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-emerald-400 rounded-xl hover:bg-brand-100 dark:hover:bg-slate-700 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                                        </div>
+                                      </div>`).join('')}
+                                  </div>`}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (state.showResult) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center p-4 text-center w-full">
+                        <div class="bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl shadow-2xl max-w-md w-full border border-slate-100 dark:border-slate-800 animate-enter">
+                          <div class="relative inline-block mb-6">
+                            <div class="absolute inset-0 bg-yellow-400 blur-xl opacity-30 rounded-full"></div>
+                            <svg class="w-20 h-20 text-yellow-500 relative z-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                          </div>
+                          <h2 class="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Hoàn Thành Bài Ôn Tập!</h2>
+                          <div class="grid grid-cols-2 gap-4 mb-8 mt-6">
+                            <div class="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100"><p class="text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider mb-1">Đúng</p><p class="text-4xl font-black text-emerald-600 dark:text-emerald-400">${state.score}</p></div>
+                            <div class="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-2xl border border-rose-100"><p class="text-rose-500 dark:text-rose-400 text-xs font-extrabold uppercase tracking-wider mb-1">Sai / Thiếu</p><p class="text-4xl font-black text-rose-500 dark:text-rose-400">${state.wrongScore}</p></div>
+                          </div>
+                          <button onclick="resetQuiz()" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white rounded-xl font-extrabold text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Về màn hình chính</button>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const progress = ((state.currentQuestionIndex + 1) / state.questions.length) * 100;
+
+            root.innerHTML = `
+                <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 ${state.isConfirming ? 'block' : 'hidden'}">
+                  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100">
+                    <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Nộp bài & kết thúc?</h3>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 font-medium mb-6">Kết quả bài làm hiện tại của bạn sẽ được lưu giữ lại hệ thống.</p>
+                    <div class="flex gap-3">
+                      <button onclick="setConfirming(false)" class="flex-1 py-3 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors">Tiếp bài làm</button>
+                      <button onclick="confirmFinish()" class="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">Nộp bài ngay</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-h-screen flex flex-col items-center p-4 sm:p-6 w-full max-w-3xl mx-auto relative justify-start">
+                    <div class="w-full flex justify-between items-center mb-6 pt-2">
+                        <button onclick="requestFinish()" class="p-2.5 rounded-xl text-slate-400 hover:text-rose-500 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+                        <div class="glass-panel px-4 py-2 rounded-full border text-xs font-bold text-slate-600 dark:text-slate-300 tracking-wide uppercase">Câu ${state.currentQuestionIndex + 1} / ${state.questions.length}</div>
+                        <div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 px-3 py-1.5 rounded-xl"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${state.score}</div>
+                    </div>
+                    
+                    <div class="w-full mb-8">
+                        <div class="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all rounded-full" style="width: ${progress}%"></div></div>
+                    </div>
+                    
+                    <div class="w-full bg-white dark:bg-slate-900 p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800/60 mb-24 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-emerald-600"></div>
+                        
+                        <div>
+                            <div class="mb-6">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                    <span class="inline-block bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-slate-100">ID: #${currentQ.id}</span>
+                                    <span class="text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-full ${currentQ.isMultiple ? 'bg-amber-50 text-amber-600 border border-amber-200' : 'bg-teal-50 text-teal-600 border border-teal-200'}">
+                                        ${currentQ.isMultiple ? "☑ Tích chọn nhiều đáp án" : "🔘 Chọn một đáp án"}
+                                    </span>
+                                </div>
+                                <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 leading-snug tracking-tight">${currentQ.q}</h2>
+                            </div>
+                            
+                            <div class="space-y-3.5">
+                                ${state.shuffledOptions.map((option) => {
+                                    const isSelected = state.selectedOptions.includes(option.key);
+                                    const isOptCorrect = currentQ.correct.split('').includes(option.key);
+                                    
+                                    let containerClass = "w-full p-5 rounded-2xl border text-left font-semibold transition-all duration-200 transform active:scale-[0.98] flex justify-between items-center relative overflow-hidden text-sm ";
+                                    
+                                    if (state.isSubmitted) {
+                                      containerClass += " active:scale-100 cursor-not-allowed "; 
+                                      if (isOptCorrect) containerClass += "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-inner";
+                                      else if (isSelected) containerClass += "border-rose-500 bg-rose-50 dark:bg-rose-950/30 text-rose-800 ring-2 ring-rose-200 shadow-inner";
+                                      else containerClass += "border-slate-100 text-slate-400 opacity-50";
+                                    } else {
+                                      if (isSelected) containerClass += "border-emerald-500 bg-emerald-50/60 dark:bg-slate-800/80 text-emerald-900 dark:text-teal-300 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-md -translate-y-0.5";
+                                      else containerClass += "border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-brand-50/40 hover:border-brand-200 hover:shadow-sm hover:-translate-y-0.5";
+                                    }
+
+                                    return `
+                                        <button onclick="handleOptionSelect('${option.key}', ${currentQ.isMultiple})" ${state.isSubmitted ? 'disabled' : ''} class="${containerClass}">
+                                            <div class="flex items-center gap-4 relative z-10">
+                                                <div class="w-5 h-5 flex items-center justify-center border-2 flex-shrink-0 rounded-md transition-colors ${isSelected ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 bg-white dark:bg-slate-900'}">
+                                                    ${isSelected ? '<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>' : ''}
+                                                </div>
+                                                <span>${option.text}</span>
+                                            </div>
+                                            ${state.isSubmitted && isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                            ${state.isSubmitted && isSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                        </button>`;
+                                }).join('')}
+                            </div>
+                            
+                            ${!state.isSubmitted && state.selectedOptions.length > 0 ? `
+                                <div class="mt-6 flex justify-end">
+                                    <button onclick="checkAnswerSubmission()" class="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl text-xs uppercase tracking-wider shadow-md transform active:scale-95 transition-transform">
+                                        Xác nhận đáp án
+                                    </button>
+                                </div>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-100 dark:border-slate-900/60 flex justify-center items-center gap-4 z-20">
+                        <button onclick="prevQuestion()" ${state.currentQuestionIndex === 0 ? 'disabled' : ''} class="w-14 h-14 rounded-2xl flex items-center justify-center border text-slate-600 dark:text-slate-400 disabled:opacity-25 transform active:scale-95 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+                        <button onclick="nextQuestion()" ${!state.isSubmitted ? 'disabled' : ''} class="flex-1 max-w-md h-14 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 disabled:bg-slate-200 dark:disabled:bg-slate-800/50 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:shadow-none bg-brand-600 text-white disabled:cursor-not-allowed transform active:scale-[0.99] transition-all">
+                            ${state.currentQuestionIndex === state.questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        auth.onAuthStateChanged((currentUser) => {
+            if (currentUser) {
+                const ADMIN_EMAIL = "ngocyen@cucdang.com";
+                const userEmail = currentUser.email.toLowerCase();
+                
+                if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".stpt")) {
+                    state.authError = "Tài khoản này không có quyền truy cập môn Sinh trưởng phát triển!";
+                    auth.signOut();
+                    state.user = null;
+                } else {
+                    const token = getOrCreateDeviceToken();
+                    const sessionRef = db.ref(`active_sessions/mon_stpt/${currentUser.uid}`);
+                    const isAdmin = userEmail === ADMIN_EMAIL;
+
+                    if (!state.user && !isAdmin) {
+                        sessionRef.set({ 
+                            deviceToken: token, 
+                            lastLogin: firebase.database.ServerValue.TIMESTAMP, 
+                            email: currentUser.email 
+                        });
+                    }
+
+                    sessionRef.on("value", (snap) => {
+                        const val = snap.val();
+                        if (val && val.deviceToken !== token && !isAdmin) {
+                            state.isKicked = true;
+                            auth.signOut();
+                            state.user = null;
+                            render();
+                        }
+                    });
+                    state.user = currentUser;
+                }
+            } else {
+                state.user = null;
+            }
+            state.loading = false;
+            render();
+        });
+
+        function handleLogin(e) {
+            e.preventDefault();
+            state.authError = "";
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            state.emailInput = email; state.passwordInput = password;
+
+            auth.signInWithEmailAndPassword(email, password).catch(err => {
+                state.authError = "Tài khoản hoặc mật khẩu bảo mật không chính xác.";
+                render();
+            });
+        }
+
+        function handleGoHome() {
+            if (window.confirm("Bạn có chắc muốn rời môn học và quay về trang chủ không?")) {
+                if (state.user) db.ref(`active_sessions/mon_stpt/${state.user.uid}`).remove();
+                auth.signOut().then(() => { window.location.href = "./index.html"; });
+            }
+        }
+
+        function startQuiz(part) {
+            const raw = TEST_DATA[part] || [];
+            state.questions = raw.map(item => ({
+                id: item.id, q: item.q, correct: item.ans, isMultiple: item.ans.length > 1,
+                options: [{ key: 'a', text: item.a }, { key: 'b', text: item.b }, { key: 'c', text: item.c }, { key: 'd', text: item.d }].filter(o => o.text !== undefined)
+            }));
+            state.currentPart = part; state.currentQuestionIndex = 0; state.score = 0; state.wrongScore = 0;
+            state.sessionAnswers = []; state.showResult = false; state.selectedOptions = []; state.isSubmitted = false;
+            if (state.questions.length > 0) state.shuffledOptions = state.questions[0].options;
+            render();
+        }
+
+        function handleOptionSelect(key, isMultiple) {
+            if (state.isSubmitted) return;
+            if (isMultiple) {
+                if (state.selectedOptions.includes(key)) {
+                    state.selectedOptions = state.selectedOptions.filter(k => k !== key);
+                } else {
+                    state.selectedOptions.push(key);
+                }
+            } else {
+                state.selectedOptions = [key];
+            }
+            render();
+        }
+
+        function checkAnswerSubmission() {
+            if (state.selectedOptions.length === 0 || state.isSubmitted) return;
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const userAnsStr = [...state.selectedOptions].sort().join('');
+            const correctAnsStr = currentQ.correct.split('').sort().join('');
+            const correct = userAnsStr === correctAnsStr;
+            
+            state.isSubmitted = true;
+            if (correct) state.score++; else state.wrongScore++;
+            state.sessionAnswers.push({ ...currentQ, userSelected: userAnsStr, options: state.shuffledOptions });
+            render();
+        }
+
+        function nextQuestion() {
+            if (state.currentQuestionIndex < state.questions.length - 1) {
+                state.currentQuestionIndex++;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                if (existing) {
+                    state.shuffledOptions = existing.options;
+                    state.selectedOptions = existing.userSelected.split('');
+                    state.isSubmitted = true;
+                } else {
+                    state.shuffledOptions = newQ.options; state.selectedOptions = []; state.isSubmitted = false;
+                }
+                render();
+            } else {
+                state.showResult = true;
+                saveHistoryToLocal();
+                render();
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                state.currentQuestionIndex--;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                state.shuffledOptions = existing.options;
+                state.selectedOptions = existing.userSelected.split('');
+                state.isSubmitted = true;
+                render();
+            }
+        }
+
+        function saveHistoryToLocal() {
+            const record = {
+                id: Date.now(), date: new Date().toLocaleString('vi-VN'), part: state.currentPart,
+                score: state.score, wrong: state.wrongScore, total: state.questions.length,
+                details: state.sessionAnswers.map(q => ({ id: q.id, q: q.q, o: q.options || [], s: q.userSelected, c: q.correct }))
+            };
+            state.history.unshift(record);
+            try { localStorage.setItem('stpt_local_history', JSON.stringify(state.history)); } catch (e) {}
+        }
+
+        function clearHistory() {
+            if (window.confirm('Bạn có chắc muốn xóa toàn bộ lịch sử kết quả không?')) {
+                state.history = []; localStorage.removeItem('stpt_local_history'); render();
+            }
+        }
+
+        function viewHistoryDetail(index) {
+            state.reviewData = state.history[index].details || []; state.reviewMode = true; render();
+        }
+
+        function setReviewMode(val) { state.reviewMode = val; render(); }
+        function requestFinish() { state.isConfirming = true; render(); }
+        function setConfirming(val) { state.isConfirming = val; render(); }
+        function confirmFinish() { state.showResult = true; state.isConfirming = false; saveHistoryToLocal(); render(); }
+        function resetQuiz() { state.currentPart = null; state.questions = []; state.reviewMode = false; render(); }
+
+        window.addEventListener('DOMContentLoaded', () => { render(); });
+    </script>
+</body>
+</html>
