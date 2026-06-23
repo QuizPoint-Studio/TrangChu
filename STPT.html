@@ -254,6 +254,14 @@
             return token;
         };
 
+        function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+    
         function toggleDarkMode() {
             state.isDarkMode = !state.isDarkMode;
             document.documentElement.classList.toggle('dark', state.isDarkMode);
@@ -666,7 +674,7 @@
             }));
             state.currentPart = part; state.currentQuestionIndex = 0; state.score = 0; state.wrongScore = 0;
             state.sessionAnswers = []; state.showResult = false; state.selectedOptions = []; state.isSubmitted = false;
-            if (state.questions.length > 0) state.shuffledOptions = state.questions[0].options;
+            if (state.questions.length > 0) state.shuffledOptions = shuffleArray(state.questions[0].options);
             render();
         }
 
@@ -707,7 +715,7 @@
                     state.selectedOptions = existing.userSelected.split('');
                     state.isSubmitted = true;
                 } else {
-                    state.shuffledOptions = newQ.options; state.selectedOptions = []; state.isSubmitted = false;
+                    state.shuffledOptions = shuffleArray(newQ.options); state.selectedOptions = []; state.isSubmitted = false;
                 }
                 render();
             } else {
