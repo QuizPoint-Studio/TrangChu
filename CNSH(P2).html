@@ -1,0 +1,810 @@
+<NGUYỄN VĂN LƯỢNG ĐẸP TRAI HẸHẸ>
+    <html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng (P2) - QuizPoint Studio</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap');
+        body { 
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        html, body, .custom-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar, .custom-scrollbar::-webkit-scrollbar { 
+            display: none;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#f0fdf4] via-[#e0f2fe] to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 min-h-screen text-slate-800 dark:text-slate-100">
+    
+    <div id="root"></div>
+
+    <script>
+       const firebaseConfig = {
+          apiKey: "AIzaSyC-n88rPoijqfE44ZF3ulPZdcGz_rtC3lg",
+          authDomain: "quizpointstuidio.firebaseapp.com",
+          databaseURL: "https://quizpointstuidio-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "quizpointstuidio",
+          storageBucket: "quizpointstuidio.firebasestorage.app",
+          messagingSenderId: "592248583165",
+          appId: "1:592248583165:web:8f7dac2ab36dbf35aadf94",
+          measurementId: "G-T8QQ1HEZGC"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+         const TEST_DATA = {
+    1: [
+        { id: 1, q: "Nuôi cấy mô là phương pháp:", a: "Nhân giống hữu tính trong nhà kính", b: "Nhân giống vô tính trong điều kiện vô trùng", c: "Lai tạo giống mới", d: "Gây đột biến nhân tạo", ans: "b" },
+        { id: 2, q: "Cơ sở quan trọng nhất của nuôi cấy mô là:", a: "Tính di truyền liên kết", b: "Tính toàn năng của tế bào", c: "Đột biến gen", d: "Lai hữu tính", ans: "b" },
+        { id: 3, q: "Tính toàn năng của tế bào là:", a: "Tế bào có khả năng quang hợp", b: "Tế bào có khả năng tạo hạt", c: "Tế bào có khả năng phát triển thành cây hoàn chỉnh trong điều kiện thích hợp", d: "Tế bào chỉ tạo được rễ", ans: "c" },
+        { id: 4, q: "Phản phân hóa là:", a: "Tế bào chuyên hóa trở lại trạng thái phôi sinh", b: "Tạo hạt phấn", c: "Hình thành quả", d: "Tạo giao tử", ans: "a" },
+        { id: 5, q: "Giai đoạn đầu tiên của nuôi cấy mô là:", a: "Tạo rễ", b: "Nhân chồi", c: "Khử trùng mẫu", d: "Huấn luyện mô", ans: "c" },
+        { id: 6, q: "Mục đích của giai đoạn nhân cụm chồi là:", a: "Tạo quả", b: "Kích thích hình thành nhiều chồi mới", c: "Tạo hạt", d: "Tạo phấn hoa", ans: "b" },
+        { id: 7, q: "Chất điều hòa sinh trưởng thường được dùng nhiều trong giai đoạn nhân chồi là:", a: "Auxin", b: "Cytokinin", c: "Ethylene", d: "ABA", ans: "b" },
+        { id: 8, q: "Giai đoạn tạo rễ cần tăng:", a: "Cytokinin", b: "Gibberellin", c: "Auxin", d: "Ethylene", ans: "c" },
+        { id: 9, q: "Giai đoạn cuối của nuôi cấy mô là:", a: "Tạo mô sẹo", b: "Khử trùng mẫu", c: "Huấn luyện cây con ngoài tự nhiên", d: "Tạo phôi", ans: "c" },
+        { id: 10, q: "Hình thức nuôi cấy nào sau đây không thuộc nuôi cấy mô?", a: "Nuôi cấy phôi", b: "Nuôi cấy mô sẹo", c: "Nuôi cấy tế bào trần", d: "Lai hữu tính", ans: "d" },
+        { id: 11, q: "Nguồn carbon thường dùng trong môi trường nuôi cấy là:", a: "Tinh bột", b: "Glucose", c: "Sucrose", d: "Cellulose", ans: "c" },
+        { id: 12, q: "Thành phần nào thuộc yếu tố đa lượng?", a: "N", b: "Zn", c: "Cu", d: "B", ans: "a" },
+        { id: 13, q: "Thành phần nào thuộc yếu tố vi lượng?", a: "K", b: "Ca", c: "Mg", d: "Zn", ans: "d" },
+        { id: 14, q: "Agar được sử dụng để:", a: "Tạo nguồn đạm", b: "Làm đông môi trường", c: "Tạo vitamin", d: "Khử trùng", ans: "b" },
+        { id: 15, q: "Than hoạt tính có vai trò:", a: "Tạo chồi", b: "Hấp phụ chất độc và chất ức chế", c: "Tạo rễ", d: "Tạo vitamin", ans: "b" },
+        { id: 16, q: "Nhóm hormone kích thích ra rễ là:", a: "Cytokinin", b: "Auxin", c: "Ethylene", d: "ABA", ans: "b" },
+        { id: 17, q: "Hormone nào thường dùng kích thích tạo chồi?", a: "BAP", b: "IAA", c: "NAA", d: "IBA", ans: "a" },
+        { id: 18, q: "2,4-D thuộc nhóm:", a: "Cytokinin", b: "Auxin", c: "ABA", d: "Ethylene", ans: "b" },
+        { id: 19, q: "Cytokinin có tác dụng:", a: "Kích thích phân chia tế bào", b: "Kích thích rụng lá", c: "Kích thích chín quả", d: "Gây ngủ nghỉ", ans: "a" },
+        { id: 20, q: "Ethylene có tác dụng chủ yếu:", a: "Tạo rễ", b: "Tạo chồi", c: "Kích thích quả chín", d: "Gây ngủ nghỉ", ans: "c" },
+        { id: 21, q: "ABA có vai trò:", a: "Tăng phân chia tế bào", b: "Kích thích nảy mầm", c: "Gây trạng thái ngủ", d: "Kích thích tạo rễ", ans: "c" },
+        { id: 22, q: "Gibberellin có tác dụng:", a: "Tăng kéo dài thân", b: "Kích thích đóng khí khổng", c: "Làm chậm già hóa lá", d: "Kích thích rụng lá", ans: "a" },
+        { id: 23, q: "PCR là viết tắt của:", a: "Protein Chain Reaction", b: "Polymerase Chain Reaction", c: "Plant Cell Reaction", d: "Polymer Cell Reaction", ans: "b" },
+        { id: 24, q: "PCR dùng để:", a: "Tách protein", b: "Nhân bản DNA", c: "Tạo cây chuyển gen", d: "Nuôi cấy mô", ans: "b" },
+        { id: 25, q: "Giai đoạn đầu tiên của PCR là:", a: "Bắt cặp", b: "Kéo dài", c: "Biến tính", d: "Điện di", ans: "c" },
+        { id: 26, q: "Trình tự đúng của PCR là:", a: "Bắt cặp → Kéo dài → Biến tính", b: "Biến tính → Bắt cặp → Kéo dài", c: "Kéo dài → Bắt cặp → Biến tính", d: "Kéo dài → Biến tính → Bắt cặp", ans: "b" },
+        { id: 27, q: "Enzyme sử dụng trong PCR là:", a: "Ligase", b: "Restrictase", c: "Taq Polymerase", d: "Amylase", ans: "c" },
+        { id: 28, q: "Phương pháp giải trình tự DNA nổi tiếng nhất là:", a: "ELISA", b: "Sanger", c: "PCR", d: "Southern blot", ans: "b" },
+        { id: 29, q: "Phương pháp giải trình tự DNA gồm:", a: "Maxam-Gilbert và Sanger", b: "PCR và điện di", c: "ELISA và PCR", d: "Northern và Southern", ans: "a" },
+        { id: 30, q: "Bước đầu tiên trong ly trích DNA là:", a: "Tủa DNA", b: "Phá vỡ màng tế bào", c: "Điện di", d: "PCR", ans: "b" },
+        { id: 31, q: "Hóa chất thường dùng loại bỏ tạp chất:", a: "Agar", b: "Ethanol", c: "Phenol và Chloroform", d: "Sucrose", ans: "c" },
+        { id: 32, q: "DNA thường được tủa bằng:", a: "Ethanol hoặc Isopropanol", b: "Nước cất", c: "Agar", d: "NaOH", ans: "a" },
+        { id: 33, q: "Điện di dùng để:", a: "Nuôi cấy mô", b: "Tách DNA, RNA, protein", c: "Lai giống", d: "Tạo đột biến", ans: "b" },
+        { id: 34, q: "Điện di agarose gel thường dùng cho:", a: "DNA", b: "Hạt giống", c: "Mô sẹo", d: "Phấn hoa", ans: "a" },
+        { id: 35, q: "Enzym giới hạn có chức năng:", a: "Nối DNA", b: "Cắt DNA tại vị trí xác định", c: "Nhân DNA", d: "Tổng hợp RNA", ans: "b" },
+        { id: 36, q: "Loại enzym cắt ngay vị trí nhận biết là:", a: "Loại I", b: "Loại II", c: "Loại III", d: "Loại IV", ans: "b" },
+        { id: 37, q: "Enzym giới hạn cắt tạo đầu bằng gọi là:", a: "Sticky end", b: "Cohesive end", c: "Blunt end", d: "Recombinant end", ans: "c" },
+        { id: 38, q: "Vector phổ biến nhất là:", a: "Plasmid", b: "Ribosome", c: "Lysosome", d: "Chromosome", ans: "a" }
+    ],
+    2: [
+        { id: 39, q: "Cosmid thuộc nhóm:", a: "Vector lai nhân tạo", b: "Virus", c: "Plasmid tự nhiên", d: "Protein", ans: "a" },
+        { id: 40, q: "Vector biểu hiện dùng để:", a: "Mang gen biểu hiện protein", b: "Khử trùng mẫu", c: "Tạo mô sẹo", d: "Điện di DNA", ans: "a" },
+        { id: 41, q: "Enzym dùng để nối DNA là:", a: "DNA ligase", b: "Taq polymerase", c: "Restrictase", d: "Amylase", ans: "a" },
+        { id: 42, q: "Agrobacterium được sử dụng trong:", a: "PCR", b: "Chuyển gen gián tiếp", c: "Điện di", d: "Giải trình tự DNA", ans: "b" },
+        { id: 43, q: "Súng bắn gen là phương pháp:", a: "Chuyển gen gián tiếp", b: "Chuyển gen trực tiếp", c: "Nuôi cấy mô", d: "Điện di", ans: "b" },
+        { id: 44, q: "PEG được dùng trong:", a: "Nạp gen trực tiếp", b: "Giải trình tự DNA", c: "PCR", d: "Điện di", ans: "a" },
+        { id: 45, q: "Golden Rice được tạo ra nhằm:", a: "Kháng sâu bệnh", b: "Kháng thuốc cỏ", c: "Tăng giá trị dinh dưỡng", d: "Chống hạn", ans: "c" },
+        { id: 46, q: "Cây đu đủ chuyển gen nổi tiếng về tính trạng:", a: "Kháng virus", b: "Kháng cỏ", c: "Tăng năng suất", d: "Tăng chiều cao", ans: "a" },
+        { id: 47, q: "Gen Bt trong ngô có tác dụng:", a: "Kháng sâu bệnh", b: "Tăng màu sắc", c: "Tăng hàm lượng đường", d: "Tăng kích thước quả", ans: "a" },
+        { id: 48, q: "Mục tiêu của chuyển gen KHÔNG bao gồm:", a: "Kháng sâu bệnh", b: "Kháng thuốc cỏ", b: "Tăng giá trị dinh dưỡng", d: "Giảm khả năng sinh trưởng hoàn toàn", ans: "d" },
+        { id: 49, q: "Mẫu vật dùng trong nuôi cấy mô gọi là:", a: "Explant", b: "Primer", c: "Vector", d: "Plasmid", ans: "a" },
+        { id: 50, q: "Mục đích của khử trùng mẫu là:", a: "Kích thích sinh trưởng", b: "Loại bỏ vi sinh vật", c: "Tạo rễ", d: "Tạo chồi", ans: "b" },
+        { id: 51, q: "Hóa chất thường dùng khử trùng sâu:", a: "Nước cất", b: "Javen", c: "Ethanol 70%", d: "Cả B và C", ans: "d" },
+        { id: 52, q: "Mô sẹo còn gọi là:", a: "Callus", b: "Embryo", c: "Shoot", d: "Root", ans: "a" },
+        { id: 53, q: "Tỷ lệ Cytokinin/Auxin cao thường tạo:", a: "Rễ", b: "Chồi", c: "Quả", d: "Hạt", ans: "b" },
+        { id: 54, q: "Tỷ lệ Auxin/Cytokinin cao thường tạo:", a: "Chồi", b: "Rễ", c: "Lá", d: "Hoa", ans: "b" },
+        { id: 55, q: "Ưu điểm lớn nhất của nuôi cấy mô:", a: "Tạo cây đồng đều", b: "Nhân nhanh số lượng lớn", c: "Sạch bệnh", d: "Tất cả đều đúng", ans: "d" },
+        { id: 56, q: "Trong nuôi cấy mô, điều kiện quan trọng nhất là:", a: "Ánh sáng mạnh", b: "Vô trùng", c: "Đất tốt", d: "Mưa nhiều", ans: "b" },
+        { id: 57, q: "Hình thức nuôi cấy từ một tế bào riêng lẻ gọi là:", a: "Nuôi cấy cơ quan", b: "Nuôi cấy mô sẹo", c: "Nuôi cấy tế bào đơn", d: "Nuôi cấy phôi", ans: "c" },
+        { id: 58, q: "Tế bào trần là:", a: "Tế bào mất nhân", b: "Tế bào mất màng sinh chất", c: "Tế bào mất vách tế bào", d: "Tế bào chết", ans: "c" },
+        { id: 59, q: "Môi trường nuôi cấy phải cung cấp:", a: "Khoáng chất", b: "Vitamin", c: "Đường", d: "Tất cả đều đúng", ans: "d" },
+        { id: 60, q: "Vitamin trong môi trường có vai trò:", a: "Hỗ trợ sinh trưởng", b: "Khử trùng", c: "Tạo gel", d: "Tạo DNA", ans: "a" },
+        { id: 61, q: "Đường sucrose đóng vai trò:", a: "Nguồn carbon", b: "Nguồn đạm", c: "Chất điều hòa sinh trưởng", d: "Chất khử trùng", ans: "a" },
+        { id: 62, q: "Nguyên tố nào là đa lượng?", a: "N", b: "B", c: "Zn", d: "Cu", ans: "a" },
+        { id: 63, q: "Nguyên tố nào là vi lượng?", a: "P", b: "K", c: "Zn", d: "Mg", ans: "c" },
+        { id: 64, q: "Agar được chiết xuất từ:", a: "Tảo biển", b: "Cây lúa", c: "Nấm", d: "Vi khuẩn", ans: "a" },
+        { id: 65, q: "IAA là:", a: "Cytokinin", b: "Auxin", c: "Ethylene", d: "ABA", ans: "b" },
+        { id: 66, q: "IBA thuộc nhóm:", a: "Auxin", b: "Cytokinin", c: "Gibberellin", d: "Ethylene", ans: "a" },
+        { id: 67, q: "NAA thuộc nhóm:", a: "Auxin", b: "ABA", c: "Ethylene", d: "Gibberellin", ans: "a" },
+        { id: 68, q: "BAP thuộc nhóm:", a: "Cytokinin", b: "Auxin", c: "ABA", d: "Ethylene", ans: "a" },
+        { id: 69, q: "Kinetin là:", a: "Auxin", b: "Cytokinin", c: "Ethylene", d: "ABA", ans: "b" },
+        { id: 70, q: "Cytokinin làm:", a: "Chậm già hóa lá", b: "Rụng lá", c: "Chín quả", d: "Đóng khí khổng", ans: "a" },
+        { id: 71, q: "ABA kích thích:", a: "Đóng khí khổng", b: "Mở khí khổng", c: "Ra rễ", d: "Ra chồi", ans: "a" },
+        { id: 72, q: "Ethylene là hormone:", a: "Dạng khí", b: "Dạng rắn", c: "Dạng lỏng", d: "Dạng muối", ans: "a" },
+        { id: 73, q: "Gibberellin kích thích:", a: "Kéo dài thân", b: "Đóng khí khổng", c: "Rụng quả", d: "Chín quả", ans: "a" },
+        { id: 74, q: "Dịch chiết thường dùng trong nuôi cấy mô:", a: "Khoai tây", b: "Chuối", c: "Nước dừa", d: "Tất cả đều đúng", ans: "d" },
+        { id: 75, q: "Nước dừa chứa nhiều:", a: "Chất kích thích sinh trưởng tự nhiên", b: "DNA", c: "Protein enzyme giới hạn", d: "Taq polymerase", ans: "a" },
+        { id: 76, q: "Chuối nghiền thường được bổ sung để:", a: "Tăng sinh trưởng mô", b: "Khử trùng", c: "Tạo DNA", d: "Điện di", ans: "a" }
+    ],
+    3: [
+        { id: 77, q: "PCR được thực hiện trong:", a: "Máy ly tâm", b: "Máy PCR", c: "Máy điện di", d: "Máy quang phổ", ans: "b" },
+        { id: 78, q: "Primer trong PCR là:", a: "Đoạn mồi DNA", b: "Protein", c: "Enzyme", d: "RNA", ans: "a" },
+        { id: 79, q: "dNTP là:", a: "Nguyên liệu tổng hợp DNA", b: "Enzyme", c: "Dung môi", d: "Chất khử trùng", ans: "a" },
+        { id: 80, q: "MgCl₂ trong PCR có vai trò:", a: "Đồng yếu tố cho enzyme", b: "Tạo DNA", c: "Tạo RNA", d: "Tạo gel", ans: "a" },
+        { id: 81, q: "PCR buffer là:", a: "Dung dịch đệm", b: "Enzyme", c: "DNA", d: "RNA", ans: "a" },
+        { id: 82, q: "PCR dựa trên:", a: "Chu kỳ nhiệt", b: "Chu kỳ ánh sáng", c: "Chu kỳ nước", d: "Chu kỳ đạm", ans: "a" },
+        { id: 83, q: "Phương pháp cơ học phá vỡ tế bào là:", a: "Nghiền mẫu", b: "Đun nóng", c: "PCR", d: "Điện di", ans: "a" },
+        { id: 84, q: "Chất tẩy dùng để:", a: "Phá màng tế bào", b: "Tạo DNA", c: "Điện di", d: "Giải trình tự", ans: "a" },
+        { id: 85, q: "Chloroform giúp:", a: "Loại bỏ protein và tạp chất", b: "Tạo DNA", c: "Tạo RNA", d: "Tạo gel", ans: "a" },
+        { id: 86, q: "Isopropanol dùng để:", a: "Tủa DNA", b: "Cắt DNA", b: "Nối DNA", d: "Điện di", ans: "a" },
+        { id: 87, q: "DNA mang điện tích:", a: "Dương", b: "Âm", c: "Trung tính", d: "Không mang điện", ans: "b" },
+        { id: 88, q: "Trong điện di DNA di chuyển về:", a: "Cực dương", b: "Cực âm", c: "Trung tâm", d: "Không di chuyển", ans: "a" },
+        { id: 89, q: "DNA có kích thước nhỏ:", a: "Di chuyển nhanh hơn", b: "Di chuyển chậm hơn", c: "Không di chuyển", d: "Không xác định", ans: "a" },
+        { id: 90, q: "Điện di agarose thường dùng phân tích:", a: "DNA", b: "Đất", c: "Hạt", d: "Lá", ans: "a" },
+        { id: 91, q: "Enzyme giới hạn nhận biết:", a: "Trình tự nucleotide đặc hiệu", b: "Protein", c: "Lipid", d: "RNA", ans: "a" },
+        { id: 92, q: "Loại II được sử dụng phổ biến nhất vì:", a: "Cắt đúng vị trí nhận biết", b: "Rẻ", c: "Tạo RNA", d: "Không cần DNA", ans: "a" },
+        { id: 93, q: "Đầu dính có ưu điểm:", a: "Dễ nối DNA hơn", b: "Khó nối DNA", c: "Không nối được DNA", d: "Không có tác dụng", ans: "a" },
+        { id: 94, q: "Plasmid là:", a: "DNA vòng nhỏ ngoài NST", b: "RNA", c: "Protein", d: "Enzyme", ans: "a" },
+        { id: 95, q: "Vector dùng để:", a: "Mang gen ngoại lai", b: "Tạo hormone", c: "Điện di", d: "PCR", ans: "a" },
+        { id: 96, q: "Phage là:", a: "Virus thực khuẩn", b: "Vi khuẩn", c: "Nấm", d: "Tảo", ans: "a" },
+        { id: 97, q: "Agrobacterium tumefaciens là:", a: "Vi khuẩn chuyển gen", b: "Virus", c: "Nấm", d: "Tảo", ans: "a" },
+        { id: 98, q: "Chuyển gen bằng virus thuộc:", a: "Gián tiếp", b: "Trực tiếp", c: "Lai tạo", d: "Nuôi cấy mô", ans: "a" },
+        { id: 99, q: "PEG là viết tắt của:", a: "Polyethylene glycol", b: "Polymer enzyme gene", c: "Plant expression gene", d: "Poly gene", ans: "a" },
+        { id: 100, q: "Mục tiêu phổ biến nhất của chuyển gen hiện nay:", a: "Kháng sâu bệnh", b: "Kháng thuốc cỏ", c: "Tăng dinh dưỡng", d: "Tất cả đều đúng", ans: "d" },
+        { id: 101, q: "IAA là viết tắt của:", a: "Indole Acetic Acid", b: "Indole Amino Acid", c: "Induced Acetic Acid", d: "Indole Auxin Acid", ans: "a" },
+        { id: 102, q: "IBA thuộc nhóm:", a: "Cytokinin", b: "Auxin", c: "ABA", d: "Ethylene", ans: "b" },
+        { id: 103, q: "2,4-D thường được sử dụng trong:", a: "Tạo mô sẹo", b: "Điện di", c: "PCR", d: "Giải trình tự", ans: "a" },
+        { id: 104, q: "BA là một loại:", a: "Auxin", b: "Cytokinin", c: "Ethylene", d: "ABA", ans: "b" },
+        { id: 105, q: "BAP thuộc nhóm:", a: "Cytokinin", b: "Auxin", c: "Gibberellin", d: "ABA", ans: "a" },
+        { id: 106, q: "Kinetin có tác dụng chủ yếu:", a: "Kích thích phân chia tế bào", b: "Kích thích chín quả", c: "Gây ngủ nghỉ", d: "Đóng khí khổng", ans: "a" },
+        { id: 107, q: "Auxin được tạo nhiều ở:", a: "Đỉnh sinh trưởng", b: "Rễ già", c: "Hạt khô", d: "Vỏ thân", ans: "a" },
+        { id: 108, q: "Gibberellin được tạo nhiều ở:", a: "Lục lạp, phôi, hạt", b: "Hoa già", c: "Lá khô", d: "Rễ già", ans: "a" },
+        { id: 109, q: "Cytokinin được tổng hợp nhiều ở:", a: "Rễ", b: "Quả chín", c: "Lá già", d: "Hạt khô", ans: "a" },
+        { id: 110, q: "ABA có thể gây:", a: "Trạng thái ngủ", b: "Tăng nảy mầm", c: "Tạo chồi", d: "Tạo quả", ans: "a" },
+        { id: 111, q: "Dịch chiết nào được nêu trong đề cương?", a: "Khoai tây", b: "Chuối", c: "Nước dừa", d: "Tất cả đều đúng", ans: "d" },
+        { id: 112, q: "Dịch chiết KHÔNG có trong đề cương là:", a: "Cà rốt", b: "Cà chua", c: "Chuối", d: "Đậu nành", ans: "d" },
+        { id: 113, q: "Nước dừa thường được bổ sung nhằm:", a: "Hỗ trợ sinh trưởng mô", b: "Cắt DNA", c: "Nối DNA", d: "Điện di", ans: "a" }
+    ],
+    4: [
+        { id: 114, q: "PCR là viết tắt của:", a: "Polymerase Chain Reaction", b: "Protein Chain Reaction", c: "Plant Chain Reaction", d: "Polymer Cell Reaction", ans: "a" },
+        { id: 115, q: "PCR thực hiện trong:", a: "Ống nghiệm", b: "Chậu đất", c: "Nhà kính", d: "Môi trường tự nhiên", ans: "a" },
+        { id: 116, q: "DNA khuôn trong PCR là:", a: "DNA nguyên bản", b: "RNA", c: "Protein", d: "Lipid", ans: "a" },
+        { id: 117, q: "Taq polymerase là:", a: "Enzyme tổng hợp DNA", b: "Enzyme cắt DNA", c: "Enzyme nối DNA", d: "Enzyme phân giải protein", ans: "a" },
+        { id: 118, q: "dNTP là:", a: "Nguyên liệu tổng hợp DNA", b: "Chất khử trùng", c: "Chất tạo gel", d: "Hormone", ans: "a" },
+        { id: 119, q: "PCR buffer là:", a: "Dung dịch đệm", b: "Enzyme", c: "DNA", d: "RNA", ans: "a" },
+        { id: 120, q: "Số chu kỳ PCR là yếu tố:", a: "Ảnh hưởng kết quả PCR", b: "Không ảnh hưởng", c: "Chỉ ảnh hưởng điện di", d: "Chỉ ảnh hưởng giải trình tự", ans: "a" },
+        { id: 121, q: "Phương pháp giải trình tự DNA cổ điển là:", a: "Maxam – Gilbert", b: "PCR", c: "Điện di", d: "ELISA", ans: "a" },
+        { id: 122, q: "Phương pháp giải trình tự phổ biến nhất:", a: "Sanger", b: "PCR", c: "RAPD", d: "AFLP", ans: "a" },
+        { id: 123, q: "Thiết bị dùng để giải trình tự:", a: "Máy giải trình tự", b: "Máy PCR", c: "Máy ly tâm", d: "Máy sấy", ans: "a" },
+        { id: 124, q: "Bước đầu tiên trong ly trích DNA:", a: "Phá vỡ màng", b: "Điện di", c: "PCR", d: "Chuyển gen", ans: "a" },
+        { id: 125, q: "Nghiền mô thực vật là phương pháp:", a: "Cơ học", b: "Hóa học", c: "Sinh học", d: "Di truyền", ans: "a" },
+        { id: 126, q: "Chất tẩy được sử dụng để:", a: "Làm mất ổn định màng", b: "Nối DNA", c: "Điện di", d: "Giải trình tự", ans: "a" },
+        { id: 127, q: "Phenol được dùng để:", a: "Loại bỏ tạp chất", b: "Tạo DNA", c: "Điện di", d: "PCR", ans: "a" },
+        { id: 128, q: "Chloroform được dùng để:", a: "Loại bỏ tạp chất", b: "Nhân DNA", c: "Tạo RNA", d: "Tạo chồi", ans: "a" },
+        { id: 129, q: "Ethanol dùng để:", a: "Tủa DNA", b: "Cắt DNA", c: "Nối DNA", d: "Điện di", ans: "a" },
+        { id: 130, q: "Isopropanol dùng để:", a: "Tủa DNA", b: "PCR", c: "Điện di", d: "Giải trình tự", ans: "a" },
+        { id: 131, q: "Điện di dùng để:", a: "Tách DNA", b: "Tách RNA", c: "Tách protein", d: "Tất cả đều đúng", ans: "d" },
+        { id: 132, q: "Điện di phân tách dựa vào:", a: "Kích thước", b: "Hình dạng", c: "Điện tích", d: "Tất cả đều đúng", ans: "d" },
+        { id: 133, q: "Thiết bị được nêu trong đề cương:", a: "Hệ thống điện di agarose gel", b: "Máy gieo hạt", c: "Máy cày", d: "Máy đo pH", ans: "a" },
+        { id: 134, q: "Enzyme giới hạn cắt:", a: "Liên kết phosphodiester", b: "Liên kết peptide", c: "Liên kết hydro", d: "Liên kết glycoside", ans: "a" },
+        { id: 135, q: "Enzyme giới hạn có nguồn gốc chủ yếu từ:", a: "Vi sinh vật", b: "Thực vật", c: "Động vật", d: "Nấm men", ans: "a" },
+        { id: 136, q: "Enzyme loại I cắt DNA cách vị trí nhận biết:", a: "1000–5000 nucleotide", b: "20 nucleotide", c: "2 nucleotide", d: "Ngay vị trí nhận biết", ans: "a" },
+        { id: 137, q: "Enzyme loại II:", a: "Cắt ngay vị trí nhận biết", b: "Cắt cách xa", c: "Không cắt DNA", d: "Nối DNA", ans: "a" },
+        { id: 138, q: "Enzyme loại III cắt DNA cách vị trí nhận biết khoảng:", a: "20 nucleotide", b: "200 nucleotide", c: "2000 nucleotide", d: "5000 nucleotide", ans: "a" },
+        { id: 139, q: "Kiểu cắt tạo đầu bằng gọi là:", a: "Blunt end", b: "Sticky end", c: "Cohesive end", d: "Recombinant end", ans: "a" },
+        { id: 140, q: "Kiểu cắt tạo đầu dính gọi là:", a: "Sticky end", b: "Blunt end", c: "Flat end", d: "Simple end", ans: "a" },
+        { id: 141, q: "Cosmid là:", a: "Vector lai nhân tạo", b: "Hormone", c: "Enzyme", d: "DNA khuôn", ans: "a" },
+        { id: 142, q: "Bluescript thuộc:", a: "Vector lai nhân tạo", b: "Virus", c: "Hormone", d: "Protein", ans: "a" },
+        { id: 143, q: "Vector tách dòng dùng để:", a: "Mang đoạn DNA cần nhân lên", b: "Điện di DNA", c: "Cắt DNA", d: "Giải trình tự", ans: "a" },
+        { id: 144, q: "Vector biểu hiện còn gọi là:", a: "Vector tổng hợp", b: "Vector điện di", c: "Vector PCR", d: "Vector hormone", ans: "a" },
+        { id: 145, q: "DNA ligase dùng để:", a: "Nối DNA", b: "Cắt DNA", c: "Nhân DNA", d: "Tạo RNA", ans: "a" },
+        { id: 146, q: "Linker là:", a: "Đoạn nối DNA", b: "Hormone", c: "Protein", d: "Enzyme giới hạn", ans: "a" },
+        { id: 147, q: "ETT là viết tắt của:", a: "Terminal Transferase", b: "Terminal Translation", c: "Transfer Terminal", d: "Template Transferase", ans: "a" },
+        { id: 148, q: "Chuyển gen bằng Agrobacterium thuộc:", a: "Chuyển gen gián tiếp", b: "Chuyển gen trực tiếp", c: "Nuôi cấy mô", d: "PCR", ans: "a" },
+        { id: 149, q: "Chuyển gen bằng súng bắn gen thuộc:", a: "Chuyển gen trực tiếp", b: "Chuyển gen gián tiếp", c: "Lai tạo", d: "Nuôi cấy mô", ans: "a" },
+        { id: 150, q: "Golden Rice được tạo ra nhằm:", a: "Tăng giá trị dinh dưỡng", b: "Kháng virus", c: "Kháng thuốc cỏ", d: "Kháng sâu", ans: "a" }
+    ]
+};
+
+        let state = {
+            user: null,
+            loading: true,
+            emailInput: "",
+            passwordInput: "",
+            authError: "",
+            isKicked: false,
+            isDarkMode: false,
+            currentPart: null,
+            currentQuestionIndex: 0,
+            score: 0,
+            wrongScore: 0,
+            showResult: false,
+            selectedOptions: [],
+            isSubmitted: false,
+            questions: [],
+            shuffledOptions: [],
+            isConfirming: false,
+            sessionAnswers: [],
+            reviewMode: false,
+            reviewData: [],
+            history: []
+        };
+
+        try {
+            const saved = localStorage.getItem('cnsh_local_history');
+            state.history = saved ? JSON.parse(saved) : [];
+        } catch (e) { state.history = []; }
+
+        const getOrCreateDeviceToken = () => {
+            let token = localStorage.getItem("qp_device_token_cnsh");
+            if (!token) {
+                token = "m_cnsh_" + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+                localStorage.setItem("qp_device_token_cnsh", token);
+            }
+            return token;
+        };
+
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+        
+        function toggleDarkMode() {
+            state.isDarkMode = !state.isDarkMode;
+            document.documentElement.classList.toggle('dark', state.isDarkMode);
+            render();
+        }
+
+        function render() {
+            const root = document.getElementById('root');
+            
+            if (state.loading) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-500 mb-4"></div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium text-sm">Đang kiểm tra cổng kết nối bảo mật Cloud...</p>
+                    </div>`;
+                return;
+            }
+
+            if (!state.user) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-6 flex flex-col items-center justify-center relative w-full">
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            <button onclick="toggleDarkMode()" class="p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 pointer-events-auto active:scale-95">
+                                ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                            </button>
+                        </header>
+                        <div class="w-full max-w-md p-8 sm:p-10 rounded-3xl shadow-2xl border bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/80 animate-enter mt-14">
+                            <div class="text-center mb-8">
+                                <div class="inline-flex p-3 bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-emerald-400 rounded-2xl mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                <h2 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Đăng nhập môn học</h2>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 font-bold mt-1 uppercase tracking-wider">Công Nghệ Sinh Học Cây Trồng</p>
+                            </div>
+                            ${state.isKicked ? `
+                                <div class="mb-4 p-3 bg-rose-50 dark:bg-rose-950/40 border-l-4 border-rose-500 text-rose-700 dark:text-rose-400 text-xs font-semibold rounded-r-xl flex items-start gap-2 animate-enter">
+                                    <svg class="flex-shrink-0 mt-0.5 animate-pulse text-rose-600" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    <p>Tài khoản vừa bị khóa vì phát hiện đăng nhập cùng lúc từ một thiết bị khác!</p>
+                                </div>` : ''}
+                            <form onsubmit="handleLogin(event)" class="space-y-5">
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Tài khoản Email</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                                        <input type="email" id="emailInput" placeholder="abc...@quizpointstudio.com" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.emailInput}" required />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Mật mã bảo mật</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                        <input type="password" id="passwordInput" placeholder="••••••••" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.passwordInput}" required />
+                                    </div>
+                                </div>
+                                <div id="authError" class="text-xs font-bold text-rose-500 bg-rose-50 dark:bg-rose-950/30 p-3 rounded-lg border border-rose-100 dark:border-rose-900/40 hidden"></div>
+                                <button type="submit" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition-all text-sm uppercase tracking-wider">Xác nhận đăng nhập</button>
+                            </form>
+                            <div class="text-center mt-6">
+                                <button onclick="window.location.href='./index.html'" class="text-xs text-slate-400 hover:text-brand-600 dark:hover:text-emerald-400 font-bold transition-all hover:underline">← Quay lại danh mục trang chủ</button>
+                            </div>
+                        </div>
+                    </div>`;
+                if(state.authError) {
+                    const errDiv = document.getElementById('authError');
+                    errDiv.innerText = state.authError;
+                    errDiv.classList.remove('hidden');
+                }
+                return;
+            }
+
+            if (state.reviewMode) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-4 sm:p-6 lg:p-8 bg-slate-50/50 dark:bg-slate-950/20 w-full flex flex-col items-center">
+                        <div class="w-full max-w-4xl space-y-6">
+                            <div class="glass-panel p-4 rounded-2xl shadow-sm sticky top-4 z-10 flex justify-between items-center mb-8">
+                                <button onclick="setReviewMode(false)" class="flex items-center gap-2 text-brand-700 dark:text-emerald-400 font-extrabold transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> <span>Quay lại</span></button>
+                                <h2 class="text-xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Chi tiết bài làm</h2>
+                                <div class="w-8"></div> 
+                            </div>
+                            <div class="space-y-8 pb-10">
+                                ${state.reviewData.map((item, index) => {
+                                    const userAnsArr = item.s ? item.s.split('') : [];
+                                    const correctAnsArr = item.c ? item.c.split('') : [];
+                                    const isItemCorrect = item.s === item.c;
+                                    return `
+                                        <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 ${!isItemCorrect ? 'ring-2 ring-red-500/20' : ''}">
+                                            <div class="flex gap-4 mb-2">
+                                                <span class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg ${isItemCorrect ? 'bg-gradient-to-br from-emerald-400 to-emerald-600' : 'bg-gradient-to-br from-red-400 to-red-600'}">${index + 1}</span>
+                                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 leading-relaxed">${item.q}</h3>
+                                            </div>
+                                            <div class="pl-14 mb-4 text-xs font-bold text-brand-600 dark:text-emerald-400">
+                                                 ${item.c.length > 1 ? "☑ Câu hỏi này tích chọn nhiều đáp án đúng" : "🔘 Câu hỏi này chọn một đáp án duy nhất"}
+                                            </div>
+                                            <div class="space-y-3 pl-0 sm:pl-14">
+                                                ${item.o.map(opt => {
+                                                    const isOptCorrect = correctAnsArr.includes(opt.key);
+                                                    const isOptSelected = userAnsArr.includes(opt.key);
+                                                    let optionClass = "p-4 rounded-xl border flex justify-between items-center font-semibold text-sm ";
+                                                    if (isOptCorrect) optionClass += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 shadow-sm";
+                                                    else if (isOptSelected) optionClass += "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 shadow-sm";
+                                                    else optionClass += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600 opacity-70";
+                                                    return `
+                                                        <div class="${optionClass}">
+                                                            <span>${opt.text}</span>
+                                                            ${isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                                            ${isOptSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                                        </div>`;
+                                                }).join('')}
+                                            </div>
+                                        </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (!state.currentPart) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col relative w-full items-center">
+                        
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 pointer-events-auto">
+                                <button onclick="handleGoHome()" class="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-md active:scale-95">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                    <span class="hidden sm:inline">Quay về trang chủ</span>
+                                    <span class="sm:hidden">Trang chủ</span>
+                                </button>
+                                
+                                <button onclick="toggleDarkMode()" class="p-2 sm:p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 active:scale-95">
+                                    ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                                </button>
+                            </div>
+                        </header>
+                        
+                        <div class="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950 text-white shadow-xl relative overflow-hidden text-center pt-40 pb-16 md:pt-32 md:pb-20">
+                            <div class="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_60%)] animate-pulse-slow"></div>
+                            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:30px_30px]"></div>
+                            <div class="absolute top-6 right-[25%] opacity-30 text-yellow-300 animate-bounce-slow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                            <div class="absolute bottom-8 left-[20%] opacity-30 text-emerald-300 animate-float"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                            <div class="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center gap-4 relative z-10">
+                                <div class="p-3 bg-white/5 rounded-2xl backdrop-blur-md border border-white/10 animate-float inline-block shadow-xl">
+                                    <svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22V10"/>
+                                        <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                        <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                        <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                        <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <div class="space-y-2">
+                                 <h1 style="line-height: 1.35 !important;" class="pt-2 text-3xl md:text-5xl font-black uppercase bg-gradient-to-r from-white via-emerald-300 to-slate-200 bg-clip-text text-transparent drop-shadow-lg">CNSH TRONG SẢN XUẤT CÂY TRỒNG</h1>
+    <p class="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">Ngân hàng 150 câu hỏi tổng ôn lý thuyết chia làm 4 bộ đề</p>
+</div>
+                            </div>
+                        </div>
+
+                        <div class="max-w-6xl mx-auto px-4 py-8 w-full -mt-10 relative z-20 space-y-10 flex flex-col items-center">
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md py-3 px-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm w-full max-w-xl">
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-brand-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Tên: <span class="text-brand-600 dark:text-emerald-400 font-extrabold">Nguyễn Văn Lượng</span></span></div>
+                                <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-amber-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .81 2.71A2 2 0 0 1 22 16.92z"/></svg><span>LH: <span class="font-mono text-slate-900 dark:text-white font-black">0333738861</span></span></div>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-brand-600 to-teal-700 text-white p-6 rounded-3xl shadow-xl border border-brand-500/30 overflow-hidden relative group text-center w-full max-w-3xl">
+                                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                                <div class="relative z-10 flex flex-col items-center gap-4">
+                                    <div class="flex items-center justify-center gap-3"><svg class="text-yellow-300 animate-pulse" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg><span class="font-bold text-lg sm:text-xl leading-tight">Nhận làm Quiz Ôn Tập & PowerPoint Cơ Bản</span></div>
+                                    <div class="flex flex-wrap justify-center gap-4 mt-1">
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Hệ thống Quiz</span></div>
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span>Thiết kế PPT</span></div>
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg><span>Tài liệu học tập</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full">
+                                ${[1, 2, 3, 4].map(num => `
+                                    <button onclick="startQuiz(${num})" class="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-brand-500 dark:hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-center gap-3">
+                                      <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 shadow-inner group-hover:bg-brand-500 dark:group-hover:bg-emerald-500 group-hover:text-white text-brand-500 transition-all duration-300">
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 22V10"/>
+                                            <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                            <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                            <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                            <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                         </svg>
+                                      </div>
+                                      <div>
+                                        <div class="font-black text-sm text-slate-800 dark:text-slate-200 tracking-tight leading-tight">Đề 0${num}</div>
+                                        <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 uppercase tracking-wide"></div>
+                                      </div>
+                                    </button>`).join('')}
+                            </div>
+
+                            <div class="glass-panel p-6 rounded-3xl shadow-sm max-w-2xl mx-auto w-full text-left">
+                                <div class="flex justify-between items-center mb-6 px-2">
+                                  <h2 class="text-sm font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg> Lịch sử kết quả làm bài</h2>
+                                  ${state.history.length > 0 ? `<button onclick="clearHistory()" class="text-rose-500 hover:text-rose-700 p-2 hover:bg-rose-50 rounded-lg transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>` : ''}
+                                </div>
+                                ${state.history.length === 0 ? `<div class="text-center py-8 text-slate-400 dark:text-slate-600 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold italic">Chưa có lịch sử làm đề lưu trữ</div>` : `
+                                  <div class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    ${state.history.map((record, index) => `
+                                      <div class="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
+                                        <div class="flex-1 w-full sm:w-auto">
+                                          <div class="font-black text-sm text-slate-700 dark:text-slate-300 uppercase tracking-tight">Đề ${record.part}</div>
+                                          <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 italic">${record.date}</div>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="text-right">
+                                                <div class="text-sm font-black"><span class="text-emerald-600 dark:text-emerald-400">${record.score} Đ</span><span class="text-rose-500 ml-1.5">/ ${record.wrong} S</span></div>
+                                                <div class="text-[10px] font-extrabold text-slate-400 tracking-wide">/${record.total} CÂU</div>
+                                            </div>
+                                            <button onclick="viewHistoryDetail(${index})" class="p-2 bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-emerald-400 rounded-xl hover:bg-brand-100 dark:hover:bg-slate-700 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                                        </div>
+                                      </div>`).join('')}
+                                  </div>`}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (state.showResult) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center p-4 text-center w-full">
+                        <div class="bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl shadow-2xl max-w-md w-full border border-slate-100 dark:border-slate-800 animate-enter">
+                          <div class="relative inline-block mb-6">
+                            <div class="absolute inset-0 bg-yellow-400 blur-xl opacity-30 rounded-full"></div>
+                            <svg class="w-20 h-20 text-yellow-500 relative z-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                          </div>
+                          <h2 class="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Hoàn Thành Bài Ôn Tập!</h2>
+                          <div class="grid grid-cols-2 gap-4 mb-8 mt-6">
+                            <div class="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100"><p class="text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider mb-1">Đúng</p><p class="text-4xl font-black text-emerald-600 dark:text-emerald-400">${state.score}</p></div>
+                            <div class="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-2xl border border-rose-100"><p class="text-rose-500 dark:text-rose-400 text-xs font-extrabold uppercase tracking-wider mb-1">Sai / Thiếu</p><p class="text-4xl font-black text-rose-500 dark:text-rose-400">${state.wrongScore}</p></div>
+                          </div>
+                          <button onclick="resetQuiz()" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white rounded-xl font-extrabold text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Về màn hình chính</button>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const progress = ((state.currentQuestionIndex + 1) / state.questions.length) * 100;
+
+            root.innerHTML = `
+                <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 ${state.isConfirming ? 'block' : 'hidden'}">
+                  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100">
+                    <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Nộp bài & kết thúc?</h3>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 font-medium mb-6">Kết quả bài làm hiện tại của bạn sẽ được lưu giữ lại hệ thống.</p>
+                    <div class="flex gap-3">
+                      <button onclick="setConfirming(false)" class="flex-1 py-3 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors">Tiếp bài làm</button>
+                      <button onclick="confirmFinish()" class="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">Nộp bài ngay</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-h-screen flex flex-col items-center p-4 sm:p-6 w-full max-w-3xl mx-auto relative justify-start">
+                    <div class="w-full flex justify-between items-center mb-6 pt-2">
+                        <button onclick="requestFinish()" class="p-2.5 rounded-xl text-slate-400 hover:text-rose-500 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+                        <div class="glass-panel px-4 py-2 rounded-full border text-xs font-bold text-slate-600 dark:text-slate-300 tracking-wide uppercase">Câu ${state.currentQuestionIndex + 1} / ${state.questions.length}</div>
+                        <div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 px-3 py-1.5 rounded-xl"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${state.score}</div>
+                    </div>
+                    
+                    <div class="w-full mb-8">
+                        <div class="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all rounded-full" style="width: ${progress}%"></div></div>
+                    </div>
+                    
+                    <div class="w-full bg-white dark:bg-slate-900 p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800/60 mb-24 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-emerald-600"></div>
+                        
+                        <div>
+                            <div class="mb-6">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                    <span class="inline-block bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-slate-100">ID: #${currentQ.id}</span>
+                                    <span class="text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-full ${currentQ.isMultiple ? 'bg-amber-50 text-amber-600 border border-amber-200' : 'bg-teal-50 text-teal-600 border border-teal-200'}">
+                                        ${currentQ.isMultiple ? "☑ Tích chọn nhiều đáp án" : "🔘 Chọn một đáp án"}
+                                    </span>
+                                </div>
+                                <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 leading-snug tracking-tight">${currentQ.q}</h2>
+                            </div>
+                            
+                            <div class="space-y-3.5">
+                                ${state.shuffledOptions.map((option) => {
+                                    const isSelected = state.selectedOptions.includes(option.key);
+                                    const isOptCorrect = currentQ.correct.split('').includes(option.key);
+                                    
+                                    let containerClass = "w-full p-5 rounded-2xl border text-left font-semibold transition-all duration-200 transform active:scale-[0.98] flex justify-between items-center relative overflow-hidden text-sm ";
+                                    
+                                    if (state.isSubmitted) {
+                                      containerClass += " active:scale-100 cursor-not-allowed "; 
+                                      if (isOptCorrect) containerClass += "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-inner";
+                                      else if (isSelected) containerClass += "border-rose-500 bg-rose-50 dark:bg-rose-950/30 text-rose-800 ring-2 ring-rose-200 shadow-inner";
+                                      else containerClass += "border-slate-100 text-slate-400 opacity-50";
+                                    } else {
+                                      if (isSelected) containerClass += "border-emerald-500 bg-emerald-50/60 dark:bg-slate-800/80 text-emerald-900 dark:text-teal-300 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-md -translate-y-0.5";
+                                      else containerClass += "border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-brand-50/40 hover:border-brand-200 hover:shadow-sm hover:-translate-y-0.5";
+                                    }
+
+                                    return `
+                                        <button onclick="handleOptionSelect('${option.key}', ${currentQ.isMultiple})" ${state.isSubmitted ? 'disabled' : ''} class="${containerClass}">
+                                            <div class="flex items-center gap-4 relative z-10">
+                                                <div class="w-5 h-5 flex items-center justify-center border-2 flex-shrink-0 rounded-md transition-colors ${isSelected ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 bg-white dark:bg-slate-900'}">
+                                                    ${isSelected ? '<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>' : ''}
+                                                </div>
+                                                <span>${option.text}</span>
+                                            </div>
+                                            ${state.isSubmitted && isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                            ${state.isSubmitted && isSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                        </button>`;
+                                }).join('')}
+                            </div>
+                            
+                            ${!state.isSubmitted && state.selectedOptions.length > 0 ? `
+                                <div class="mt-6 flex justify-end">
+                                    <button onclick="checkAnswerSubmission()" class="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl text-xs uppercase tracking-wider shadow-md transform active:scale-95 transition-transform">
+                                        Xác nhận đáp án
+                                    </button>
+                                </div>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-100 dark:border-slate-900/60 flex justify-center items-center gap-4 z-20">
+                        <button onclick="prevQuestion()" ${state.currentQuestionIndex === 0 ? 'disabled' : ''} class="w-14 h-14 rounded-2xl flex items-center justify-center border text-slate-600 dark:text-slate-400 disabled:opacity-25 transform active:scale-95 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+                        <button onclick="nextQuestion()" ${!state.isSubmitted ? 'disabled' : ''} class="flex-1 max-w-md h-14 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 disabled:bg-slate-200 dark:disabled:bg-slate-800/50 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:shadow-none bg-brand-600 text-white disabled:cursor-not-allowed transform active:scale-[0.99] transition-all">
+                            ${state.currentQuestionIndex === state.questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        auth.onAuthStateChanged((currentUser) => {
+    if (currentUser) {
+        const ADMIN_EMAIL = "ngocyen@cucdang.com";
+        const userEmail = currentUser.email.toLowerCase();
+        
+        if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".cnsh")) {
+            state.authError = "Tài khoản này không có quyền truy cập môn CNSH!";
+            auth.signOut();
+            state.user = null;
+        } else {
+            const token = getOrCreateDeviceToken();
+            const sessionRef = db.ref(`active_sessions/mon_cnsh/${currentUser.uid}`);
+            
+            const isAdmin = userEmail === ADMIN_EMAIL;
+
+            if (!state.user) {
+                if (!isAdmin) {
+                    sessionRef.set({ 
+                        deviceToken: token, 
+                        lastLogin: firebase.database.ServerValue.TIMESTAMP, 
+                        email: currentUser.email 
+                    });
+                }
+            }
+
+            sessionRef.on("value", (snap) => {
+                const val = snap.val();
+                
+                if (val && val.deviceToken !== token && !isAdmin) {
+                    state.isKicked = true;
+                    auth.signOut();
+                    state.user = null;
+                    render();
+                }
+            });
+            state.user = currentUser;
+        }
+    } else {
+        state.user = null;
+    }
+    state.loading = false;
+    render();
+});
+
+        function handleLogin(e) {
+            e.preventDefault();
+            state.authError = "";
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            state.emailInput = email; state.passwordInput = password;
+
+            auth.signInWithEmailAndPassword(email, password).catch(err => {
+                state.authError = "Tài khoản hoặc mật khẩu bảo mật không chính xác.";
+                render();
+            });
+        }
+
+        function handleGoHome() {
+            if (window.confirm("Bạn có chắc muốn rời môn học và quay về trang chủ không?")) {
+                if (state.user) db.ref(`active_sessions/mon_cnsh/${state.user.uid}`).remove();
+                auth.signOut().then(() => { window.location.href = "./index.html"; });
+            }
+        }
+
+        function startQuiz(part) {
+            const raw = TEST_DATA[part] || [];
+            state.questions = raw.map(item => ({
+                id: item.id, q: item.q, correct: item.ans, isMultiple: item.ans.length > 1,
+                options: [{ key: 'a', text: item.a }, { key: 'b', text: item.b }, { key: 'c', text: item.c }, { key: 'd', text: item.d }].filter(o => o.text !== undefined)
+            }));
+            state.currentPart = part; state.currentQuestionIndex = 0; state.score = 0; state.wrongScore = 0;
+            state.sessionAnswers = []; state.showResult = false; state.selectedOptions = []; state.isSubmitted = false;
+            if (state.questions.length > 0) state.shuffledOptions = shuffleArray(state.questions[0].options);
+            render();
+        }
+
+        function handleOptionSelect(key, isMultiple) {
+            if (state.isSubmitted) return;
+            if (isMultiple) {
+                if (state.selectedOptions.includes(key)) {
+                    state.selectedOptions = state.selectedOptions.filter(k => k !== key);
+                } else {
+                    state.selectedOptions.push(key);
+                }
+            } else {
+                state.selectedOptions = [key];
+            }
+            render();
+        }
+
+        function checkAnswerSubmission() {
+            if (state.selectedOptions.length === 0 || state.isSubmitted) return;
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const userAnsStr = [...state.selectedOptions].sort().join('');
+            const correctAnsStr = currentQ.correct.split('').sort().join('');
+            const correct = userAnsStr === correctAnsStr;
+            
+            state.isSubmitted = true;
+            if (correct) state.score++; else state.wrongScore++;
+            state.sessionAnswers.push({ ...currentQ, userSelected: userAnsStr, options: state.shuffledOptions });
+            render();
+        }
+
+        function nextQuestion() {
+            if (state.currentQuestionIndex < state.questions.length - 1) {
+                state.currentQuestionIndex++;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                if (existing) {
+                    state.shuffledOptions = existing.options;
+                    state.selectedOptions = existing.userSelected.split('');
+                    state.isSubmitted = true;
+                } else {
+                    state.shuffledOptions = shuffleArray(newQ.options); state.selectedOptions = []; state.isSubmitted = false;
+                }
+                render();
+            } else {
+                state.showResult = true;
+                saveHistoryToLocal();
+                render();
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                state.currentQuestionIndex--;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                state.shuffledOptions = existing.options;
+                state.selectedOptions = existing.userSelected.split('');
+                state.isSubmitted = true;
+                render();
+            }
+        }
+
+        function saveHistoryToLocal() {
+            const record = {
+                id: Date.now(), date: new Date().toLocaleString('vi-VN'), part: state.currentPart,
+                score: state.score, wrong: state.wrongScore, total: state.questions.length,
+                details: state.sessionAnswers.map(q => ({ id: q.id, q: q.q, o: q.options || [], s: q.userSelected, c: q.correct }))
+            };
+            state.history.unshift(record);
+            try { localStorage.setItem('cnsh_local_history', JSON.stringify(state.history)); } catch (e) {}
+        }
+
+        function clearHistory() {
+            if (window.confirm('Bạn có chắc muốn xóa toàn bộ lịch sử kết quả không?')) {
+                state.history = []; localStorage.removeItem('cnsh_local_history'); render();
+            }
+        }
+
+        function viewHistoryDetail(index) {
+            state.reviewData = state.history[index].details || []; state.reviewMode = true; render();
+        }
+
+        function setReviewMode(val) { state.reviewMode = val; render(); }
+        function requestFinish() { state.isConfirming = true; render(); }
+        function setConfirming(val) { state.isConfirming = val; render(); }
+        function confirmFinish() { state.showResult = true; state.isConfirming = false; saveHistoryToLocal(); render(); }
+        function resetQuiz() { state.currentPart = null; state.questions = []; state.reviewMode = false; render(); }
+
+        window.addEventListener('DOMContentLoaded', () => { render(); });
+    </script>
+</body>
+</html>
