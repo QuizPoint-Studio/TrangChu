@@ -2712,7 +2712,6 @@
                                 </div>
                             </div>
 
-                            <!-- Lưới 10 Chương hiển thị form chuẩn 4 cột trên PC giống như cũ -->
                             ${state.currentChapter === null ? `
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full animate-enter">
                                 ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => `
@@ -2733,9 +2732,8 @@
                                     </button>`).join('')}
                             </div>
                             ` : `
-                            <!-- Bảng điều khiển phụ chọn Phần 1 / Phần 2 khi đã chọn Chương -->
                             <div class="w-full max-w-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 text-center shadow-lg animate-enter">
-                                <h3 class="font-black text-lg text-slate-800 dark:text-white uppercase mb-4">Bạn muốn ôn tập phần nào của Chương 0${state.currentChapter}?</h3>
+                                <h3 class="font-black text-lg text-slate-800 dark:text-white uppercase mb-4">Bạn muốn ôn tập phần nào của Chương ${state.currentChapter}?</h3>
                                 <div class="grid grid-cols-2 gap-4">
                                     <button onclick="startQuiz(${state.currentChapter}, 'p1')" class="py-4 bg-gradient-to-br from-brand-500 to-emerald-600 text-white font-extrabold rounded-2xl shadow-md hover:shadow-xl transition-all uppercase text-xs tracking-wider">Học Phần 1</button>
                                     <button onclick="startQuiz(${state.currentChapter}, 'p2')" class="py-4 bg-gradient-to-br from-teal-500 to-cyan-600 text-white font-extrabold rounded-2xl shadow-md hover:shadow-xl transition-all uppercase text-xs tracking-wider">Học Phần 2</button>
