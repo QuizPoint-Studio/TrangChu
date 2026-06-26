@@ -1,0 +1,1887 @@
+<NGUYỄN VĂN LƯỢNG ĐẸP TRAI HẸHẸ>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Vi Sinh Vật Nông Nghiệp - QuizPoint Studio</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap');
+        body { 
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        html, body, .custom-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar, .custom-scrollbar::-webkit-scrollbar { 
+            display: none;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#f0fdf4] via-[#e0f2fe] to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 min-h-screen text-slate-800 dark:text-slate-100">
+    
+    <div id="root"></div>
+
+    <script>
+       const firebaseConfig = {
+          apiKey: "AIzaSyC-n88rPoijqfE44ZF3ulPZdcGz_rtC3lg",
+          authDomain: "quizpointstuidio.firebaseapp.com",
+          databaseURL: "https://quizpointstuidio-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "quizpointstuidio",
+          storageBucket: "quizpointstuidio.firebasestorage.app",
+          messagingSenderId: "592248583165",
+          appId: "1:592248583165:web:8f7dac2ab36dbf35aadf94",
+          measurementId: "G-T8QQ1HEZGC"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        const TEST_DATA = {
+            1: [
+    {
+      id: 1,
+      q: "Thời gian tính từ lúc vi khuẩn được nuôi cấy đến khi chúng bắt đầu sinh trưởng được gọi là:",
+      a: "Pha tiềm tàng",
+      b: "Pha cân bằng động",
+      c: "Pha luỹ thừa",
+      d: "Pha suy vong",
+      ans: "a"
+    },
+    {
+      id: 2,
+      q: "Nhà khoa học nào sau đây giữ vai trò quan trọng trong vi sinh vật học",
+      a: "Pasteur",
+      b: "Newton",
+      c: "Aristotle",
+      d: "Galileo",
+      ans: "a"
+    },
+    {
+      id: 3,
+      q: "Vì sao tế bào được xem là một hệ thống hở?",
+      a: "Tế bào có bản chất hóa học và các đại phân tử quyết định sự khác biệt, chứa nhiều cấu trúc giúp duy trì hoạt động sống.",
+      b: "Tế bào có các thành phần cấu thành thường xuyên bị biến đổi và được thay thế, thường nhận vật chất từ môi trường bên ngoài vào và đồng thời tiết chất thải ra môi trường.",
+      c: "Tế bào được bao bọc bên ngoài bởi một màng tế bào chất giúp tách biệt hoàn toàn tế bào với môi trường và không trao đổi chất.",
+      d: "Tế bào có cấu trúc cố định, không thay đổi theo thời gian và không chịu tác động từ môi trường bên ngoài.",
+      ans: "b"
+    },
+    {
+      id: 4,
+      q: "Vì sao tế bào vừa là nhà máy hoá học vừa là công cụ mã hoá?",
+      a: "Là nhà máy hóa học nhờ enzyme xúc tác các chuyển hóa; là công cụ mã hóa vì lưu trữ và xử lý thông tin di truyền.",
+      b: "Là nhà máy hóa học vì tự sản xuất ra dòng điện; là công cụ mã hóa vì có khả năng phát tín hiệu sóng vô tuyến.",
+      c: "Là nhà máy hóa học vì chứa các mạch điện vi mô; là công cụ mã hóa vì nó có thể tự phân hủy khi gặp điều kiện bất lợi.",
+      d: "Là nhà máy hóa học vì chỉ tổng hợp lipid; là công cụ mã hóa vì nó không truyền lại thông tin di truyền cho hậu thế.",
+      ans: "a"
+    },
+    {
+      id: 5,
+      q: "Kết quả của quá trình sinh tổng hợp là quá trình nào sau đây?",
+      a: "Sự tăng trưởng của tế bào",
+      b: "Sự sinh sản của tế bào",
+      c: "Sự thoái hoá của tế bào",
+      d: "Sự giao tiếp của tế bào",
+      ans: "a"
+    },
+    {
+      id: 6,
+      q: "Tế bào được chia làm bao nhiêu dạng khác nhau?",
+      a: "2",
+      b: "3",
+      c: "4",
+      d: "5",
+      ans: "a"
+    },
+    {
+      id: 7,
+      q: "Có bao nhiêu giới sinh vật:",
+      a: "2",
+      b: "3",
+      c: "4",
+      d: "5",
+      ans: "d"
+    },
+    {
+      id: 8,
+      q: "Vì sao nước được xem là dung môi của hệ thống sống",
+      a: "Nước chiếm tỷ trọng lớn nhất trong tế bào (70-90%) và các phản ứng hoá sinh trong tế bào không xảy ra khi thiếu nước",
+      b: "Nước chiếm tỷ trọng lớn nhất trong tế bào (70-90%) và các phản ứng hoá sinh trong tế bào có thể xảy ra khi thiếu nước",
+      c: "Nước chiếm tỷ trọng lớn nhất trong tế bào (50-70%) và các phản ứng hoá sinh trong tế bào không xảy ra khi thiếu nước",
+      d: "Nước chiếm tỷ trọng lớn nhất trong tế bào (50-70%) và các phản ứng hoá sinh trong tế bào có thể xảy ra khi thiếu nước",
+      ans: "a"
+    },
+    {
+      id: 9,
+      q: "Các đại phân tử sinh học của thế giới sống bao gồm thành phần nào (1. Protein, 2. Acid Nucleic, 3. Lipid, 4. Polysaccharide, 5. Phospholipid, 6. DNA, RNA)?",
+      a: "1, 2, 3, 4",
+      b: "2, 3, 4, 5",
+      c: "3, 4, 5, 6",
+      d: "1, 4, 5, 6",
+      ans: "a"
+    },
+    {
+      id: 10,
+      q: "Cấu trúc nào không phải cấu trúc quan trọng nhất với Prokaryote (1. Màng sinh chất, 2. Ribosome, 3. Bộ gen, 4. Bộ máy Golgi, 5. Lưới nội chất, 6. Tiên mao và lông mao)?",
+      a: "1, 2, 3",
+      b: "1, 3, 4",
+      c: "1, 3, 5",
+      d: "4, 5, 6",
+      ans: "d"
+    },
+    {
+      id: 11,
+      q: "Về hình thái, Vi khuẩn có hình dạng:",
+      a: "Hình cầu, hình que, hình cong và hình xoắn",
+      b: "Hình cầu, hình lưỡi liềm, hình nón, hình que",
+      c: "Hình que, hình tròn, hình bầu dục, hình xoắn",
+      d: "Hình que, hình tròn, hình lưỡi liềm, hình nón",
+      ans: "a"
+    },
+    {
+      id: 12,
+      q: "Chức năng của vách tế bào vi khuẩn",
+      a: "Giúp cho tế bào tránh các ảnh hưởng do thay đổi áp suất",
+      b: "Giúp cho tế bào tránh ảnh hưởng từ các yếu tố môi trường bên ngoài như nhiệt độ, pH...",
+      c: "Giúp tế bào vận chuyển các chất đi vào và đi ra khỏi tế bào",
+      d: "Giúp tế bào dinh dưỡng",
+      ans: "a"
+    },
+    {
+      id: 13,
+      q: "Lớp Peptidoglycan là gì?",
+      a: "Là 1 lớp polysaccharide đc tạo thành bằng cách nối chéo các mạch glycan bằng liên kết peptide giữa các amino acid giữa các mạch",
+      b: "Là một lớp lipid phức tạp liên kết với các chuỗi carbohydrate dài bao bọc quanh màng sinh chất",
+      c: "Là chuỗi protein xoắn kép liên kết với màng nhân để bảo vệ vật chất di truyền của vi khuẩn",
+      d: "Là một hợp chất vô cơ có cấu trúc tinh thể giúp vi khuẩn chịu đựng nhiệt độ cao",
+      ans: "a"
+    },
+    {
+      id: 14,
+      q: "Khi nhuộm màu vi khuẩn Gram âm sẽ cho màu gì?",
+      a: "Xanh",
+      b: "Tím",
+      c: "Hồng",
+      d: "Vàng",
+      ans: "c"
+    },
+    {
+      id: 15,
+      q: "Thành phần nào sau đây khiến vi khuẩn Gram âm gây hại hơn so với vi khuẩn Gram dương",
+      a: "Lipopolysaccharide gắn bên ngoài của lớp màng",
+      b: "Lipoprotein gắn bên ngoài của lớp màng",
+      c: "Lớp phospholipid gắn ngoài của lớp màng",
+      d: "Lớp peptidoglycan ngoài của lớp màng",
+      ans: "a"
+    },
+    {
+      id: 16,
+      q: "Vách tế bào nhân thật chứa thành phần nào dưới đây",
+      a: "Cellulose và Chitin",
+      b: "Peptidoglycan và Cellulose",
+      c: "Chitin và Peptidoglycan",
+      d: "Cả a,b,c đều sai",
+      ans: "a"
+    },
+    {
+      id: 17,
+      q: "Ở Prokaryote, cấu trúc giúp tế bào di động có tên là gì?",
+      a: "Tiên mao",
+      b: "Lông mao",
+      c: "Cả Tiên mao và Lông mao",
+      d: "Cả a,b,c đều sai",
+      ans: "a"
+    },
+    {
+      id: 18,
+      q: "Lớp S (S layer) có chức năng gì dưới đây?",
+      a: "Cản trở các phân tử nhỏ phân cực di chuyển ra vào màng tế bào",
+      b: "Cản trở các phân tử lớn phân cực di chuyển ra vào màng tế bào",
+      c: "Cho phép các phân tử nhỏ phân cực di chuyển ra vào màng tế bào, nhưng cản các phân tử lớn đi qua.",
+      d: "Cho phép các phân tử lớn phân cực di chuyển ra vào màng tế bào, nhưng cản trở các phân tử nhỏ đi qua.",
+      ans: "c"
+    },
+    {
+      id: 19,
+      q: "Bộ gen của vi khuẩn có thể được chuyển đổi trong quần thể khi các tế bào vi khuẩn tiếp xúc nhau thông qua quá trình nào sau đây:",
+      a: "Biến nạp",
+      b: "Tải nạp",
+      c: "Giao nạp",
+      d: "Dung hợp",
+      ans: "c"
+    },
+    {
+      id: 20,
+      q: "Bộ gen của vi khuẩn có thể được chuyển đổi trong quần thể khi các tế bào vi khuẩn tiếp nhận DNA trần từ môi trường",
+      a: "Biến nạp",
+      b: "Tải nạp",
+      c: "Giao nạp",
+      d: "Dung hợp",
+      ans: "a"
+    },
+    {
+      id: 21,
+      q: "Ba bào quan quan trọng nhất của tế bào Eukaryote là:",
+      a: "Nhân, ty thể và diệp lạp",
+      b: "Nhân, màng tế bào và Ribosome",
+      c: "Nhân, vách tế bào và Ribosome",
+      d: "Ty thể, diệp lạp và Ribosome",
+      ans: "a"
+    },
+    {
+      id: 22,
+      q: "Khi so sánh tế bào Prokaryote và Eukaryote, đặc điểm giống nhau giữa chúng là gì?",
+      a: "Cả hai đều có cấu trúc đơn giản giống nhau",
+      b: "Cả hai đều có cấu trúc khá phức tạp giống nhau",
+      c: "Cả hai tế bào đều có thành phần hóa học giống nhau, chỉ có sự lắp ghép các thành phần hóa học là khác nhau",
+      d: "Cả hai đều có hệ thống màng nội bào và các bào quan có màng bao bọc giống nhau",
+      ans: "c"
+    },
+    {
+      id: 23,
+      q: "Đặc điểm DNA của vi khuẩn:",
+      a: "Là một phân tử DNA trần, dạng vòng gấp khúc và tự xoắn nằm trong tế bào chất.",
+      b: "Là một phân tử RNA trần, dạng vòng gấp khúc và tự xoắn nằm trong tế bào chất.",
+      c: "Là một phân tử DNA dạng vòng gấp khúc, được bao bọc trong một màng nhân.",
+      d: "Là một phân tử RNA dạng vòng gấp khúc, được bao bọc trong một màng nhân.",
+      ans: "a"
+    },
+    {
+      id: 24,
+      q: "Dựa theo nguồn năng lượng thì vi sinh vật được chia làm các dạng nào sau đây?",
+      a: "Sinh vật quang năng và sinh vật hoá năng",
+      b: "Sinh vật hoá năng và sinh vật dị năng",
+      c: "Sinh vật dị năng và sinh vật đồng năng",
+      d: "Sinh vật đồng năng và sinh vật quang năng",
+      ans: "a"
+    },
+    {
+      id: 25,
+      q: "Vi sinh vật hoá năng được chia làm mấy loại dựa trên nguồn dinh dưỡng nhận từ các hợp chất?",
+      a: "2",
+      b: "3",
+      c: "4",
+      d: "5",
+      ans: "a"
+    },
+    {
+      id: 26,
+      q: "Với vi sinh vật dị dưỡng Nitrogen là thành phần dinh dưỡng quan trọng của protein, acid amin và thường được cung cấp dưới dạng nào sau đây?",
+      a: "NH3",
+      b: "N2",
+      c: "NO2",
+      d: "Nitrogen nguyên tử",
+      ans: "a"
+    },
+    {
+      id: 27,
+      q: "Yếu tố nào sau đây giúp cho các phản ứng trong cơ thể vi sinh vật có thể làm giảm mức năng lượng cho một phản ứng và diễn ra phản ứng ở nhiệt độ bình thường?",
+      a: "Protein chịu nhiệt",
+      b: "Enzyme",
+      c: "Lipid",
+      d: "Carbohydrate",
+      ans: "b"
+    },
+    {
+      id: 28,
+      q: "Trong quá trình lên men đường phân, loại đường nào sau đây được hoạt hoá đầu tiên:",
+      a: "Glucose",
+      b: "Fructose",
+      c: "Saccharose",
+      d: "Maltose",
+      ans: "a"
+    },
+    {
+      id: 29,
+      q: "Quá trình hô hấp tế bào cung cấp thành phần nào bên dưới đây?",
+      a: "Năng lượng, CO2 và nước",
+      b: "Năng lượng, Oxy và nước",
+      c: "Năng lượng, Nitrate và nước",
+      d: "Năng lượng, Sulfat và nước",
+      ans: "a"
+    },
+    {
+      id: 30,
+      q: "Các phân tử đường có chức năng gì trong quá trình đồng hoá",
+      a: "Cung cấp nguyên liệu cho quá trình sinh tổng hợp Protein dự trữ, Lipid, Năng lượng ATP và Acid Nucleic",
+      b: "Cung cấp nguyên liệu cho quá trình sinh tổng hợp các Polysaccharide, Lipid, Acid Nucleic và Protein",
+      c: "Cung cấp nguyên liệu cho quá trình sinh tổng hợp các Protein, Polysaccharide, Năng lượng ATP và Acid Nucleic",
+      d: "Cung cấp nguyên liệu cho quá trình sinh tổng hợp các Polysaccharide, Lipid phức tạp, Acid Nucleic và Protein cấu trúc",
+      ans: "b"
+    },
+    {
+      id: 31,
+      q: "Vì sao các nghiên cứu về tăng trưởng vi sinh vật phải được thực hiện trên đối tượng là quần thể?",
+      a: "Vì tế bào quá nhỏ không phản ánh được sự tăng trưởng của vi sinh vật",
+      b: "Vì sự tăng trưởng là phản ảnh kích thước tăng dần nên quần thể là đối tượng nghiên cứu phù hợp",
+      c: "Quần thể có kích thước lớn nên dễ dàng cho việc đánh giá được các tương tác của vi sinh vật",
+      d: "Vì tế bào khi tăng trưởng sẽ phân chia nên không dùng tế bào để nghiên cứu",
+      ans: "a"
+    },
+    {
+      id: 32,
+      q: "Tính số lượng tế bào có được từ 1 tế bào vi khuẩn E.Coli sau 10 thế hệ phân chia",
+      a: "1024",
+      b: "2410",
+      c: "1042",
+      d: "2140",
+      ans: "a"
+    },
+    {
+      id: 33,
+      q: "Số lượng tế bào vi sinh được xác định bằng mấy phương pháp chính?",
+      a: "Đếm trực tiếp số lượng tế bào có trên kính hiển vi và đếm số lượng tế bào còn sống khi nuôi cấy trên môi trường thạch",
+      b: "Đếm trực tiếp số lượng tế bào có trên kính hiển vi và đếm số lượng tế bào còn sống khi nuôi cấy trên môi trường lỏng",
+      c: "Đếm trực tiếp số lượng tế bào có trên đĩa thạch nuôi và đếm số lượng tế bào còn sống khi nuôi cấy trên môi trường lỏng",
+      d: "Đếm trực tiếp số lượng tế bào có trên đĩa thạch nuôi và đếm số lượng tế bào còn sống khi nuôi cấy trên môi trường thạch",
+      ans: "a"
+    },
+    {
+      id: 34,
+      q: "Để đếm được số lượng tế bào trên kính hiển vi thì cần mật độ tối thiểu của tế bào là bao nhiêu?",
+      a: "10^5/ml",
+      b: "10^6/ml",
+      c: "10^7/ml",
+      d: "10^8/ml",
+      ans: "b"
+    },
+    {
+      id: 35,
+      q: "Đâu là cơ sở của phương pháp đếm khuẩn lạc?",
+      a: "Cho các tế bào tách biệt nhau lên trên bề mặt môi trường rắn sao cho mỗi tế bào có khả năng phân chia tăng trưởng thành một sinh khối là một khuẩn lạc có thể quan sát được bằng mắt thường",
+      b: "Cho các tế bào tách biệt nhau lên trên bề mặt môi trường bán rắn sao cho mỗi tế bào có khả năng phân chia tăng trưởng thành một sinh khối là một khuẩn lạc có thể quan sát được bằng mắt thường",
+      c: "Cho các tế bào tách biệt nhau lên trên bề mặt môi trường rắn sao cho mỗi tế bào có khả năng phân chia tăng trưởng thành một sinh khối là một khuẩn lạc có thể quan sát được bằng kính hiển vi",
+      d: "Cho các tế bào tách biệt nhau lên trên bề mặt môi trường bán rắn sao cho mỗi tế bào có khả năng phân chia tăng trưởng thành một sinh khối là một khuẩn lạc có thể quan sát được bằng kính hiển vi",
+      ans: "a"
+    }
+  ],
+
+  2: [
+    {
+      id: 36,
+      q: "Tổng sinh khối của vi sinh vật có thể được ghi nhận bằng phương pháp nào sau đây?",
+      a: "Cân khối lượng sinh khối",
+      b: "Cân khối lượng sinh khối và môi trường nuôi cấy vi sinh vật để lấy tổng các sản phẩm tạo ra từ vi sinh vật",
+      c: "Cân khối lượng sinh khối và 1/2 môi trường nuôi cấy vi sinh vật để lấy tổng các sản phẩm tạo ra từ vi sinh vật",
+      d: "Cân khối lượng sinh khối và các thành phần nuôi cấy có thể có khi nuôi cấy vi sinh vật",
+      ans: "d"
+    },
+    {
+      id: 37,
+      q: "Khi vi khuẩn được cấy vào một bình nuôi có một lượng chất dinh dưỡng nhất định, sự tăng trưởng của chúng sẽ trải qua các pha như thế nào?",
+      a: "Pha tiềm tàng -> Pha hàm mũ -> Pha ổn định -> Pha suy vong",
+      b: "Pha hàm mũ -> Pha tiềm tàng -> Pha ổn định -> Pha suy vong",
+      c: "Pha ổn định -> Pha tiềm tàng -> Pha hàm mũ -> Pha suy vong",
+      d: "Pha hàm mũ -> Pha ổn định -> Pha tiềm tàng -> Pha suy vong",
+      ans: "a"
+    },
+    {
+      id: 38,
+      q: "Đặc điểm của pha tiềm tàng là gì?",
+      a: "Tế bào tiến hành tổng hợp các chất cần thiết về dinh dưỡng để có thể tăng nhanh số lượng tế bào",
+      b: "Tế bào tiến hành tổng hợp các enzyme cần thiết để có thể sử dụng chất dinh dưỡng và tăng trưởng trên môi trường nuôi",
+      c: "Tế bào tiến hành sử dụng một số chất trong các cơ quan nội bào để thích nghi với môi trường sống mới",
+      d: "Tế bào tiến hành phân chia liên tục và theo cấp số nhân",
+      ans: "b"
+    },
+    {
+      id: 39,
+      q: "Pha nào sau đây có số lượng tế bào tăng trưởng nhiều nhất?",
+      a: "Pha tiềm tàng",
+      b: "Pha hàm mũ",
+      c: "Pha ổn định",
+      d: "Pha suy vong",
+      ans: "b"
+    },
+    {
+      id: 40,
+      q: "Pha nào sau đây là pha không thể duy trì dài vô hạn trong điều kiện nuôi cấy mẻ.",
+      a: "Pha tiềm tàng",
+      b: "Pha hàm mũ",
+      c: "Pha ổn định",
+      d: "Pha suy vong",
+      ans: "b"
+    },
+    {
+      id: 41,
+      q: "Pha nào sau đây tế bào nhân đôi và tăng liên tục theo hệ số mũ?",
+      a: "Pha tiềm tàng",
+      b: "Pha hàm mũ",
+      c: "Pha ổn định",
+      d: "Pha suy vong",
+      ans: "b"
+    },
+    {
+      id: 42,
+      q: "Pha nào sau đây mà tế bào bắt đầu tạo ra các chất biến dưỡng thứ cấp?",
+      a: "Pha tiềm tàng",
+      b: "Pha hàm mũ",
+      c: "Pha ổn định",
+      d: "Pha suy vong",
+      ans: "c"
+    },
+    {
+      id: 43,
+      q: "Thời kỳ nào sau đây mà tế bào có khả năng tự phân làm giảm số tế bào sống hiện diện trong môi trường nuôi cấy?",
+      a: "Pha tiềm tàng",
+      b: "Pha hàm mũ",
+      c: "Pha ổn định",
+      d: "Pha suy vong",
+      ans: "d"
+    },
+    {
+      id: 44,
+      q: "Trong nuôi cấy liên tục, thời gian để thay hết 100% môi trường mới trong hệ thống được gọi là gì?",
+      a: "Thời gian pha loãng môi trường",
+      b: "Tốc độ pha loãng môi trường",
+      c: "Chu kỳ pha loãng môi trường",
+      d: "Giai đoạn pha loãng môi trường",
+      ans: "a"
+    },
+    {
+      id: 45,
+      q: "Trong nuôi cấy liên tục, Tốc độ tăng trưởng của tế bào trong môi trường được quyết định bởi yếu tố nào?",
+      a: "Vận tốc môi trường bơm vào hệ thống",
+      b: "Thời gian thế hệ của tế bào vi sinh vật",
+      c: "Nhiệt độ nuôi cấy của hệ thống",
+      d: "Không bị ảnh hưởng bởi các yếu tố trên",
+      ans: "a"
+    },
+    {
+      id: 46,
+      q: "Dựa trên nhiệt độ tăng trưởng, vi sinh vật được chia làm bao nhiêu nhóm:",
+      a: "3",
+      b: "4",
+      c: "5",
+      d: "6",
+      ans: "b"
+    },
+    {
+      id: 47,
+      q: "Sinh vật ôn hoà là sinh vật có khả năng sinh trưởng trong khoảng nhiệt độ nào:",
+      a: "20-50°C",
+      b: "<15°C",
+      c: "Khoảng 50°C",
+      d: ">75°C",
+      ans: "a"
+    },
+    {
+      id: 48,
+      q: "Sinh vật ưu nhiệt tăng trưởng tốt nhất ở nhiệt độ nào:",
+      a: "20-50°C",
+      b: "<15°C",
+      c: "Khoảng 50°C",
+      d: ">75°C",
+      ans: "c"
+    },
+    {
+      id: 49,
+      q: "Phương pháp nào dưới đây có thể kiểm soát được tăng trưởng của vi sinh vật",
+      a: "Ức chế tăng trưởng",
+      b: "Tiêu diệt tế bào",
+      c: "Loại vi sinh vật ra khỏi môi trường",
+      d: "Cả 3 ý trên đều đúng",
+      ans: "d"
+    },
+    {
+      id: 50,
+      q: "Chất kháng khuẩn có thể chia ra làm những loại nào sau đây:",
+      a: "Chất diệt khuẩn và các chất ức chế tăng trưởng vi sinh vật",
+      b: "Chất diệt khuẩn và chất khử trùng",
+      c: "Chất ức chế tăng trưởng vi sinh vật và chất khử trùng",
+      d: "Cả 3 đáp án trên đều đúng",
+      ans: "d"
+    },
+    {
+      id: 51,
+      q: "Phương pháp khử trùng Pasteur có tác dụng gì:",
+      a: "Kéo dài thời gian bảo quản của sản phẩm và làm giảm số lượng vi sinh vật gây hại trong sản phẩm",
+      b: "Kéo dài thời gian bảo quản sản phẩm và loại bỏ hoàn toàn vi sinh vật gây hại trong sản phẩm",
+      c: "Kéo dài thời gian nuôi cấy vi sinh vật và làm giảm số lượng vi sinh vật gây hại trong sản phẩm",
+      d: "Kéo dài thời gian nuôi cấy vi sinh vật và loại bỏ hoàn toàn vi sinh vật gây hại trong sản phẩm",
+      ans: "a"
+    },
+    {
+      id: 52,
+      q: "Điều gì cần chú ý khi khử trùng bằng chiếu xạ:",
+      a: "Tia tử ngoại không xuyên thấu qua các vật liệu rắn, đục hoặc hấp thụ ánh sáng nên chỉ dùng để khử trùng bề mặt",
+      b: "Tia tử ngoại xuyên thấu qua các vật liệu rắn, đục hoặc hấp thụ ánh sáng nên dùng để khử trùng dụng cụ, thiết bị",
+      c: "Các tia Gamma, tia X có tính xuyên thấu cao hơn tia tử ngoại, nên không dùng tia Gamma và tia X trong bảo quản thực phẩm",
+      d: "Các tia Gamma, tia X có tính xuyên thấu kém hơn tia tử ngoại, nên dùng tia Gamma và tia X trong bảo quản thực phẩm",
+      ans: "a"
+    },
+    {
+      id: 53,
+      q: "Các chất kháng khuẩn có thể kiểm soát vi sinh vật bằng những cách nào dưới đây:",
+      a: "Tác động lên trên quá trình phiên mã thông qua mRNA và quá trình dịch mã thông qua các tiểu phân của Ribosome",
+      b: "Tác động lên trên quá trình tự nhân đôi của DNA và quá trình dịch mã thông qua tRNA",
+      c: "Tác động lên trên quá trình phiên mã thông qua mRNA và quá trình dịch mã thông qua tRNA",
+      d: "Tác động lên trên quá trình tự nhân đôi DNA và quá trình dịch mã thông qua các tiểu phân của Ribosome",
+      ans: "d"
+    },
+    {
+      id: 54,
+      q: "MIC (Minimum inhibitory concentration) là gì:",
+      a: "Là nồng độ hay lượng tác chất nhỏ nhất có thể ức chế sinh trưởng của vi sinh vật thử nghiệm",
+      b: "Là nồng độ hay lượng tác chất nhỏ nhất có thể gây chết vi sinh vật thử nghiệm",
+      c: "Là nồng độ hay lượng tác chất nhỏ nhất có thể làm ngưng quá trình sinh sản của vi sinh vật thử nghiệm",
+      d: "Là nồng độ hay lượng tác chất nhỏ nhất có thể kích thích sinh trưởng của vi sinh vật thử nghiệm",
+      ans: "a"
+    },
+    {
+      id: 55,
+      q: "Dựa vào sự biến dưỡng Carbon, người ta chia ra làm mấy nhóm vi sinh vật:",
+      a: "Sinh vật tự dưỡng và Sinh vật dị dưỡng",
+      b: "Sinh vật hoá năng và Sinh vật quang năng",
+      c: "Sinh vật quang năng tự dưỡng và sinh vật quang năng dị dưỡng",
+      d: "Sinh vật hoá năng tự dưỡng và sinh vật hoá năng dị dưỡng",
+      ans: "a"
+    },
+    {
+      id: 56,
+      q: "Với sinh vật Quang tự dưỡng, năng lượng ánh sáng được thu nhận nhờ hợp chất (Cơ quan) nào sau đây:",
+      a: "Chlorophyll",
+      b: "Cytochrome",
+      c: "Carotenoid",
+      d: "Phicobilin",
+      ans: "a"
+    },
+    {
+      id: 57,
+      q: "Sự cộng dưỡng diễn ra trong môi trường nào sau đây:",
+      a: "Môi trường kỵ khí",
+      b: "Môi trường yếm khí",
+      c: "Cả hai đều đúng",
+      d: "Cả hai đều sai",
+      ans: "c"
+    },
+    {
+      id: 58,
+      q: "Nhóm vi khuẩn nào sau đây có khả năng khử N2 để tổng hợp Nitrogen hữu cơ",
+      a: "Vi khuẩn cố định đạm",
+      b: "Vi khuẩn rễ cộng sinh",
+      c: "Vi khuẩn hữu cơ hoá nitrogen",
+      d: "Vi khuẩn vô cơ hoá nitrogen",
+      ans: "a"
+    },
+    {
+      id: 59,
+      q: "Plasmid là gì:",
+      a: "Plasmid là những phân tử DNA vòng, kích thước nhỏ và có thể tự sao chép độc lập so với nhiễm sắc thể của vật chủ",
+      b: "Plasmid là những phân tử DNA thẳng, kích thước nhỏ và có thể tự sao chép độc lập so với nhiễm sắc thể của vật chủ",
+      c: "Plasmid là những phân tử DNA vòng, kích thước tương đối lớn và có thể tự sao chép độc lập so với nhiễm sắc thể của vật chủ",
+      d: "Plasmid là những phân tử DNA thẳng, kích thước tương đối lớn và có thể tự sao chép độc lập so với nhiễm sắc thể của vật chủ",
+      ans: "a"
+    },
+    {
+      id: 60,
+      q: "Virus là gì:",
+      a: "Là một tác nhân có chứa DNA hoặc RNA là vật liệu di truyền và được bảo vệ bởi một lớp vỏ với tên gọi là capsid",
+      b: "Là một tác nhân có chứa DNA là vật liệu di truyền và được bảo vệ bởi một lớp vỏ với tên gọi là capsid",
+      c: "Là một tác nhân có chứa RNA là vật liệu di truyền và được bảo vệ bởi một lớp vỏ với tên gọi là capsid",
+      d: "Cả ba ý trên đều sai",
+      ans: "a"
+    },
+    {
+      id: 61,
+      q: "Vi khuẩn cổ được chia làm mấy nhánh tiến hoá chính:",
+      a: "2",
+      b: "3",
+      c: "4",
+      d: "5",
+      ans: "b"
+    },
+    {
+      id: 62,
+      q: "Điều nào sau đây đúng về cơ cấu cộng bào của nấm mốc:",
+      a: "Vách ngăn không hoàn toàn mà có các lỗ hổng ở giữa vách ngăn giúp sự trao đổi chất giữa các tế bào",
+      b: "Vách ngăn chỉ được thành lập để ngăn các cơ quan sinh sản hoặc biệt lập khuẩn ty bị thương",
+      c: "Giúp tế bào chống chịu với điều kiện khắc nghiệt của môi trường",
+      d: "Được tạo thành bởi một chuỗi tế bào nối tiếp nhau, vách ngăn không hoàn toàn",
+      ans: "b"
+    },
+    {
+      id: 63,
+      q: "Vách tế bào Gram âm khác với vách tế bào Gram dương ở:",
+      a: "Lớp màng ngoại vi (membrane externe)",
+      b: "Màng tế bào chất",
+      c: "Acid teichoic",
+      d: "A & C đúng",
+      ans: "d"
+    },
+    {
+      id: 64,
+      q: "Vách tế bào Gram dương có thành phần chính là:",
+      a: "Peptidoglycan, acid teichoic",
+      b: "Lipid",
+      c: "Protein",
+      d: "Glucid",
+      ans: "a"
+    },
+    {
+      id: 65,
+      q: "Ribosome của vi khuẩn có 2 đơn vị:",
+      a: "30s và 50s",
+      b: "40s và 60s",
+      c: "30s và 60s",
+      d: "40s và 50s",
+      ans: "a"
+    },
+    {
+      id: 66,
+      q: "Nấm men thuộc nhóm nào?",
+      a: "Prokaryote",
+      b: "Eukaryote",
+      c: "Thực vật",
+      d: "Động vật",
+      ans: "b"
+    },
+    {
+      id: 69,
+      q: "Chức năng của ty thể là gì?",
+      a: "Tham gia tổng hợp ATP",
+      b: "Tham gia giải phóng năng lượng từ ATP",
+      c: "Thực hiện các phản ứng oxi hóa giải phóng điện tử và thực hiện các quá trình tổng hợp protein",
+      d: "Cả 3 đều đúng",
+      ans: "d"
+    },
+    {
+      id: 70,
+      q: "Dựa vào nhu cầu về năng lượng, vi sinh vật chia thành những loại nào?",
+      a: "VSV tự dưỡng, VSV hóa dưỡng",
+      b: "VSV dị dưỡng, VSV tự dưỡng",
+      c: "VSV quang dưỡng, VSV hóa dưỡng",
+      d: "VSV tự dưỡng, VSV dị dưỡng",
+      ans: "c"
+    }
+  ],
+
+  3: [
+    {
+      id: 71,
+      q: "Màng sinh chất có chức năng gì?",
+      a: "Duy trì áp suất thẩm thấu",
+      b: "Duy trì hình thái tế bào",
+      c: "Hấp thu các chất dinh dưỡng và thải các sản phẩm trao đổi chất",
+      d: "Tích lũy các sản phẩm trao đổi chất",
+      ans: "c"
+    },
+    {
+      id: 72,
+      q: "Hình thức sinh sản phổ biến nhất của tế bào nấm men:",
+      a: "Bào tử",
+      b: "Nảy chồi",
+      c: "Phân chia",
+      d: "Tất cả đều đúng",
+      ans: "b"
+    },
+    {
+      id: 73,
+      q: "Staphilococcus có đặc điểm nào sau đây:",
+      a: "Có khả năng tạo ra những chất kết dính gian bào",
+      b: "Có khả năng tạo ra những chất kết dính liên bào",
+      c: "Có khả năng tạo ra những chất gây chia tách tế bào",
+      d: "Cả ba câu trên đều sai",
+      ans: "b"
+    },
+    {
+      id: 74,
+      q: "Trực khuẩn Bacillus có khả năng đối kháng với những vi sinh vật nào dứoi đây:",
+      a: "Rhizoctonia",
+      b: "Phytopthora",
+      c: "Fusarium",
+      d: "Cả ba loại nấm trên",
+      ans: "d"
+    },
+    {
+      id: 75,
+      q: "Xoắn khuẩn Spirochetes phải có ít nhất bao nhiêu vòng xoắn trở lên:",
+      a: "2",
+      b: "3",
+      c: "4",
+      d: "5",
+      ans: "d"
+    },
+    {
+      id: 76,
+      q: "Một trong những đặc tính đặc trưng của xạ khuẩn:",
+      a: "Khả năng tiết/ sinh kháng sinh",
+      b: "Khả năng tạo mùi cho đất/ mưa",
+      c: "Có khả năng sinh bào tử di động",
+      d: "Cả ba câu trên đều đúng",
+      ans: "d"
+    },
+    {
+      id: 77,
+      q: "Nhóm vi khuẩn nào sau đây có khả năng tiết Atrazine chlorohydrolase phân hủy Atrazine (thuốc trừ cỏ gây độc, không tan trong nước):",
+      a: "Psedomonas",
+      b: "Bacillus",
+      c: "Staphilococcus",
+      d: "Corynebacterium",
+      ans: "a"
+    },
+    {
+      id: 78,
+      q: "Yếu tố nào sau đây quyết định đến hình dạng của vi khuẩn",
+      a: "Vách tế bào",
+      b: "Màng tế bào",
+      c: "Vật chất di truyền của vi khuẩn",
+      d: "Do các đại phân tử sinh học quyết định",
+      ans: "a"
+    },
+    {
+      id: 79,
+      q: "Nhân tế bào vi khuẩn có đặc điểm nào sau đây:",
+      a: "Nhân là một chuỗi DNA không có thành phần protein, không có màng nhân",
+      b: "Nhân là một chuỗi DNA không có thành phần lipoprotein, không có màng nhân",
+      c: "Nhân là một chuỗi DNA có thành phần protein, không có màng nhân",
+      d: "Nhân là một chuỗi DNA có thành phần lipoprotein, không có màng nhân",
+      ans: "a"
+    },
+    {
+      id: 80,
+      q: "Mezosome là gì:",
+      a: "Là điểm đính của ADN vùng nhân khi xảy ra phân bào, mezosome có mang enzyme hô hấp nên có chức năng hô hấp yếm khí",
+      b: "Là điểm gắn vùng nhân vào trong màng sinh chất, mezosome mang các enzyme hỗ trợ quá trình phân chia tế bào",
+      c: "Là điểm đính của ADN vùng nhân khi xảy ra phân bào, mezosome có mang enzyme hô hấp nên có chức năng hô hấp hiếu khí",
+      d: "Là điểm gắn vùng nhân vào trong màng sinh chất, mezosome mang các enzyme hỗ trợ sự chết đi theo chu trình của tế bào",
+      ans: "c"
+    },
+    {
+      id: 81,
+      q: "Hình thái vi khuẩn có thể quan sát được bằng phương pháp nào dưới đây:",
+      a: "Nhuộm tế bào và quan sát dưới kính hiển vi quang học",
+      b: "Quan sát dựa trên khuẩn lạc của vi khuẩn được tạo thành trên môi trường nuôi cấy",
+      c: "Quan sát bằng cách nhuộm khuẩn lạc được tạo thành trên môi trường nuôi cấy",
+      d: "Nhuộm tế bào và quan sát bằng kính hiển vi soi nổi",
+      ans: "a"
+    },
+    {
+      id: 82,
+      q: "Cầu khuẩn được phân chia làm bao nhiêu loại khác nhau:",
+      a: "3",
+      b: "4",
+      c: "5",
+      d: "6",
+      ans: "d"
+    },
+    {
+      id: 83,
+      q: "Xạ khuẩn có thể được sử dụng trong những trường hợp nào dưới đây:",
+      a: "Tham gia vào sự phân giải compost",
+      b: "Tham gia vào việc kháng lại các vi sinh vật gây bệnh trên khoai lang",
+      c: "Sản xuất ra Aflatoxin",
+      d: "Có khả năng tiết các nhóm chất phá huỷ tế bào",
+      ans: "a"
+    },
+    {
+      id: 84,
+      q: "Niêm khuẩn có thể trao đổi thông tin thông qua cách nào sau đây:",
+      a: "Thông qua các phân tử tín hiệu gian bào",
+      b: "Thông qua các phân tử tín hiệu liên bào",
+      c: "Thông qua việc truyền các phân tử tín hiệu theo gió",
+      d: "Niêm khuẩn không có khả năng trao đổi thông tin với nhau",
+      ans: "a"
+    },
+    {
+      id: 85,
+      q: "Đặc điểm nào sau đây là của Mycoplasma",
+      a: "Là nhóm vi khuẩn nhỏ nhất được phát hiện",
+      b: "Là nhóm vi khuẩn lớn nhất được phát hiện",
+      c: "Là nhóm vi khuẩn sống tự dưỡng trong đất, nước, không khí",
+      d: "Là nhóm vi khuẩn sống dị dưỡng trong đất, nước, không khí",
+      ans: "a"
+    },
+    {
+      id: 86,
+      q: "Đặc điểm của vi sinh vật nhân thực:",
+      a: "Vật liệu di truyền là DNA mạch thẳng được gắn với các protein Histon hình thành cấu trúc nhiễm sắc thể, được bao bọc bởi một màng ngoài (màng nhân) và có nhân hoàn chỉnh",
+      b: "Vật liệu di truyền là RNA mạch thẳng được gắn với các protein Histon hình thành cấu trúc nhiễm sắc thể, được bao bọc bởi một màng ngoài (màng nhân) và có nhân hoàn chỉnh",
+      c: "Vật liệu di truyền là DNA mạch thẳng được gắn với các lipoprotein hình thành cấu trúc nhiễm sắc thể, được bao bọc bởi một màng ngoài (màng nhân) và có nhân hoàn chỉnh",
+      d: "Vật liệu di truyền là RNA mạch thẳng được gắn với các lipoprotein hình thành cấu trúc nhiễm sắc thể, được bao bọc bởi một màng ngoài (màng nhân) và có nhân hoàn chỉnh",
+      ans: "a"
+    },
+    {
+      id: 87,
+      q: "Hình thức sinh sản nào là chủ yếu ở Nấm men",
+      a: "Nảy chồi",
+      b: "Trinh sản",
+      c: "Phân đôi",
+      d: "Hình thành bào tử",
+      ans: "a"
+    },
+    {
+      id: 88,
+      q: "Yếu tố nào sau đây giúp nấm men không bị tế bào bạch cầu nhận ra và tiêu hoá?",
+      a: "Tế bào của nấm men được bao quanh bởi một nang polysaccharide cứng",
+      b: "Tế bào nấm men được bao bọc bởi một nang lipid dày, chống thấm nước",
+      c: "Tế bào nấm men được bao bọc mới một lớp vách chitin cứng",
+      d: "Tế bào nấm men được bao bọc bởi một lớp vách cellulose dày",
+      ans: "a"
+    },
+    {
+      id: 89,
+      q: "Khái niệm xoắn khuẩn:",
+      a: "Là những vi khuẩn lượn xoắn, di động được nhờ có lông",
+      b: "Là những vi khuẩn lượn xoắn, di động",
+      c: "Di động hoặc không, nếu di động thì có lông quanh thân",
+      d: "Không di động",
+      ans: "b"
+    },
+    {
+      id: 90,
+      q: "Đặc điểm cấu tạo tế bào của vi khuẩn:",
+      a: "Có nhân điển hình",
+      b: "Không có nhân",
+      c: "Không có màng nhân",
+      d: "Có bộ máy phân bào",
+      ans: "c"
+    },
+    {
+      id: 91,
+      q: "Đặc điểm chất nguyên sinh của vi khuẩn :",
+      a: "Protein và polipeptid chiếm khoảng 50% trọng lượng khô",
+      b: "Protein và polipeptid chiếm khoảng 80% trọng lượng khô",
+      c: "Không có enzym nội bào",
+      d: "Chứa nội độc tố",
+      ans: "b"
+    },
+    {
+      id: 92,
+      q: "Đặc điểm màng nguyên sinh của tế bào vi khuẩn:",
+      a: "Có tính thẩm thấu chọn lọc và vận chuyển điện tử...",
+      b: "Là nơi tổng hợp nhân của vi khuẩn",
+      c: "Là nơi tổng hợp các Ribosom cho tế bào",
+      d: "Là nơi bám của các lông của vi khuẩn",
+      ans: "a"
+    },
+    {
+      id: 93,
+      q: "Đặc điểm vách của vi khuẩn Gram dương:",
+      a: "Gồm nhiều lớp peptidoglycan, có tính vững chắc",
+      b: "Gồm một lớp peptidoglycan, tính vững chắc thấp",
+      c: "Peptidoglycan bản chất hóa học là lipid và acid amin",
+      d: "Thành phần acid teichoic ít có ở nhóm vi khuẩn này",
+      ans: "a"
+    },
+    {
+      id: 94,
+      q: "Đặc điểm vách của vi khuẩn Gram âm:",
+      a: "Gồm nhiều lớp peptidoglycan nên có tính vững chắc",
+      b: "Bên ngoài vách còn có lớp lipopolysaccharide",
+      c: "Tính đặc hiệu kháng nguyên thấp",
+      d: "Cấu tạo bởi phức hợp lipopolysaccharit",
+      ans: "b"
+    },
+    {
+      id: 95,
+      q: "Một trong những tính chất sau không thuộc đặc tính của vách vi khuẩn:",
+      a: "Quyết định tính kháng nguyên thân",
+      b: "Có tính thẩm thấu chọn lọc",
+      c: "Là nơi tác động của một số kháng sinh",
+      d: "Là nơi mang các điểm tiếp nhận đặc hiệu cho thực khuẩn thể",
+      ans: "b"
+    },
+    {
+      id: 96,
+      q: "Đặc điểm vách tế bào vi khuẩn:",
+      a: "Quyết định nên hình thể của vi khuẩn",
+      b: "Quyết định tính chất gây bệnh của vi khuẩn",
+      c: "Được cấu tạo bởi phức hợp lipopolysaccharit (LPS)",
+      d: "Bao bên ngoài vỏ của vi khuẩn",
+      ans: "a"
+    },
+    {
+      id: 97,
+      q: "Đặc điểm cấu tạo vỏ của vi khuẩn:",
+      a: "Là một lớp vỏ cứng bao ngoài vách, có vai trò bảo vệ vi khuẩn",
+      b: "Là một lớp nhầy, lỏng lẻo, không rõ rệt bao quanh vi khuẩn",
+      c: "Mọi loại vi khuẩn đều có vỏ khi gặp điều kiện không thuận lợi",
+      d: "Chỉ những trực khuẩn Gram âm mới có vỏ",
+      ans: "b"
+    },
+    {
+      id: 98,
+      q: "Đặc điểm cấu tạo và chức năng của lông của vi khuẩn:",
+      a: "Là những sợi protein dài và xoắn",
+      b: "Xuất phát từ màng tế bào xuyên qua vách tế bào",
+      c: "Giúp vi khuẩn tồn tại được trong những điều kiện không thuận lợi",
+      d: "Giúp vi khuẩn truyền giới tính từ vi khuẩn này sang vi khuẩn khác",
+      ans: "a"
+    },
+    {
+      id: 99,
+      q: "Đặc điểm cấu tạo và chức năng của pili của vi khuẩn:",
+      a: "Cấu tạo hóa học là protein",
+      b: "Nếu mất pili vi khuẩn sẽ không tồn tại được",
+      c: "Nếu mất pili vi khuẩn sẽ không truyền được các yếu tố di truyền từ vi khuẩn này sang vi khuẩn khác được.",
+      d: "Một vi khuẩn đực có thể có một hoặc nhiều pili giới tính",
+      ans: "a"
+    },
+    {
+      id: 100,
+      q: "Đặc điểm cấu tạo và chức năng của nha bào của vi khuẩn:",
+      a: "Mọi loài vi khuẩn trong điều kiện sống không thuận lợi đều có khả năng sinh nha bào.",
+      b: "Ở trạng thái nha bào vi khuẩn vẫn có khả năng gây bệnh",
+      c: "Màng nha bào bao bên ngoài nhân DNA.",
+      d: "Nha bào có hai lớp vách trong và ngoài",
+      ans: "d"
+    },
+    {
+      id: 101,
+      q: "Đặc điểm chuyển hóa và dinh dưỡng của vi khuẩn:",
+      a: "Tất cả vi khuẩn gây bệnh đều là vi khuẩn tự dưỡng",
+      b: "Vi khuẩn chuyển hóa được là nhờ các enzym nội và ngoại bào",
+      c: "Vi khuẩn chuyển hóa được nhờ có các enzym ngoại bào",
+      d: "Chỉ những vi khuẩn ký sinh trong tế bào mới gây được bệnh",
+      ans: "b"
+    },
+    {
+      id: 102,
+      q: "Đặc điểm chuyển hóa và dinh dưỡng của vi khuẩn:",
+      a: "Quá trình chuyển hóa tạo ra một số chất như nội độc tố, vitamin...",
+      b: "Tất cả các vi khuẩn gây bệnh đều là vi khuẩn tự dưỡng",
+      c: "Tất cả các vi khuẩn gây bệnh đều là vi khuẩn dị dưỡng",
+      d: "Enzym ngoại bào có vai trò thực hiện quá trình chuyển hóa phức tạp",
+      ans: "c"
+    },
+    {
+      id: 103,
+      q: "Đặc điểm các loại môi trường nhân tạo để nuôi cấy vi khuẩn:",
+      a: "Môi trường cơ bản: phải đủ các yếu tố dinh dưỡng cần thiết cho đa số vi khuẩn.",
+      b: "Môi trường cơ bản: để nuôi cấy các vi khuẩn tăng trưởng nhanh",
+      c: "Môi trường chuyên biệt: là môi trường cơ bản có thêm hồng cầu",
+      d: "Môi trường chuyên biệt: để nuôi cấy các vi khuẩn tăng trưởng chậm",
+      ans: "a"
+    },
+    {
+      id: 104,
+      q: "Thuốc kháng sinh là những chất ngăn chặn vi khuẩn nhân lên hay tiêu diệt vi khuẩn bằng cơ chế:",
+      a: "Tác động vào sự cân bằng lý học của tế bào vi khuẩn.",
+      b: "Tác động vào các giai đoạn chuyển hóa của đời sống vi khuẩn.",
+      c: "Ức chế sinh tổng hợp protein.",
+      d: "Tác động vào giai đoạn phân chia của tế bào vi khuẩn.",
+      ans: "b"
+    },
+    {
+      id: 105,
+      q: "Kháng sinh có đặc điểm:",
+      a: "Có nguồn gốc cơ bản từ các chất hóa học.",
+      b: "Có nguồn gốc cơ bản từ thực vật.",
+      c: "Mỗi loại kháng sinh chỉ tác động lên một nhóm hay một loại vi khuẩn nhất định.",
+      d: "Kháng sinh có hoạt phổ rộng là kháng sinh tiêu diệt được nhiều loại vi khuẩn gây bệnh khác nhau.",
+      ans: "c"
+    }
+  ],
+
+  4: [
+    {
+      id: 106,
+      q: "Chất tẩy uế và chất sát khuẩn giống nhau ở điểm:",
+      a: "Có thể tổng hợp bằng phương pháp hóa học, ly trích từ động vật, thực vật hoặc vi sinh vật.",
+      b: "Có thể dùng tại chỗ như bôi ngoài da.",
+      c: "Thường chỉ dùng để tẩy uế đồ vật.",
+      d: "Gây độc hại cho cơ thể.",
+      ans: "d"
+    },
+    {
+      id: 107,
+      q: "Kháng sinh làm hư hại màng nguyên tương vi khuẩn theo cơ chế:",
+      a: "Kháng sinh làm thay đổi tính thẩm thấu chọn lọc của vách vi khuẩn.",
+      b: "Kháng sinh làm tăng tính thấm chọn lọc của màng nguyên tương vi khuẩn.",
+      c: "Kháng sinh làm thay đổi tính thẩm thấu chọn lọc của màng nguyên tương.",
+      d: "Kháng sinh làm thay đổi tính thẩm thấu của màng nhân.",
+      ans: "c"
+    },
+    {
+      id: 108,
+      q: "Kháng sinh ức chế sinh tổng hợp protein của vi khuẩn theo một trong các cơ chế sau:",
+      a: "Phá hủy tiểu phần 30S của ribosom",
+      b: "Phá hủy tiểu phần 50S của ribosom",
+      c: "Cản trở sự liên kết của các acid amin ở tiểu phần 50S",
+      d: "Tác động vào enzym catalase ở tiểu phần 50S",
+      ans: "c"
+    },
+    {
+      id: 109,
+      q: "Một trong các cơ chế tác động của kháng sinh vào tiểu phần 30S của vi khuẩn là:",
+      a: "Kháng sinh phá hủy ARN thông tin",
+      b: "Kháng sinh cản trở ARN thông tin trượt trên polysom",
+      c: "Kháng sinh gắn vào 30S của ribosom vi khuẩn gây nên đọc sai mã của ARN thông tin.",
+      d: "Kháng sinh phá hủy các ARN vận chuyển",
+      ans: "c"
+    },
+    {
+      id: 110,
+      q: "Một trong các cơ chế tác động của kháng sinh trong quá trình sinh tổng hợp acid nucleic của vi khuẩn:",
+      a: "Ức chế enzym gyrase nên ngăn cản sự sao chép của ADN.",
+      b: "Tác động vào ARN khuôn, ức chế tổng hợp ARN.",
+      c: "Tác động vào ARN khuôn, ức chế tổng hợp ADN.",
+      d: "Ngăn cản sinh tổng hợp ADN-polymerase phụ thuộc ARN.",
+      ans: "a"
+    },
+    {
+      id: 111,
+      q: "Kháng sinh tác động lên vách của tế bào vi khuẩn làm cho:",
+      a: "Vi khuẩn sinh ra không có vách, do đó dễ bị tiêu diệt",
+      b: "Chức năng thẩm thấu chọn lọc của vách bị thay đổi, vi khuẩn bị tiêu diệt",
+      c: "Cấu trúc hóa học của vách bị thay đổi nên vi khuẩn bị tiêu diệt",
+      d: "Các thụ thể trên bề mặt vách bị phá hủy nên vi khuẩn bị tiêu diệt",
+      ans: "a"
+    },
+    {
+      id: 112,
+      q: "Chất sát khuẩn là những chất:",
+      a: "Ức chế sự phát triển của vi sinh vật ở mức độ phân tử",
+      b: "Gây độc hại cho mô sống của cơ thể",
+      c: "Thường chỉ dùng để tẩy uế đồ vật hay sát trùng ngoài da",
+      d: "Độc tính cao nên không thể dùng tại chỗ như bôi ngoài da",
+      ans: "b"
+    },
+    {
+      id: 113,
+      q: "Chất tẩy uế có đặc điểm:",
+      a: "Có nguồn gốc từ các chất hóa học hay từ động vật, thực vật",
+      b: "Chỉ dùng để tẩy uế đồ vật",
+      c: "Có khả năng tiêu diệt các vi sinh vật nên có thể dùng tại chỗ như bôi ngoài da",
+      d: "Có tác động mạnh đối với vi khuẩn, làm ngưng sự phát triển của vi khuẩn",
+      ans: "b"
+    },
+    {
+      id: 114,
+      q: "Đặc điểm sự đề kháng kháng sinh của vi khuẩn:",
+      a: "Có bốn dạng đề kháng là: đề kháng thật, đề kháng giả, đề kháng tự nhiên, đề kháng thu được.",
+      b: "Đề kháng giả: bao gồm đề kháng tự nhiên và đề kháng thu được.",
+      c: "Đề kháng thật: bao gồm đề kháng tự nhiên và đề kháng thu được.",
+      d: "Đề kháng tự nhiên là đề kháng nhưng không phải là bản chất, không do nguồn gốc di truyền.",
+      ans: "c"
+    },
+    {
+      id: 115,
+      q: "Ở vi khuẩn kháng kháng sinh, gene đề kháng tạo ra sự đề kháng bằng cách:",
+      a: "Làm giảm tính thấm của vách",
+      b: "Làm giảm tính thấm của màng nguyên tương",
+      c: "Làm giảm tính thấm của màng nhân",
+      d: "Làm giảm tính thấm của vỏ",
+      ans: "b"
+    },
+    {
+      id: 116,
+      q: "Vi khuẩn kháng thuốc kháng sinh theo cơ chế nào sau đây?",
+      a: "Vi khuẩn sản xuất enzym để phá hủy hoạt tính của thuốc.",
+      b: "Vi khuẩn làm giảm khả năng thẩm thấu của vách tế bào đối với thuốc.",
+      c: "Vi khuẩn không còn enzym nên không chịu ảnh hưởng của kháng sinh.",
+      d: "Vi khuẩn không còn màng tế bào.",
+      ans: "a"
+    },
+    {
+      id: 117,
+      q: "Đặc điểm của đề kháng thu được trong kháng thuốc kháng sinh của vi khuẩn:",
+      a: "Chiếm tỷ lệ thấp trong sự kháng thuốc của vi khuẩn.",
+      b: "Kháng thuốc theo cơ chế đột biến là chủ yếu.",
+      c: "Các gien đề kháng có thể nằm trên nhiễm sắc thể, plasmid hay transposon.",
+      d: "Gien đề kháng chỉ được truyền từ vi khuẩn đực F+ sang vi khuẩn cái F-.",
+      ans: "c"
+    },
+    {
+      id: 118,
+      q: "Đặc điểm của vi khuẩn có R-plasmid:",
+      a: "Tồn tại được trong môi trường có kháng sinh",
+      b: "Không tồn tại được trong môi trường có kháng sinh",
+      c: "Có ở những vi khuẩn nhạy cảm với kháng sinh",
+      d: "Có ở mọi loại vi khuẩn gây bệnh",
+      ans: "a"
+    },
+    {
+      id: 119,
+      q: "Trên lâm sàng, phối hợp thuốc kháng sinh là một trong những nguyên tắc dùng thuốc để tránh hiện tượng kháng thuốc, dựa trên tính chất sau của đột biến:",
+      a: "Đột biến có tính vững bền",
+      b: "Đột biến có tính ngẫu nhiên",
+      c: "Đột biến có tính chất hiếm",
+      d: "Đột biến có tính chất độc lập và đặc hiệu",
+      ans: "d"
+    },
+    {
+      id: 120,
+      q: "Kháng sinh đồ là kỹ thuật:",
+      a: "Xác định độ nhạy cảm của vi khuẩn với kháng sinh",
+      b: "Xác định độ nhạy cảm của kháng sinh với vi khuẩn",
+      c: "Xác định vi khuẩn gây bệnh sau khi phân lập, định danh vi khuẩn",
+      d: "Xác định nồng độ kháng thuốc kháng sinh của vi khuẩn",
+      ans: "a"
+    },
+    {
+      id: 121,
+      q: "Sử dụng kháng sinh rộng rãi, không đúng chỉ định sẽ dẫn đến tình trạng:",
+      a: "Các vi khuẩn kháng thuốc bị tiêu diệt.",
+      b: "Các vi khuẩn nhạy cảm với thuốc bị tiêu diệt.",
+      c: "Các vi khuẩn nhạy cảm được tự do phát triển mà không bị ức chế cạnh tranh bởi các vi khuẩn khác.",
+      d: "Tất cả các vi khuẩn nhạy cảm và kháng thuốc đều bị tiêu diệt.",
+      ans: "b"
+    },
+    {
+      id: 122,
+      q: "Một trong những biện pháp phòng chống kháng thuốc ở vi khuẩn là:",
+      a: "Chỉ điều trị khi có kết quả kháng sinh đồ.",
+      b: "Chỉ điều trị khi phân lập, định danh được vi khuẩn.",
+      c: "Chọn kháng sinh theo kết quả kháng sinh đồ.",
+      d: "Phối hợp nhiều loại kháng sinh và tăng liều kháng sinh.",
+      ans: "c"
+    },
+    {
+      id: 123,
+      q: "Một số khái niệm về nhiễm trùng:",
+      a: "Bệnh nhiễm trùng thể ẩn là trạng thái bệnh kéo dài, triệu chứng không dữ dội.",
+      b: "Bệnh nhiễm trùng cấp tính: diễn tiến bệnh nhanh, sau đó bệnh nhân thường tử vong.",
+      c: "Bệnh nhiễm trùng mạn tính: bệnh kéo dài, triệu chứng không dữ dội.",
+      d: "Nhiễm trùng tiềm tàng: người bị nhiễm trùng không có dấu hiệu lâm sàng.",
+      ans: "c"
+    },
+    {
+      id: 124,
+      q: "Virus là một đơn vị sinh vật học đặc biệt vì:",
+      a: "Kích thước rất nhỏ bé, từ 20-300 nm.",
+      b: "Chỉ nhân lên được trong môi trường giàu chất dinh dưỡng.",
+      c: "Tuy nhỏ bé nhưng vẫn duy trì được nòi giống qua các thế hệ và gây nhiễm trùng cho tế bào.",
+      d: "Có hệ thống enzym chuyển hóa.",
+      ans: "c"
+    },
+    {
+      id: 125,
+      q: "Acid nucleic của virus gồm:",
+      a: "ARN.",
+      b: "ADN.",
+      c: "ADN và ARN.",
+      d: "Hoặc ADN hoặc ARN.",
+      ans: "d"
+    },
+    {
+      id: 126,
+      q: "Thành phần capsid của virus có chức năng:",
+      a: "Giữ cho hình thái và kích thước của virus luôn ổn định.",
+      b: "Tham gia vào giai đoạn lắp ráp và giải phóng virus ra khỏi tế bào sau chu kỳ nhân lên.",
+      c: "Mang mọi mật mã di truyền đặc trưng cho từng virus.",
+      d: "Quyết định khả năng gây nhiễm trùng của virus.",
+      ans: "a"
+    },
+    {
+      id: 127,
+      q: "Acid nucleic của virus có đặc điểm:",
+      a: "Là một sợi ADN dạng vòng khép kín, trọng lượng 1-2% hạt virus.",
+      b: "Quyết định khả năng gây nhiễm trùng của virus trong tế bào cảm thụ.",
+      c: "Tham gia vào sự bám của virus trên các vị trí thích hợp của tế bào cảm thụ.",
+      d: "Mang mọi mật mã di truyền chung cho virus.",
+      ans: "b"
+    },
+    {
+      id: 128,
+      q: "Đặc điểm, vai trò enzym cấu trúc của virus:",
+      a: "Có chức năng trong quá trình chuyển hóa trao đổi chất của virus.",
+      b: "Chỉ có ở một vài loại virus.",
+      c: "Có tính kháng nguyên chuyên biệt.",
+      d: "Là enzym hô hấp của virus.",
+      ans: "b"
+    },
+    {
+      id: 129,
+      q: "Họ vi khuẩn đường ruột có đặc điểm chung:",
+      a: "Gồm nhiều loại trực khuẩn Gram âm, Gram dương sống ở ống tiêu hoá của người và động vật.",
+      b: "Là các vi khuẩn gây bệnh cho đường tiêu hóa.",
+      c: "Hiếu khí hoặc kỵ khí tuỳ tiện.",
+      d: "Kỵ khí tuyệt đối.",
+      ans: "c"
+    },
+    {
+      id: 130,
+      q: "Họ vi khuẩn đường ruột có đặc điểm nào dưới đây?",
+      a: "Sắp xếp thành đôi hay thành chuỗi",
+      b: "Có thể sinh bào tử, một số có vỏ",
+      c: "Trực khuẩn Gram âm",
+      d: "Trực khuẩn Gram âm hoặc Gram dương",
+      ans: "c"
+    },
+    {
+      id: 131,
+      q: "Đặc điểm sinh vật học của Salmonella:",
+      a: "Vi khuẩn chỉ phát triển được ở nhiệt độ 37°C",
+      b: "Sinh nha bào nếu điều kiện môi trường không thuận lợi",
+      c: "H2S (-)",
+      d: "Oxidase (-)",
+      ans: "d"
+    },
+    {
+      id: 132,
+      q: "Đặc điểm gây bệnh sốt thương hàn của Salmonella:",
+      a: "Vi khuẩn xâm nhập cơ thể theo đường tiêu hoá, đường hô hấp",
+      b: "Vi khuẩn bám trên bề mặt niêm mạc ruột non làm niêm mạc bị hoại tử",
+      c: "Vi khuẩn nhân lên trong hạch mạc treo ruột",
+      d: "Phải có khoảng 102 - 103 vi khuẩn xâm nhập vào cơ thể theo đường tiêu hoá mới có khả năng gây bệnh.",
+      ans: "c"
+    },
+    {
+      id: 133,
+      q: "Đặc điểm sinh vật học của vi khuẩn tả:",
+      a: "Chỉ tồn tại được ở pH 8,5 - 9,5",
+      b: "Hiếu khí - kỵ khí tuỳ ngộ",
+      c: "Kỵ khí tuyệt đối",
+      d: "Oxidase (-)",
+      ans: "b"
+    },
+    {
+      id: 134,
+      q: "Khả năng gây bệnh của vi khuẩn tả chủ yếu dựa vào:",
+      a: "Ngoại độc tố gây rối loạn hấp thu nước và điện giải",
+      b: "Sự xâm nhập của tả vào bào tương niêm mạc ruột làm hoại tử niêm mạc",
+      c: "Nội độc tố gây huỷ hoại niêm mạc ruột",
+      d: "Các enzym của tả gây rối loạn hấp thu tinh bột ở niêm mạc ruột",
+      ans: "a"
+    },
+    {
+      id: 135,
+      q: "Đặc điểm bệnh học của Haemophilus influenzae:",
+      a: "Khoảng 75% trẻ em mắc bệnh viêm đường hô hấp do nhiễm vi khuẩn này",
+      b: "Khoảng 75% trẻ lành có mang vi khuẩn này ở họng, mũi",
+      c: "Vi khuẩn gây bệnh thường là vi khuẩn không có vỏ, typ a.",
+      d: "Vi khuẩn gây bệnh thường là vi khuẩn không có vỏ, typ b.",
+      ans: "b"
+    },
+    {
+      id: 136,
+      q: "Haemophilus influenzae không gây nên một trong những bệnh cảnh sau:",
+      a: "Viêm màng não",
+      b: "Viêm đường hô hấp trên",
+      c: "Nhiễm trùng sinh dục",
+      d: "Viêm dạ dày-ruột cấp",
+      ans: "d"
+    },
+    {
+      id: 137,
+      q: "Thử nghiệm Koch chứng tỏ miễn dịch của cơ thể với vi khuẩn lao là:",
+      a: "Đáp ứng miễn dịch qua trung gian tế bào",
+      b: "Đáp ứng miễn dịch thể dịch",
+      c: "Phản ứng trung hoà độc tố",
+      d: "Đáp ứng của cả miễn dịch dịch thể và miễn dịch tế bào",
+      ans: "a"
+    },
+    {
+      id: 138,
+      q: "Đặc điểm sinh vật học của nhóm Clostridium:",
+      a: "Trực khuẩn Gram (+), hiếu khí kỵ khí tuỳ ngộ",
+      b: "Trực khuẩn Gram (-), kỵ khí tuyệt đối",
+      c: "Trực khuẩn Gram (+), kỵ khí tuyệt đối",
+      d: "Trực khuẩn Gram (+), hiếu khí tuyệt đối",
+      ans: "c"
+    }
+  ]
+};
+
+        let state = {
+            user: null,
+            loading: true,
+            emailInput: "",
+            passwordInput: "",
+            authError: "",
+            isKicked: false,
+            isDarkMode: false,
+            currentPart: null,
+            currentQuestionIndex: 0,
+            score: 0,
+            wrongScore: 0,
+            showResult: false,
+            selectedOptions: [],
+            isSubmitted: false,
+            questions: [],
+            shuffledOptions: [],
+            isConfirming: false,
+            sessionAnswers: [],
+            reviewMode: false,
+            reviewData: [],
+            history: []
+        };
+
+        try {
+            const saved = localStorage.getItem('vsvn_local_history');
+            state.history = saved ? JSON.parse(saved) : [];
+        } catch (e) { state.history = []; }
+
+        const getOrCreateDeviceToken = () => {
+            let token = localStorage.getItem("qp_device_token_vsvn");
+            if (!token) {
+                token = "m_vsvn_" + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+                localStorage.setItem("qp_device_token_vsvn", token);
+            }
+            return token;
+        };
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+        
+        function toggleDarkMode() {
+            state.isDarkMode = !state.isDarkMode;
+            document.documentElement.classList.toggle('dark', state.isDarkMode);
+            render();
+        }
+
+        function render() {
+            const root = document.getElementById('root');
+            
+            if (state.loading) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-500 mb-4"></div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium text-sm">Đang kiểm tra cổng kết nối bảo mật Cloud...</p>
+                    </div>`;
+                return;
+            }
+
+            if (!state.user) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-6 flex flex-col items-center justify-center relative w-full">
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            <button onclick="toggleDarkMode()" class="p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 pointer-events-auto active:scale-95">
+                                ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                            </button>
+                        </header>
+                        <div class="w-full max-w-md p-8 sm:p-10 rounded-3xl shadow-2xl border bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/80 animate-enter mt-14">
+                            <div class="text-center mb-8">
+                                <div class="inline-flex p-3 bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-emerald-400 rounded-2xl mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                <h2 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Đăng nhập môn học</h2>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 font-bold mt-1 uppercase tracking-wider">Vi Sinh Vật Nông Nghiệp (P2)</p>
+                            </div>
+                            ${state.isKicked ? `
+                                <div class="mb-4 p-3 bg-rose-50 dark:bg-rose-950/40 border-l-4 border-rose-500 text-rose-700 dark:text-rose-400 text-xs font-semibold rounded-r-xl flex items-start gap-2 animate-enter">
+                                    <svg class="flex-shrink-0 mt-0.5 animate-pulse text-rose-600" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    <p>Tài khoản vừa bị khóa vì phát hiện đăng nhập cùng lúc từ một thiết bị khác!</p>
+                                </div>` : ''}
+                            <form onsubmit="handleLogin(event)" class="space-y-5">
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Tài khoản Email</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                                        <input type="email" id="emailInput" placeholder="abc...@quizpointstudio.com" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.emailInput}" required />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Mật mã bảo mật</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                        <input type="password" id="passwordInput" placeholder="••••••••" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.passwordInput}" required />
+                                    </div>
+                                </div>
+                                <div id="authError" class="text-xs font-bold text-rose-500 bg-rose-50 dark:bg-rose-950/30 p-3 rounded-lg border border-rose-100 dark:border-rose-900/40 hidden"></div>
+                                <button type="submit" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition-all text-sm uppercase tracking-wider">Xác nhận đăng nhập</button>
+                            </form>
+                            <div class="text-center mt-6">
+                                <button onclick="window.location.href='./index.html'" class="text-xs text-slate-400 hover:text-brand-600 dark:hover:text-emerald-400 font-bold transition-all hover:underline">← Quay lại danh mục trang chủ</button>
+                            </div>
+                        </div>
+                    </div>`;
+                if(state.authError) {
+                    const errDiv = document.getElementById('authError');
+                    errDiv.innerText = state.authError;
+                    errDiv.classList.remove('hidden');
+                }
+                return;
+            }
+
+            if (state.reviewMode) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-4 sm:p-6 lg:p-8 bg-slate-50/50 dark:bg-slate-950/20 w-full flex flex-col items-center">
+                        <div class="w-full max-w-4xl space-y-6">
+                            <div class="glass-panel p-4 rounded-2xl shadow-sm sticky top-4 z-10 flex justify-between items-center mb-8">
+                                <button onclick="setReviewMode(false)" class="flex items-center gap-2 text-brand-700 dark:text-emerald-400 font-extrabold transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> <span>Quay lại</span></button>
+                                <h2 class="text-xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Chi tiết bài làm</h2>
+                                <div class="w-8"></div> 
+                            </div>
+                            <div class="space-y-8 pb-10">
+                                ${state.reviewData.map((item, index) => {
+                                    const userAnsArr = item.s ? item.s.split('') : [];
+                                    const correctAnsArr = item.c ? item.c.split('') : [];
+                                    const isItemCorrect = item.s === item.c;
+                                    return `
+                                        <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 ${!isItemCorrect ? 'ring-2 ring-red-500/20' : ''}">
+                                            <div class="flex gap-4 mb-2">
+                                                <span class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg ${isItemCorrect ? 'bg-gradient-to-br from-emerald-400 to-emerald-600' : 'bg-gradient-to-br from-red-400 to-red-600'}">${index + 1}</span>
+                                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 leading-relaxed">${item.q}</h3>
+                                            </div>
+                                            <div class="pl-14 mb-4 text-xs font-bold text-brand-600 dark:text-emerald-400">
+                                                 ${item.c.length > 1 ? "☑ Câu hỏi này tích chọn nhiều đáp án đúng" : "🔘 Câu hỏi này chọn một đáp án duy nhất"}
+                                            </div>
+                                            <div class="space-y-3 pl-0 sm:pl-14">
+                                                ${item.o.map(opt => {
+                                                    const isOptCorrect = correctAnsArr.includes(opt.key);
+                                                    const isOptSelected = userAnsArr.includes(opt.key);
+                                                    let optionClass = "p-4 rounded-xl border flex justify-between items-center font-semibold text-sm ";
+                                                    if (isOptCorrect) optionClass += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 shadow-sm";
+                                                    else if (isOptSelected) optionClass += "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 shadow-sm";
+                                                    else optionClass += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600 opacity-70";
+                                                    return `
+                                                        <div class="${optionClass}">
+                                                            <span>${opt.text}</span>
+                                                            ${isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                                            ${isOptSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                                        </div>`;
+                                                }).join('')}
+                                            </div>
+                                        </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (!state.currentPart) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col relative w-full items-center">
+                        
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 pointer-events-auto">
+                                <button onclick="handleGoHome()" class="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-md active:scale-95">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                    <span class="hidden sm:inline">Quay về trang chủ</span>
+                                    <span class="sm:hidden">Trang chủ</span>
+                                </button>
+                                
+                                <button onclick="toggleDarkMode()" class="p-2 sm:p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 active:scale-95">
+                                    ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                                </button>
+                            </div>
+                        </header>
+                        
+                        <div class="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950 text-white shadow-xl relative overflow-hidden text-center pt-40 pb-16 md:pt-32 md:pb-20">
+                            <div class="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_60%)] animate-pulse-slow"></div>
+                            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:30px_30px]"></div>
+                            <div class="absolute top-6 right-[25%] opacity-30 text-yellow-300 animate-bounce-slow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                            <div class="absolute bottom-8 left-[20%] opacity-30 text-emerald-300 animate-float"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                            <div class="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center gap-4 relative z-10">
+                                <div class="p-3 bg-white/5 rounded-2xl backdrop-blur-md border border-white/10 animate-float inline-block shadow-xl">
+                                    <svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22V10"/>
+                                        <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                        <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                        <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                        <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <div class="space-y-2">
+                                    <h1 style="line-height: 1.35 !important;" class="pt-2 text-3xl md:text-5xl font-black uppercase bg-gradient-to-r from-white via-emerald-300 to-slate-200 bg-clip-text text-transparent drop-shadow-lg">VI SINH VẬT NÔNG NGHIỆP</h1>
+                                    <p class="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">Ngân hàng 138 câu hỏi tổng ôn lý thuyết chia làm 4 bộ đề</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="max-w-6xl mx-auto px-4 py-8 w-full -mt-10 relative z-20 space-y-10 flex flex-col items-center">
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md py-3 px-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm w-full max-w-xl">
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-brand-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Tên: <span class="text-brand-600 dark:text-emerald-400 font-extrabold">Nguyễn Văn Lượng</span></span></div>
+                                <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-amber-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .81 2.71A2 2 0 0 1 22 16.92z"/></svg><span>LH: <span class="font-mono text-slate-900 dark:text-white font-black">0333738861</span></span></div>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-brand-600 to-teal-700 text-white p-6 rounded-3xl shadow-xl border border-brand-500/30 overflow-hidden relative group text-center w-full max-w-3xl">
+                                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                                <div class="relative z-10 flex flex-col items-center gap-4">
+                                    <div class="flex items-center justify-center gap-3"><svg class="text-yellow-300 animate-pulse" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg><span class="font-bold text-lg sm:text-xl leading-tight">Nhận làm Quiz Ôn Tập & PowerPoint Cơ Bản</span></div>
+                                    <div class="flex flex-wrap justify-center gap-4 mt-1">
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Hệ thống Quiz</span></div>
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span>Thiết kế PPT</span></div>
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg><span>Tài liệu học tập</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full">
+                                ${[1, 2, 3, 4].map(num => `
+                                    <button onclick="startQuiz(${num})" class="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-brand-500 dark:hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-center gap-3">
+                                      <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 shadow-inner group-hover:bg-brand-500 dark:group-hover:bg-emerald-500 group-hover:text-white text-brand-500 transition-all duration-300">
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 22V10"/>
+                                            <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                            <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                            <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                            <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                         </svg>
+                                      </div>
+                                      <div>
+                                        <div class="font-black text-sm text-slate-800 dark:text-slate-200 tracking-tight leading-tight">Đề 0${num}</div>
+                                        <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 uppercase tracking-wide"></div>
+                                      </div>
+                                    </button>`).join('')}
+                            </div>
+
+                            <div class="glass-panel p-6 rounded-3xl shadow-sm max-w-2xl mx-auto w-full text-left">
+                                <div class="flex justify-between items-center mb-6 px-2">
+                                  <h2 class="text-sm font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg> Lịch sử kết quả làm bài</h2>
+                                  ${state.history.length > 0 ? `<button onclick="clearHistory()" class="text-rose-500 hover:text-rose-700 p-2 hover:bg-rose-50 rounded-lg transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>` : ''}
+                                </div>
+                                ${state.history.length === 0 ? `<div class="text-center py-8 text-slate-400 dark:text-slate-600 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold italic">Chưa có lịch sử làm đề lưu trữ</div>` : `
+                                  <div class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    ${state.history.map((record, index) => `
+                                      <div class="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
+                                        <div class="flex-1 w-full sm:w-auto">
+                                          <div class="font-black text-sm text-slate-700 dark:text-slate-300 uppercase tracking-tight">Đề ${record.part}</div>
+                                          <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 italic">${record.date}</div>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="text-right">
+                                                <div class="text-sm font-black"><span class="text-emerald-600 dark:text-emerald-400">${record.score} Đ</span><span class="text-rose-500 ml-1.5">/ ${record.wrong} S</span></div>
+                                                <div class="text-[10px] font-extrabold text-slate-400 tracking-wide">/${record.total} CÂU</div>
+                                            </div>
+                                            <button onclick="viewHistoryDetail(${index})" class="p-2 bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-emerald-400 rounded-xl hover:bg-brand-100 dark:hover:bg-slate-700 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                                        </div>
+                                      </div>`).join('')}
+                                  </div>`}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (state.showResult) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center p-4 text-center w-full">
+                        <div class="bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl shadow-2xl max-w-md w-full border border-slate-100 dark:border-slate-800 animate-enter">
+                          <div class="relative inline-block mb-6">
+                            <div class="absolute inset-0 bg-yellow-400 blur-xl opacity-30 rounded-full"></div>
+                            <svg class="w-20 h-20 text-yellow-500 relative z-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                          </div>
+                          <h2 class="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Hoàn Thành Bài Ôn Tập!</h2>
+                          <div class="grid grid-cols-2 gap-4 mb-8 mt-6">
+                            <div class="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100"><p class="text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider mb-1">Đúng</p><p class="text-4xl font-black text-emerald-600 dark:text-emerald-400">${state.score}</p></div>
+                            <div class="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-2xl border border-rose-100"><p class="text-rose-500 dark:text-rose-400 text-xs font-extrabold uppercase tracking-wider mb-1">Sai / Thiếu</p><p class="text-4xl font-black text-rose-500 dark:text-rose-400">${state.wrongScore}</p></div>
+                          </div>
+                          <button onclick="resetQuiz()" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white rounded-xl font-extrabold text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Về màn hình chính</button>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const progress = ((state.currentQuestionIndex + 1) / state.questions.length) * 100;
+
+            root.innerHTML = `
+                <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 ${state.isConfirming ? 'block' : 'hidden'}">
+                  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100">
+                    <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Nộp bài & kết thúc?</h3>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 font-medium mb-6">Kết quả bài làm hiện tại của bạn sẽ được lưu giữ lại hệ thống.</p>
+                    <div class="flex gap-3">
+                      <button onclick="setConfirming(false)" class="flex-1 py-3 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors">Tiếp bài làm</button>
+                      <button onclick="confirmFinish()" class="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">Nộp bài ngay</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-h-screen flex flex-col items-center p-4 sm:p-6 w-full max-w-3xl mx-auto relative justify-start">
+                    <div class="w-full flex justify-between items-center mb-6 pt-2">
+                        <button onclick="requestFinish()" class="p-2.5 rounded-xl text-slate-400 hover:text-rose-500 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+                        <div class="glass-panel px-4 py-2 rounded-full border text-xs font-bold text-slate-600 dark:text-slate-300 tracking-wide uppercase">Câu ${state.currentQuestionIndex + 1} / ${state.questions.length}</div>
+                        <div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 px-3 py-1.5 rounded-xl"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${state.score}</div>
+                    </div>
+                    
+                    <div class="w-full mb-8">
+                        <div class="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all rounded-full" style="width: ${progress}%"></div></div>
+                    </div>
+                    
+                    <div class="w-full bg-white dark:bg-slate-900 p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800/60 mb-24 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-emerald-600"></div>
+                        
+                        <div>
+                            <div class="mb-6">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                    <span class="inline-block bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-slate-100">ID: #${currentQ.id}</span>
+                                    <span class="text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-full ${currentQ.isMultiple ? 'bg-amber-50 text-amber-600 border border-amber-200' : 'bg-teal-50 text-teal-600 border border-teal-200'}">
+                                        ${currentQ.isMultiple ? "☑ Tích chọn nhiều đáp án" : "🔘 Chọn một đáp án"}
+                                    </span>
+                                </div>
+                                <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 leading-snug tracking-tight">${currentQ.q}</h2>
+                            </div>
+                            
+                            <div class="space-y-3.5">
+                                ${state.shuffledOptions.map((option) => {
+                                    const isSelected = state.selectedOptions.includes(option.key);
+                                    const isOptCorrect = currentQ.correct.split('').includes(option.key);
+                                    
+                                    let containerClass = "w-full p-5 rounded-2xl border text-left font-semibold transition-all duration-200 transform active:scale-[0.98] flex justify-between items-center relative overflow-hidden text-sm ";
+                                    
+                                    if (state.isSubmitted) {
+                                      containerClass += " active:scale-100 cursor-not-allowed "; 
+                                      if (isOptCorrect) containerClass += "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-inner";
+                                      else if (isSelected) containerClass += "border-rose-500 bg-rose-50 dark:bg-rose-950/30 text-rose-800 ring-2 ring-rose-200 shadow-inner";
+                                      else containerClass += "border-slate-100 text-slate-400 opacity-50";
+                                    } else {
+                                      if (isSelected) containerClass += "border-emerald-500 bg-emerald-50/60 dark:bg-slate-800/80 text-emerald-900 dark:text-teal-300 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-md -translate-y-0.5";
+                                      else containerClass += "border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-brand-50/40 hover:border-brand-200 hover:shadow-sm hover:-translate-y-0.5";
+                                    }
+
+                                    return `
+                                        <button onclick="handleOptionSelect('${option.key}', ${currentQ.isMultiple})" ${state.isSubmitted ? 'disabled' : ''} class="${containerClass}">
+                                            <div class="flex items-center gap-4 relative z-10">
+                                                <div class="w-5 h-5 flex items-center justify-center border-2 flex-shrink-0 rounded-md transition-colors ${isSelected ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 bg-white dark:bg-slate-900'}">
+                                                    ${isSelected ? '<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>' : ''}
+                                                </div>
+                                                <span>${option.text}</span>
+                                            </div>
+                                            ${state.isSubmitted && isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                            ${state.isSubmitted && isSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                        </button>`;
+                                }).join('')}
+                            </div>
+                            
+                            ${!state.isSubmitted && state.selectedOptions.length > 0 ? `
+                                <div class="mt-6 flex justify-end">
+                                    <button onclick="checkAnswerSubmission()" class="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl text-xs uppercase tracking-wider shadow-md transform active:scale-95 transition-transform">
+                                        Xác nhận đáp án
+                                    </button>
+                                </div>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-100 dark:border-slate-900/60 flex justify-center items-center gap-4 z-20">
+                        <button onclick="prevQuestion()" ${state.currentQuestionIndex === 0 ? 'disabled' : ''} class="w-14 h-14 rounded-2xl flex items-center justify-center border text-slate-600 dark:text-slate-400 disabled:opacity-25 transform active:scale-95 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+                        <button onclick="nextQuestion()" ${!state.isSubmitted ? 'disabled' : ''} class="flex-1 max-w-md h-14 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 disabled:bg-slate-200 dark:disabled:bg-slate-800/50 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:shadow-none bg-brand-600 text-white disabled:cursor-not-allowed transform active:scale-[0.99] transition-all">
+                            ${state.currentQuestionIndex === state.questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        auth.onAuthStateChanged((currentUser) => {
+            if (currentUser) {
+                const ADMIN_EMAIL = "ngocyen@cucdang.com";
+                const userEmail = currentUser.email.toLowerCase();
+                
+                if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".vsvn")) {
+                    state.authError = "Tài khoản này không có quyền truy cập môn VSV Nông Nghiệp!";
+                    auth.signOut();
+                    state.user = null;
+                } else {
+                    const token = getOrCreateDeviceToken();
+                    const sessionRef = db.ref(`active_sessions/mon_vsvn/${currentUser.uid}`);
+                    
+                    const isAdmin = userEmail === ADMIN_EMAIL;
+
+                    if (!state.user) {
+                        if (!isAdmin) {
+                            sessionRef.set({ 
+                                deviceToken: token, 
+                                lastLogin: firebase.database.ServerValue.TIMESTAMP, 
+                                email: currentUser.email 
+                            });
+                        }
+                    }
+
+                    sessionRef.on("value", (snap) => {
+                        const val = snap.val();
+                        
+                        if (val && val.deviceToken !== token && !isAdmin) {
+                            state.isKicked = true;
+                            auth.signOut();
+                            state.user = null;
+                            render();
+                        }
+                    });
+                    state.user = currentUser;
+                }
+            } else {
+                state.user = null;
+            }
+            state.loading = false;
+            render();
+        });
+
+        function handleLogin(e) {
+            e.preventDefault();
+            state.authError = "";
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            state.emailInput = email; state.passwordInput = password;
+
+            auth.signInWithEmailAndPassword(email, password).catch(err => {
+                state.authError = "Tài khoản hoặc mật khẩu bảo mật không chính xác.";
+                render();
+            });
+        }
+
+        function handleGoHome() {
+            if (window.confirm("Bạn có chắc muốn rời môn học và quay về trang chủ không?")) {
+                if (state.user) db.ref(`active_sessions/mon_vsvn/${state.user.uid}`).remove();
+                auth.signOut().then(() => { window.location.href = "./index.html"; });
+            }
+        }
+
+        function startQuiz(part) {
+            const raw = TEST_DATA[part] || [];
+            state.questions = raw.map(item => ({
+                id: item.id, q: item.q, correct: item.ans, isMultiple: item.ans.length > 1,
+                options: [{ key: 'a', text: item.a }, { key: 'b', text: item.b }, { key: 'c', text: item.c }, { key: 'd', text: item.d }].filter(o => o.text !== undefined)
+            }));
+            state.currentPart = part; state.currentQuestionIndex = 0; state.score = 0; state.wrongScore = 0;
+            state.sessionAnswers = []; state.showResult = false; state.selectedOptions = []; state.isSubmitted = false;
+            if (state.questions.length > 0) state.shuffledOptions = shuffleArray(state.questions[0].options);
+            render();
+        }
+
+        function handleOptionSelect(key, isMultiple) {
+            if (state.isSubmitted) return;
+            if (isMultiple) {
+                if (state.selectedOptions.includes(key)) {
+                    state.selectedOptions = state.selectedOptions.filter(k => k !== key);
+                } else {
+                    state.selectedOptions.push(key);
+                }
+            } else {
+                state.selectedOptions = [key];
+            }
+            render();
+        }
+
+        function checkAnswerSubmission() {
+            if (state.selectedOptions.length === 0 || state.isSubmitted) return;
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const userAnsStr = [...state.selectedOptions].sort().join('');
+            const correctAnsStr = currentQ.correct.split('').sort().join('');
+            const correct = userAnsStr === correctAnsStr;
+            
+            state.isSubmitted = true;
+            if (correct) state.score++; else state.wrongScore++;
+            state.sessionAnswers.push({ ...currentQ, userSelected: userAnsStr, options: state.shuffledOptions });
+            render();
+        }
+
+        function nextQuestion() {
+            if (state.currentQuestionIndex < state.questions.length - 1) {
+                state.currentQuestionIndex++;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                if (existing) {
+                    state.shuffledOptions = existing.options;
+                    state.selectedOptions = existing.userSelected.split('');
+                    state.isSubmitted = true;
+                } else {
+                    state.shuffledOptions = shuffleArray(newQ.options); state.selectedOptions = []; state.isSubmitted = false;
+                }
+                render();
+            } else {
+                state.showResult = true;
+                saveHistoryToLocal();
+                render();
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                state.currentQuestionIndex--;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                state.shuffledOptions = existing.options;
+                state.selectedOptions = existing.userSelected.split('');
+                state.isSubmitted = true;
+                render();
+            }
+        }
+
+        function saveHistoryToLocal() {
+            const record = {
+                id: Date.now(), date: new Date().toLocaleString('vi-VN'), part: state.currentPart,
+                score: state.score, wrong: state.wrongScore, total: state.questions.length,
+                details: state.sessionAnswers.map(q => ({ id: q.id, q: q.q, o: q.options || [], s: q.userSelected, c: q.correct }))
+            };
+            state.history.unshift(record);
+            try { localStorage.setItem('vsvn_local_history', JSON.stringify(state.history)); } catch (e) {}
+        }
+
+        function clearHistory() {
+            if (window.confirm('Bạn có chắc muốn xóa toàn bộ lịch sử kết quả không?')) {
+                state.history = []; localStorage.removeItem('vsvn_local_history'); render();
+            }
+        }
+
+        function viewHistoryDetail(index) {
+            state.reviewData = state.history[index].details || []; state.reviewMode = true; render();
+        }
+
+        function setReviewMode(val) { state.reviewMode = val; render(); }
+        function requestFinish() { state.isConfirming = true; render(); }
+        function setConfirming(val) { state.isConfirming = val; render(); }
+        function confirmFinish() { state.showResult = true; state.isConfirming = false; saveHistoryToLocal(); render(); }
+        function resetQuiz() { state.currentPart = null; state.questions = []; state.reviewMode = false; render(); }
+
+        window.addEventListener('DOMContentLoaded', () => { render(); });
+    </script>
+</body>
+</html>
