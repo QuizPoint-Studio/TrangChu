@@ -1725,7 +1725,7 @@
                 const ADMIN_EMAIL = "ngocyen@cucdang.com";
                 const userEmail = currentUser.email.toLowerCase();
                 
-                if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".vsvn")) {
+                if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".vsvnn")) {
                     state.authError = "Tài khoản này không có quyền truy cập môn VSV Nông Nghiệp!";
                     auth.signOut();
                     state.user = null;
