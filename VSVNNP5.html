@@ -1,0 +1,952 @@
+<NGUYỄN VĂN LƯỢNG ĐẸP TRAI HẸHẸ>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Vi sinh vật học Nông nghiệp - QuizPoint Studio</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap');
+        body { 
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        html, body, .custom-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar, .custom-scrollbar::-webkit-scrollbar { 
+            display: none;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#f0fdf4] via-[#e0f2fe] to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 min-h-screen text-slate-800 dark:text-slate-100">
+    
+    <div id="root"></div>
+
+    <script>
+       const firebaseConfig = {
+          apiKey: "AIzaSyC-n88rPoijqfE44ZF3ulPZdcGz_rtC3lg",
+          authDomain: "quizpointstuidio.firebaseapp.com",
+          databaseURL: "https://quizpointstuidio-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "quizpointstuidio",
+          storageBucket: "quizpointstuidio.firebasestorage.app",
+          messagingSenderId: "592248583165",
+          appId: "1:592248583165:web:8f7dac2ab36dbf35aadf94",
+          measurementId: "G-T8QQ1HEZGC"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        const TEST_DATA = {
+    1: [
+        { id: 1, q: "Ai được coi là “Cha đẻ của vi sinh vật học đất”?", a: "Martinus Beijerinck", b: "Sergei Winogradsky", c: "Louis Pasteur", d: "Robert Koch", ans: "b" },
+        { id: 2, q: "Beijerinck đã phân lập loại vi khuẩn cố định đạm cộng sinh nào với cây họ đậu?", a: "Azotobacter", b: "Bacillus", c: "Rhizobium", d: "Pseudomonas", ans: "c" },
+        { id: 3, q: "Winogradsky phát hiện quá trình nào, trong đó vi khuẩn lấy năng lượng từ oxy hóa hợp chất vô cơ?", a: "Quang hợp", b: "Hóa dưỡng", c: "Lên men", d: "Phản nitrat hóa", ans: "b" },
+        { id: 4, q: "Lịch sử vi sinh vật học nông nghiệp bắt đầu từ giai đoạn nào?", a: "Đầu thế kỷ XVIII", b: "Cuối thế kỷ XIX", c: "Giữa thế kỷ XX", d: "Đầu thế kỷ XXI", ans: "b" },
+        { id: 5, q: "Phạm vi của vi sinh vật học nông nghiệp KHÔNG bao gồm lĩnh vực nào sau đây?", a: "Vi sinh vật đất", b: "Tương tác cây trồng – vi sinh vật", c: "Công nghệ sinh học vi sinh", d: "Thiên văn học nông nghiệp", ans: "d" },
+        { id: 6, q: "Vi sinh vật học nông nghiệp góp phần vào nông nghiệp bền vững chủ yếu bằng cách nào?", a: "Tăng sử dụng hóa chất", b: "Giảm sự phụ thuộc vào hóa chất", c: "Loại bỏ hoàn toàn cây trồng", d: "Tăng xói mòn đất", ans: "b" },
+        { id: 7, q: "Đầu thế kỷ XX, sự phát triển của công cụ nào đã thúc đẩy nghiên cứu vi sinh vật học nông nghiệp?", a: "Vệ tinh viễn thám", b: "Môi trường thạch và kính hiển vi", c: "Máy giải trình tự gen", d: "Drone nông nghiệp", ans: "b" },
+        { id: 8, q: "Vi sinh vật học nông nghiệp được định nghĩa là ngành nghiên cứu gì?", a: "Vi sinh vật trong độ phì nhiêu đất, bệnh cây và năng suất nông nghiệp", b: "Chỉ nghiên cứu côn trùng gây hại", c: "Chỉ nghiên cứu khí hậu", d: "Chỉ nghiên cứu máy nông nghiệp", ans: "a" },
+        { id: 9, q: "Theo chương 1, tầm quan trọng của ngành nằm ở khả năng nào?", a: "Tăng năng suất, cải thiện chất lượng đất, cung cấp giải pháp bền vững", b: "Giảm năng suất cây trồng", c: "Tăng giá thành sản xuất", d: "Không có ý nghĩa thực tiễn", ans: "a" },
+        { id: 10, q: "Phạm vi ngành KHÔNG bao gồm nội dung nào sau đây?", a: "Phân hủy sinh học", b: "Quản lý bệnh cây", c: "Phân bón sinh học", d: "Khai thác khoáng sản", ans: "d" },
+        { id: 11, q: "Nấm rễ cộng sinh được các nhà khoa học phát hiện vào giai đoạn nào, theo lịch sử ngành?", a: "Cuối thế kỷ XIX", b: "Đầu thế kỷ XX", c: "Thế kỷ XXI", d: "Trước Công nguyên", ans: "b" },
+        { id: 12, q: "Vi sinh vật học nông nghiệp giúp nâng cao độ phì nhiêu đất chủ yếu thông qua nhóm vi sinh vật nào?", a: "Vi khuẩn cố định đạm và nấm rễ cộng sinh", b: "Vi rút gây bệnh", c: "Côn trùng có hại", d: "Nấm mốc gây hư hỏng", ans: "a" },
+        { id: 13, q: "Theo chương 1, hiểu biết về vi sinh vật gây bệnh giúp phát triển chiến lược nào?", a: "Quản lý bệnh bằng kiểm soát sinh học và giống kháng bệnh", b: "Tăng cường sử dụng thuốc trừ sâu độc hại", c: "Bỏ qua việc bảo vệ cây trồng", d: "Phá hủy toàn bộ hệ vi sinh đất", ans: "a" },
+        { id: 14, q: "Xử lý sinh học (bioremediation) trong vi sinh vật học nông nghiệp nhằm mục đích gì?", a: "Khử độc và phục hồi đất, nước bị ô nhiễm", b: "Làm tăng ô nhiễm môi trường", c: "Chỉ dùng trong y học", d: "Không liên quan đến nông nghiệp", ans: "a" },
+        { id: 15, q: "Theo chương 1, lĩnh vực nào sau đây KHÔNG thuộc phạm vi nghiên cứu nêu ra?", a: "Vi sinh vật đất", b: "Công nghệ sinh học vi sinh", c: "Nông nghiệp bền vững", d: "Kỹ thuật xây dựng cầu đường", ans: "d" },
+        { id: 16, q: "Quá trình hóa dưỡng do Winogradsky phát hiện liên quan đến việc vi khuẩn lấy năng lượng từ đâu?", a: "Oxy hóa hợp chất vô cơ", b: "Ánh sáng mặt trời", c: "Quang hợp ở lá cây", d: "Nhiệt độ cao của đất", ans: "a" },
+        { id: 17, q: "Vi khuẩn vùng rễ kích thích sinh trưởng cây được viết tắt là gì?", a: "PGPR", b: "PGPF", c: "ISR", d: "IPM", ans: "a" },
+        { id: 18, q: "Loại vi sinh vật nào là tác nhân chính thúc đẩy sự phân hủy chất hữu cơ và chu trình dinh dưỡng trong hệ thống nông nghiệp?", a: "Virus", b: "Nấm", c: "Tảo", d: "Cổ khuẩn", ans: "b" },
+        { id: 19, q: "Vi khuẩn nào sau đây có khả năng cố định nitơ khí quyển thành amoniac?", a: "Rhizobium và Azotobacter", b: "Salmonella và E. coli", c: "Listeria và Campylobacter", d: "Aspergillus và Fusarium", ans: "a" },
+        { id: 20, q: "Thực khuẩn thể (phage) được nhắc đến trong chương như là tác nhân gì?", a: "Gây bệnh cho cây trồng", b: "Kiểm soát sinh học", c: "Phân bón hóa học", d: "Chất bảo quản thực phẩm", ans: "b" },
+        { id: 21, q: "Theo chương 2, virus thực vật chủ yếu gây ra điều gì cho cây trồng?", a: "Luôn luôn có lợi", b: "Nhiều loại bệnh, ảnh hưởng sinh trưởng và năng suất", c: "Không có tác động nào", d: "Chỉ tồn tại trong đất, không ảnh hưởng cây", ans: "b" },
+        { id: 22, q: "Công nghệ nào được nhắc đến để nghiên cứu đa dạng virus trong đất?", a: "Metagenomics, transcriptomics, bioinformatics", b: "Chỉ quan sát bằng mắt thường", c: "Chụp X-quang", d: "Đo độ pH đất", ans: "a" },
+        { id: 23, q: "Vi khuẩn đóng vai trò trong việc hình thành và ổn định kết cấu đất nhờ sản sinh chất gì?", a: "Polysaccharide", b: "Carbon dioxide", c: "Nitrat", d: "Acid sulfuric", ans: "a" },
+        { id: 24, q: "Vi khuẩn vùng rễ kích thích sinh trưởng cây bằng cách nào?", a: "Hòa tan khoáng, sản sinh hormone sinh trưởng, kích thích phát triển rễ", b: "Phá hủy hoàn toàn rễ cây", c: "Ngăn cản hấp thu nước", d: "Gây độc cho đất", ans: "a" },
+        { id: 25, q: "Nấm gây bệnh thực vật được quản lý chủ yếu bằng biện pháp nào theo chương 2?", a: "Luân canh, thuốc trừ nấm, chọn tạo giống kháng bệnh", b: "Chỉ dùng nước tưới nhiều hơn", c: "Bỏ hoang đất canh tác", d: "Tăng nhiệt độ đất đột ngột", ans: "a" },
+        { id: 26, q: "Nấm nội sinh sống ở đâu trong cây mà không gây hại?", a: "Bên trong mô cây", b: "Chỉ trên bề mặt lá", c: "Chỉ trong rễ chết", d: "Trong không khí xung quanh cây", ans: "a" },
+        { id: 27, q: "Vi khuẩn ức chế bệnh hại thông qua cơ chế nào sau đây?", a: "Cạnh tranh dinh dưỡng, sản sinh hợp chất kháng khuẩn, cảm ứng tính kháng toàn thân", b: "Chỉ bằng cách sinh sản nhanh", c: "Bằng cách phá hủy đất", d: "Bằng cách hút hết nước trong đất", ans: "a" },
+        { id: 28, q: "Đâu là vai trò của vi khuẩn trong việc giúp cây chống chịu với hạn hán, mặn, nhiệt độ cực đoan?", a: "Tạo ra hợp chất hoặc enzyme giúp cây chịu đựng điều kiện bất lợi", b: "Không có vai trò gì", c: "Làm cây yếu hơn", d: "Gây chết cây ngay lập tức", ans: "a" },
+        { id: 29, q: "Virus trong quần xã vi sinh vật có vai trò gì theo chương 2?", a: "Ảnh hưởng đến cấu trúc và chức năng quần xã, chuyển gen ngang giữa vi khuẩn", b: "Không có ảnh hưởng gì", c: "Chỉ tồn tại trong không khí", d: "Chỉ gây hại cho con người", ans: "a" },
+        { id: 30, q: "Đa dạng vi sinh vật trong nông nghiệp chịu ảnh hưởng bởi yếu tố nào?", a: "Loại đất, khí hậu, biện pháp quản lý đất, luân canh cây trồng", b: "Chỉ bởi màu sắc của đất", c: "Chỉ bởi giá nông sản", d: "Không chịu ảnh hưởng bởi yếu tố nào", ans: "a" },
+        { id: 31, q: "Nấm phân hủy đóng vai trò gì trong hệ sinh thái nông nghiệp?", a: "Phá vỡ chất hữu cơ, góp phần vào chu trình dinh dưỡng", b: "Gây ô nhiễm đất", c: "Không có vai trò sinh thái", d: "Chỉ sống trong nước", ans: "a" },
+        { id: 32, q: "Vi sinh vật đất bao gồm những nhóm sinh vật nào?", a: "Vi khuẩn, nấm, cổ khuẩn, động vật nguyên sinh và tảo", b: "Chỉ vi khuẩn", c: "Chỉ nấm và virus", d: "Chỉ côn trùng đất", ans: "a" },
+        { id: 33, q: "Quá trình nào chuyển amoni thành nitrat trong chu trình nitơ?", a: "Khử nitrat", b: "Nitrat hóa", c: "Amôn hóa", d: "Cố định đạm", ans: "b" },
+        { id: 34, q: "Vi khuẩn khử nitrat chuyển nitrat trở lại thành dạng nào?", a: "Amoniac", b: "Khí nitơ (N2)", c: "Photphat", d: "Sulfate", ans: "b" },
+        { id: 35, q: "Đất được coi là một trong những kho dự trữ lớn nhất của nguyên tố nào trên Trái Đất?", a: "Carbon", b: "Oxy", c: "Hydro", d: "Helium", ans: "a" },
+        { id: 36, q: "Nấm rễ cộng sinh (mycorrhiza) giúp cây hấp thu tốt hơn chất dinh dưỡng nào, đồng thời nhận lại carbohydrate từ cây?", a: "Nước và photpho", b: "Chỉ có nitơ", c: "Chỉ có kali", d: "Không nhận chất gì từ cây", ans: "a" },
+        { id: 37, q: "Vi khuẩn hòa tan lân giải phóng photpho từ đâu?", a: "Từ không khí", b: "Từ các nguồn khoáng không tan", c: "Từ nước mưa", d: "Từ ánh sáng mặt trời", ans: "b" },
+        { id: 38, q: "Quá trình amôn hóa liên quan đến điều gì?", a: "Chuyển đổi nitơ hữu cơ thành amoni", b: "Chuyển nitrat thành khí nitơ", c: "Chuyển lưu huỳnh thành sulfate", d: "Chuyển carbon thành CO2", ans: "a" },
+        { id: 39, q: "Sức khỏe đất được định nghĩa là gì theo chương 3?", a: "Khả năng của đất hoạt động như hệ sinh thái sống duy trì thực vật, động vật và con người", b: "Chỉ là độ cứng của đất", c: "Chỉ là màu sắc đất", d: "Lượng nước trong đất", ans: "a" },
+        { id: 40, q: "Vi khuẩn oxy hóa lưu huỳnh chuyển lưu huỳnh nguyên tố hoặc sulfide thành dạng nào?", a: "Sulfate (SO4 2-)", b: "Nitrat", c: "Photphat", d: "Carbonat", ans: "a" },
+        { id: 41, q: "Vi sinh vật đất ức chế mầm bệnh bằng cách nào?", a: "Sản sinh kháng sinh hoặc enzyme phân giải, cạnh tranh dinh dưỡng và không gian", b: "Tăng độ ẩm đất quá mức", c: "Phá hủy toàn bộ rễ cây", d: "Chỉ sống thụ động không tương tác", ans: "a" },
+        { id: 42, q: "Theo chương 3, mùn được hình thành từ quá trình nào?", a: "Phân hủy chất hữu cơ bởi vi sinh vật", b: "Phun thuốc hóa học", c: "Đốt cháy thực vật", d: "Khai thác khoáng sản", ans: "a" },
+        { id: 43, q: "Chu trình carbon trong đất có ý nghĩa đặc biệt trong bối cảnh nào?", a: "Biến đổi khí hậu", b: "Giá nông sản", c: "Thời tiết hàng ngày", d: "Mùa thu hoạch", ans: "a" },
+        { id: 44, q: "Vi sinh vật đất tham gia vào chu trình của những nguyên tố nào khác ngoài N, P, S?", a: "Kali, canxi, magie và các nguyên tố vi lượng", b: "Chỉ vàng và bạc", c: "Chỉ khí hiếm", d: "Không có nguyên tố nào khác", ans: "a" },
+        { id: 45, q: "Quá trình nitrat hóa do nhóm vi sinh vật nào thực hiện?", a: "Vi khuẩn nitrat hóa", b: "Nấm rễ cộng sinh", c: "Virus thực vật", d: "Động vật nguyên sinh", ans: "a" },
+        { id: 46, q: "Nấm rễ cộng sinh góp phần vào cấu trúc đất bằng cách nào?", a: "Tạo mạng lưới sợi nấm liên kết các hạt đất thành tập hợp ổn định", b: "Phá vỡ cấu trúc đất hoàn toàn", c: "Không liên quan đến cấu trúc đất", d: "Chỉ sống trong nước", ans: "a" },
+        { id: 47, q: "Cấu trúc chuyên biệt nơi Rhizobium cố định nitơ trong cây họ đậu được gọi là gì?", a: "Nốt sần rễ", b: "Khí khổng", c: "Giác bám (appressoria)", d: "Cơ quan hút (haustoria)", ans: "a" },
+        { id: 48, q: "Thụ thể nào trên bề mặt tế bào thực vật nhận biết các mẫu phân tử liên quan đến mầm bệnh (PAMPs)?", a: "NLR", b: "PRRs", c: "PGPR", d: "ISR", ans: "b" },
+        { id: 49, q: "Miễn dịch khởi phát bởi effector ở thực vật được gọi là gì?", a: "PTI", b: "ETI", c: "ISR", d: "IPM", ans: "b" },
+        { id: 50, q: "Loại nấm nào được nêu là ví dụ sản xuất enzyme phân giải thành tế bào nấm gây bệnh trong kiểm soát sinh học?", a: "Trichoderma spp.", b: "Aspergillus spp.", c: "Fusarium spp.", d: "Candida spp.", ans: "a" },
+        { id: 51, q: "Mầm bệnh thực vật xâm nhập mô cây thông qua cấu trúc chuyên biệt nào để tạo điều kiện định cư?", a: "Nốt sần", b: "Giác bám (appressoria) hoặc cơ quan hút (haustoria)", c: "Lông hút rễ", d: "Khí khổng đóng", ans: "b" },
+        { id: 52, q: "Vi khuẩn Bacillus spp. trong kiểm soát sinh học sản xuất chất gì để ức chế mầm bệnh?", a: "Kháng sinh hoặc siderophore", b: "Đường glucose", c: "CO2", d: "Nước", ans: "a" },
+        { id: 53, q: "Triệu chứng bệnh trên cây bị nhiễm KHÔNG bao gồm dạng nào sau đây theo chương này?", a: "Hoại tử", b: "Héo rũ", c: "Vàng lá (chlorosis)", d: "Ra hoa sớm", ans: "d" },
+        { id: 54, q: "Cộng sinh hội sinh (commensalism) là dạng quan hệ như thế nào?", a: "Một bên được lợi mà không gây hại cho bên còn lại", b: "Cả hai bên đều bị hại", c: "Cả hai bên đều có lợi như nhau tuyệt đối", d: "Một bên bị tiêu diệt hoàn toàn", ans: "a" },
+        { id: 55, q: "Theo chương 4, mầm bệnh tiết ra yếu tố độc lực nào để thao túng tế bào vật chủ?", a: "Độc tố, enzyme phân giải thành tế bào, protein effector", b: "Chỉ có nước cất", c: "Chỉ có đường glucose", d: "Chỉ có khí oxy", ans: "a" },
+        { id: 56, q: "PTI là viết tắt của khái niệm miễn dịch nào ở thực vật?", a: "Miễn dịch khởi phát bởi PAMP", b: "Miễn dịch khởi phát bởi effector", c: "Miễn dịch bẩm sinh ở động vật", d: "Miễn dịch nhân tạo", ans: "a" },
+        { id: 57, q: "Vi sinh vật nội sinh (endophyte) mang lại lợi ích gì cho cây chủ?", a: "Tăng cường hấp thu dinh dưỡng, khả năng chịu stress và phòng vệ trước mầm bệnh", b: "Chỉ gây hại cho mô cây", c: "Không có lợi ích nào", d: "Làm giảm khả năng quang hợp", ans: "a" },
+        { id: 58, q: "Trao đổi thông tin phân tử trong cộng sinh được điều khiển bởi loại phân tử tín hiệu nào?", a: "Phytohormone và các yếu tố hiệu ứng cộng sinh", b: "Chỉ có ánh sáng", c: "Chỉ có nhiệt độ", d: "Chỉ có độ ẩm không khí", ans: "a" },
+        { id: 59, q: "Kiểm soát sinh học khác với thuốc bảo vệ thực vật hóa học truyền thống ở điểm nào?", a: "Khai thác hoạt động đối kháng của vi sinh vật tự nhiên", b: "Sử dụng hóa chất tổng hợp mạnh hơn", c: "Không có sự khác biệt nào", d: "Chỉ áp dụng trong phòng thí nghiệm", ans: "a" },
+        { id: 60, q: "Liên kết nấm rễ (mycorrhiza) mang lại lợi ích gì cho cây trồng?", a: "Tăng khả năng hấp thu nước và dinh dưỡng, đặc biệt photpho và nitơ", b: "Làm cây mất nước nhanh hơn", c: "Gây bệnh cho rễ cây", d: "Không có lợi ích nào", ans: "a" },
+        { id: 61, q: "Theo chương 4, cuộc “chạy đua vũ trang” giữa cây trồng và mầm bệnh thúc đẩy điều gì?", a: "Sự tiến hóa của các yếu tố độc lực và cơ chế phòng vệ", b: "Sự tuyệt chủng của tất cả cây trồng", c: "Sự dừng lại hoàn toàn của tiến hóa", d: "Không có tác động nào", ans: "a" },
+        { id: 62, q: "Quản lý bệnh hiệu quả theo chương 4 cần kết hợp yếu tố nào?", a: "Biện pháp canh tác, tính kháng giống, kiểm soát sinh học và thuốc bảo vệ thực vật", b: "Chỉ dùng một loại hóa chất duy nhất", c: "Chỉ dựa vào may rủi", d: "Bỏ mặc không can thiệp", ans: "a" },
+        { id: 63, q: "Công cụ chỉnh sửa gen nào được nhắc đến trong các phương pháp sinh học tổng hợp?", a: "CRISPR-Cas9", b: "PCR truyền thống", c: "Kính hiển vi điện tử", d: "Máy ly tâm", ans: "a" },
+        { id: 64, q: "Phân bón sinh học sử dụng vi khuẩn hòa tan lân nào sau đây?", a: "Pseudomonas, Bacillus", b: "Salmonella, E. coli", c: "Listeria, Norovirus", d: "Aspergillus, Fusarium", ans: "a" },
+        { id: 65, q: "Chiến lược xử lý sinh học sử dụng thực vật để làm sạch ô nhiễm gọi là gì?", a: "Phytoremediation", b: "Hydroponics", c: "Aquaponics", d: "Composting", ans: "a" },
+        { id: 66, q: "Khái niệm nào mở rộng nông nghiệp chính xác sang lĩnh vực quản lý vi sinh vật?", a: "Quản lý vi sinh vật chính xác", b: "Trồng cây thủy canh", c: "Bón phân hóa học đại trà", d: "Canh tác độc canh", ans: "a" },
+        { id: 67, q: "Việc sử dụng các vi sinh vật đối kháng để kiểm soát bệnh trên rau quả sau thu hoạch mà không cần chất bảo quản hóa học gọi là gì?", a: "Kiểm soát sinh học bệnh sau thu hoạch", b: "Chiếu xạ thực phẩm", c: "Đóng gói chân không", d: "Ướp muối", ans: "a" },
+        { id: 68, q: "Tập đoàn vi sinh (microbial consortia) được nghiên cứu nhằm mục đích gì?", a: "Tạo hiệu ứng hiệp đồng tăng cường sinh trưởng cây trồng", b: "Làm cây trồng yếu hơn", c: "Giảm đa dạng sinh học đất", d: "Thay thế hoàn toàn ánh sáng mặt trời", ans: "a" },
+        { id: 79, q: "Đặc trưng hệ vi sinh vật (microbiome characterization) được thúc đẩy bởi công nghệ nào?", a: "Giải trình tự thế hệ mới và công cụ tin sinh học", b: "Chỉ kính hiển vi quang học cổ điển", c: "Chỉ phương pháp nuôi cấy truyền thống", d: "Không có công nghệ nào", ans: "a" },
+        { id: 70, q: "Chế phẩm kích thích sinh học (bio-stimulants) có thể bao gồm thành phần nào?", a: "Chế phẩm vi sinh, chất chuyển hóa vi sinh, chất mùn humic, chiết xuất rong biển", b: "Chỉ có nước cất tinh khiết", c: "Chỉ có muối ăn", d: "Chỉ có thuốc trừ sâu hóa học", ans: "a" },
+        { id: 71, q: "Theo chương 5, các tác nhân kiểm soát sinh học sau thu hoạch hoạt động bằng cách nào?", a: "Định cư trên bề mặt nông sản, cạnh tranh với vi sinh vật gây hỏng", b: "Tiêu diệt toàn bộ vi sinh vật có lợi", c: "Làm tăng tốc độ hư hỏng", d: "Không có tác động nào", ans: "a" },
+        { id: 72, q: "Quản lý vi sinh vật chính xác nhằm mục đích gì?", a: "Thiết kế chế phẩm vi sinh phù hợp với giống cây, loại đất, điều kiện môi trường cụ thể", b: "Áp dụng một loại chế phẩm duy nhất cho mọi điều kiện", c: "Loại bỏ hoàn toàn vi sinh vật khỏi nông nghiệp", d: "Chỉ dùng cho cây cảnh trong nhà", ans: "a" },
+        { id: 73, q: "Vi sinh vật “thiết kế” (designed microbes) được tạo ra nhờ ứng dụng nào?", a: "Sinh học tổng hợp và công cụ chỉnh sửa gen", b: "Chỉ bằng phương pháp lai tạo cổ điển", c: "Chỉ bằng cách phơi nắng", d: "Không có phương pháp khoa học nào", ans: "a" },
+        { id: 74, q: "Giải pháp vi sinh cho thích ứng biến đổi khí hậu hướng đến mục tiêu gì?", a: "Tăng khả năng chịu stress phi sinh học như hạn hán, nhiệt độ cao, mặn", b: "Làm cây trồng dễ chết hơn khi gặp stress", c: "Không liên quan đến biến đổi khí hậu", d: "Chỉ áp dụng ở vùng lạnh", ans: "a" },
+        { id: 75, q: "Theo chương 5, tác nhân kiểm soát sinh học được sử dụng để ức chế những loại sinh vật gây bệnh nào trên cây trồng?", a: "Nấm, vi khuẩn và tuyến trùng", b: "Chỉ chim và chuột", c: "Chỉ cá trong ao", d: "Không có sinh vật cụ thể nào", ans: "a" },
+        { id: 76, q: "Theo chương 5, các kỹ thuật xử lý ô nhiễm bằng vi sinh vật bao gồm phương pháp nào?", a: "Phytoremediation, rhizoremediation, tăng cường vi sinh vật", b: "Chỉ đốt cháy chất ô nhiễm", c: "Chỉ chôn lấp sâu dưới đất", d: "Không có kỹ thuật cụ thể nào", ans: "a" },
+        { id: 77, q: "Vi sinh vật nội sinh và vi khuẩn vùng rễ thúc đẩy sinh trưởng cây trồng thông qua cơ chế nào?", a: "Tăng cường hấp thu dinh dưỡng, sản xuất hormone, hòa tan khoáng chất", b: "Chỉ tiêu diệt toàn bộ rễ cây", c: "Không có cơ chế cụ thể nào", d: "Chỉ làm cây chậm phát triển", ans: "a" },
+        { id: 78, q: "Kiểm soát sinh học trong bảo vệ cây trồng được coi là giải pháp thay thế cho loại sản phẩm nào?", a: "Thuốc bảo vệ thực vật hóa học", b: "Phân bón hữu cơ", c: "Nước tưới", d: "Giống cây trồng lai", ans: "a" },
+        { id: 79, q: "Kháng cảm ứng toàn thân được viết tắt là gì?", a: "ISR", b: "IPM", c: "PGPR", d: "GMO", ans: "a" },
+        { id: 80, q: "Vi khuẩn vùng rễ kích thích sinh trưởng (PGPR) kích hoạt khả năng kháng bệnh toàn thân bằng cách sản xuất chất gì ở cây trồng?", a: "Protein liên quan đến bệnh và phytoalexin", b: "Đường tinh luyện", c: "Nước cất", d: "Acid clohidric", ans: "a" },
+        { id: 81, q: "Mycovirus được nêu là ví dụ của loại tác nhân nào trong quản lý bệnh hại?", a: "Vi rút có hoạt tính đối kháng với mầm bệnh", b: "Loại thuốc trừ sâu hóa học", c: "Phân bón vô cơ", d: "Chất bảo quản thực phẩm", ans: "a" },
+        { id: 82, q: "Yếu tố môi trường nào KHÔNG được nhắc đến là ảnh hưởng đến hiệu quả kiểm soát sinh học bằng vi sinh?", a: "pH đất", b: "Nhiệt độ", c: "Độ ẩm", d: "Giá cổ phiếu nông sản", ans: "d" },
+        { id: 83, q: "Theo chương 6, sự chuyển biến trong vi sinh vật học nông nghiệp gần đây là gì?", a: "Chỉ tập trung chống mầm bệnh sang khai thác tiềm năng vi sinh vật có lợi", b: "Loại bỏ hoàn toàn vi sinh vật khỏi đất", c: "Chỉ dùng hóa chất tổng hợp", d: "Ngừng nghiên cứu vi sinh vật học", ans: "a" },
+        { id: 84, q: "Cơ chế đối kháng của vi sinh vật có lợi KHÔNG bao gồm cơ chế nào sau đây?", a: "Cạnh tranh dinh dưỡng và không gian sống", b: "Sản xuất hợp chất kháng khuẩn", c: "Kích thích kháng bệnh toàn thân", d: "Phá hủy toàn bộ hệ sinh thái đất", ans: "d" },
+        { id: 85, q: "Tính đặc hiệu của tác nhân kiểm soát sinh học mang lại lợi ích gì?", a: "Giảm nguy cơ ô nhiễm môi trường, hạn chế tác động đến sinh vật không mục tiêu", b: "Gây hại cho mọi sinh vật trong đất", c: "Làm tăng ô nhiễm hóa chất", d: "Không có lợi ích nào", ans: "a" },
+        { id: 86, q: "Sản phẩm kiểm soát sinh học được thương mại hóa dưới những dạng nào?", a: "Dung dịch huyền phục, bột, hạt, chế phẩm tích hợp vào hạt giống", b: "Chỉ dạng khí nén", c: "Chỉ dạng viên nén kim loại", d: "Không có dạng thương mại nào", ans: "a" },
+        { id: 87, q: "Theo chương 6, IPM tích hợp những biện pháp nào?", a: "Sinh học, canh tác, vật lý và hóa học", b: "Chỉ biện pháp hóa học", c: "Chỉ biện pháp sinh học đơn lẻ", d: "Không kết hợp biện pháp nào", ans: "a" },
+        { id: 88, q: "PGPR có thể kích hoạt cơ chế phòng vệ nào ở cây thông qua tạo chất cảm ứng hoặc hợp chất hữu cơ bay hơi?", a: "Tính kháng hệ thống của cây", b: "Sự chết tế bào hàng loạt", c: "Sự mất nước hoàn toàn", d: "Sự ngừng quang hợp", ans: "a" },
+        { id: 89, q: "Theo chương 6, nghiên cứu liên tục trong lĩnh vực nào thúc đẩy đổi mới kiểm soát sinh học?", a: "Sinh thái học vi sinh, hệ gen học, công nghệ sinh học", b: "Chỉ địa chất học", c: "Chỉ khí tượng học", d: "Chỉ kinh tế học", ans: "a" },
+        { id: 90, q: "Theo chương 6, các vi sinh vật có lợi trong kiểm soát sinh học bao gồm những nhóm nào?", a: "Nấm, vi khuẩn, virus và tuyến trùng", b: "Chỉ chim săn mồi", c: "Chỉ động vật có vú", d: "Chỉ thực vật bậc cao", ans: "a" },
+        { id: 91, q: "Vi sinh vật kiểm soát sinh học hoạt động hiệu quả nhất khi nào theo chương 6?", a: "Khi kết hợp với các chiến lược quản lý bệnh khác như luân canh và vệ sinh đồng ruộng", b: "Khi sử dụng đơn độc, không kết hợp biện pháp nào khác", c: "Khi bỏ qua điều kiện môi trường", d: "Khi áp dụng cùng lúc với toàn bộ hóa chất độc hại", ans: "a" },
+        { id: 92, q: "Hợp tác giữa nhà nghiên cứu, nông dân, khuyến nông và cơ quan quản lý có vai trò gì trong kiểm soát sinh học?", a: "Thúc đẩy việc áp dụng và xây dựng khung pháp lý đảm bảo an toàn, hiệu quả sản phẩm", b: "Không có vai trò gì trong thực tiễn", c: "Chỉ làm chậm quá trình ứng dụng", d: "Gây cản trở nghiên cứu khoa học", ans: "a" },
+        { id: 93, q: "Vùng rễ (rhizosphere) được định nghĩa là gì?", a: "Vùng tiếp giáp năng động giữa rễ cây và đất", b: "Toàn bộ bầu khí quyển", c: "Phần thân cây trên mặt đất", d: "Lớp vỏ ngoài của hạt giống", ans: "a" },
+        { id: 94, q: "Nhóm vi sinh vật nào thường là nhóm phong phú nhất trong vùng rễ?", a: "Vi khuẩn", b: "Vi khuẩn cổ (archaea)", c: "Động vật nguyên sinh", d: "Vi rút", ans: "a" },
+        { id: 95, q: "Chất tiết từ rễ cây đóng vai trò là nguồn gì chính cho vi sinh vật vùng rễ?", a: "Nguồn carbon", b: "Nguồn ánh sáng", c: "Nguồn nhiệt", d: "Nguồn oxy nguyên chất", ans: "a" },
+        { id: 96, q: "Ngành vi khuẩn nào KHÔNG được nêu là phổ biến trong vùng rễ?", a: "Proteobacteria", b: "Actinobacteria", c: "Firmicutes", d: "Chordata", ans: "d" },
+        { id: 97, q: "Tính dư thừa chức năng (functional redundancy) trong cộng đồng vi sinh vùng rễ có ý nghĩa gì?", a: "Nhiều nhóm vi sinh khác nhau thực hiện chức năng sinh thái tương tự, giúp hệ sinh thái ổn định", b: "Chỉ có một loài vi sinh vật duy nhất tồn tại", c: "Không có chức năng sinh thái nào được thực hiện", d: "Toàn bộ vi sinh vật bị tiêu diệt", ans: "a" },
+        { id: 98, q: "Vi khuẩn cổ trong vùng rễ góp phần vào chu trình nào?", a: "Chu trình nitơ và chuyển hóa methane", b: "Chu trình ánh sáng", c: "Chu trình âm thanh", d: "Chu trình điện từ", ans: "a" },
+        { id: 99, q: "Nấm trong vùng rễ thuộc các nhóm phân loại nào được nêu trong chương?", a: "Ascomycota, Basidiomycota, Zygomycota", b: "Chỉ Mammalia", c: "Chỉ Aves", d: "Chỉ Reptilia", ans: "a" },
+        { id: 100, q: "Động vật nguyên sinh trong vùng rễ tham gia vào quá trình nào?", a: "Khoáng hóa dinh dưỡng, phân hủy chất hữu cơ, kiểm soát quần thể vi sinh qua ăn mồi", b: "Chỉ quang hợp", c: "Chỉ hô hấp hiếu khí của cây", d: "Không có vai trò sinh thái nào", ans: "a" },
+        { id: 101, q: "Yếu tố nào sau đây ảnh encoder đến cộng đồng vi sinh vùng rễ theo chương 7?", a: "Loài cây, chất tiết rễ, tính chất lý-hóa đất, biện pháp canh tác", b: "Chỉ màu sắc lá cây", c: "Chỉ giá bán nông sản", d: "Chỉ độ cao của cây", ans: "a" },
+        { id: 102, q: "Vi rút trong vùng rễ chủ yếu là loại nào?", a: "Thực khuẩn thể và vi rút nấm", b: "Chỉ vi rút cúm gia cầm", c: "Chỉ vi rút ở người", d: "Không có vi rút nào trong vùng rễ", ans: "a" },
+        { id: 103, q: "Theo chương 7, tương tác sinh thái trong cộng đồng vi sinh vùng rễ KHÔNG bao gồm dạng nào?", a: "Cộng sinh", b: "Cạnh tranh", c: "Ăn mồi và ký sinh", d: "Du lịch sinh thái", ans: "d" },
+        { id: 104, q: "Việc khai thác lợi ích của vi sinh vật vùng rễ thông qua bón phân sinh học và cấy vi sinh vật mang lại lợi ích gì?", a: "Nâng cao năng suất cây trồng, giảm hóa chất, tăng sức khỏe và phục hồi đất", b: "Làm giảm năng suất cây trồng", c: "Tăng chi phí hóa chất gấp nhiều lần", d: "Không có lợi ích thực tế nào", ans: "a" },
+        { id: 105, q: "Theo chương 7, biến động trong cộng đồng vi sinh vùng rễ do thay đổi mục đích sử dụng đất có thể dẫn đến điều gì?", a: "Suy giảm độ phì đất, sức khỏe cây trồng và chức năng sinh thái", b: "Luôn luôn cải thiện chất lượng đất", c: "Không có ảnh hưởng nào", d: "Tăng năng suất cây trồng ngay lập tức", ans: "a" },
+        { id: 106, q: "Đặc tính lý-hóa của đất như pH, kết cấu và hàm lượng chất hữu cơ ảnh hưởng đến điều gì?", a: "Thành phần và chức năng của cộng đồng vi sinh vùng rễ", b: "Chỉ ảnh hưởng đến màu sắc đất", c: "Không ảnh hưởng gì đến vi sinh vật", d: "Chỉ ảnh hưởng đến giá đất", ans: "a" },
+        { id: 107, q: "Bacillus thuringiensis (Bt) được sử dụng trong thuốc BVTV sinh học nhờ đặc tính gì?", a: "Diệt côn trùng", b: "Tăng độ ẩm đất", c: "Làm chín quả nhanh", d: "Tạo màu cho hoa", ans: "a" },
+        { id: 108, q: "Loại nấm nào được nêu là tác nhân ký sinh côn trùng dùng làm thuốc BVTV sinh học?", a: "Beauveria bassiana", b: "Aspergillus niger", c: "Saccharomyces cerevisiae", d: "Candida albicans", ans: "a" },
+        { id: 109, q: "Baculovirus và nucleopolyhedrovirus là nguồn gốc của loại thuốc BVTV sinh học nào?", a: "Thuốc BVTV sinh học từ vi rút côn trùng", b: "Thuốc BVTV hóa học tổng hợp", c: "Phân bón vô cơ", d: "Chất kích thích sinh trưởng từ khoáng chất", ans: "a" },
+        { id: 110, q: "Vi khuẩn hòa tan kali thuộc các chi nào được nêu trong chương?", a: "Bacillus, Pseudomonas, Enterobacter", b: "Salmonella, E. coli, Listeria", c: "Rhizobium chỉ riêng", d: "Không có vi khuẩn nào hòa tan kali", ans: "a" },
+        { id: 111, q: "PGPB là viết tắt của thuật ngữ nào?", a: "Vi khuẩn kích thích sinh trưởng cây trồng (Plant Growth Promoting Bacteria)", b: "Phân bón gốc photpho hữu cơ", c: "Protein gây bệnh thực vật", d: "Chương trình giám sát bệnh hại", ans: "a" },
+        { id: 112, q: "Chất kích thích sinh trưởng cây trồng hoạt động qua cơ chế nào sau đây?", a: "Sản xuất hormone như auxin, cytokinin", b: "Chỉ phun thuốc trừ sâu hóa học", c: "Loại bỏ hoàn toàn vi sinh vật trong đất", d: "Giảm khả năng hấp thu dinh dưỡng của cây", ans: "a" },
+        { id: 113, q: "Thuốc BVTV sinh học từ động vật nguyên sinh thường sử dụng loài nào?", a: "Nosema spp. và Steinernema spp.", b: "Rhizobium spp.", c: "Saccharomyces spp.", d: "Azotobacter spp.", ans: "a" },
+        { id: 114, q: "Theo chương 8, phân bón sinh học cố định đạm cộng sinh điển hình gồm các chi nào?", a: "Rhizobium spp. và Bradyrhizobium spp.", b: "Salmonella và Listeria", c: "Aspergillus và Fusarium", d: "Norovirus và Campylobacter", ans: "a" },
+        { id: 115, q: "Cơ chế hòa tan lân của vi khuẩn giúp ích gì cho cây trồng?", a: "Cải thiện khả năng hấp thu photpho của cây", b: "Làm cây hấp thu ít nước hơn", c: "Gây độc cho rễ cây", d: "Không có tác dụng nào", ans: "a" },
+        { id: 116, q: "Các phương pháp sử dụng thuốc BVTV sinh học bao gồm gì?", a: "Phun qua lá, tưới gốc, xử lý hạt giống", b: "Chỉ tiêm trực tiếp vào thân cây", c: "Chỉ rắc trên mái nhà", d: "Không có phương pháp sử dụng cụ thể", ans: "a" },
+        { id: 117, q: "Nấm cộng sinh nội (AM) và nấm cộng sinh ngoại (ECM) thuộc nhóm nào?", a: "Nấm kích thích sinh trưởng cây trồng (PGPF)", b: "Vi khuẩn gây bệnh", c: "Virus thực vật", d: "Vi khuẩn cổ", ans: "a" },
+        { id: 118, q: "Theo chương 8, lợi ích của phân bón sinh học bao gồm điều gì?", a: "Cải thiện sức khỏe đất, tăng khả năng cung cấp dinh dưỡng, giảm ô nhiễm môi trường", b: "Làm đất chai cứng hơn", c: "Tăng chi phí sản xuất gấp nhiều lần", d: "Không có lợi ích nào rõ ràng", ans: "a" },
+        { id: 119, q: "Hạn chế của chế phẩm vi sinh được nêu trong chương 8 là gì?", a: "Hiệu quả không ổn định trong các điều kiện đất khác nhau", b: "Luôn luôn hiệu quả 100% trong mọi điều kiện", c: "Không có hạn chế nào", d: "Chỉ tốn kém quá mức so với hóa chất", ans: "a" },
+        { id: 120, q: "Theo chương 8, các chế phẩm vi sinh có nguồn gốc từ những nhóm sinh vật nào?", a: "Vi khuẩn, nấm và vi rút có lợi", b: "Chỉ từ kim loại nặng", c: "Chỉ từ khoáng chất vô cơ", d: "Chỉ từ nhựa tổng hợp", ans: "a" },
+        { id: 121, q: "Công thức bào chế của thuốc BVTV sinh học thường ở dạng nào?", a: "Dạng lỏng, dạng hạt, dạng bột", b: "Chỉ dạng khí nén áp suất cao", c: "Chỉ dạng tinh thể kim loại", d: "Không có dạng bào chế cụ thể", ans: "a" },
+        { id: 122, q: "HACCP là viết tắt của phương pháp nào?", a: "Hazard Analysis and Critical Control Points", b: "Hệ thống Canh tác Chính xác", c: "Hợp tác Canh tác Cộng đồng", d: "Hóa chất An toàn Cây trồng", ans: "a" },
+        { id: 123, q: "Vi khuẩn nào sau đây được nêu là mầm bệnh phổ biến gây ô nhiễm thực phẩm?", a: "Salmonella, E. coli, Listeria monocytogenes", b: "Rhizobium, Azotobacter", c: "Trichoderma, Beauveria", d: "Bacillus thuringiensis", ans: "a" },
+        { id: 124, q: "Phương pháp xử lý nhiệt nào loại bỏ toàn bộ vi sinh vật còn sống, dùng cho sản phẩm đóng hộp?", a: "Thanh trùng", b: "Tiệt trùng", c: "Sấy khô", d: "Lên men", ans: "b" },
+        { id: 125, q: "Bao gói khí quyển biến đổi được viết tắt là gì?", a: "MAP", b: "GAP", c: "GMP", d: "ISR", ans: "a" },
+        { id: 126, q: "GAPs là viết tắt của thuật ngữ nào?", a: "Good Agricultural Practices", b: "General Application Procedures", c: "Global Agriculture Policies", d: "Genetic Analysis Programs", ans: "a" },
+        { id: 127, q: "Phương pháp bảo quản nào sử dụng vi khuẩn lactic và nấm men để tạo acid và rượu ức chế vi sinh vật gây hư hỏng?", a: "Lên men", b: "Chiếu xạ", c: "Đóng gói chân không", d: "Kiểm soát nhiệt độ", ans: "a" },
+        { id: 128, q: "Chiếu xạ thực phẩm sử dụng loại bức xạ nào để tiêu diệt vi sinh vật gây hại?", a: "Bức xạ ion hóa", b: "Sóng âm thanh", c: "Tia hồng ngoại yếu", d: "Sóng radio", ans: "a" },
+        { id: 129, q: "Vi rút nào được nêu là tác nhân gây bệnh truyền qua thực phẩm?", a: "Norovirus và virus viêm gan A", b: "Bacteriophage", c: "Mycovirus", d: "Baculovirus", ans: "a" },
+        { id: 130, q: "Ký sinh trùng nào được nêu có thể làm ô nhiễm thực phẩm?", a: "Cryptosporidium và Toxoplasma", b: "Rhizobium", c: "Trichoderma", d: "Beauveria", ans: "a" },
+        { id: 131, q: "Theo chương 9, các yếu tố nào ảnh hưởng đến sự phát triển của vi sinh vật gây hư hỏng?", a: "pH, độ ẩm, nhiệt độ, oxy, điều kiện bao gói", b: "Chỉ màu sắc thực phẩm", c: "Chỉ giá bán sản phẩm", d: "Chỉ hình dạng bao bì", ans: "a" },
+        { id: 132, q: "GMPs là tiêu chuẩn áp dụng ở đâu?", a: "Các cơ sở chế biến thực phẩm", b: "Chỉ trên đồng ruộng", c: "Chỉ trong phòng thí nghiệm nghiên cứu gen", d: "Chỉ ở cảng xuất khẩu", ans: "a" },
+        { id: 133, q: "Theo chương 9, đóng gói chân không có tác gì?", a: "Ngăn oxy hóa, làm chậm phát triển vi sinh vật, kéo dài bảo quản", b: "Tăng tốc độ hư hỏng thực phẩm", c: "Làm mất hoàn toàn giá trị dinh dưỡng", d: "Không có tác dụng bảo quản nào", ans: "a" },
+        { id: 134, q: "Các phương pháp bảo quản truyền thống được nêu trong chương 9 bao gồm gì?", a: "Xử lý nhiệt, làm khô, lên men", b: "Chỉ có biến đổi gen", c: "Chỉ có chiếu xạ liều cao", d: "Không có phương pháp truyền thống nào", ans: "a" },
+        { id: 135, q: "Theo chương 9, các chất bảo quản hóa học bao gồm chất nào sau đây?", a: "Muối, đường, acid hữu cơ, natri benzoat, kali sorbat", b: "Chỉ có nước tinh khiết", c: "Chỉ có khí oxy nguyên chất", d: "Chỉ có cát và đá", ans: "a" },
+        { id: 136, q: "Sự chuyển biến mang tính mô hình (paradigm shift) trong vi sinh vật học nông nghiệp gần đây là gì?", a: "Từ chống mầm bệnh sang khai thác tiềm năng vi sinh vật có lợi", b: "Từ nông nghiệp sang công nghiệp nặng", c: "Từ trồng trọt sang chăn nuôi hoàn toàn", d: "Từ hữu cơ sang chỉ dùng hóa chất", ans: "a" },
+        { id: 137, q: "Những thách thức nào được nêu là động lực thúc đẩy khai thác vi sinh vật cho nông nghiệp bền vững?", a: "Biến đổi khí hậu, gia tăng dân số, suy giảm diện tích đất canh tác", b: "Giá vàng tăng cao", c: "Thiếu nhân lực văn phòng", d: "Tăng trưởng GDP toàn cầu", ans: "a" },
+        { id: 138, q: "Nông nghiệp chính xác kết hợp với công nghệ số mở ra cơ hội gì trong quản lý vi sinh vật?", a: "Điều chỉnh can thiệp vi sinh phù hợp với điều kiện sinh thái cụ thể", b: "Loại bỏ hoàn toàn việc sử dụng vi sinh vật", c: "Chỉ áp dụng cho cây cảnh", d: "Không có ứng dụng thực tế nào", ans: "a" },
+        { id: 139, q: "Chương 10 đề cập đến những vấn đề pháp lý và đạo đức liên quan đến điều gì?", a: "Thương mại hóa và ứng dụng công nghệ vi sinh trong nông nghiệp", b: "Luật giao thông", c: "Quyền sở hữu trí tuệ âm nhạc", d: "Chính sách thuế doanh nghiệp", ans: "a" },
+        { id: 140, q: "Phân bón sinh học, thuốc trừ sâu sinh học và chế phẩm vi sinh cải tạo đất đều là ví dụ của điều gì?", a: "Khai thác vi sinh vật cho nông nghiệp bền vững", b: "Vi sinh vật gây hại đơn thuần", c: "Hóa chất tổng hợp công nghiệp", d: "Vật liệu xây dựng", ans: "a" },
+        { id: 141, q: "Theo chương 10, những tiến bộ nào đã làm sáng tỏ mạng lưới tương tác phức tạp trong hệ sinh thái nông nghiệp?", a: "Giải trình tự hệ gen, sinh học phân tử, tin sinh học", b: "Chỉ quan sát bằng mắt thường", c: "Chỉ phương pháp canh tác cổ truyền", d: "Không có tiến bộ nào", ans: "a" },
+        { id: 142, q: "Mục tiêu của việc điều chỉnh quần xã vi sinh theo chương 10 là gì?", a: "Tối ưu hóa năng suất cây trồng, tăng khả năng chống chịu stress, giảm phụ thuộc đầu vào tổng hợp", b: "Làm giảm năng suất cây trồng", c: "Tăng phụ thuộc hoàn toàn vào hóa chất", d: "Không có mục tiêu cụ thể", ans: "a" },
+        { id: 143, q: "Theo chương 10, khái niệm trung tâm “Khai thác Vi sinh vật cho Nông nghiệp Bền vững” bao hàm cách tiếp cận như thế nào?", a: "Đa chiều, kết hợp canh tác truyền thống với công nghệ tiên tiến", b: "Chỉ dựa vào một phương pháp duy nhất", c: "Bỏ qua hoàn toàn công nghệ hiện đại", d: "Chỉ áp dụng ở quy mô gia đình nhỏ", ans: "a" },
+        { id: 144, q: "Nội dung về “Đa dạng Vi sinh và Chức năng Hệ sinh thái” trong chương 10 tập trung khám phá điều gì?", a: "Vai trò của đa dạng vi sinh trong chu trình dinh dưỡng, độ phì đất, khả năng phục hồi hệ sinh thái", b: "Chỉ nói về màu sắc của vi sinh vật", c: "Chỉ nói về giá bán vi sinh vật", d: "Không có nội dung cụ thể nào", ans: "a" },
+        { id: 145, q: "Theo chương 10, phân bón sinh học vi sinh giúp nâng cao điều gì cho cây trồng?", a: "Hiệu quả sử dụng dinh dưỡng", b: "Khả năng quang hợp về đêm", c: "Tốc độ ra hoa trái mùa", d: "Khả năng chịu lạnh tuyệt đối", ans: "a" },
+        { id: 146, q: "Chương 10 đánh giá thuốc trừ sâu sinh học dựa trên vi sinh vật so với thuốc hóa học truyền thống về mặt nào?", a: "Hiệu quả và lợi ích môi trường", b: "Chỉ về màu sắc bao bì", c: "Chỉ về giá thành vận chuyển", d: "Không so sánh tiêu chí nào", ans: "a" },
+        { id: 147, q: "Theo chương 10, chế phẩm vi sinh cải tạo đất có thể ứng dụng trong việc gì?", a: "Xử lý ô nhiễm sinh học và phục hồi đất bị thoái hóa", b: "Chỉ dùng trang trí cảnh quan", c: "Chỉ dùng để nhuộm màu đất", d: "Không có ứng dụng thực tế", ans: "a" },
+        { id: 148, q: "Quản lý hệ vi sinh chính xác trong chương 10 đối mặt với thách thức nào?", a: "Tối ưu hóa các xử lý vi sinh cho từng điều kiện sinh thái nông nghiệp cụ thể", b: "Không có thách thức nào", c: "Chỉ là vấn đề thẩm mỹ", d: "Chỉ liên quan đến vấn đề tài chính cá nhân", ans: "a" },
+        { id: 149, q: "Theo chương 10, các vấn đề pháp lý và đạo đức liên quan đến công nghệ vi sinh cần được giải quyết nhằm mục đích gì?", a: "Đảm bảo triển khai giải pháp vi sinh một cách có trách nhiệm và bền vững", b: "Để cấm hoàn toàn nghiên cứu vi sinh vật", c: "Không có mục đích cụ thể", d: "Chỉ để tăng giá bán sản phẩm", ans: "a" }
+            ],
+            2: [
+        { id: 1, q: "Vi sinh vật học nông nghiệp là một lĩnh vực ____ nghiên cứu mối quan hệ giữa vi sinh vật, cây trồng và đất.", a: "độc lập", b: "liên ngành", c: "thuần lý thuyết", d: "cơ giới hóa", ans: "b" },
+        { id: 2, q: "____ được coi là “Cha đẻ của vi sinh vật học đất”.", a: "Martinus Beijerinck", b: "Louis Pasteur", c: "Sergei Winogradsky", d: "Robert Koch", ans: "c" },
+        { id: 3, q: "Beijerinck phân lập vi khuẩn cố định đạm như ____, có quan hệ cộng sinh với cây họ đậu.", a: "Rhizobium", b: "Azotobacter", c: "Bacillus", d: "Pseudomonas", ans: "a" },
+        { id: 4, q: "Tầm quan trọng của vi sinh vật học nông nghiệp vượt ra ngoài nông nghiệp truyền thống để giải quyết các thách thức toàn cầu như an ninh lương thực, ____ và phát triển bền vững môi trường.", a: "biến đổi khí hậu", b: "sản xuất công nghiệp", c: "đô thị hóa", d: "thương mại tự do", ans: "a" },
+        { id: 5, q: "Giữa thế kỷ XX, ____ và di truyền mở ra hướng mới cho việc cải thiện năng suất thông qua vi sinh vật.", a: "cơ khí chế tạo", b: "thủy lợi học", c: "công nghệ sinh học", d: "khoa học khí tượng", ans: "c" },
+        { id: 6, q: "Quá trình ____ do Winogradsky phát hiện là quá trình vi khuẩn lấy năng lượng từ việc oxy hóa hợp chất vô cơ.", a: "quang hợp", b: "lên men", c: "hóa dưỡng", d: "phản nitrat hóa", ans: "c" },
+        { id: 7, q: "Lịch sử của ngành vi sinh vật học nông nghiệp bắt đầu từ ____ thế kỷ XIX.", a: "đầu", b: "giữa", c: "cuối", d: "đầu thế kỷ XX", ans: "c" },
+        { id: 8, q: "Ba nhóm vi sinh vật chính cư trú trong đất nông nghiệp là vi khuẩn, nấm và ____.", a: "tảo độc", b: "động vật nguyên sinh", c: "cổ khuẩn", d: "virus", ans: "d" },
+        { id: 9, q: "____ là tác nhân chính thúc đẩy chu trình dinh dưỡng trong đất nông nghiệp, phân hủy chất hữu cơ thành dạng cây có thể hấp thu.", a: "Vi khuẩn", b: "Virus thực vật", c: "Tuyến trùng hại rễ", d: "Côn trùng đất", ans: "a" },
+        { id: 10, q: "Nấm ____ hình thành mối quan hệ cộng sinh với rễ cây, hỗ trợ hấp thu dinh dưỡng.", a: "hoại sinh", b: "ký sinh độc hại", c: "rễ cộng sinh (mycorrhiza)", d: "gây thối rễ", ans: "c" },
+        { id: 11, q: "____ là vi sinh vật sống bên trong mô cây mà không gây hại cho cây chủ, mang lại nhiều lợi ích như tăng khả năng chịu stress.", a: "Nấm nội sinh", b: "Nấm rễ ngoại sinh", c: "Nấm mốc đen", d: "Vi khuẩn mầm bệnh", ans: "a" },
+        { id: 12, q: "Một số vi khuẩn có khả năng phân hủy các chất ô nhiễm hữu cơ, thuốc trừ sâu và thuốc diệt cỏ thông qua khả năng ____.", a: "đột biến gen", b: "xử lý sinh học (bioremediation)", c: "quang tự dưỡng", d: "độc canh hóa chất", ans: "b" },
+        { id: 13, q: "____ là vi khuẩn vùng rễ kích thích sinh trưởng cây, viết tắt là PGPR.", a: "Phytoplasma Growth Promoting Rhizobacteria", b: "Plant Growth Promoting Rhizobacteria", c: "Pathogenic Growth Preventing Rhizobacteria", d: "Phosphate Green Processing Rhizobacteria", ans: "b" },
+        { id: 14, q: "Vi khuẩn vùng rễ kích thích sinh trưởng cây bằng cách hòa tan khoáng, sản sinh ____ và kích thích phát triển rễ.", a: "hormone sinh trưởng", b: "chất độc hóa học", c: "khí methan", d: "axit sulfuric", ans: "a" },
+        { id: 15, q: "Một trong những chức năng chính của vi sinh vật đất là ____, phân giải vật chất hữu cơ thành các hợp chất đơn giản hơn.", a: "phân hủy", b: "tổng hợp polyme", c: "độc canh", d: "xói mòn", ans: "a" },
+        { id: 16, q: "Vi khuẩn ____ như Rhizobium có khả năng chuyển đổi nitơ khí quyển thành dạng cây có thể sử dụng.", a: "gây thối rễ", b: "cố định đạm", c: "hòa tan lân", d: "oxy hóa lưu huỳnh", ans: "b" },
+        { id: 17, q: "Sức khỏe đất được định nghĩa là khả năng của đất hoạt động như một ____ có thể duy trì thực vật, động vật và con người.", a: "vật liệu xây dựng", b: "hệ sinh thái sống", c: "môi trường vô trùng", d: "kho báu khoáng sản", ans: "b" },
+        { id: 18, q: "____ là một dạng vật chất hữu cơ ổn định được hình thành từ quá trình phân hủy, giúp cải thiện cấu trúc và độ phì nhiêu của đất.", a: "Mùn", b: "Cát mịn", c: "Phân bón vô cơ", d: "Đất sét chai", ans: "a" },
+        { id: 19, q: "Một số vi sinh vật đất thể hiện mối quan hệ ____ với các tác nhân gây bệnh cho cây trồng, giúp hạn chế dịch bệnh.", a: "hợp tác ký sinh", b: "đối kháng", c: "hội sinh thụ động", d: "đồng thuận gây hại", ans: "b" },
+        { id: 20, q: "Photpho, nitơ và ____ là các nguyên tố dinh dưỡng thiết yếu mà vi sinh vật giúp giải phóng từ chất hữu cơ.", a: "vàng", b: "uranium", c: "kali", d: "natri", ans: "c" },
+        { id: 21, q: "Quá trình ____ chuyển amoni thành nitrit và nitrat, là dạng nitơ cây có thể hấp thu.", a: "amôn hóa", b: "khử nitrat", c: "nitrat hóa", d: "cố định đạm", ans: "c" },
+        { id: 22, q: "Vi khuẩn khử ____ chuyển sulfate thành sulfide trong điều kiện yếm khí.", a: "sulfate", b: "nitrat", c: "cacbonat", d: "photphat", ans: "a" },
+        { id: 23, q: "Trong cộng sinh ____, cả hai bên đều được hưởng lợi từ mối quan hệ.", a: "hội sinh", b: "ký sinh", c: "tương hỗ", d: "cạnh tranh", ans: "c" },
+        { id: 24, q: "Mầm bệnh tiết ra các protein ____ nhằm điều chỉnh hệ miễn dịch của cây và thúc đẩy sự nhân lên của mầm bệnh.", a: "kháng sinh", b: "effector", c: "polysaccharide", d: "hormone rễ", ans: "b" },
+        { id: 25, q: "Kiểm soát sinh học khai thác hoạt động ____ của vi sinh vật có lợi để ức chế sự phát triển của mầm bệnh.", a: "đối kháng", b: "hỗ trợ sinh sản", c: "ký sinh lẫn nhau", d: "thụ động", ans: "a" },
+        { id: 26, q: "Nấm ký sinh ____ trực tiếp ký sinh trên nấm gây bệnh trong các biện pháp kiểm soát sinh học.", a: "Fusarium", a: "Aspergillus", c: "Ampelomyces", d: "Saccharomyces", ans: "c" },
+        { id: 27, q: "Quản lý dịch hại tổng hợp được viết tắt là ____.", a: "ISR", b: "PGPR", c: "IPM", d: "GMO", ans: "c" },
+        { id: 28, q: "____ là thụ thể nội bào ở thực vật nhận diện các protein effector, dẫn đến miễn dịch ETI.", a: "PRRs", b: "NLR", c: "PGPB", d: "MAPK", ans: "b" },
+        { id: 29, q: "Trong cộng sinh Rhizobium – cây họ đậu, vi khuẩn hình thành cấu trúc gọi là ____ trên rễ cây.", a: "khí khổng", b: "giác bám", c: "nốt sần", d: "lông hút", ans: "c" },
+        { id: 30, q: "Các chế phẩm vi sinh như vi khuẩn cố định đạm và vi khuẩn hòa tan lân giúp nâng cao độ phì nhiêu của đất, được gọi là ____.", a: "thuốc bảo vệ thực vật", b: "chất cải tạo lý tính", c: "phân bón sinh học", d: "chất bảo quản nông sản", ans: "c" },
+        { id: 31, q: "Công nghệ giải trình tự thế hệ mới và các công cụ tin sinh học đã làm thay đổi sự hiểu biết của con người về ____ của cây trồng.", a: "hệ vi sinh vật (microbiome)", b: "chiều cao tối đa", c: "màu sắc cánh hoa", d: "sức căng bề mặt lá", ans: "a" },
+        { id: 32, q: "Các chất kích thích sinh học vi sinh chứa các vi sinh vật có lợi nhằm kích thích sinh trưởng cây trồng, được gọi là ____.", a: "bio-stimulants", b: "bio-preservatives", c: "chemical-enhancers", d: "plant-toxins", ans: "a" },
+        { id: 33, q: "Các nhà nghiên cứu đang phát triển giải pháp vi sinh nhằm nâng cao khả năng thích ứng của cây trồng với các stress phi sinh học như hạn hán, nhiệt độ cao và ____.", a: "ngập úng hóa chất", b: "mặn", c: "sâu đục thân", d: "gió mùa Đông Bắc", ans: "b" },
+        { id: 34, q: "Trichoderma và Beauveria là ví dụ của các vi sinh vật được dùng làm ____ trong nông nghiệp.", a: "phân bón hóa học đại trà", b: "tác nhân kiểm soát sinh học", c: "chất kích thích chín quả", d: "mầm bệnh đột biến nguy hiểm", ans: "b" },
+        { id: 35, q: "____ là công cụ chỉnh sửa gen cho phép tối ưu hóa con đường chuyển hóa của vi sinh vật.", a: "PCR truyền thống", b: "Kính hiển vi điện tử", c: "CRISPR-Cas9", d: "Máy giải trình tự Sanger", ans: "c" },
+        { id: 36, q: "Việc kết hợp các vi sinh vật có chức năng bổ trợ thành ____ nhằm tạo hiệu ứng hiệp đồng cho cây trồng.", a: "tập đoàn vi sinh (microbial consortia)", b: "quần thể độc canh sinh học", c: "virus nhân tạo", d: "khối u rễ thực vật", ans: "a" },
+        { id: 37, q: "Các tác nhân kiểm soát sinh học vi sinh thường có tính ____ cao, chỉ tác động lên một số mầm bệnh nhất định.", a: "độc hại đa diện", b: "đặc hiệu", c: "bất định", d: "kháng thuốc", ans: "b" },
+        { id: 38, q: "____ kết hợp các biện pháp sinh học, canh tác, vật lý và hóa học nhằm quản lý sâu bệnh một cách toàn diện.", a: "Quản lý dịch hại tổng hợp (IPM)", b: "Kiểm soát hóa học đại trà", c: "Canh tác truyền thống thô sơ", d: "Nông nghiệp kỹ thuật số thuần túy", ans: "a" },
+        { id: 39, q: "Vi khuẩn vùng rễ kích thích sinh trưởng được viết tắt là ____.", a: "ISR", b: "IPM", c: "PGPR", d: "GMO", ans: "c" },
+        { id: 40, q: "Hiệu quả của kiểm soát sinh học thường phụ thuộc vào mức độ ____ của các loài vi sinh vật trong hệ sinh thái nông nghiệp.", a: "đồng nhất tuyệt đối", b: "đa dạng", c: "suy giảm mật độ", d: "kháng thuốc hóa học", ans: "b" },
+        { id: 41, q: "Các thí nghiệm và mô hình trình diễn ____ đóng vai trò quan trọng trong việc đánh giá hiệu quả thực tế của tác nhân kiểm soát sinh học.", a: "trong ống nghiệm vô trùng", b: "ngoài đồng ruộng (ngoài thực địa)", c: "trên máy tính giả lập", d: "trong nhà máy công nghiệp", ans: "b" },
+        { id: 42, q: "____ là khả năng cây trồng kích hoạt cơ chế phòng vệ toàn thân nhờ tác động của PGPR hoặc nấm cộng sinh rễ.", a: "Kháng cảm ứng toàn thân (ISR)", b: "Miễn dịch khởi phát bởi effector (ETI)", c: "Tính kháng thu hoạch sau thu hoạch", d: "Sự hoại tử tế bào đột ngột", ans: "a" },
+        { id: 43, q: "Vùng rễ là điểm nóng về hoạt động và đa dạng vi sinh vật, được thúc đẩy bởi sự tiết ra các ____ từ rễ.", a: "chất tiết", b: "enzyme tiêu hóa xenlulozo", c: "axit hữu cơ độc hại", d: "khí cacbonic", ans: "a" },
+        { id: 44, q: "Kỹ thuật ____ và metagenomics đã làm sáng tỏ sự đa dạng phân loại và chức năng của vi sinh vật vùng rễ.", a: "nuôi cấy đĩa thạch cổ điển", b: "giải trình tự thông lượng cao", c: "chụp ảnh X-quang rễ cây", d: "đo điện trở dòng điện đất", ans: "b" },
+        { id: 45, q: "Vi rút trong vùng rễ chủ yếu là thực khuẩn thể và ____, ảnh hưởng đến động thái cộng đồng vi sinh.", a: "vi rút cúm gia cầm", b: "vi rút nấm", c: "vi rút corona thực vật", d: "bacteriophage nhân tạo", ans: "b" },
+        { id: 46, q: "Loài cây và ____ ảnh hưởng đến thành phần và tính đa dạng của vi sinh vật vùng rễ.", a: "kiểu gen", b: "chiều cao lá", c: "màu sắc hoa quả", d: "thời gian bón phân hóa học", ans: "a" },
+        { id: 47, q: "Các tương tác ____ giữa cây trồng và vi sinh vật có lợi giúp tăng cường hấp thu dinh dưỡng và khả năng chống chịu stress.", a: "ký sinh gây hại", b: "cộng sinh", c: "hội sinh thụ động", d: "cạnh tranh gay gắt", ans: "b" },
+        { id: 48, q: "____ là vùng tiếp giáp năng động giữa rễ cây và đất, nơi tồn tại cộng đồng vi sinh vật phong phú.", a: "Bầu khí quyển quanh tán", b: "Lớp vỏ ngoài hạt giống", c: "Vùng rễ (rhizosphere)", d: "Tầng đất mạch nước ngầm", ans: "c" },
+        { id: 49, q: "Vi khuẩn cố định đạm cộng sinh điển hình gồm Rhizobium spp. và ____.", a: "Azotobacter spp.", b: "Bradyrhizobium spp.", c: "Bacillus spp.", d: "Pseudomonas spp.", ans: "b" },
+        { id: 50, q: "____ là vi khuẩn cố định đạm sống tự do, không cộng sinh với cây.", a: "Rhizobium và Bradyrhizobium", b: "Azotobacter và Azospirillum", c: "Bacillus và Pseudomonas", d: "Salmonella và E. coli", ans: "b" },
+        { id: 51, q: "Độc tố của vi khuẩn Bacillus thuringiensis (Bt) có đặc tính ____, được ứng dụng kiểm soát sâu hại nông nghiệp.", a: "kích thích nảy mầm", b: "diệt côn trùng", c: "hòa tan lân khoáng", d: "diệt cỏ dại", ans: "b" },
+        { id: 52, q: "Nấm cộng sinh nội (AM) và nấm cộng sinh ngoại (ECM) là hai loại ____ thường được đề cập trong chất kích thích sinh trưởng từ nấm.", a: "PGPF (nấm kích thích sinh trưởng cây trồng)", b: "Mầm bệnh thực vật nguy hiểm", c: "Tác nhân gây mục nát gỗ", d: "Nấm men dùng trong lên men rượu", ans: "a" },
+        { id: 53, q: "Các phương pháp sử dụng phân bón sinh học bao gồm xử lý hạt giống, nhúng rễ và ____.", a: "phun sương tán lá cao", b: "bón vào đất", c: "tiêm trực tiếp vào mạch gỗ thân", d: "trộn với chất diệt cỏ tổng hợp", ans: "b" },
+        { id: 54, q: "____ là chế phẩm vi sinh giúp tăng cường sinh trưởng cây, hấp thu dinh dưỡng và nâng cao khả năng chịu stress.", a: "Thuốc trừ sâu hóa chất mạnh", b: "Chất bảo quản độc hại sau thu hoạch", c: "Chất kích thích sinh trưởng cây trồng (PGPs)", d: "Phân bón urê tinh khiết", ans: "c" },
+        { id: 55, q: "____ là phương pháp tiếp cận hệ thống được sử dụng để xác định, đánh giá và kiểm soát các mối nguy về an toàn thực phẩm.", a: "GAPs", b: "GMPs", c: "HACCP", d: "MAP", ans: "c" },
+        { id: 56, q: "Các yếu tố như pH, độ ẩm, nhiệt độ và sự hiện diện của oxy ảnh hưởng đến sự phát triển và hoạt động của vi sinh vật gây ____.", a: "lên men sữa chua có lợi", b: "hư hỏng", c: "tổng hợp vitamin thực phẩm", d: "đông kết thực vật", ans: "b" },
+        { id: 57, q: "____ là các tiêu chuẩn áp dụng trong cơ sở chế biến thực phẩm nhằm đảm bảo sản xuất an toàn và chất lượng.", a: "GMP (Good Manufacturing Practices)", b: "GAP (Good Agricultural Practices)", c: "IPM (Integrated Pest Management)", d: "ISR (Induced Systemic Resistance)", ans: "a" },
+        { id: 58, q: "Đóng gói ____ là phương pháp loại bỏ không khí xung quanh thực phẩm để ngăn oxy hóa và kéo dài bảo quản.", a: "khí quyển biến đổi", b: "chân không", c: "bằng màng bọc thông thường", d: "trong hộp thiếc kín áp suất cao", ans: "b" },
+        { id: 59, q: "Sấy khô tạo ra môi trường không thuận lợi cho vi sinh vật phát triển bằng cách loại bỏ ____ khỏi sản phẩm thực phẩm.", a: "chất béo bão hòa", b: "độ ẩm", c: "khí cacbonic hấp thụ", d: "protein bề mặt", ans: "b" },
+        { id: 60, q: "____ là các hướng dẫn nhằm đảm bảo an toàn và chất lượng sản phẩm nông nghiệp, viết tắt là GAPs.", a: "Thực hành sản xuất tốt", b: "Tiêu chuẩn kiểm soát điểm tới hạn", c: "Thực hành nông nghiệp tốt (Good Agricultural Practices)", d: "Quy trình bao gói khí quyển biến đổi", ans: "c" },
+        { id: 61, q: "Mối nguy sinh học trong thực phẩm bao gồm vi khuẩn, virus, nấm và ____.", a: "kim loại nặng độc hại", b: "ký sinh trùng", c: "thuốc trừ sâu tồn dư", d: "mảnh thủy tinh vỡ", ans: "b" },
+        { id: 62, q: "Sự chuyển biến trong vi sinh vật học nông nghiệp được thúc đẩy bởi nhận thức ngày càng sâu sắc về mối quan hệ giữa sức khỏe đất, sinh trưởng cây trồng và ____.", a: "quần xã vi sinh vật", b: "thị trường phân bón hóa học", c: "giá trị bất động sản canh tác", d: "kỹ thuật cơ giới hóa đồng ruộng", ans: "a" },
+        { id: 63, q: "Những tiến bộ trong giải trình tự hệ gen, sinh học phân tử và ____ đã làm sáng tỏ mạng lưới tương tác phức tạp trong hệ sinh thái nông nghiệp.", a: "địa chất học công trình", b: "tin sinh học", c: "khí tượng học ứng dụng", d: "kinh tế học vĩ mô", ans: "b" },
+        { id: 64, q: "____ là khái niệm trung tâm của chương 10, kết hợp phương thức canh tác truyền thống với công nghệ tiên tiến để khai thác đặc tính có lợi của vi sinh vật.", a: "Độc canh hóa chất nông nghiệp quy mô lớn", b: "Khai thác Vi sinh vật cho Nông nghiệp Bền vững", c: "Cách mạng công nghiệp nặng đồng ruộng", d: "Hợp pháp hóa sinh vật biến đổi gen đại trà", ans: "b" },
+        { id: 65, q: "Quản lý hệ vi sinh chính xác tích hợp phân tích hệ vi sinh, nông nghiệp chính xác và ____.", a: "canh tác thủ công truyền thống", b: "công nghệ nông nghiệp số", c: "hóa chất bảo vệ thực vật thế hệ cũ", d: "hệ thống kênh rạch tưới tiêu tự nhiên", ans: "b" },
+        { id: 66, q: "Chương 10 nhấn mạnh vai trò của hợp tác ____ trong việc thúc đẩy nông nghiệp vi sinh nhằm đảm bảo an ninh lương thực toàn cầu.", a: "nội bộ gia đình", b: "liên ngành", c: "thương mại thô sơ", d: "độc quyền doanh nghiệp", ans: "b" },
+        { id: 67, q: "Theo chương 10, các thách thức như biến đổi khí hậu, gia tăng dân số và suy giảm diện tích đất canh tác là động lực thúc đẩy việc khai thác ____.", a: "khoáng sản nằm sâu dưới lòng đất", b: "vi sinh vật", c: "năng lượng hóa thạch đồng ruộng", d: "máy móc nông nghiệp tự động hạng nặng", ans: "b" }
+            ],
+            3: [
+        { id: 1, q: "Winogradsky phát hiện quá trình hóa dưỡng ở vi khuẩn.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 2, q: "Beijerinck là người đầu tiên phát hiện ra nấm rễ cộng sinh.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 3, q: "Phạm vi của vi sinh vật học nông nghiệp mang tính liên ngành, kết hợp vi sinh học, sinh thái học, khoa học cây trồng và công nghệ sinh học.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 4, q: "Vi sinh vật học nông nghiệp chỉ tập trung vào việc gây hại cho cây trồng.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 5, q: "Lịch sử ngành vi sinh vật học nông nghiệp bắt đầu từ công trình của Winogradsky và Beijerinck vào cuối thế kỷ XIX.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 6, q: "Tầm quan trọng của vi sinh vật học nông nghiệp chỉ giới hạn trong việc tăng năng suất, không liên quan đến môi trường.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 7, q: "Xử lý sinh học là một trong những đóng góp của vi sinh vật học nông nghiệp đối với bảo vệ môi trường.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 8, q: "Vi sinh vật học nông nghiệp không có vai trò gì trong an ninh lương thực toàn cầu.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 9, q: "Tất cả các loài nấm trong đất nông nghiệp đều có lợi cho cây trồng.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 10, q: "Một số virus được phát hiện gần đây có thể giúp cây trồng tăng khả năng chịu đựng stress phi sinh học.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 11, q: "Vi khuẩn cố định đạm như Rhizobium và Azotobacter chuyển nitơ khí quyển thành dạng cây có thể sử dụng.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 12, q: "Nấm phân hủy không có vai trò gì trong chu trình dinh dưỡng của hệ sinh thái nông nghiệp.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 13, q: "Thực khuẩn thể (phage) có tiềm năng là kẻ thù tự nhiên của các mầm bệnh thực vật.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 14, q: "Đa dạng di truyền của quần thể nấm không ảnh hưởng đến khả năng thích nghi với môi trường.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 15, q: "Vi khuẩn đóng vai trò trong cấu trúc và kết tập đất nhờ sản sinh polysaccharide.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 16, q: "Virus trong đất không có vai trò gì trong chu trình dinh dưỡng hay khả năng cô lập carbon.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 17, q: "Vi sinh vật đất chỉ có vai trò trong chu trình nitơ, không liên quan đến chu trình carbon.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 18, q: "Nấm rễ cộng sinh tạo ra các mạng lưới sợi nấm liên kết các hạt đất, hình thành các tập hợp đất ổn định.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 19, q: "Vi khuẩn oxy hóa lưu huỳnh chuyển lưu huỳnh nguyên tố hoặc sulfide thành sulfate.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 20, q: "Vi sinh vật đất không có khả năng phân giải hoặc khử độc các chất ô nhiễm như kim loại nặng.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 21, q: "Những tiến bộ trong sinh học phân tử và công nghệ hệ gen đã giúp các nhà nghiên cứu hiểu rõ hơn về quần xã vi sinh vật trong đất.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 22, q: "Vi khuẩn hòa tan lân giúp giải phóng photpho từ các khoáng chất không tan trong đất.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 23, q: "Chu trình carbon trong đất không có liên quan gì đến biến đổi khí hậu.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 24, q: "Vi sinh vật đất hoàn toàn không tham gia vào chu trình của kali, canxi hay magie.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 25, q: "In mối quan hệ cộng sinh Rhizobium – cây họ đậu, cây cung cấp năng lượng và nơi trú ẩn cho vi khuẩn trong nốt sần rễ.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 26, q: "Quá trình gây bệnh ở thực vật không liên quan gì đến các yếu tố độc lực của mầm bệnh.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 27, q: "Kiểm soát sinh học là một phương pháp quản lý bệnh thay thế hoàn toàn an toàn so với thuốc bảo vệ thực vật hóa học truyền thống.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 28, q: "Các tác nhân kiểm soát sinh học luôn có phổ tác động giống nhau đối với mọi loại mầm bệnh.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 29, q: "Vi sinh vật nội sinh sống trong mô cây mà không gây hại rõ rệt và có thể tăng cường khả năng phòng vệ của cây.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 30, q: "PTI và ETI là hai loại miễn dịch thực vật được hình thành để chống lại mầm bệnh.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 31, q: "Mức độ nghiêm trọng của triệu chứng bệnh không phụ thuộc vào độc lực của mầm bệnh hay yếu tố môi trường.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 32, q: "Liên kết nấm rễ (mycorrhiza) chỉ gây hại cho cây trồng, không mang lại lợi ích nào.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 33, q: "Phân bón sinh học giúp giảm nhu cầu sử dụng phân bón hóa học.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 34, q: "Công nghệ sinh học vi sinh vật chỉ áp dụng được trong phòng thí nghiệm, không thể ứng dụng thực tế trên đồng ruộng.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 35, q: "CRISPR-Cas9 cho phép biến đổi hệ gen vi sinh vật để tối ưu hóa các con đường chuyển hóa.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 36, q: "Tác nhân kiểm soát sinh học sau thu hoạch giúp kéo dài thời gian bảo quản nông sản mà không cần chất bảo quan hóa học.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 37, q: "Quản lý vi sinh vật chính xác không liên quan gì đến điều kiện đất hay giống cây trồng cụ thể.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 38, q: "Tập đoàn vi sinh vật được nghiên cứu nhằm tạo hiệu ứng hiệp đồng tốt hơn so với chủng đơn lẻ.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 39, q: "Giải pháp vi sinh cho thích ứng biến đổi khí hậu không có ý nghĩa thực tiễn trong nông nghiệp.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 40, q: "Kiểm soát sinh học có tính đặc hiệu cao giúp giảm nguy cơ ô nhiễm môi trường so với thuốc hóa học.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 41, q: "PGPR không có khả năng kích thích tính kháng bệnh toàn thân ở cây trồng.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 42, q: "Nghiên cứu liên tục trong sinh thái học vi sinh, hệ gen học và công nghệ sinh học thúc đẩy sự đổi mới trong kiểm soát sinh học.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 43, q: "Việc áp dụng kiểm soát sinh học trên diện rộng không cần thử nghiệm thực địa.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 44, q: "Sự chuyển biến trong vi sinh vật học nông nghiệp gần đây được thúc đẩy bởi nhận thức về mối quan hệ giữa sức khỏe đất, sinh trưởng cây trồng và cộng đồng vi sinh vật.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 45, q: "Mycovirus là một ví dụ của vi sinh vật có hoạt tính đối kháng được dùng trong quản lý bệnh hại.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 46, q: "Sản phẩm kiểm soát sinh học chỉ tồn tại dưới một dạng bào chế duy nhất.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 47, q: "Vùng rễ chỉ chứa vi khuẩn, không có nấm, virus hay động vật nguyên sinh.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 48, q: "Các biện pháp quản lý đất như làm đất, luân canh có thể làm thay đổi cộng đồng vi sinh vùng rễ.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 49, q: "Tính dư thừa chức năng giúp hệ sinh thái có khả năng chống chịu và ổn định trước biến động môi trường.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 50, q: "Chất tiết rễ không có ảnh hưởng gì đến thành phần cộng đồng vi sinh vùng rễ.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 51, q: "Hoạt động ăn mồi của động vật nguyên sinh và tuyến trùng trong vùng rễ giúp điều hòa mật độ vi sinh vật.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 52, q: "Vi khuẩn thường là nhóm vi sinh vật phong phú nhất trong vùng rễ.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 53, q: "Biến động trong cộng đồng vi sinh không bao giờ làm suy giảm khả năng phục hồi của hệ sinh thái.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 54, q: "Thuốc BVTV sinh học từ vi rút chỉ ảnh hưởng đến côn trùng gây hại, không ảnh hưởng đến sinh vật không mục tiêu.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 55, q: "Phân bón sinh học hòa tan lân không có vai trò gì trong việc cải thiện khả năng hấp thu photpho của cây.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 56, q: "PGPR có thể thúc đẩy sinh trưởng cây thông qua cố định đạm, hòa tan lân và sản xuất phytohormone.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 57, q: "Hiệu quả của phân bón sinh học luôn ổn định trong mọi điều kiện đất khác nhau, không có hạn chế.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 58, q: "Trichoderma spp. được nêu là một loại nấm có thể dùng làm thuốc BVTV sinh học.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 59, q: "Vi khuẩn hòa tan kali không tồn tại trong thực tế, chỉ là khái niệm lý thuyết.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 60, q: "Chất kích thích sinh trưởng cây trồng có thể được sử dụng qua xử lý hạt, nhúng rễ hoặc cải tạo đất.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 61, q: "Vi sinh vật học thực phẩm trong nông nghiệp chỉ liên quan đến giai đoạn chế biến, không liên quan đến giai đoạn trồng trọt và thu hoạch.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 62, q: "Thanh trùng (pasteurization) thường được áp dụng cho sữa và nước ép trái cây nhằm giảm mật độ vi sinh vật mà vẫn giữ hương vị.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 63, q: "Giáo dục người tiêu dùng về xử lý thực phẩm an toàn không có vai trò trong việc phòng ngừa bệnh truyền qua thực phẩm.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 64, q: "Bao gói khí quyển biến đổi (MAP) hoạt động bằng cách thay đổi nồng độ oxy, CO2 và nitơ xung quanh thực phẩm.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 65, q: "Chiếu xạ thực phẩm luôn làm giảm đáng kể giá trị dinh dưỡng của sản phẩm.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 66, q: "HACCP giúp xác định các điểm kiểm soát tới hạn trong quá trình sản xuất thực phẩm.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 67, q: "Lên men là một kỹ thuật bảo quản dựa trên hoạt động của vi sinh vật có lợi như vi khuẩn lactic và nấm men.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 68, q: "Vi sinh vật từ lâu đã được công nhận là thành phần thiết yếu trong hệ sinh thái nông nghiệp, ảnh hưởng đến chu trình dinh dưỡng và sức khỏe cây trồng.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 69, q: "Theo chương 10, nông nghiệp tương lai không cần quan tâm đến các vấn đề pháp lý và đạo đức khi ứng dụng công nghệ vi sinh.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 70, q: "Việc khai thác vi sinh vật được xem là một hướng đi đầy triển vọng để giải quyết các thách thức như biến đổi khí hậu và an ninh lương thực.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 71, q: "Quản lý hệ vi sinh chính xác không liên quan gì đến từng điều kiện sinh thái nông nghiệp cụ thể.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 72, q: "Cuốn sách đề cập đến cả các vấn đề pháp lý, đạo đức và xã hội liên quan đến việc thương mại hóa công nghệ vi sinh.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 73, q: "Mục tiêu điều chỉnh quần xã vi sinh bao gồm giảm sự phụ thuộc vào các đầu vào tổng hợp.", a: "Đúng", b: "Sai", ans: "a" }
+       ]
+        };
+
+        let state = {
+            user: null,
+            loading: true,
+            emailInput: "",
+            passwordInput: "",
+            authError: "",
+            isKicked: false,
+            isDarkMode: false,
+            currentPart: null,
+            currentQuestionIndex: 0,
+            score: 0,
+            wrongScore: 0,
+            showResult: false,
+            selectedOptions: [],
+            isSubmitted: false,
+            questions: [],
+            shuffledOptions: [],
+            isConfirming: false,
+            sessionAnswers: [],
+            reviewMode: false,
+            reviewData: [],
+            history: []
+        };
+
+        try {
+            const saved = localStorage.getItem('vsvnn_local_history');
+            state.history = saved ? JSON.parse(saved) : [];
+        } catch (e) { state.history = []; }
+
+        const getOrCreateDeviceToken = () => {
+            let token = localStorage.getItem("qp_device_token_vsvnn");
+            if (!token) {
+                token = "m_vsvnn_" + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+                localStorage.setItem("qp_device_token_vsvnn", token);
+            }
+            return token;
+        };
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+        
+        function toggleDarkMode() {
+            state.isDarkMode = !state.isDarkMode;
+            document.documentElement.classList.toggle('dark', state.isDarkMode);
+            render();
+        }
+
+        function render() {
+            const root = document.getElementById('root');
+            
+            if (state.loading) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-500 mb-4"></div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium text-sm">Đang kiểm tra cổng kết nối bảo mật Cloud...</p>
+                    </div>`;
+                return;
+            }
+
+            if (!state.user) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-6 flex flex-col items-center justify-center relative w-full">
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            <button onclick="toggleDarkMode()" class="p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 pointer-events-auto active:scale-95">
+                                ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                            </button>
+                        </header>
+                        <div class="w-full max-w-md p-8 sm:p-10 rounded-3xl shadow-2xl border bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/80 animate-enter mt-14">
+                            <div class="text-center mb-8">
+                                <div class="inline-flex p-3 bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-emerald-400 rounded-2xl mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                <h2 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Đăng nhập môn học</h2>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 font-bold mt-1 uppercase tracking-wider">Vi sinh vật học Nông nghiệp</p>
+                            </div>
+                            ${state.isKicked ? `
+                                <div class="mb-4 p-3 bg-rose-50 dark:bg-rose-950/40 border-l-4 border-rose-500 text-rose-700 dark:text-rose-400 text-xs font-semibold rounded-r-xl flex items-start gap-2 animate-enter">
+                                    <svg class="flex-shrink-0 mt-0.5 animate-pulse text-rose-600" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    <p>Tài khoản vừa bị khóa vì phát hiện đăng nhập cùng lúc từ một thiết bị khác!</p>
+                                </div>` : ''}
+                            <form onsubmit="handleLogin(event)" class="space-y-5">
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Tài khoản Email</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                                        <input type="email" id="emailInput" placeholder="abc...@quizpointstudio.com" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.emailInput}" required />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Mật mã bảo mật</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                        <input type="password" id="passwordInput" placeholder="••••••••" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.passwordInput}" required />
+                                    </div>
+                                </div>
+                                <div id="authError" class="text-xs font-bold text-rose-500 bg-rose-50 dark:bg-rose-950/30 p-3 rounded-lg border border-rose-100 dark:border-rose-900/40 hidden"></div>
+                                <button type="submit" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition-all text-sm uppercase tracking-wider">Xác nhận đăng nhập</button>
+                            </form>
+                            <div class="text-center mt-6">
+                                <button onclick="window.location.href='./index.html'" class="text-xs text-slate-400 hover:text-brand-600 dark:hover:text-emerald-400 font-bold transition-all hover:underline">← Quay lại danh mục trang chủ</button>
+                            </div>
+                        </div>
+                    </div>`;
+                if(state.authError) {
+                    const errDiv = document.getElementById('authError');
+                    errDiv.innerText = state.authError;
+                    errDiv.classList.remove('hidden');
+                }
+                return;
+            }
+
+            if (state.reviewMode) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-4 sm:p-6 lg:p-8 bg-slate-50/50 dark:bg-slate-950/20 w-full flex flex-col items-center">
+                        <div class="w-full max-w-4xl space-y-6">
+                            <div class="glass-panel p-4 rounded-2xl shadow-sm sticky top-4 z-10 flex justify-between items-center mb-8">
+                                <button onclick="setReviewMode(false)" class="flex items-center gap-2 text-brand-700 dark:text-emerald-400 font-extrabold transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> <span>Quay lại</span></button>
+                                <h2 class="text-xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Chi tiết bài làm</h2>
+                                <div class="w-8"></div> 
+                            </div>
+                            <div class="space-y-8 pb-10">
+                                ${state.reviewData.map((item, index) => {
+                                    const userAnsArr = item.s ? item.s.split('') : [];
+                                    const correctAnsArr = item.c ? item.c.split('') : [];
+                                    const isItemCorrect = item.s === item.c;
+                                    return `
+                                        <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 ${!isItemCorrect ? 'ring-2 ring-red-500/20' : ''}">
+                                            <div class="flex gap-4 mb-2">
+                                                <span class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg ${isItemCorrect ? 'bg-gradient-to-br from-emerald-400 to-emerald-600' : 'bg-gradient-to-br from-red-400 to-red-600'}">${index + 1}</span>
+                                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 leading-relaxed">${item.q}</h3>
+                                            </div>
+                                            <div class="pl-14 mb-4 text-xs font-bold text-brand-600 dark:text-emerald-400">
+                                                 ${item.c.length > 1 ? "☑ Câu hỏi tích chọn nhiều đáp án đúng" : "🔘 Câu hỏi chọn một đáp án duy nhất"}
+                                            </div>
+                                            <div class="space-y-3 pl-0 sm:pl-14">
+                                                ${item.o.map(opt => {
+                                                    const isOptCorrect = correctAnsArr.includes(opt.key);
+                                                    const isOptSelected = userAnsArr.includes(opt.key);
+                                                    let optionClass = "p-4 rounded-xl border flex justify-between items-center font-semibold text-sm ";
+                                                    if (isOptCorrect) optionClass += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 shadow-sm";
+                                                    else if (isOptSelected) optionClass += "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 shadow-sm";
+                                                    else optionClass += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600 opacity-70";
+                                                    return `
+                                                        <div class="${optionClass}">
+                                                            <span>${opt.text}</span>
+                                                            ${isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                                            ${isOptSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                                        </div>`;
+                                                }).join('')}
+                                            </div>
+                                        </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (!state.currentPart) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col relative w-full items-center">
+                        
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 pointer-events-auto">
+                                <button onclick="handleGoHome()" class="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-md active:scale-95">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                    <span class="hidden sm:inline">Quay về trang chủ</span>
+                                    <span class="sm:hidden">Trang chủ</span>
+                                </button>
+                                
+                                <button onclick="toggleDarkMode()" class="p-2 sm:p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 active:scale-95">
+                                    ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                                </button>
+                            </div>
+                        </header>
+                        
+                        <div class="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950 text-white shadow-xl relative overflow-hidden text-center pt-40 pb-16 md:pt-32 md:pb-20">
+                            <div class="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_60%)] animate-pulse-slow"></div>
+                            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:30px_30px]"></div>
+                            <div class="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center gap-4 relative z-10">
+                                <div class="p-3 bg-white/5 rounded-2xl backdrop-blur-md border border-white/10 animate-float inline-block shadow-xl">
+                                    <svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22V10"/>
+                                        <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                        <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                        <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                        <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <div class="space-y-2">
+                                 <h1 style="line-height: 1.35 !important;" class="pt-2 text-3xl md:text-5xl font-black uppercase bg-gradient-to-r from-white via-emerald-300 to-slate-200 bg-clip-text text-transparent drop-shadow-lg">VI SINH VẬT NÔNG NGHIỆP (P5)</h1>
+                                 <p class="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">Hệ thống 283 câu hỏi ôn tập phân định chuẩn theo 3 phần thi cấu trúc </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="max-w-6xl mx-auto px-4 py-8 w-full -mt-10 relative z-20 space-y-10 flex flex-col items-center">
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md py-3 px-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm w-full max-w-xl">
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-brand-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Tên: <span class="text-brand-600 dark:text-emerald-400 font-extrabold">Nguyễn Văn Lượng</span></span></div>
+                                <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-amber-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .81 2.71A2 2 0 0 1 22 16.92z"/></svg><span>LH: <span class="font-mono text-slate-900 dark:text-white font-black">0333738861</span></span></div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl">
+                                ${[1, 2, 3].map(num => {
+                                    const names = ["", "Phần I: Trắc nghiệm", "Phần II: Điền vào chỗ trống", "Phần III: Đúng / Sai"];
+                                    return `
+                                    <button onclick="startQuiz(${num})" class="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-brand-500 dark:hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-center gap-3">
+                                      <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 shadow-inner group-hover:bg-brand-500 dark:group-hover:bg-emerald-500 group-hover:text-white text-brand-500 transition-all duration-300">
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 22V10"/>
+                                            <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                            <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                            <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                            <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                         </svg>
+                                      </div>
+                                      <div class="font-black text-sm text-slate-800 dark:text-slate-200 tracking-tight leading-tight">${names[num]}</div>
+                                    </button>`;
+                                }).join('')}
+                            </div>
+
+                            <div class="glass-panel p-6 rounded-3xl shadow-sm max-w-2xl mx-auto w-full text-left">
+                                <div class="flex justify-between items-center mb-6 px-2">
+                                  <h2 class="text-sm font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg> Lịch sử kết quả làm bài</h2>
+                                  ${state.history.length > 0 ? `<button onclick="clearHistory()" class="text-rose-500 hover:text-rose-700 p-2 hover:bg-rose-50 rounded-lg transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>` : ''}
+                                </div>
+                                ${state.history.length === 0 ? `<div class="text-center py-8 text-slate-400 dark:text-slate-600 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold italic">Chưa có lịch sử làm đề lưu trữ</div>` : `
+                                  <div class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    ${state.history.map((record, index) => `
+                                      <div class="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
+                                        <div class="flex-1 w-full sm:w-auto">
+                                          <div class="font-black text-sm text-slate-700 dark:text-slate-300 uppercase tracking-tight">Phần ${record.part}</div>
+                                          <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 italic">${record.date}</div>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="text-right">
+                                                <div class="text-sm font-black"><span class="text-emerald-600 dark:text-emerald-400">${record.score} Đ</span><span class="text-rose-500 ml-1.5">/ ${record.wrong} S</span></div>
+                                                <div class="text-[10px] font-extrabold text-slate-400 tracking-wide">/${record.total} CÂU</div>
+                                            </div>
+                                            <button onclick="viewHistoryDetail(${index})" class="p-2 bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-emerald-400 rounded-xl hover:bg-brand-100 dark:hover:bg-slate-700 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                                        </div>
+                                      </div>`).join('')}
+                                  </div>`}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (state.showResult) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center p-4 text-center w-full">
+                        <div class="bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl shadow-2xl max-w-md w-full border border-slate-100 dark:border-slate-800 animate-enter">
+                          <div class="relative inline-block mb-6">
+                            <div class="absolute inset-0 bg-yellow-400 blur-xl opacity-30 rounded-full"></div>
+                            <svg class="w-20 h-20 text-yellow-500 relative z-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                          </div>
+                          <h2 class="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Hoàn Thành Bài Ôn Tập!</h2>
+                          <div class="grid grid-cols-2 gap-4 mb-8 mt-6">
+                            <div class="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100"><p class="text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider mb-1">Đúng</p><p class="text-4xl font-black text-emerald-600 dark:text-emerald-400">${state.score}</p></div>
+                            <div class="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-2xl border border-rose-100"><p class="text-rose-500 dark:text-rose-400 text-xs font-extrabold uppercase tracking-wider mb-1">Sai / Thiếu</p><p class="text-4xl font-black text-rose-500 dark:text-rose-400">${state.wrongScore}</p></div>
+                          </div>
+                          <button onclick="resetQuiz()" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white rounded-xl font-extrabold text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Về màn hình chính</button>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const progress = ((state.currentQuestionIndex + 1) / state.questions.length) * 100;
+
+            let badgeText = "🔘 Chọn một đáp án";
+            if (state.currentPart === 2) badgeText = "📝 Điền từ thích hợp";
+            if (state.currentPart === 3) badgeText = "🌓 Câu hỏi Đúng / Sai";
+
+            root.innerHTML = `
+                <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 ${state.isConfirming ? 'block' : 'hidden'}">
+                  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100">
+                    <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Nộp bài & kết thúc?</h3>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 font-medium mb-6">Kết quả bài làm hiện tại của bạn sẽ được lưu giữ lại hệ thống.</p>
+                    <div class="flex gap-3">
+                      <button onclick="setConfirming(false)" class="flex-1 py-3 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors">Tiếp bài làm</button>
+                      <button onclick="confirmFinish()" class="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">Nộp bài ngay</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-h-screen flex flex-col items-center p-4 sm:p-6 w-full max-w-3xl mx-auto relative justify-start">
+                    <div class="w-full flex justify-between items-center mb-6 pt-2">
+                        <button onclick="requestFinish()" class="p-2.5 rounded-xl text-slate-400 hover:text-rose-500 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+                        <div class="glass-panel px-4 py-2 rounded-full border text-xs font-bold text-slate-600 dark:text-slate-300 tracking-wide uppercase">Câu ${state.currentQuestionIndex + 1} / ${state.questions.length}</div>
+                        <div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 px-3 py-1.5 rounded-xl"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${state.score}</div>
+                    </div>
+                    
+                    <div class="w-full mb-8">
+                        <div class="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all rounded-full" style="width: ${progress}%"></div></div>
+                    </div>
+                    
+                    <div class="w-full bg-white dark:bg-slate-900 p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800/60 mb-24 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-emerald-600"></div>
+                        
+                        <div>
+                            <div class="mb-6">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                    <span class="inline-block bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-slate-100">ID: #${currentQ.id}</span>
+                                    <span class="text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-full bg-teal-50 text-teal-600 dark:bg-slate-800 dark:text-teal-400 border border-teal-200 dark:border-slate-700">
+                                        ${badgeText}
+                                    </span>
+                                </div>
+                                <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 leading-snug tracking-tight">${currentQ.q}</h2>
+                            </div>
+                            
+                            <div class="space-y-3.5">
+                                ${state.shuffledOptions.map((option) => {
+                                    const isSelected = state.selectedOptions.includes(option.key);
+                                    const isOptCorrect = currentQ.correct.split('').includes(option.key);
+                                    
+                                    let containerClass = "w-full p-5 rounded-2xl border text-left font-semibold transition-all duration-200 transform active:scale-[0.98] flex justify-between items-center relative overflow-hidden text-sm ";
+                                    
+                                    if (state.isSubmitted) {
+                                      containerClass += " active:scale-100 cursor-not-allowed "; 
+                                      if (isOptCorrect) containerClass += "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-inner";
+                                      else if (isSelected) containerClass += "border-rose-500 bg-rose-50 dark:bg-rose-950/30 text-rose-800 ring-2 ring-rose-200 shadow-inner";
+                                      else containerClass += "border-slate-100 text-slate-400 opacity-50";
+                                    } else {
+                                      if (isSelected) containerClass += "border-emerald-500 bg-emerald-50/60 dark:bg-slate-800/80 text-emerald-900 dark:text-teal-300 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-md -translate-y-0.5";
+                                      else containerClass += "border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-brand-50/40 hover:border-brand-200 hover:shadow-sm hover:-translate-y-0.5";
+                                    }
+
+                                    return `
+                                        <button onclick="handleOptionSelect('${option.key}', ${currentQ.isMultiple})" ${state.isSubmitted ? 'disabled' : ''} class="${containerClass}">
+                                            <div class="flex items-center gap-4 relative z-10">
+                                                <div class="w-5 h-5 flex items-center justify-center border-2 flex-shrink-0 rounded-md transition-colors ${isSelected ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 bg-white dark:bg-slate-900'}">
+                                                    ${isSelected ? '<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>' : ''}
+                                                </div>
+                                                <span>${option.text}</span>
+                                            </div>
+                                            ${state.isSubmitted && isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                            ${state.isSubmitted && isSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                        </button>`;
+                                }).join('')}
+                            </div>
+                            
+                            ${!state.isSubmitted && state.selectedOptions.length > 0 ? `
+                                <div class="mt-6 flex justify-end">
+                                    <button onclick="checkAnswerSubmission()" class="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl text-xs uppercase tracking-wider shadow-md transform active:scale-95 transition-transform">
+                                        Xác nhận đáp án
+                                    </button>
+                                </div>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-100 dark:border-slate-900/60 flex justify-center items-center gap-4 z-20">
+                        <button onclick="prevQuestion()" ${state.currentQuestionIndex === 0 ? 'disabled' : ''} class="w-14 h-14 rounded-2xl flex items-center justify-center border text-slate-600 dark:text-slate-400 disabled:opacity-25 transform active:scale-95 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+                        <button onclick="nextQuestion()" ${!state.isSubmitted ? 'disabled' : ''} class="flex-1 max-w-md h-14 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 disabled:bg-slate-200 dark:disabled:bg-slate-800/50 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:shadow-none bg-brand-600 text-white disabled:cursor-not-allowed transform active:scale-[0.99] transition-all">
+                            ${state.currentQuestionIndex === state.questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        auth.onAuthStateChanged((currentUser) => {
+            if (currentUser) {
+                const ADMIN_EMAIL = "ngocyen@cucdang.com";
+                const userEmail = currentUser.email.toLowerCase();
+                
+                if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".vsvnn")) {
+                    state.authError = "Tài khoản này không có quyền truy cập môn Vi sinh vật học Nông nghiệp!";
+                    auth.signOut();
+                    state.user = null;
+                } else {
+                    const token = getOrCreateDeviceToken();
+                    const sessionRef = db.ref(`active_sessions/mon_vsvnn/${currentUser.uid}`);
+                    const isAdmin = userEmail === ADMIN_EMAIL;
+
+                    if (!state.user) {
+                        if (!isAdmin) {
+                            sessionRef.set({ 
+                                deviceToken: token, 
+                                lastLogin: firebase.database.ServerValue.TIMESTAMP, 
+                                email: currentUser.email 
+                            });
+                        }
+                    }
+
+                    sessionRef.on("value", (snap) => {
+                        const val = snap.val();
+                        if (val && val.deviceToken !== token && !isAdmin) {
+                            state.isKicked = true;
+                            auth.signOut();
+                            state.user = null;
+                            render();
+                        }
+                    });
+                    state.user = currentUser;
+                }
+            } else {
+                state.user = null;
+            }
+            state.loading = false;
+            render();
+        });
+
+        function handleLogin(e) {
+            e.preventDefault();
+            state.authError = "";
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            state.emailInput = email; state.passwordInput = password;
+
+            auth.signInWithEmailAndPassword(email, password).catch(err => {
+                state.authError = "Tài khoản hoặc mật khẩu bảo mật không chính xác.";
+                render();
+            });
+        }
+
+        function handleGoHome() {
+            if (window.confirm("Bạn có chắc muốn rời môn học và quay về trang chủ không?")) {
+                if (state.user) db.ref(`active_sessions/mon_vsvnn/${state.user.uid}`).remove();
+                auth.signOut().then(() => { window.location.href = "./index.html"; });
+            }
+        }
+
+        function startQuiz(part) {
+            const raw = TEST_DATA[part] || [];
+            state.questions = raw.map(item => {
+                const options = [
+                    { key: 'a', text: item.a }, 
+                    { key: 'b', text: item.b }, 
+                    { key: 'c', text: item.c }, 
+                    { key: 'd', text: item.d },
+                    { key: 'e', text: item.e }
+                ].filter(o => o.text !== undefined);
+                
+                return {
+                    id: item.id, 
+                    q: item.q, 
+                    correct: item.ans, 
+                    isMultiple: part === 5 || item.ans.length > 1,
+                    options: options
+                };
+            });
+            state.currentPart = part; state.currentQuestionIndex = 0; state.score = 0; state.wrongScore = 0;
+            state.sessionAnswers = []; state.showResult = false; state.selectedOptions = []; state.isSubmitted = false;
+            if (state.questions.length > 0) {
+                state.shuffledOptions = part === 3 ? state.questions[0].options : shuffleArray(state.questions[0].options);
+            }
+            render();
+        }
+
+        function handleOptionSelect(key, isMultiple) {
+            if (state.isSubmitted) return;
+            if (isMultiple) {
+                if (state.selectedOptions.includes(key)) {
+                    state.selectedOptions = state.selectedOptions.filter(k => k !== key);
+                } else {
+                    state.selectedOptions.push(key);
+                }
+            } else {
+                state.selectedOptions = [key];
+            }
+            render();
+        }
+
+        function checkAnswerSubmission() {
+            if (state.selectedOptions.length === 0 || state.isSubmitted) return;
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const userAnsStr = [...state.selectedOptions].sort().join('');
+            const correctAnsStr = currentQ.correct.split('').sort().join('');
+            const correct = userAnsStr === correctAnsStr;
+            
+            state.isSubmitted = true;
+            if (correct) state.score++; else state.wrongScore++;
+            state.sessionAnswers.push({ ...currentQ, userSelected: userAnsStr, options: state.shuffledOptions });
+            render();
+        }
+
+        function nextQuestion() {
+            if (state.currentQuestionIndex < state.questions.length - 1) {
+                state.currentQuestionIndex++;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                if (existing) {
+                    state.shuffledOptions = existing.options;
+                    state.selectedOptions = existing.userSelected.split('');
+                    state.isSubmitted = true;
+                } else {
+                    state.shuffledOptions = state.currentPart === 3 ? newQ.options : shuffleArray(newQ.options); 
+                    state.selectedOptions = []; 
+                    state.isSubmitted = false;
+                }
+                render();
+            } else {
+                state.showResult = true;
+                saveHistoryToLocal();
+                render();
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                state.currentQuestionIndex--;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                state.shuffledOptions = existing.options;
+                state.selectedOptions = existing.userSelected.split('');
+                state.isSubmitted = true;
+                render();
+            }
+        }
+
+        function saveHistoryToLocal() {
+            const record = {
+                id: Date.now(), date: new Date().toLocaleString('vi-VN'), part: state.currentPart,
+                score: state.score, wrong: state.wrongScore, total: state.questions.length,
+                details: state.sessionAnswers.map(q => ({ id: q.id, q: q.q, o: q.options || [], s: q.userSelected, c: q.correct }))
+            };
+            state.history.unshift(record);
+            try { localStorage.setItem('vsvnn_local_history', JSON.stringify(state.history)); } catch (e) {}
+        }
+
+        function clearHistory() {
+            if (window.confirm('Bạn có chắc muốn xóa toàn bộ lịch sử kết quả không?')) {
+                state.history = []; localStorage.removeItem('vsvnn_local_history'); render();
+            }
+        }
+
+        function viewHistoryDetail(index) {
+            state.reviewData = state.history[index].details || []; state.reviewMode = true; render();
+        }
+
+        function setReviewMode(val) { state.reviewMode = val; render(); }
+        function requestFinish() { state.isConfirming = true; render(); }
+        function setConfirming(val) { state.isConfirming = val; render(); }
+        function confirmFinish() { state.showResult = true; state.isConfirming = false; saveHistoryToLocal(); render(); }
+        function resetQuiz() { state.currentPart = null; state.questions = []; state.reviewMode = false; render(); }
+
+        window.addEventListener('DOMContentLoaded', () => { render(); });
+    </script>
+</body>
+</html>

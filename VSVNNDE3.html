@@ -1,0 +1,728 @@
+<NGUYỄN VĂN LƯỢNG ĐẸP TRAI HẸHẸ>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Vi sinh vật học Nông nghiệp - QuizPoint Studio</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap');
+        body { 
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        html, body, .custom-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar, .custom-scrollbar::-webkit-scrollbar { 
+            display: none;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#f0fdf4] via-[#e0f2fe] to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 min-h-screen text-slate-800 dark:text-slate-100">
+    
+    <div id="root"></div>
+
+    <script>
+       const firebaseConfig = {
+          apiKey: "AIzaSyC-n88rPoijqfE44ZF3ulPZdcGz_rtC3lg",
+          authDomain: "quizpointstuidio.firebaseapp.com",
+          databaseURL: "https://quizpointstuidio-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "quizpointstuidio",
+          storageBucket: "quizpointstuidio.firebasestorage.app",
+          messagingSenderId: "592248583165",
+          appId: "1:592248583165:web:8f7dac2ab36dbf35aadf94",
+          measurementId: "G-T8QQ1HEZGC"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        const TEST_DATA = {
+    1: [
+        { id: 1, q: "Vi khuẩn Azotobacter có vai trò gì trong nông nghiệp?", a: "Cố định đạm sống tự do trong đất, không cộng sinh với cây", b: "Gây bệnh thối rễ ở cây họ Đậu", c: "Chỉ sống ký sinh trong ruột động vật", d: "Sản xuất độc tố gây ngộ độc thực phẩm", ans: "a" },
+        { id: 2, q: "Hình dạng cầu của vi khuẩn được gọi là gì?", a: "Bacilli", b: "Cocci", c: "Spirilla", d: "Vibrio", ans: "b" },
+        { id: 3, q: "Vi khuẩn Pseudomonas fluorescens được ứng dụng trong nông nghiệp với vai trò nào?", a: "Kiểm soát sinh học, ức chế mầm bệnh thực vật", b: "Gây bệnh đốm lá trên diện rộng", c: "Chỉ tồn tại trong nước biển sâu", d: "Phân hủy kháng sinh trong đất", ans: "a" },
+        { id: 4, q: "Theo cấu trúc tế bào, vi khuẩn (Bacteria) khác Archaea chủ yếu ở điểm nào?", a: "Thành phần của thành tế bào và màng lipid", b: "Vi khuẩn có nhân hoàn chỉnh còn Archaea không có", c: "Archaea luôn đa bào, vi khuẩn luôn đơn bào", d: "Không có điểm khác biệt nào", ans: "a" },
+        { id: 5, q: "Plasmid ở vi khuẩn có chức năng gì?", a: "Phân tử DNA dạng vòng nhỏ mang gen phụ trợ, không thiết yếu", b: "Là cấu trúc giúp vi khuẩn quang hợp", c: "Là tên gọi khác của ribosome", d: "Là vỏ bọc bảo vệ vi khuẩn khỏi nhiệt độ cao", ans: "a" },
+        { id: 6, q: "Nội bào tử (endospore) ở một số vi khuẩn như Bacillus và Clostridium có chức năng gì?", a: "Giúp vi khuẩn sống sót trong điều kiện khắc nghiệt (nhiệt, khô hạn, hóa chất)", b: "Là cơ quan di chuyển chính của vi khuẩn", c: "Chỉ hình thành khi vi khuẩn chết", d: "Giúp vi khuẩn quang hợp tốt hơn", ans: "a" },
+        { id: 7, q: "Nấm men Saccharomyces cerevisiae sinh sản vô tính chủ yếu bằng cách nào?", a: "Nảy chồi (budding)", b: "Tạo bào tử túi (ascospore)", c: "Phân đôi tế bào như vi khuẩn", d: "Tạo bào tử đảm (basidiospore)", ans: "a" },
+        { id: 8, q: "Sợi nấm (hyphae) của nấm Ascomycota and Basidiomycota có đặc điểm gì khác với Zygomycota?", a: "Có vách ngăn (septate)", b: "Không có vách ngăn (coenocytic)", c: "Không tồn tại sợi nấm", d: "Chỉ tồn tại ở dạng đơn bào", ans: "a" },
+        { id: 9, q: "Nấm Trichoderma được ứng dụng phổ biến trong nông nghiệp với vai trò gì?", a: "Tác nhân kiểm soát sinh học, đối kháng nấm gây bệnh trong đất", b: "Gây bệnh sương mai trên cây trồng", c: "Chỉ dùng để lên men rượu", d: "Sản xuất độc tố gây hại cho cây", ans: "a" },
+        { id: 10, q: "Nấm rễ cộng sinh (mycorrhiza) giúp cây trồng hấp thu hiệu quả hơn nguyên tố nào?", a: "Photpho", b: "Chỉ có natri", c: "Chỉ có lưu huỳnh", d: "Không hấp thu chất nào, chỉ trú ẩn", ans: "a" },
+        { id: 11, q: "Vách tế bào của nấm được cấu tạo chủ yếu từ chất gì?", a: "Chitin", b: "Cellulose", c: "Peptidoglycan", d: "Lipopolysaccharide", ans: "a" },
+        { id: 12, q: "Nấm mốc Aspergillus flavus được biết đến vì sản sinh độc tố nào gây hại cho nông sản?", a: "Aflatoxin", b: "Penicillin", c: "Streptomycin", d: "Insulin", ans: "a" },
+        { id: 13, q: "Vi khuẩn Gram âm có cấu trúc đặc trưng nào giúp phân biệt với Gram dương dưới kính hiển vi điện tử?", a: "Có màng ngoài (outer membrane) chứa lipopolysaccharide (LPS)", b: "Có nhân hoàn chỉnh, Gram dương không có", c: "Không có thành tế bào", d: "Có lớp vỏ bọc bằng đường đơn", ans: "a" },
+        { id: 14, q: "Trong nhuộm Gram, bước xử lý cồn (decolorizer) có vai trò chính là gì?", a: "Tẩy màu crystal violet ở vi khuẩn Gram âm, giữ màu ở Gram dương", b: "Cố định mẫu vật lên lam kính", c: "Diệt khuẩn hoàn toàn trên lam kính", d: "Nhuộm màu hồng cho toàn bộ vi khuẩn", ans: "a" },
+        { id: 15, q: "Vi khuẩn Mycobacterium (gây bệnh lao) thường khó nhuộm Gram chuẩn vì lý do gì?", a: "Thành tế bào có lớp sáp (lipid) dày, cần phương pháp nhuộm kháng acid riêng", b: "Không có thành tế bào nên không giữ được màu nào", c: "Là vi khuẩn Gram âm điển hình", d: "Chỉ tồn tại dạng bào tử", ans: "a" },
+        { id: 16, q: "Một hạn chế của phương pháp nhuộm Gram là gì?", a: "Không phân loại được vi khuẩn không có thành tế bào điển hình hoặc vi khuẩn cổ", b: "Luôn cho kết quả chính xác 100% với mọi loại vi khuẩn", c: "Không cần dùng kính hiển vi để quan sát", d: "Chỉ áp dụng được cho nấm", ans: "a" },
+        { id: 17, q: "Crystal violet trong nhuộm Gram được xem là thuốc nhuộm loại nào?", a: "Thuốc nhuộm chính (primary stain)", b: "Thuốc nhuộm ngược (counterstain)", c: "Chất tẩy màu (decolorizer)", d: "Chất cố định mẫu (fixative)", ans: "a" },
+        { id: 18, q: "Theo hệ thống phân loại của Carl Woese, nhóm Archaea khác Bacteria chủ yếu ở yếu tố nào?", a: "Cấu trúc màng tế bào và trình tự RNA ribosome (rRNA)", b: "Archaea luôn có nhân hoàn chỉnh", c: "Archaea chỉ sống trên cạn", d: "Không có sự khác biệt nào đáng kể", ans: "a" },
+        { id: 19, q: "Cấp phân loại sinh học theo thứ tự từ lớn đến nhỏ là gì?", a: "Giới – Ngành – Lớp – Bộ – Họ – Chi – Loài", b: "Loài – Chi – Họ – Bộ – Lớp – Ngành – Giới", c: "Ngành – Giới – Loài – Chi – Họ – Bộ – Lớp", d: "Chi – Loài – Họ – Giới – Ngành – Lớp – Bộ", ans: "a" },
+        { id: 20, q: "Đơn vị phân loại cơ bản nhất, dùng để định danh khoa học hai phần (ví dụ Escherichia coli) được gọi là gì?", a: "Loài (species)", b: "Giới (kingdom)", c: "Ngành (phylum)", d: "Họ (family)", ans: "a" },
+        { id: 21, q: "Hệ thống phân loại 5 giới của Whittaker (1969) bao gồm Monera, Protista, Fungi, Plantae và giới nào nữa?", a: "Animalia", b: "Chromista", c: "Archaea", d: "Virus", ans: "a" },
+        { id: 22, q: "Virus không được xếp vào bất kỳ giới sinh vật nào trong các hệ thống phân loại truyền thống vì lý do chính nào?", a: "Không có cấu trúc tế bào và không thể tự sinh sản độc lập", b: "Vì virus quá nhỏ để quan sát", c: "Vì virus chỉ tồn tại trong phòng thí nghiệm", d: "Vì virus có cấu trúc giống thực vật", ans: "a" },
+        { id: 23, q: "Actinomycetes phân bố chủ yếu ở môi trường nào?", a: "Trong đất, đặc biệt đất giàu chất hữu cơ", b: "Chỉ trong cơ thể người", c: "Chỉ trong môi trường nước biển sâu", d: "Chỉ trong không khí", ans: "a" },
+        { id: 24, q: "Đặc điểm hàm lượng G+C cao ở Actinomycetes có ý nghĩa gì trong phân loại vi sinh vật?", a: "Là một chỉ tiêu sinh học phân tử để phân loại và phân biệt với các nhóm vi khuẩn khác", b: "Không có ý nghĩa phân loại nào", c: "Chỉ liên quan đến màu sắc khuẩn lạc", d: "Chỉ ảnh hưởng đến tốc độ sinh sản", ans: "a" },
+        { id: 25, q: "Mùi đất đặc trưng (geosmin) sau khi mưa có liên quan đến hoạt động của nhóm vi sinh vật nào?", a: "Actinomycetes (đặc biệt là Streptomyces)", b: "Virus thực vật", c: "Tảo lục", d: "Động vật nguyên sinh", ans: "a" },
+        { id: 26, q: "Actinomycetes có vai trò gì trong chu trình dinh dưỡng của đất?", a: "Phân hủy các hợp chất hữu cơ khó phân giải như cellulose, lignin, chitin", b: "Chỉ gây hại cho thực vật, không có lợi ích nào", c: "Không tham gia vào chu trình dinh dưỡng", d: "Chỉ sống ký sinh trên động vật", ans: "a" },
+        { id: 27, q: "Microfauna trong hệ sinh thái đất có kích thước và ví dụ điển hình nào?", a: "< 0.1 mm, gồm tuyến trùng (nematodes), trùng roi", b: "> 2 mm, gồm giun đất, kiến", c: "0.1–2 mm, gồm ve bét, bọ đuôi bật", d: "> 20 mm, gồm chuột chũi", ans: "a" },
+        { id: 28, q: "Vai trò chính của vi sinh vật đất trong chu trình nitơ là gì?", a: "Cố định đạm, nitrat hóa và khử nitrat", b: "Chỉ hấp thu nitơ mà không chuyển hóa", c: "Làm mất hoàn toàn nitơ khỏi hệ sinh thái", d: "Không tham gia vào chu trình nitơ", ans: "a" },
+        { id: 29, q: "Độ phì nhiêu của đất bị ảnh hưởng tích cực bởi hoạt động của nhóm sinh vật nào sau đây?", a: "Vi khuẩn cố định đạm, nấm rễ cộng sinh, giun đất", b: "Chỉ bởi đá và khoáng vật", c: "Chỉ bởi ánh sáng mặt trời trực tiếp", d: "Không bị ảnh hưởng bởi sinh vật nào", ans: "a" },
+        { id: 30, q: "Tuyến trùng (nematodes) trong đất có thể đóng vai trò nào sau đây?", a: "Vừa có loài có lợi (ăn vi khuẩn, kiểm soát quần thể), vừa có loài gây hại (ký sinh rễ cây)", b: "Chỉ luôn luôn có lợi cho cây trồng", c: "Chỉ luôn luôn gây hại cho cây trồng", d: "Không có vai trò sinh thái nào", ans: "a" },
+        { id: 31, q: "Sinh khối vi sinh vật trong đất (microbial biomass) được dùng làm chỉ tiêu đánh giá điều gì?", a: "Sức khỏe và chất lượng đất", b: "Độ cao của địa hình", c: "Nhiệt độ không khí trung bình năm", d: "Giá trị thương mại của đất", ans: "a" }
+    ],
+    2: [
+        { id: 32, q: "Azotobacter là vi khuẩn cố định đạm cộng sinh, chỉ sống được trong nốt sần rễ cây họ Đậu.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 33, q: "Nội bào tử (endospore) giúp một số vi khuẩn chịu được nhiệt độ cao và điều kiện khô hạn khắc nghiệt.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 34, q: "Vách tế bào của nấm được cấu tạo từ peptidoglycan giống vi khuẩn.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 35, q: "Vi khuẩn Gram âm có lớp màng ngoài chứa lipopolysaccharide (LPS), điều mà Gram dương không có.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 36, q: "Crystal violet là thuốc nhuộm ngược (counterstain) được sử dụng cuối cùng trong nhuộm Gram.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 37, q: "Actinomycetes có hàm lượng G+C cao, là đặc điểm sinh học phân tử dùng trong phân loại.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 38, q: "Microfauna trong đất có kích thước lớn hơn 2mm, ví dụ như giun đất.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 39, q: "Nấm Trichoderma được ứng dụng làm tác nhân kiểm soát sinh học trong nông nghiệp.", a: "Đúng", b: "Sai", ans: "a" },
+        { id: 40, q: "Tuyến trùng (nematodes) trong đất luôn luôn có lợi cho cây trồng, không có loài gây hại.", a: "Đúng", b: "Sai", ans: "b" },
+        { id: 41, q: "Virus không được xếp vào giới sinh vật nào vì không có cấu trúc tế bào và không tự sinh sản độc lập.", a: "Đúng", b: "Sai", ans: "a" }
+    ],
+    3: [
+        { id: 101, q: "Nối cột (Chọn đặc điểm phù hợp cho cột B): Azotobacter", a: "a. Sản sinh độc tố Aflatoxin gây hại nông sản", b: "b. Vi khuẩn cố định đạm sống tự do trong đất", c: "c. Vi khuẩn gây bệnh lao, khó nhuộm Gram chuẩn do lớp sáp dày", d: "d. Actinomycetes tạo mùi đất đặc trưng (geosmin) sau mưa", e: "e. Nấm kiểm soát sinh học, đối kháng nấm gây bệnh trong đất", ans: "b" },
+        { id: 102, q: "Nối cột (Chọn đặc điểm phù hợp cho cột B): Trichoderma", a: "a. Sản sinh độc tố Aflatoxin gây hại nông sản", b: "b. Vi khuẩn cố định đạm sống tự do trong đất", c: "c. Vi khuẩn gây bệnh lao, khó nhuộm Gram chuẩn do lớp sáp dày", d: "d. Actinomycetes tạo mùi đất đặc trưng (geosmin) sau mưa", e: "e. Nấm kiểm soát sinh học, đối kháng nấm gây bệnh trong đất", ans: "e" },
+        { id: 103, q: "Nối cột (Chọn đặc điểm phù hợp cho cột B): Aspergillus flavus", a: "a. Sản sinh độc tố Aflatoxin gây hại nông sản", b: "b. Vi khuẩn cố định đạm sống tự do trong đất", c: "c. Vi khuẩn gây bệnh lao, khó nhuộm Gram chuẩn do lớp sáp dày", d: "d. Actinomycetes tạo mùi đất đặc trưng (geosmin) sau mưa", e: "e. Nấm kiểm soát sinh học, đối kháng nấm gây bệnh trong đất", ans: "a" },
+        { id: 104, q: "Nối cột (Chọn đặc điểm phù hợp cho cột B): Mycobacterium", a: "a. Sản sinh độc tố Aflatoxin gây hại nông sản", b: "b. Vi khuẩn cố định đạm sống tự do trong đất", c: "c. Vi khuẩn gây bệnh lao, khó nhuộm Gram chuẩn do lớp sáp dày", d: "d. Actinomycetes tạo mùi đất đặc trưng (geosmin) sau mưa", e: "e. Nấm kiểm soát sinh học, đối kháng nấm gây bệnh trong đất", ans: "c" },
+        { id: 105, q: "Nối cột (Chọn đặc điểm phù hợp cho cột B): Streptomyces", a: "a. Sản sinh độc tố Aflatoxin gây hại nông sản", b: "b. Vi khuẩn cố định đạm sống tự do trong đất", c: "c. Vi khuẩn gây bệnh lao, khó nhuộm Gram chuẩn do lớp sáp dày", d: "d. Actinomycetes tạo mùi đất đặc trưng (geosmin) sau mưa", e: "e. Nấm kiểm soát sinh học, đối kháng nấm gây bệnh trong đất", ans: "d" }
+    ],
+    4: [
+        { id: 42, q: "____ là vi khuẩn cố định đạm sống tự do trong đất, không cần cộng sinh với rễ cây.", a: "Azotobacter", b: "Rhizobium", c: "Mycobacterium", d: "Bacillus", ans: "a" },
+        { id: 43, q: "Hình dạng vi khuẩn hình cầu được gọi là ____, còn hình que được gọi là Bacilli.", a: "Bacilli", b: "Cocci", c: "Spirilla", d: "Vibrio", ans: "b" },
+        { id: 44, q: "Vách tế bào của nấm được cấu tạo chủ yếu từ chất ____.", a: "cellulose", b: "peptidoglycan", c: "chitin", d: "lipopolysaccharide", ans: "c" },
+        { id: 45, q: "____ là cấu trúc giúp một số vi khuẩn như Bacillus và Clostridium sống sót trong điều kiện môi trường khắc nghiệt.", a: "Nội bào tử (endospore)", b: "Vỏ nhầy bảo vệ", c: "Tiêm mao di động", d: "Hạt chứa plasmid", ans: "a" },
+        { id: 46, q: "Vi khuẩn Gram âm có lớp ____ chứa lipopolysaccharide, là đặc điểm phân biệt với Gram dương.", a: "vách peptidoglycan dày", b: "màng ngoài (outer membrane)", c: "nang nhầy bên ngoài", d: "màng nhân bao quanh", ans: "b" },
+        { id: 47, q: "Trong nhuộm Gram, ____ là thuốc nhuộm chính được sử dụng đầu tiên để bắt màu tế bào.", a: "safranin", b: "iodine", c: "crystal violet", d: "cồn/acetone", ans: "c" },
+        { id: 48, q: "____ là đơn vị phân loại cơ bản nhất trong sinh học, dùng để đặt tên khoa học hai phần cho sinh vật.", a: "Giới (kingdom)", b: "Ngành (phylum)", c: "Họ (family)", d: "Loài (species)", ans: "d" },
+        { id: 49, q: "Mùi đất đặc trưng sau mưa (geosmin) chủ yếu do hoạt động của nhóm vi sinh vật ____ tạo ra.", a: "Virus thực vật", b: "Tảo lục", c: "Actinomycetes (Streptomyces)", d: "Động vật nguyên sinh", ans: "c" },
+        { id: 50, q: "____ là sinh vật đất có kích thước nhỏ hơn 0.1mm, bao gồm tuyến trùng và trùng roi.", a: "Microfauna", b: "Mesofauna", c: "Macrofauna", d: "Megafauna", ans: "a" },
+        { id: 51, q: "Nấm ____ thường được sử dụng làm tác nhân kiểm soát sinh học, đối kháng với nấm gây bệnh trong đất.", a: "Aspergillus", b: "Penicillium", c: "Trichoderma", d: "Saccharomyces", ans: "c" }
+    ],
+    5: [
+        { id: 52, q: "Tích chọn các nhận định đúng so sánh vai trò của Azotobacter và Rhizobium trong chu trình nitơ:", a: "Azotobacter là vi khuẩn cố định đạm sống tự do trong đất, không cần cộng sinh với cây.", b: "Rhizobium cố định đạm thông qua cộng sinh với rễ cây họ Đậu, hình thành nốt sần.", c: "Cả hai đều chuyển nitơ khí quyển thành dạng amoni hoặc hợp chất hữu cơ cây có thể hấp thu.", d: "Rhizobium chỉ thực hiện chu trình phân hủy mà tuyệt đối không có khả năng cố định đạm.", ans: "abc" },
+        { id: 53, q: "Tại sao Actinomycetes được xếp vào vi khuẩn Gram dương mặc dù hình thái dạng sợi khuẩn giống nấm?", a: "Actinomycetes có thành tế bào cấu tạo chủ yếu từ dạng peptidoglycan dày đặc trưng của vi khuẩn Gram dương.", b: "Chúng mang cấu trúc tế bào nhân sơ (Prokaryote), không có màng nhân thật và có hàm lượng G+C cao.", c: "Đặc điểm hình thái sợi khuẩn phân nhánh là hệ quả từ quá trình thích nghi sinh thái lâu dài.", d: "Chúng có màng nhân bao bọc hoàn chỉnh chứa Chitin giống hệt tế bào nấm thực hữu sinh.", ans: "abc" },
+        { id: 54, q: "Ý nghĩa của sinh khối vi sinh vật đất (microbial biomass) đối với việc đánh giá chất lượng đất nông nghiệp là gì?", a: "Sinh khối phản ánh sinh động mức độ hoạt động và sức khỏe sinh học tổng thể của môi trường đất.", b: "Đất có sinh khối vi sinh vật cao thường sở hữu năng lực phân hủy hữu cơ và thúc đẩy chu trình tốt hơn.", c: "Đây là một chỉ tiêu cực kỳ nhạy giúp phát hiện sớm sự suy thoái đất trước khi các thông số hóa lý thay đổi.", d: "Sinh khối vi sinh vật chỉ biểu thị mật độ đo đạc độ cao trắc địa địa hình của vùng nông nghiệp.", ans: "abc" }
+    ]
+};
+
+        let state = {
+            user: null,
+            loading: true,
+            emailInput: "",
+            passwordInput: "",
+            authError: "",
+            isKicked: false,
+            isDarkMode: false,
+            currentPart: null,
+            currentQuestionIndex: 0,
+            score: 0,
+            wrongScore: 0,
+            showResult: false,
+            selectedOptions: [],
+            isSubmitted: false,
+            questions: [],
+            shuffledOptions: [],
+            isConfirming: false,
+            sessionAnswers: [],
+            reviewMode: false,
+            reviewData: [],
+            history: []
+        };
+
+        try {
+            const saved = localStorage.getItem('vsvnn_local_history');
+            state.history = saved ? JSON.parse(saved) : [];
+        } catch (e) { state.history = []; }
+
+        const getOrCreateDeviceToken = () => {
+            let token = localStorage.getItem("qp_device_token_vsvnn");
+            if (!token) {
+                token = "m_vsvnn_" + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+                localStorage.setItem("qp_device_token_vsvnn", token);
+            }
+            return token;
+        };
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+        
+        function toggleDarkMode() {
+            state.isDarkMode = !state.isDarkMode;
+            document.documentElement.classList.toggle('dark', state.isDarkMode);
+            render();
+        }
+
+        function render() {
+            const root = document.getElementById('root');
+            
+            if (state.loading) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-500 mb-4"></div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium text-sm">Đang kiểm tra cổng kết nối bảo mật Cloud...</p>
+                    </div>`;
+                return;
+            }
+
+            if (!state.user) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-6 flex flex-col items-center justify-center relative w-full">
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            <button onclick="toggleDarkMode()" class="p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 pointer-events-auto active:scale-95">
+                                ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                            </button>
+                        </header>
+                        <div class="w-full max-w-md p-8 sm:p-10 rounded-3xl shadow-2xl border bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/80 animate-enter mt-14">
+                            <div class="text-center mb-8">
+                                <div class="inline-flex p-3 bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-emerald-400 rounded-2xl mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                <h2 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Đăng nhập môn học</h2>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 font-bold mt-1 uppercase tracking-wider">Vi sinh vật học Nông nghiệp</p>
+                            </div>
+                            ${state.isKicked ? `
+                                <div class="mb-4 p-3 bg-rose-50 dark:bg-rose-950/40 border-l-4 border-rose-500 text-rose-700 dark:text-rose-400 text-xs font-semibold rounded-r-xl flex items-start gap-2 animate-enter">
+                                    <svg class="flex-shrink-0 mt-0.5 animate-pulse text-rose-600" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    <p>Tài khoản vừa bị khóa vì phát hiện đăng nhập cùng lúc từ một thiết bị khác!</p>
+                                </div>` : ''}
+                            <form onsubmit="handleLogin(event)" class="space-y-5">
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Tài khoản Email</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                                        <input type="email" id="emailInput" placeholder="abc...@quizpointstudio.com" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.emailInput}" required />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Mật mã bảo mật</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                        <input type="password" id="passwordInput" placeholder="••••••••" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.passwordInput}" required />
+                                    </div>
+                                </div>
+                                <div id="authError" class="text-xs font-bold text-rose-500 bg-rose-50 dark:bg-rose-950/30 p-3 rounded-lg border border-rose-100 dark:border-rose-900/40 hidden"></div>
+                                <button type="submit" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition-all text-sm uppercase tracking-wider">Xác nhận đăng nhập</button>
+                            </form>
+                            <div class="text-center mt-6">
+                                <button onclick="window.location.href='./index.html'" class="text-xs text-slate-400 hover:text-brand-600 dark:hover:text-emerald-400 font-bold transition-all hover:underline">← Quay lại danh mục trang chủ</button>
+                            </div>
+                        </div>
+                    </div>`;
+                if(state.authError) {
+                    const errDiv = document.getElementById('authError');
+                    errDiv.innerText = state.authError;
+                    errDiv.classList.remove('hidden');
+                }
+                return;
+            }
+
+            if (state.reviewMode) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-4 sm:p-6 lg:p-8 bg-slate-50/50 dark:bg-slate-950/20 w-full flex flex-col items-center">
+                        <div class="w-full max-w-4xl space-y-6">
+                            <div class="glass-panel p-4 rounded-2xl shadow-sm sticky top-4 z-10 flex justify-between items-center mb-8">
+                                <button onclick="setReviewMode(false)" class="flex items-center gap-2 text-brand-700 dark:text-emerald-400 font-extrabold transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> <span>Quay lại</span></button>
+                                <h2 class="text-xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Chi tiết bài làm</h2>
+                                <div class="w-8"></div> 
+                            </div>
+                            <div class="space-y-8 pb-10">
+                                ${state.reviewData.map((item, index) => {
+                                    const userAnsArr = item.s ? item.s.split('') : [];
+                                    const correctAnsArr = item.c ? item.c.split('') : [];
+                                    const isItemCorrect = item.s === item.c;
+                                    return `
+                                        <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 ${!isItemCorrect ? 'ring-2 ring-red-500/20' : ''}">
+                                            <div class="flex gap-4 mb-2">
+                                                <span class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg ${isItemCorrect ? 'bg-gradient-to-br from-emerald-400 to-emerald-600' : 'bg-gradient-to-br from-red-400 to-red-600'}">${index + 1}</span>
+                                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 leading-relaxed">${item.q}</h3>
+                                            </div>
+                                            <div class="pl-14 mb-4 text-xs font-bold text-brand-600 dark:text-emerald-400">
+                                                 ${item.c.length > 1 ? "☑ Câu hỏi tích chọn nhiều đáp án đúng" : "🔘 Câu hỏi chọn một đáp án duy nhất"}
+                                            </div>
+                                            <div class="space-y-3 pl-0 sm:pl-14">
+                                                ${item.o.map(opt => {
+                                                    const isOptCorrect = correctAnsArr.includes(opt.key);
+                                                    const isOptSelected = userAnsArr.includes(opt.key);
+                                                    let optionClass = "p-4 rounded-xl border flex justify-between items-center font-semibold text-sm ";
+                                                    if (isOptCorrect) optionClass += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 shadow-sm";
+                                                    else if (isOptSelected) optionClass += "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 shadow-sm";
+                                                    else optionClass += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600 opacity-70";
+                                                    return `
+                                                        <div class="${optionClass}">
+                                                            <span>${opt.text}</span>
+                                                            ${isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                                            ${isOptSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                                        </div>`;
+                                                }).join('')}
+                                            </div>
+                                        </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (!state.currentPart) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col relative w-full items-center">
+                        
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 pointer-events-auto">
+                                <button onclick="handleGoHome()" class="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-md active:scale-95">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                    <span class="hidden sm:inline">Quay về trang chủ</span>
+                                    <span class="sm:hidden">Trang chủ</span>
+                                </button>
+                                
+                                <button onclick="toggleDarkMode()" class="p-2 sm:p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 active:scale-95">
+                                    ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                                </button>
+                            </div>
+                        </header>
+                        
+                        <div class="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950 text-white shadow-xl relative overflow-hidden text-center pt-40 pb-16 md:pt-32 md:pb-20">
+                            <div class="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_60%)] animate-pulse-slow"></div>
+                            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:30px_30px]"></div>
+                            <div class="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center gap-4 relative z-10">
+                                <div class="p-3 bg-white/5 rounded-2xl backdrop-blur-md border border-white/10 animate-float inline-block shadow-xl">
+                                    <svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22V10"/>
+                                        <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                        <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                        <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                        <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <div class="space-y-2">
+                                 <h1 style="line-height: 1.35 !important;" class="pt-2 text-3xl md:text-5xl font-black uppercase bg-gradient-to-r from-white via-emerald-300 to-slate-200 bg-clip-text text-transparent drop-shadow-lg">VI SINH VẬT NÔNG NGHIỆP (Đ3)</h1>
+                                 <p class="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">Hệ thống 60 câu hỏi ôn tập phân định chuẩn theo 5 phần thi cấu trúc</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="max-w-6xl mx-auto px-4 py-8 w-full -mt-10 relative z-20 space-y-10 flex flex-col items-center">
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md py-3 px-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm w-full max-w-xl">
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-brand-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Tên: <span class="text-brand-600 dark:text-emerald-400 font-extrabold">Nguyễn Văn Lượng</span></span></div>
+                                <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-amber-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .81 2.71A2 2 0 0 1 22 16.92z"/></svg><span>LH: <span class="font-mono text-slate-900 dark:text-white font-black">0333738861</span></span></div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 w-full">
+                                ${[1, 2, 3, 4, 5].map(num => {
+                                    const names = ["", "Phần I: Trắc nghiệm", "Phần II: Đúng / Sai", "Phần III: Ghép đôi", "Phần IV: Điền khuyết", "Phần V: Trả lời ngắn"];
+                                    return `
+                                    <button onclick="startQuiz(${num})" class="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-4 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-brand-500 dark:hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-center gap-2">
+                                      <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 shadow-inner group-hover:bg-brand-500 dark:group-hover:bg-emerald-500 group-hover:text-white text-brand-500 transition-all duration-300">
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 22V10"/>
+                                            <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                            <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                            <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                            <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                         </svg>
+                                      </div>
+                                      <div class="font-black text-xs text-slate-800 dark:text-slate-200 tracking-tight leading-tight">${names[num]}</div>
+                                    </button>`;
+                                }).join('')}
+                            </div>
+
+                            <div class="glass-panel p-6 rounded-3xl shadow-sm max-w-2xl mx-auto w-full text-left">
+                                <div class="flex justify-between items-center mb-6 px-2">
+                                  <h2 class="text-sm font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg> Lịch sử kết quả làm bài</h2>
+                                  ${state.history.length > 0 ? `<button onclick="clearHistory()" class="text-rose-500 hover:text-rose-700 p-2 hover:bg-rose-50 rounded-lg transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>` : ''}
+                                </div>
+                                ${state.history.length === 0 ? `<div class="text-center py-8 text-slate-400 dark:text-slate-600 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold italic">Chưa có lịch sử làm đề lưu trữ</div>` : `
+                                  <div class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    ${state.history.map((record, index) => `
+                                      <div class="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
+                                        <div class="flex-1 w-full sm:w-auto">
+                                          <div class="font-black text-sm text-slate-700 dark:text-slate-300 uppercase tracking-tight">Phần ${record.part}</div>
+                                          <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 italic">${record.date}</div>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="text-right">
+                                                <div class="text-sm font-black"><span class="text-emerald-600 dark:text-emerald-400">${record.score} Đ</span><span class="text-rose-500 ml-1.5">/ ${record.wrong} S</span></div>
+                                                <div class="text-[10px] font-extrabold text-slate-400 tracking-wide">/${record.total} CÂU</div>
+                                            </div>
+                                            <button onclick="viewHistoryDetail(${index})" class="p-2 bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-emerald-400 rounded-xl hover:bg-brand-100 dark:hover:bg-slate-700 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                                        </div>
+                                      </div>`).join('')}
+                                  </div>`}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (state.showResult) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center p-4 text-center w-full">
+                        <div class="bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl shadow-2xl max-w-md w-full border border-slate-100 dark:border-slate-800 animate-enter">
+                          <div class="relative inline-block mb-6">
+                            <div class="absolute inset-0 bg-yellow-400 blur-xl opacity-30 rounded-full"></div>
+                            <svg class="w-20 h-20 text-yellow-500 relative z-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                          </div>
+                          <h2 class="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Hoàn Thành Bài Ôn Tập!</h2>
+                          <div class="grid grid-cols-2 gap-4 mb-8 mt-6">
+                            <div class="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100"><p class="text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider mb-1">Đúng</p><p class="text-4xl font-black text-emerald-600 dark:text-emerald-400">${state.score}</p></div>
+                            <div class="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-2xl border border-rose-100"><p class="text-rose-500 dark:text-rose-400 text-xs font-extrabold uppercase tracking-wider mb-1">Sai / Thiếu</p><p class="text-4xl font-black text-rose-500 dark:text-rose-400">${state.wrongScore}</p></div>
+                          </div>
+                          <button onclick="resetQuiz()" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white rounded-xl font-extrabold text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Về màn hình chính</button>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const progress = ((state.currentQuestionIndex + 1) / state.questions.length) * 100;
+
+            let badgeText = "🔘 Chọn một đáp án";
+            if (state.currentPart === 2) badgeText = "🌓 Câu hỏi Đúng / Sai";
+            if (state.currentPart === 3) badgeText = "🔗 Ghép đôi tương thích (Cột A → Cột B)";
+            if (state.currentPart === 4) badgeText = "📝 Chọn từ thích hợp điền khuyết";
+            if (state.currentPart === 5 || currentQ.isMultiple) badgeText = "☑ Tích chọn nhiều đáp án đúng";
+
+            root.innerHTML = `
+                <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 ${state.isConfirming ? 'block' : 'hidden'}">
+                  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100">
+                    <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Nộp bài & kết thúc?</h3>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 font-medium mb-6">Kết quả bài làm hiện tại của bạn sẽ được lưu giữ lại hệ thống.</p>
+                    <div class="flex gap-3">
+                      <button onclick="setConfirming(false)" class="flex-1 py-3 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors">Tiếp bài làm</button>
+                      <button onclick="confirmFinish()" class="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">Nộp bài ngay</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-h-screen flex flex-col items-center p-4 sm:p-6 w-full max-w-3xl mx-auto relative justify-start">
+                    <div class="w-full flex justify-between items-center mb-6 pt-2">
+                        <button onclick="requestFinish()" class="p-2.5 rounded-xl text-slate-400 hover:text-rose-500 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+                        <div class="glass-panel px-4 py-2 rounded-full border text-xs font-bold text-slate-600 dark:text-slate-300 tracking-wide uppercase">Câu ${state.currentQuestionIndex + 1} / ${state.questions.length}</div>
+                        <div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 px-3 py-1.5 rounded-xl"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${state.score}</div>
+                    </div>
+                    
+                    <div class="w-full mb-8">
+                        <div class="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all rounded-full" style="width: ${progress}%"></div></div>
+                    </div>
+                    
+                    <div class="w-full bg-white dark:bg-slate-900 p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800/60 mb-24 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-emerald-600"></div>
+                        
+                        <div>
+                            <div class="mb-6">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                    <span class="inline-block bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-slate-100">ID: #${currentQ.id}</span>
+                                    <span class="text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-full bg-teal-50 text-teal-600 dark:bg-slate-800 dark:text-teal-400 border border-teal-200 dark:border-slate-700">
+                                        ${badgeText}
+                                    </span>
+                                </div>
+                                <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 leading-snug tracking-tight">${currentQ.q}</h2>
+                            </div>
+                            
+                            <div class="space-y-3.5">
+                                ${state.shuffledOptions.map((option) => {
+                                    const isSelected = state.selectedOptions.includes(option.key);
+                                    const isOptCorrect = currentQ.correct.split('').includes(option.key);
+                                    
+                                    let containerClass = "w-full p-5 rounded-2xl border text-left font-semibold transition-all duration-200 transform active:scale-[0.98] flex justify-between items-center relative overflow-hidden text-sm ";
+                                    
+                                    if (state.isSubmitted) {
+                                      containerClass += " active:scale-100 cursor-not-allowed "; 
+                                      if (isOptCorrect) containerClass += "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-inner";
+                                      else if (isSelected) containerClass += "border-rose-500 bg-rose-50 dark:bg-rose-950/30 text-rose-800 ring-2 ring-rose-200 shadow-inner";
+                                      else containerClass += "border-slate-100 text-slate-400 opacity-50";
+                                    } else {
+                                      if (isSelected) containerClass += "border-emerald-500 bg-emerald-50/60 dark:bg-slate-800/80 text-emerald-900 dark:text-teal-300 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-md -translate-y-0.5";
+                                      else containerClass += "border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-brand-50/40 hover:border-brand-200 hover:shadow-sm hover:-translate-y-0.5";
+                                    }
+
+                                    return `
+                                        <button onclick="handleOptionSelect('${option.key}', ${currentQ.isMultiple})" ${state.isSubmitted ? 'disabled' : ''} class="${containerClass}">
+                                            <div class="flex items-center gap-4 relative z-10">
+                                                <div class="w-5 h-5 flex items-center justify-center border-2 flex-shrink-0 rounded-md transition-colors ${isSelected ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 bg-white dark:bg-slate-900'}">
+                                                    ${isSelected ? '<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>' : ''}
+                                                </div>
+                                                <span>${option.text}</span>
+                                            </div>
+                                            ${state.isSubmitted && isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                            ${state.isSubmitted && isSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                        </button>`;
+                                }).join('')}
+                            </div>
+                            
+                            ${!state.isSubmitted && state.selectedOptions.length > 0 ? `
+                                <div class="mt-6 flex justify-end">
+                                    <button onclick="checkAnswerSubmission()" class="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl text-xs uppercase tracking-wider shadow-md transform active:scale-95 transition-transform">
+                                        Xác nhận đáp án
+                                    </button>
+                                </div>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-100 dark:border-slate-900/60 flex justify-center items-center gap-4 z-20">
+                        <button onclick="prevQuestion()" ${state.currentQuestionIndex === 0 ? 'disabled' : ''} class="w-14 h-14 rounded-2xl flex items-center justify-center border text-slate-600 dark:text-slate-400 disabled:opacity-25 transform active:scale-95 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+                        <button onclick="nextQuestion()" ${!state.isSubmitted ? 'disabled' : ''} class="flex-1 max-w-md h-14 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 disabled:bg-slate-200 dark:disabled:bg-slate-800/50 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:shadow-none bg-brand-600 text-white disabled:cursor-not-allowed transform active:scale-[0.99] transition-all">
+                            ${state.currentQuestionIndex === state.questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        auth.onAuthStateChanged((currentUser) => {
+            if (currentUser) {
+                const ADMIN_EMAIL = "ngocyen@cucdang.com";
+                const userEmail = currentUser.email.toLowerCase();
+                
+                if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".vsvnnde")) {
+                    state.authError = "Tài khoản này không có quyền truy cập môn Vi sinh vật học Nông nghiệp!";
+                    auth.signOut();
+                    state.user = null;
+                } else {
+                    const token = getOrCreateDeviceToken();
+                    const sessionRef = db.ref(`active_sessions/mon_vsvnn/${currentUser.uid}`);
+                    const isAdmin = userEmail === ADMIN_EMAIL;
+
+                    if (!state.user) {
+                        if (!isAdmin) {
+                            sessionRef.set({ 
+                                deviceToken: token, 
+                                lastLogin: firebase.database.ServerValue.TIMESTAMP, 
+                                email: currentUser.email 
+                            });
+                        }
+                    }
+
+                    sessionRef.on("value", (snap) => {
+                        const val = snap.val();
+                        if (val && val.deviceToken !== token && !isAdmin) {
+                            state.isKicked = true;
+                            auth.signOut();
+                            state.user = null;
+                            render();
+                        }
+                    });
+                    state.user = currentUser;
+                }
+            } else {
+                state.user = null;
+            }
+            state.loading = false;
+            render();
+        });
+
+        function handleLogin(e) {
+            e.preventDefault();
+            state.authError = "";
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            state.emailInput = email; state.passwordInput = password;
+
+            auth.signInWithEmailAndPassword(email, password).catch(err => {
+                state.authError = "Tài khoản hoặc mật khẩu bảo mật không chính xác.";
+                render();
+            });
+        }
+
+        function handleGoHome() {
+            if (window.confirm("Bạn có chắc muốn rời môn học và quay về trang chủ không?")) {
+                if (state.user) db.ref(`active_sessions/mon_vsvnn/${state.user.uid}`).remove();
+                auth.signOut().then(() => { window.location.href = "./index.html"; });
+            }
+        }
+
+        function startQuiz(part) {
+            const raw = TEST_DATA[part] || [];
+            state.questions = raw.map(item => {
+                const options = [
+                    { key: 'a', text: item.a }, 
+                    { key: 'b', text: item.b }, 
+                    { key: 'c', text: item.c }, 
+                    { key: 'd', text: item.d },
+                    { key: 'e', text: item.e }
+                ].filter(o => o.text !== undefined);
+                
+                return {
+                    id: item.id, 
+                    q: item.q, 
+                    correct: item.ans, 
+                    isMultiple: part === 5 || item.ans.length > 1,
+                    options: options
+                };
+            });
+            state.currentPart = part; state.currentQuestionIndex = 0; state.score = 0; state.wrongScore = 0;
+            state.sessionAnswers = []; state.showResult = false; state.selectedOptions = []; state.isSubmitted = false;
+            if (state.questions.length > 0) {
+                state.shuffledOptions = part === 2 ? state.questions[0].options : shuffleArray(state.questions[0].options);
+            }
+            render();
+        }
+
+        function handleOptionSelect(key, isMultiple) {
+            if (state.isSubmitted) return;
+            if (isMultiple) {
+                if (state.selectedOptions.includes(key)) {
+                    state.selectedOptions = state.selectedOptions.filter(k => k !== key);
+                } else {
+                    state.selectedOptions.push(key);
+                }
+            } else {
+                state.selectedOptions = [key];
+            }
+            render();
+        }
+
+        function checkAnswerSubmission() {
+            if (state.selectedOptions.length === 0 || state.isSubmitted) return;
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const userAnsStr = [...state.selectedOptions].sort().join('');
+            const correctAnsStr = currentQ.correct.split('').sort().join('');
+            const correct = userAnsStr === correctAnsStr;
+            
+            state.isSubmitted = true;
+            if (correct) state.score++; else state.wrongScore++;
+            state.sessionAnswers.push({ ...currentQ, userSelected: userAnsStr, options: state.shuffledOptions });
+            render();
+        }
+
+        function nextQuestion() {
+            if (state.currentQuestionIndex < state.questions.length - 1) {
+                state.currentQuestionIndex++;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                if (existing) {
+                    state.shuffledOptions = existing.options;
+                    state.selectedOptions = existing.userSelected.split('');
+                    state.isSubmitted = true;
+                } else {
+                    state.shuffledOptions = state.currentPart === 2 ? newQ.options : shuffleArray(newQ.options); 
+                    state.selectedOptions = []; 
+                    state.isSubmitted = false;
+                }
+                render();
+            } else {
+                state.showResult = true;
+                saveHistoryToLocal();
+                render();
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                state.currentQuestionIndex--;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                state.shuffledOptions = existing.options;
+                state.selectedOptions = existing.userSelected.split('');
+                state.isSubmitted = true;
+                render();
+            }
+        }
+
+        function saveHistoryToLocal() {
+            const record = {
+                id: Date.now(), date: new Date().toLocaleString('vi-VN'), part: state.currentPart,
+                score: state.score, wrong: state.wrongScore, total: state.questions.length,
+                details: state.sessionAnswers.map(q => ({ id: q.id, q: q.q, o: q.options || [], s: q.userSelected, c: q.correct }))
+            };
+            state.history.unshift(record);
+            try { localStorage.setItem('vsvnn_local_history', JSON.stringify(state.history)); } catch (e) {}
+        }
+
+        function clearHistory() {
+            if (window.confirm('Bạn có chắc muốn xóa toàn bộ lịch sử kết quả không?')) {
+                state.history = []; localStorage.removeItem('vsvnn_local_history'); render();
+            }
+        }
+
+        function viewHistoryDetail(index) {
+            state.reviewData = state.history[index].details || []; state.reviewMode = true; render();
+        }
+
+        function setReviewMode(val) { state.reviewMode = val; render(); }
+        function requestFinish() { state.isConfirming = true; render(); }
+        function setConfirming(val) { state.isConfirming = val; render(); }
+        function confirmFinish() { state.showResult = true; state.isConfirming = false; saveHistoryToLocal(); render(); }
+        function resetQuiz() { state.currentPart = null; state.questions = []; state.reviewMode = false; render(); }
+
+        window.addEventListener('DOMContentLoaded', () => { render(); });
+    </script>
+</body>
+</html>
