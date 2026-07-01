@@ -1,0 +1,1480 @@
+<NGUYỄN VĂN LƯỢNG ĐẸP TRAI HẸHẸ>
+    <html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Sinh Thái Nông Nghiệp - QuizPoint Studio</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap');
+        body { 
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        html, body, .custom-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar, .custom-scrollbar::-webkit-scrollbar { 
+            display: none;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#f0fdf4] via-[#e0f2fe] to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 min-h-screen text-slate-800 dark:text-slate-100">
+    
+    <div id="root"></div>
+
+    <script>
+       const firebaseConfig = {
+          apiKey: "AIzaSyC-n88rPoijqfE44ZF3ulPZdcGz_rtC3lg",
+          authDomain: "quizpointstuidio.firebaseapp.com",
+          databaseURL: "https://quizpointstuidio-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "quizpointstuidio",
+          storageBucket: "quizpointstuidio.firebasestorage.app",
+          messagingSenderId: "592248583165",
+          appId: "1:592248583165:web:8f7dac2ab36dbf35aadf94",
+          measurementId: "G-T8QQ1HEZGC"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+         const TEST_DATA = {
+    1: [
+        { 
+            id: 1, 
+            q: "Từ \"Ecology\" có nguồn gốc từ tiếng Hy Lạp cổ đại, trong đó \"Oikos\" có nghĩa là gì?", 
+            a: "Nghiên cứu", 
+            b: "Ghi chép", 
+            c: "Tổ kén, nhà ở, nơi ở", 
+            d: "Tương tác", 
+            ans: "c" 
+        },
+        { 
+            id: 2, 
+            q: "Theo Ernst Haeckel (1869), Sinh thái học nghiên cứu về mối quan hệ giữa sinh vật và cái gì?", 
+            a: "Mới trường vô sinh", 
+            b: "Môi trường hữu sinh", 
+            c: "Các điều kiện đấu tranh sinh tồn", 
+            d: "Môi trường hữu sinh và vô sinh", 
+            ans: "d" 
+        },
+        { 
+            id: 3, 
+            q: "Trong cấu trúc của Sinh thái học, cấp độ nào được coi là hạt nhân cơ bản của các hệ thống?", 
+            a: "Cá thể", 
+            b: "Quần thể", 
+            c: "Quần xã", 
+            d: "Hệ sinh thái", 
+            ans: "a" 
+        },
+        { 
+            id: 4, 
+            q: "Nội dung chính của Định luật tối thiểu Liebig là gì?", 
+            a: "Chất có hàm lượng quá dư thừa sẽ điều khiển năng suất.", 
+            b: "Chất có hàm lượng ở mức tối thiểu sẽ điều khiển năng suất và tính ổn định của mùa màng.", 
+            c: "Mọi nhân tố sinh thái đều có tác động như nhau.", 
+            d: "Sinh vật chỉ chết khi thiếu dinh dưỡng.", 
+            ans: "b" 
+        },
+        { 
+            id: 5, 
+            q: "Quy luật giới hạn sinh thái (Quy luật chống chịu) của Shelford (1913) bổ sung điều gì quan trọng so với Liebig?", 
+            a: "Chỉ quan tâm đến sự thiếu hụt.", 
+            b: "Yếu tố giới hạn bao gồm cả sự thiếu thốn và sự dư thừa quá mức.", 
+            c: "Nhiệt độ là yếu tố quan trọng nhất.", 
+            d: "Chỉ áp dụng cho động vật.", 
+            ans: "b" 
+        },
+        { 
+            id: 6, 
+            q: "\"Ổ sinh thái\" (Ecological Niche) theo khái niệm của Hutchinson (1957) là gì?", 
+            a: "Là nơi ở của sinh vật.", 
+            b: "Là một siêu không gian đa chiều mà ở đó các yếu tố môi trường quy định sự tồn tại và phát triển không hạn định của loài.", 
+            c: "Là vai trò chức năng của sinh vật trong quần xã.", 
+            d: "Là giới hạn nhiệt độ của loài.", 
+            ans: "b" 
+        },
+        { 
+            id: 7, 
+            q: "Khoảng giá trị của một nhân tố sinh thái mà ở đó sinh vật hoạt động cực đại được gọi là:", 
+            a: "Bậc tối thiểu (Minimum)", 
+            b: "Bậc tối cao (Maximum)", 
+            c: "Bậc tối thích (Optimum)", 
+            d: "Biến độ sinh thái", 
+            ans: "c" 
+        },
+        { 
+            id: 8, 
+            q: "Một sinh vật có phạm vi chống chịu rộng với tất cả các nhân tố sinh thái thì sẽ:", 
+            a: "Có vùng phân bố hẹp.", 
+            b: "Có vùng phân bố rộng.", 
+            c: "Chỉ sống được ở nhiệt đới.", 
+            d: "Dễ bị tuyệt chủng.", 
+            ans: "b" 
+        },
+        { 
+            id: 9, 
+            q: "Nhóm sinh vật nào sau đây có nhiệt độ cơ thể biến đổi theo nhiệt độ môi trường?", 
+            a: "Sinh vật đẳng nhiệt (máu nóng)", 
+            b: "Sinh vật biến nhiệt (máu lạnh)", 
+            c: "Thực vật ôn đới", 
+            d: "Động vật sa mạc", 
+            ans: "b" 
+        },
+        { 
+            id: 10, 
+            q: "Hiện tượng cây ra hoa dựa vào thời gian chiếu sáng trong ngày được gọi là gì?", 
+            a: "Cường độ sáng", 
+            b: "Quang chu kỳ", 
+            c: "Sự thích nghi nhiệt", 
+            d: "Định luật tối thiểu", 
+            ans: "b" 
+        },
+        { 
+            id: 11, 
+            q: "Nồng độ khí CO2 trung bình trong không khí thường chiếm khoảng bao nhiêu %?", 
+            a: "21%", 
+            b: "78%", 
+            c: "0,03%", 
+            d: "1%", 
+            ans: "c" 
+        },
+        { 
+            id: 12, 
+            q: "Hệ sinh thái nào sau đây được coi là nơi có biến đổi tự nhiên sâu sắc nhất kể từ khi có loài người?", 
+            a: "Hệ sinh thái rừng", 
+            b: "Hệ sinh thái đồng cỏ", 
+            c: "Hệ sinh thái đồng ruộng", 
+            d: "Hệ sinh thái ao hồ", 
+            ans: "c" 
+        },
+        { 
+            id: 13, 
+            q: "Hình thái đầu tiên của đồng ruộng trong lịch sử nông nghiệp là gì?", 
+            a: "Ruộng bậc thang", 
+            b: "Nông nghiệp tưới tiêu hiện đại", 
+            c: "Nương rẫy (đốt rẫy, chọc lỗ bỏ hạt)", 
+            d: "Luân canh đất cạn", 
+            ans: "c" 
+        },
+        { 
+            id: 14, 
+            q: "Đặc điểm khác biệt chủ yếu của Hệ sinh thái đồng ruộng so với các hệ tự nhiên là:", 
+            a: "Không có sâu bệnh.", 
+            b: "Thành phần sinh vật do con người điều khiển và quần thể cây trồng mang tác dụng chủ đạo.", 
+            c: "Không phụ thuộc vào ánh sáng mặt trời.", 
+            d: "Có cấu trúc phức tạp hơn rừng nhiệt đới.", 
+            ans: "b" 
+        },
+        { 
+            id: 15, 
+            q: "Tác dụng của gió đối với thực vật đồng ruộng nếu tốc độ gió lớn hơn 10 km/h là:", 
+            a: "Tăng cường thụ phấn.", 
+            b: "Làm giảm bốc hơi nước.", 
+            c: "Gây mất nước, cây bị héo.", 
+            d: "Giúp cây mọc cao hơn.", 
+            ans: "c" 
+        },
+        { 
+            id: 16, 
+            q: "Một chuỗi thức ăn (Food chain) cơ bản trong hệ sinh thái nông nghiệp thường bắt đầu từ sinh vật nào?", 
+            a: "Sinh vật tiêu thụ bậc 1 (sâu hại)", 
+            b: "Sinh vật sản xuất (cây lúa, cây ngô)", 
+            c: "Sinh vật phân hủy (vi khuẩn, nấm)", 
+            d: "Sinh vật tiêu thụ bậc 2 (thiên địch)", 
+            ans: "b" 
+        },
+        { 
+            id: 17, 
+            q: "Hiện tượng hai loài sinh vật cùng sử dụng một nguồn thức ăn hạn chế và kìm hãm sự phát triển của nhau được gọi là mối quan hệ:", 
+            a: "Cộng sinh (Symbiosis)", 
+            b: "Hội sinh (Commensalism)", 
+            a: "Cạnh tranh (Competition)", 
+            d: "Ký sinh (Parasitism)", 
+            ans: "c" 
+        }
+    ],
+    2: [
+        { 
+            id: 1, 
+            q: "Quần thể sinh vật được định nghĩa là gì?", 
+            a: "Tập hợp các cá thể khác loài sống cùng một nơi.", 
+            b: "Một nhóm cá thể của một loài (hoặc nhóm loài) có khả năng trao đổi thông tin di truyền, cùng sống trong một sinh cảnh.", 
+            c: "Tất cả các loài thực vật và động vật trong một hệ sinh thái.", 
+            d: "Một cá thể duy nhất đang thích nghi với môi trường.", 
+            ans: "b" 
+        },
+        { 
+            id: 2, 
+            q: "Đâu là đặc trưng cơ bản của một quần thể sinh vật?", 
+            a: "Chỉ có mật độ và kích thước.", 
+            b: "Mật độ, tỷ lệ sinh sản/tử vong, sự phân bố, cấu trúc tuổi/giới tính và biến động số lượng.", 
+            c: "Khả năng quang hợp và hô hấp.", 
+            d: "Chu trình vật chất và dòng năng lượng.", 
+            ans: "b" 
+        },
+        { 
+            id: 3, 
+            q: "Theo Bodenhaimer (1938), ba nhóm tuổi sinh thái của quần thể bao gồm:", 
+            a: "Nhóm trẻ, nhóm trung niên, nhóm già.", 
+            b: "Nhóm mới sinh, nhóm trưởng thành, nhóm tử vong.", 
+            c: "Nhóm trước sinh sản, nhóm sinh sản và nhóm sau sinh sản.", 
+            d: "Nhóm cây mầm, nhóm cây con và nhóm cây già.", 
+            ans: "c" 
+        },
+        { 
+            id: 4, 
+            q: "Mật độ quần thể được tính bằng:", 
+            a: "Tổng số loài trong một khu vực.", 
+            b: "Số lượng cá thể (hoặc sinh khối) trên một đơn vị diện tích hoặc thể tích.", 
+            c: "Tỷ lệ giữa cá thể đực và cá thể cái.", 
+            d: "Khối lượng cá thể trung bình trên một khu vực.", 
+            ans: "b" 
+        },
+        { 
+            id: 5, 
+            q: "Có mấy kiểu phân bố cá thể chính trong không gian của quần thể?", 
+            a: "2 kiểu: Đồng đều và Nhóm.", 
+            b: "3 kiểu: Đồng đều, Ngẫu nhiên và Nhóm.", 
+            c: "4 kiểu: Đồng đều, Ngẫu nhiên, Nhóm và Theo mùa.", 
+            d: "1 kiểu duy nhất là phân bố nhóm.", 
+            ans: "b" 
+        },
+        { 
+            id: 6, 
+            q: "Kiểu phân bố đồng đều thường xuất hiện khi nào?", 
+            a: "Khi nguồn sống phân bố không đồng đều.", 
+            b: "Khi các cá thể có sự cạnh tranh gay gắt về dinh dưỡng, ánh sáng hoặc có tính đối kháng nhau.", 
+            c: "Khi điều kiện ngoại cảnh tác động thuận lợi và nguồn sống dồi dào.", 
+            d: "Khi các cá thể có tập tính sống bầy đàn.", 
+            ans: "b" 
+        },
+        { 
+            id: 7, 
+            q: "Nội dung của Nguyên tắc Allee (1949) về sự quần tụ là gì?", 
+            a: "Quần tụ luôn có hại vì làm tăng cạnh tranh.", 
+            b: "Độ quần tụ đem lại cực thuận cho khả năng sống và sinh trưởng của quần thể.", 
+            c: "Cá thể sống riêng lẻ luôn tốt hơn sống thành nhóm.", 
+            d: "Quần thể càng đông thì tỷ lệ tử vong càng thấp không giới hạn.", 
+            ans: "b" 
+        },
+        { 
+            id: 8, 
+            q: "Một quần thể có cấu trúc tuổi với nhóm cá thể non chiếm ưu thế tuyệt đối thì:", 
+            a: "Quần thể đang bị thoái hóa.", 
+            b: "Quần thể đang ở trạng thái ổn định.", 
+            c: "Quần thể đang phát triển mạnh.", 
+            d: "Quần thể đang có xu hướng giảm sút số lượng.", 
+            ans: "c" 
+        },
+        { 
+            id: 9, 
+            q: "Yếu tố nào sau đây được coi là động lực chủ yếu làm gia tăng số lượng cá thể trong quần thể?", 
+            a: "Sự di cư.", 
+            b: "Tỷ lệ tử vong thấp.", 
+            c: "Tỷ lệ sinh sản.", 
+            d: "Sự phân bố ngẫu nhiên.", 
+            ans: "c" 
+        },
+        { 
+            id: 10, 
+            q: "\"Sức chứa\" (Carrying Capacity - K) của môi trường là gì?", 
+            a: "Số lượng cá thể tối đa mà môi trường có thể hỗ trợ ổn định theo thời gian.", 
+            b: "Tổng diện tích đất của một trang trại.", 
+            c: "Số lượng hạt giống tối đa có thể gieo.", 
+            d: "Tốc độ sinh sản cực đại của một loài.", 
+            ans: "a" 
+        },
+        { 
+            id: 11, 
+            q: "Đường cong tăng trưởng hình chữ S (Logistic) khác với đường cong hình chữ J (Exponential - cấp số nhân) ở điểm nào?", 
+            a: "Hình chữ S không có giai đoạn tăng trưởng nhanh.", 
+            b: "Hình chữ S có tính đến giới hạn của môi trường (K), tốc độ tăng trưởng giảm dần khi số lượng tiến gần đến K.", 
+            c: "Hình chữ J thể hiện sự tăng trưởng có giới hạn.", 
+            d: "Hình chữ S thể hiện sự tăng trưởng không giới hạn.", 
+            ans: "b" 
+        },
+        { 
+            id: 12, 
+            q: "Hiện tượng \"Biến động số lượng theo chu kỳ\" ở quần thể sinh vật thường liên quan đến yếu tố nào?", 
+            a: "Các thảm họa thiên nhiên bất ngờ xảy ra như núi lửa, động đất.", 
+            b: "Sự thay đổi có tính tuần hoàn của các yếu tố khí hậu (mùa, năm) hoặc mối quan hệ con mồi - vật dữ.", 
+            c: "Hoạt động săn bắt của con người diễn ra liên tục.", 
+            d: "Quần thể luôn giữ số lượng cố định, không bao giờ thay đổi.", 
+            ans: "b" 
+        },
+        { 
+            id: 13, 
+            q: "Trong nông nghiệp, việc hiểu rõ mật độ và cấu trúc tuổi của quần thể dịch hại (sâu, bệnh) giúp ích gì cho người trồng trọt?", 
+            a: "Xác định thời điểm phun thuốc đạt hiệu quả cao nhất khi sâu ở giai đoạn mẫn cảm.", 
+            b: "Dự báo khả năng bùng phát dịch để chủ động phòng trừ.", 
+            c: "Đánh giá hiệu quả của các biện pháp sinh học (thiên địch).", 
+            d: "Tất cả các ý trên đều đúng.", 
+            ans: "d" 
+        },
+        { 
+            id: 14, 
+            q: "Biện pháp quản lý dịch hại tổng hợp (IPM) hướng đến mục tiêu nào đối với quần thể sinh vật gây hại?", 
+            a: "Tiêu diệt hoàn toàn 100% các cá thể dịch hại bằng hóa chất mạnh.", 
+            b: "Duy trì mật độ quần thể dịch hại ở mức dưới ngưỡng gây hại kinh tế, kết hợp nhiều biện pháp thân thiện với môi trường.", 
+            c: "Bỏ mặc cho tự nhiên tự điều chỉnh, không can thiệp.", 
+            d: "Thay thế toàn bộ cây trồng bằng giống biến đổi gen diệt sâu.", 
+            ans: "b" 
+        },
+        { 
+            id: 15, 
+            q: "\"Ngưỡng kinh tế\" (Economic Threshold - ET) trong bảo vệ thực vật là gì?", 
+            a: "Mật độ dịch hại mà tại đó chi phí phòng trừ bằng với giá trị thiệt hại do dịch hại gây ra.", 
+            b: "Mật độ dịch hại mà tại đó cần phải áp dụng các biện pháp ngăn chặn để tránh đạt tới ngưỡng gây hại kinh tế.", 
+            c: "Số lượng nông sản tối đa có thể bán được trên thị trường.", 
+            d: "Mức độ ô nhiễm hóa chất tối đa cho phép trên nông sản.", 
+            ans: "b" 
+        },
+        { 
+            id: 16, 
+            q: "Một chuỗi thức ăn (Food chain) cơ bán trong hệ sinh thái nông nghiệp thường bắt đầu từ sinh vật nào?", 
+            a: "Sinh vật tiêu thụ bậc 1 (sâu hại)", 
+            b: "Sinh vật sản xuất (cây lúa, cây ngô)", 
+            c: "Sinh vật phân hủy (vi khuẩn, nấm)", 
+            d: "Sinh vật tiêu thụ bậc 2 (thiên địch)", 
+            ans: "b" 
+        },
+        { 
+            id: 17, 
+            q: "Hiện tượng hai loài sinh vật cùng sử dụng một nguồn thức ăn hạn chế và kìm hãm sự phát triển của nhau được gọi là mối quan hệ:", 
+            a: "Cộng sinh (Symbiosis)", 
+            b: "Hội sinh (Commensalism)", 
+            c: "Cạnh tranh (Competition)", 
+            d: "Ký sinh (Parasitism)", 
+            ans: "c" 
+        },
+        { 
+            id: 18, 
+            q: "Theo mô hình điều chỉnh quần thể của Anderson (1981), khi lượng lương thực tăng lên, quần thể sẽ:", 
+            a: "Tăng tỷ lệ tử vong để cân bằng.", 
+            b: "Tăng tỷ lệ sinh và giảm tỷ lệ chết, dẫn đến tăng số lượng cá thể.", 
+            c: "Giảm tỷ lệ sinh để tiết kiệm tài nguyên.", 
+            d: "Di cư sang nơi khác.", 
+            ans: "b" 
+        },
+        { 
+            id: 19, 
+            q: "Các yếu tố nội tại điều chỉnh mật độ quần thể (Internal regulation) dựa trên:", 
+            a: "Các trận lũ lụt hoặc sương muối ngẫu nhiên.", 
+            b: "Phản ứng với mật độ, là một phần hành vi tiến hóa để tự điều chỉnh (như giảm sinh sản khi quá đông).", 
+            c: "Sự can thiệp trực tiếp của con người.", 
+            d: "Thay đổi của cường độ ánh sáng mặt trời.", 
+            ans: "b" 
+        },
+        { 
+            id: 20, 
+            q: "Ứng dụng quan trọng nhất của sinh thái học quần thể trong nông nghiệp bền vững là gì?", 
+            a: "Tiêu diệt hoàn toàn mọi loài không phải cây trồng.", 
+            b: "Quản lý mật độ và sự sắp xếp cây trồng để đạt năng suất tối ưu đồng thời giảm thiểu cạnh tranh tiêu cực.", 
+            c: "Sử dụng tối đa phân bón hóa học để vượt ngưỡng K.", 
+            d: "Chỉ trồng các loài có chiến lược r.", 
+            ans: "b" 
+        }
+    ],
+    3: [
+        { 
+            id: 1, 
+            q: "Quần xã sinh vật (Community) được định nghĩa là gì?", 
+            a: "Tập hợp các cá thể cùng loài.", 
+            b: "Một nhóm các loài khác nhau cùng sống chung tại một nơi và có sự tương tác với nhau.", 
+            c: "Hệ thống các yếu tố vô sinh và hữu sinh của môi trường.", 
+            d: "Một đơn vị phân loại cao hơn loài.", 
+            ans: "b" 
+        },
+        { 
+            id: 2, 
+            q: "Đặc điểm nào sau đây được gọi là \"tính chất mới trỗi dậy\" (Emergent properties) ở cấp độ quần xã?", 
+            a: "Khả năng sinh sản của cả thể.", 
+            b: "Cấu trúc tuổi của một loài.", 
+            c: "Đa dạng loài, cấu trúc tầng tán và cấu trúc dinh dưỡng.", 
+            d: "Sự thích ứng sinh lý của cơ thể.", 
+            ans: "c" 
+        },
+        { 
+            id: 3, 
+            q: "Loài có tác động lớn nhất đến các thành phần hữu sinh và vô sinh của quần xã được gọi là:", 
+            a: "Loài ngẫu nhiên.", 
+            b: "Loài ưu thế (Dominant species).", 
+            c: "Loài ký sinh.", 
+            d: "Loài đặc trưng.", 
+            ans: "b" 
+        },
+        { 
+            id: 4, 
+            q: "Nhóm sinh vật nào đóng vai trò là nền tảng của mọi cấu trúc dinh dưỡng trong quần xã trên cạn?", 
+            a: "Sinh vật tiêu thụ bậc 1.", 
+            b: "Sinh vật phân hủy.", 
+            c: "Sinh vật sản xuất (Thực vật tự dưỡng).", 
+            d: "Động vật ăn thịt đầu bảng.", 
+            ans: "c" 
+        },
+        { 
+            id: 5, 
+            q: "Chỉ số nào dùng để đo lường số lượng loài có mặt trong một vị trí cụ thể của quần xã?", 
+            a: "Đa dạng Gamma.", 
+            b: "Đa dạng Beta.", 
+            c: "Đa dạng Alpha.", 
+            d: "Đa dạng di truyền.", 
+            ans: "c" 
+        },
+        { 
+            id: 6, 
+            q: "Sự khác biệt chính giữa quan hệ Hợp tác (Protocooperation) và Cộng sinh (Mutualism) là gì?", 
+            a: "Hợp tác là quan hệ có hại, cộng sinh là có lợi.", 
+            b: "Cộng sinh là mối quan hệ bắt buộc để tồn tại, trong khi hợp tác không bắt buộc.", 
+            c: "Chỉ có thực vật mới có quan hệ cộng sinh.", 
+            d: "Hợp tác chỉ xảy ra giữa các cá thể cùng loài.", 
+            ans: "b" 
+        },
+        { 
+            id: 7, 
+            q: "Hiện tượng cây Tầm gửi sống trên thân cây chủ để hút nước và chất dinh dưỡng là ví dụ của loại tương tác nào?", 
+            a: "Hội sinh.", 
+            b: "Ký sinh (Parasitism).", 
+            c: "Cạnh tranh.", 
+            d: "Hợp tác.", 
+            ans: "b" 
+        },
+        { 
+            id: 8, 
+            q: "\"Ô sinh thái\" (Ecological niche) của một loài trong quần xã được hiểu là:", 
+            a: "Nơi ở cụ thể của loài đó.", 
+            b: "Tổng hợp vị trí không gian và vai trò chức năng của loài trong môi trường.", 
+            c: "Giới hạn nhiệt độ mà loài có thể sống.", 
+            d: "Khả năng phát tán hạt giống của loài.", 
+            ans: "b" 
+        },
+        { 
+            id: 9, 
+            q: "Khả năng của quần xã duy trì được cấu trúc và tổ chức trước những biến động nhỏ của môi trường được gọi là:", 
+            a: "Tính phục hồi (Resilience).", 
+            b: "Tính chống chịu (Resistance).", 
+            c: "Tính đa dạng.", 
+            d: "Diễn thế.", 
+            ans: "b" 
+        },
+        { 
+            id: 10, 
+            q: "Theo định luật Gause (1934), điều gì xảy ra khi hai loài có ô sinh thái quá giống nhau cùng sống trong một môi trường có nguồn sống giới hạn?", 
+            a: "Chúng sẽ cùng nhau phát triển mạnh hơn.", 
+            b: "Một loài sẽ loại trừ loài kia thông qua cạnh tranh loại trừ.", 
+            c: "Chúng sẽ biến thành loài mới.", 
+            d: "Cạnh tranh sẽ giảm xuống bằng không.", 
+            ans: "b" 
+        },
+        { 
+            id: 11, 
+            q: "Trong nông nghiệp, việc trồng xen ruộng lúa trổ sớm với ruộng lúa trổ muộn hoặc trồng xen canh/trồng gối ngô và đậu là ứng dụng của nguyên lý nào?", 
+            a: "Loại trừ cạnh tranh.", 
+            b: "Phân hóa ô sinh thái (Niche diversification) nhằm chung sống hòa bình.", 
+            c: "Tăng cường ký sinh.", 
+            d: "Tăng đa dạng sinh học.", 
+            ans: "b" 
+        },
+        { 
+            id: 12, 
+            q: "Tương tác giữa hoa và ong mật (hút mật và thụ phấn) được phân loại là tương tác:", 
+            a: "Loại bỏ (Removal interference).", 
+            b: "Thêm vào (Addition interference).", 
+            c: "Kết hợp cả thêm vào và loại bỏ.", 
+            d: "Không có sự tương tác giữa các loài.", 
+            ans: "b" 
+        },
+        { 
+            id: 14, 
+            q: "Hiện tượng ức chế hóa học thực vật (Allelopathy) được xếp vào loại tương tác nào?", 
+            a: "Tương tác loại bỏ trực tiếp.", 
+            b: "Tương tác thêm vào, mang tính gián tiếp (phóng thích chất hóa học vào môi trường chung).", 
+            c: "Quan hệ hội sinh.", 
+            d: "Quan hệ hợp tác đối xứng.", 
+            ans: "b" 
+        },
+        { 
+            id: 15, 
+            q: "Giả thuyết \"Xáo trộn trung gian\" (Intermediate Disturbance Hypothesis) cho rằng đa dạng loài sẽ cao nhất khi:", 
+            a: "Không có bất kỳ sự xáo trộn nào.", 
+            b: "Xáo trộn xảy ra liên tục với cường độ cực mạnh.", 
+            c: "Xáo trộn xảy ra với tần suất và cường độ vừa phải.", 
+            d: "Chỉ có con người can thiệp hóa học.", 
+            ans: "c" 
+        },
+        { 
+            id: 16, 
+            q: "Chỉ số đa dạng Simpson (Simpson index) khác với chỉ số Shannon ở điểm cốt lõi nào?", 
+            a: "Simpson chỉ tính số lượng loài.", 
+            b: "Simpson chú trọng hơn vào độ đồng đều và vai trò của các loài ưu thế trong quần xã.", 
+            c: "Shannon không áp dụng được cho thực vật.", 
+            d: "Simpson luôn có giá trị bằng 0 trong các đa canh.", 
+            ans: "b" 
+        },
+        { 
+            id: 17, 
+            q: "Trong diễn thế thứ cấp (Secondary succession), tại sao năng suất sơ cấp thuần thường rất cao ở các giai đoạn đầu?", 
+            a: "Do các loài chiến lược K phát triển chậm.", 
+            b: "Do các loài tăng trưởng nhanh và tổng quang hợp vượt xa tổng hô hấp của hệ thống.", 
+            d: "Do hệ sinh thái đã đạt đến trạng thái ổn định (climax).", 
+            ans: "b" 
+        },
+        { 
+            id: 18, 
+            q: "Sự khát biệt về đa dạng loài giữa hai vùng cảnh quan có ý nghĩa gì trong quản lý nông nghiệp?", 
+            a: "Cho biết số loài trung bình tại mỗi điểm.", 
+            b: "Phản ánh mức độ thay đổi thành phần loài giữa các sinh cảnh khác nhau (ví dụ từ ruộng lúa sang vườn cây ăn trái).", 
+            c: "Xác định loài nào là loài di cư.", 
+            d: "Chỉ ra hàm lượng đạm trong đất.", 
+            ans: "b" 
+        },
+        { 
+            id: 19, 
+            q: "Khái niệm \"Tạo thuận lợi\" (Facilitation) trong quần xã cây trồng hỗn hợp được hiểu là:", 
+            a: "Một loài tiêu diệt loài khác để lấy chỗ.", 
+            b: "Một hoặc nhiều loài tương tác tạo ra điều kiện môi trường giúp các loài khác phát triển tốt hơn.", 
+            c: "Sự can thiệp của thuốc kích thích sinh trưởng.", 
+            d: "Việc bón phân hóa học liều cao.", 
+            ans: "b" 
+        },
+        { 
+            id: 20, 
+            q: "Một quần xã nông nghiệp được coi là có tính bền vững (Sustainability) khi nó sở hữu đặc điểm nào?", 
+            a: "Năng suất đạt cực đại trong một vụ rồi suy kiệt.", 
+            b: "Có khả năng tự điều chỉnh mật độ dịch hại thông qua mạng lưới thức ăn phức tạp và sự tương tác giữa các loài.", 
+            c: "Hoàn toàn phụ thuộc vào thuốc trừ sâu.", 
+            d: "Chỉ bao gồm một loài cây trồng duy nhất.", 
+            ans: "b" 
+        }
+    ],
+    4: [
+        { 
+            id: 1, 
+            q: "Hệ sinh thái (Ecosystem) được định nghĩa là một hệ thống chức năng bao gồm:", 
+            a: "Quần xã sinh vật và môi trường vật lý.", 
+            b: "Các cá thể cùng loài và nơi ở của chúng.", 
+            c: "Chỉ các loài động vật và thực vật trong rừng.", 
+            d: "Các yếu tố vô sinh của môi trường tự nhiên.", 
+            ans: "a" 
+        },
+        { 
+            id: 2, 
+            q: "Một hệ sinh thái tự nhiên đầy đủ bao gồm mấy thành phần cơ bản?", 
+            a: "2 (Sinh vật và Môi trường).", 
+            b: "3 (Sản xuất, Tiêu thụ, Phân hủy).", 
+            c: "4 (P - Sản xuất, C - Tiêu thụ, D - Phân hủy, E - Môi trường).", 
+            d: "5 (Thực vật, Động vật, Vi sinh vật, Đất, Nước).", 
+            ans: "c" 
+        },
+        { 
+            id: 3, 
+            q: "Thành phần nào sau đây được coi là \"hạt nhân\" thực hiện quá trình tổng hợp hữu cơ sơ cấp trong hệ sinh thái?", 
+            a: "Sinh vật tiêu thụ bậc 1.", 
+            b: "Sinh vật tự dưỡng (thực vật, tảo).", 
+            c: "Sinh vật hoại sinh.", 
+            d: "Các chất hữu cơ trong đất.", 
+            ans: "b" 
+        },
+        { 
+            id: 4, 
+            q: "Dòng năng lượng trong hệ sinh thái vận động theo quy luật nào?", 
+            a: "Vận động theo chu trình kín, tuần hoàn.", 
+            b: "Vận động một chiều và không hoàn nguyên.", 
+            c: "Tăng dần qua các bậc dinh dưỡng.", 
+            d: "Không bị mất mát khi chuyển qua các mắt xích thức ăn.", 
+            ans: "b" 
+        },
+        { 
+            id: 5, 
+            q: "Chu trình vật chất trong hệ sinh thái có đặc điểm gì khác biệt so với dòng năng lượng?", 
+            a: "Vận động một chiều từ môi trường vào sinh vật.", 
+            b: "Luôn bị thất thoát hoàn toàn sau mỗi vụ thu hoạch.", 
+            c: "Vận động theo chu trình kín và được hoàn nguyên.", 
+            d: "Chỉ xảy ra ở các hệ sinh thái nhân tạo.", 
+            ans: "c" 
+        },
+        { 
+            id: 6, 
+            q: "Cơ chế nào giúp hệ sinh thái đạt được và duy trì trạng thái cân bằng, ổn định?", 
+            a: "Phản hồi tích cực (Positive feedback).", 
+            b: "Phản hồi tiêu cực (Negative feedback).", 
+            c: "Sự can thiệp tối đa của con người.", 
+            d: "Việc loại bỏ hoàn toàn sinh vật phân hủy.", 
+            ans: "b" 
+        },
+        { 
+            id: 7, 
+            q: "Một hệ sinh thái \"trẻ\" thường có đặc điểm về năng lượng như thế nào?", 
+            a: "Tổng quang hợp xấp xỉ tổng hô hấp (P/R = 1).", 
+            b: "Năng suất thấp, sinh khối lớn.", 
+            c: "Năng suất cao, tỷ lệ quang hợp trên sinh khối lớn (P/B > 1).", 
+            d: "Quá trình phân hủy chiếm ưu thế tuyệt đối.", 
+            ans: "c" 
+        },
+        { 
+            id: 8, 
+            q: "Tại sao tháp năng lượng của các hệ sinh thái luôn có hình dạng chuẩn (đáy rộng, đỉnh hẹp)?", 
+            a: "Do sinh vật sản xuất có kích thước lớn nhất.", 
+            b: "Do năng lượng bị mất mát khoảng 90% khi chuyển qua mỗi bậc dinh dưỡng.", 
+            c: "Do con người điều khiển dòng năng lượng.", 
+            d: "Do số lượng cá thể ở bậc dinh dưỡng cao luôn đông hơn.", 
+            ans: "b" 
+        },
+        { 
+            id: 9, 
+            q: "Trong cấu trúc của hệ sinh thái, \"Hộp đen\" (Black box) đại diện cho:", 
+            a: "Các loài sinh vật quý hiếm.", 
+            b: "Các thành phần mà cấu trúc nội bộ tạm thời không được xem xét, chỉ quan tâm quan hệ đầu vào - đầu ra.", 
+            c: "Các chất ô nhiễm tích tụ trong đất.", 
+            d: "Khu vực rừng nguyên sinh bị cháy.", 
+            ans: "b" 
+        },
+        { 
+            id: 10, 
+            q: "Sự khác biệt chính về chu trình dinh dưỡng giữa rừng ôn đới và rừng nhiệt đới là:", 
+            a: "Rừng ôn đới có tốc độ phân hủy nhanh hơn.", 
+            b: "Rừng nhiệt đới tập trung phần lớn dinh dưỡng trong đất.", 
+            c: "Rừng nhiệt đới tập trung dinh dưỡng chủ yếu trong sinh khối (thân, lá).", 
+            d: "Rừng ôn đới không có sinh vật phân hủy.", 
+            ans: "c" 
+        },
+        { 
+            id: 11, 
+            q: "Diễn thế thứ sinh (Secondary succession) xảy ra trong trường hợp nào sau đây?", 
+            a: "Trên một đảo đá mới hình thành từ núi lửa.", 
+            b: "Trên một đầm lầy mới bồi lấp chưa có sinh vật.", 
+            c: "Trên một nương rẫy bỏ hoang sau canh tác.", 
+            d: "Trong một bể cá cảnh mới đổ nước.", 
+            ans: "c" 
+        },
+        { 
+            id: 12, 
+            q: "Đặc điểm nào của Hệ sinh thái nông nghiệp (HSTNN) khiến nó kém ổn định hơn HST tự nhiên?", 
+            a: "Thành phần loài đa dạng, lưới thức ăn phức tạp.", 
+            b: "Chu trình vật chất khép kín hoàn toàn.", 
+            c: "Số lượng loài ít, độc canh và phụ thuộc vào năng lượng bổ sung.", 
+            d: "Có khả năng tự phục hồi cao trước thiên tai.", 
+            ans: "c" 
+        },
+        { 
+            id: 16, 
+            q: "Trong quá trình diễn thế tiến tới trạng thái đỉnh cực (Climax), chỉ số nào sau đây sẽ tăng?", 
+            a: "Sản lượng thực (PN) của quần xã.", 
+            b: "Tỷ lệ quang hợp trên hô hấp (P/R).", 
+            c: "Tính ổn định và khả năng bảo tồn dưỡng chất.", 
+            d: "Tốc độ trao đổi chất giữa cơ thể và môi trường.", 
+            ans: "c" 
+        },
+        { 
+            id: 17, 
+            q: "Tại sao mô hình canh tác luân canh, xen canh lại bền vững hơn độc canh về mặt hệ sinh thái?", 
+            a: "Vì nó làm tăng phản hồi tích cực.", 
+            b: "Vì nó đa dạng hóa cấu trúc loài, tạo ra nhiều ô sinh thái và giảm áp lực sâu bệnh.", 
+            c: "Vì nó không cần dòng năng lượng từ mặt trời.", 
+            d: "Vì nó loại bỏ hoàn toàn sinh vật phân hủy trong đất.", 
+            ans: "b" 
+        },
+        { 
+            id: 18, 
+            q: "Một HST hồ nước đang bị \"phú dưỡng\" (Eutrophication) là biểu hiện của loại phản hồi nào?", 
+            a: "Phản hồi tiêu cuộc (Negative feedback).", 
+            b: "Phản hồi tích cực (Positive feedback) gây mất cân bằng.", 
+            c: "Trạng thái đỉnh cực thổ nhưỡng.", 
+            d: "Diễn thế dị dưỡng.", 
+            ans: "b" 
+        }
+    ],
+    5: [
+        { 
+            id: 1, 
+            q: "Hệ sinh thái nông nghiệp (HSTNN) được định nghĩa là:", 
+            a: "Một hệ thống tự nhiên không có sự can thiệp của con người.", 
+            b: "Các hệ sinh thái chịu tác động của con người nhiều nhất và có năng suất kinh tế cao nhất.", 
+            c: "Hệ thống chỉ bao gồm cây trồng và đất đai.", 
+            d: "Một quần thể sinh vật đem lại sinh lượng trong môi trường nhân tạo.", 
+            ans: "b" 
+        },
+        { 
+            id: 2, 
+            q: "In tổ chức thứ bậc của HSTNN, cấp độ nào tương ứng với \"Quần xã\" ở hệ tự nhiên?", 
+            a: "Cây trồng.", 
+            b: "Hệ thống trồng trọt (hoặc Hệ cảnh tác).", 
+            c: "Cá thể sinh vật.", 
+            d: "Hệ thống vùng.", 
+            ans: "b" 
+        },
+        { 
+            id: 3, 
+            q: "Thành phần nào sau đây được coi là \"bộ phận trung tâm\" và quan trọng nhất của một HSTNN?", 
+            a: "Hệ sinh thái sơ cấp.", 
+            b: "Hệ sinh thái vườn cây ăn trái.", 
+            c: "Hệ sinh thái đồng ruộng (HSTĐR).", 
+            d: "Khu vực dân cư nông thôn.", 
+            ans: "c" 
+        },
+        { 
+            id: 4, 
+            q: "Nguồn năng lượng chính để tạo ra năng suất sơ cấp (NSSC) trong HSTNN là:", 
+            a: "Năng lượng từ phân bón hóa học.", 
+            b: "Năng lượng bức xạ mặt trời.", 
+            c: "Năng lượng từ sức kéo gia súc.", 
+            d: "Năng lượng từ máy móc cơ khí.", 
+            ans: "b" 
+        },
+        { 
+            id: 5, 
+            q: "Đặc điểm nổi bật nhất của chu trình vật chất trong HSTNN so với hệ tự nhiên là:", 
+            a: "Chu trình khép kín hoàn toàn.", 
+            b: "Dòng vật chất không khép kín.", 
+            c: "Không cần bổ sung vật chất từ bên ngoài.", 
+            d: "Vật chất luôn chuyển động một chiều và biến mất hoàn toàn.", 
+            ans: "b" 
+        },
+        { 
+            id: 6, 
+            q: "Tại sao HSTNN thường được coi là một hệ sinh thái \"trẻ\"?", 
+            a: "Vì nó mới được hình thành gần đây.", 
+            b: "Vì có năng suất sơ cấp cao, tỷ lệ P/R lớn và cấu trúc loài đơn giản.", 
+            c: "Vì nó không có sinh vật phân hủy.", 
+            d: "Vì nó có khả năng tự phục hồi rất cao.", 
+            ans: "b" 
+        },
+        { 
+            id: 7, 
+            q: "Hiệu suất chuyển hóa năng lượng từ thức ăn thực vật sang thức ăn động vật (năng suất thứ cấp) trong chăn nuôi thường đạt khoảng:", 
+            a: "1%", 
+            b: "10%", 
+            c: "50%", 
+            d: "90%", 
+            ans: "b" 
+        },
+        { 
+            id: 8, 
+            q: "Trong cấu trúc của một HST đồng ruộng điển hình, hệ thống phụ nào bao gồm các yếu tố như nước, không khí, chất hữu cơ và vi sinh vật đất?", 
+            a: "Hệ phụ khí tượng.", 
+            b: "Hệ phụ cây trồng.", 
+            c: "Hệ phụ đất.", 
+            d: "Hệ phụ biện pháp kỹ thuật.", 
+            ans: "c" 
+        },
+        { 
+            id: 9, 
+            q: "Sự \"đa dạng có quy hoạch\" trong HSTNN là gì?", 
+            a: "Sự xuất hiện ngẫu nhiên của các loài cỏ dại.", 
+            b: "Sự phong phú về loài do con người chủ ý lựa chọn gieo trồng và nuôi dưỡng.", 
+            c: "Các loài sâu hại bùng phát theo mùa.", 
+            d: "Các loài vi sinh vật tự nhiên trong đất.", 
+            ans: "b" 
+        },
+        { 
+            id: 10, 
+            q: "Theo quan điểm Sinh thái học nhân văn (Human Ecology), con người trong HSTNN được coi là:", 
+            a: "Một yếu tố ngoại cảnh đứng ngoài hệ thống.", 
+            b: "Một bộ phận cấu thành không thể tách rời của hệ thống.", 
+            c: "Kẻ thù của sự cân bằng sinh thái.", 
+            d: "Chỉ là sinh vật tiêu thụ bậc cao nhất.", 
+            ans: "b" 
+        },
+        { 
+            id: 11, 
+            q: "Một hệ thống nông nghiệp hiện đại lạm dụng thuốc bảo vệ thực vật hóa học (BVTV) thường gặp phải hậu quả nào sau đây?", 
+            a: "Hệ thống trở nên bền vững hơn do không còn sâu bệnh.", 
+            b: "Gây hiện tượng \"nghiện thuốc\", phá vỡ cân bằng thiên địch và làm suy giảm sức khỏe con người.", 
+            c: "Tăng tính đa dạng sinh học của đồng ruộng.", 
+            d: "Làm cho chu trình vật chất trở nên khép kín.", 
+            ans: "b" 
+        },
+        { 
+            id: 12, 
+            q: "Việc trồng xen cây họ đậu vào ruộng ngô là ứng dụng của mối quan hệ sinh học nào?", 
+            a: "Ký sinh.", 
+            b: "Ức chế cảm nhiễm.", 
+            c: "Cộng sinh cố định đạm (giữa rễ đậu và vi khuẩn Rhizobium).", 
+            d: "Hội sinh.", 
+            ans: "c" 
+        },
+        { 
+            id: 13, 
+            q: "\"Tính chất mới trỗi dậy\" quan trọng nhất để đánh giá sự thành công của một HSTNN là:", 
+            a: "Khả năng sinh trưởng của từng cây lúa.", 
+            b: "Năng suất kinh tế ổn định và bền vững của toàn hệ thống.", 
+            c: "Số lượng máy cày có trong trang trại.", 
+            d: "Lượng phân bón đã sử dụng.", 
+            ans: "b" 
+        },
+        { 
+            id: 14, 
+            q: "Hiệu quả toàn phần (TFP) của một HSTNN được tính bằng công thức:", 
+            a: "TFP = Tổng giá trị đầu vào (X) / Tổng giá trị đầu ra (Q)", 
+            b: "TFP = Tổng giá trị đầu ra (Q) / Tổng giá trị đầu vào (X)", 
+            c: "TFP = Năng suất sơ cấp + Năng suất thứ cấp", 
+            d: "TFP = Sản lượng thu hoạch - Chi phí phân bón", 
+            ans: "b" 
+        },
+        { 
+            id: 15, 
+            q: "Tại sao việc \"làm già\" một số quá trình trong HSTNN lại cần thiết?", 
+            a: "Để cây trồng nhanh chín hơn.", 
+            b: "Để tăng cường tính ổn định, khả năng chống chịu và mô phỏng sự bền vững của hệ tự nhiên.", 
+            c: "Để giảm năng suất kinh tế.", 
+            d: "Để tăng lượng phân bón sử dụng.", 
+            ans: "b" 
+        },
+        { 
+            id: 16, 
+            q: "\"Tính bền vững\" của HSTNN theo định nghĩa của Conway (1985) nhấn mạnh vào:", 
+            a: "Việc đạt năng suất cực đại trong thời gian ngắn nhất.", 
+            b: "Khả năng duy trì năng suất trước những hạn chế sinh thái và áp lực kinh tế - xã hội lâu dài.", 
+            c: "Việc loại bỏ hoàn toàn các yếu tố xã hội ra khỏi nông nghiệp.", 
+            d: "Chỉ tập trung vào bảo vệ môi trường.", 
+            ans: "b" 
+        },
+        { 
+            id: 17, 
+            q: "Một hệ thống canh tác lúa - tôm hoặc lúa - cá ở ĐBSCL thể hiện tính chất nào của HSTNN?", 
+            a: "Tính đơn điệu về loài.", 
+            b: "Tính đa dạng hóa, tận dụng ô sinh thái và nâng cao tính ổn định của hệ thống.", 
+            c: "Tính độc lập hoàn toàn với thị trường.", 
+            d: "Tính kém thích nghi.", 
+            ans: "b" 
+        },
+        { 
+            id: 18, 
+            q: "Trong mô hình \"Radar chart\" so sánh hệ canh tác cổ truyền và hàng hóa, vành đai ngoài cùng đại diện cho:", 
+            a: "Hệ thống có năng suất thấp nhất.", 
+            b: "Hệ thống lý tưởng (đạt điểm cao ở tất cả các tiêu chí: năng suất, ổn định, bền vững, công bằng...).", 
+            c: "Hệ thống sử dụng nhiều thuốc trừ sâu nhất.", 
+            d: "Hệ thống bị suy thoái mạnh.", 
+            ans: "b" 
+        },
+        { 
+            id: 19, 
+            q: "Tại sao nông nghiệp hiện đại thường kém ổn định hơn nông nghiệp cổ truyền?", 
+            a: "Do sử dụng giống địa phương quá nhiều.", 
+            b: "Do sự đơn giản hóa cấu trúc loài, mất cân bằng sinh thái và phụ thuộc lớn vào năng lượng hóa thạch đầu vào.", 
+            c: "Do không có sự can thiệp của máy móc.", 
+            d: "Do chu trình vật chất khép kín quá mức.", 
+            ans: "b" 
+        },
+        { 
+            id: 20, 
+            q: "Để xây dựng một HSTNN bền vững theo xu hướng \"Nông nghiệp xanh (ESG)\", chiến lược quan trọng nhất là:", 
+            a: "Tăng tối đa sản lượng bằng mọi giá.", 
+            b: "Đầu tư trí tuệ để điều khiển các quá trình sinh học, giảm chi phí đầu tư hóa thạch và bảo vệ đa dạng sinh học.", 
+            c: "Ngừng hoàn toàn việc trồng trọt để phục hồi rừng.", 
+            d: "Chỉ tập trung vào xuất khẩu nông sản.", 
+            ans: "b" 
+        }
+    ]
+};
+
+        let state = {
+            user: null,
+            loading: true,
+            emailInput: "",
+            passwordInput: "",
+            authError: "",
+            isKicked: false,
+            isDarkMode: false,
+            currentPart: null,
+            currentQuestionIndex: 0,
+            score: 0,
+            wrongScore: 0,
+            showResult: false,
+            selectedOptions: [],
+            isSubmitted: false,
+            questions: [],
+            shuffledOptions: [],
+            isConfirming: false,
+            sessionAnswers: [],
+            reviewMode: false,
+            reviewData: [],
+            history: []
+        };
+
+        try {
+            const saved = localStorage.getItem('stnn_local_history');
+            state.history = saved ? JSON.parse(saved) : [];
+        } catch (e) { state.history = []; }
+
+        const getOrCreateDeviceToken = () => {
+            let token = localStorage.getItem("qp_device_token_stnn");
+            if (!token) {
+                token = "m_stnn_" + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+                localStorage.setItem("qp_device_token_stnn", token);
+            }
+            return token;
+        };
+
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+        
+        function toggleDarkMode() {
+            state.isDarkMode = !state.isDarkMode;
+            document.documentElement.classList.toggle('dark', state.isDarkMode);
+            render();
+        }
+
+        function render() {
+            const root = document.getElementById('root');
+            
+            if (state.loading) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-500 mb-4"></div>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium text-sm">Đang kiểm tra cổng kết nối bảo mật Cloud...</p>
+                    </div>`;
+                return;
+            }
+
+            if (!state.user) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-6 flex flex-col items-center justify-center relative w-full">
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            <button onclick="toggleDarkMode()" class="p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 pointer-events-auto active:scale-95">
+                                ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                            </button>
+                        </header>
+                        <div class="w-full max-w-md p-8 sm:p-10 rounded-3xl shadow-2xl border bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/80 animate-enter mt-14">
+                            <div class="text-center mb-8">
+                                <div class="inline-flex p-3 bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-emerald-400 rounded-2xl mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                <h2 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Đăng nhập môn học</h2>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 font-bold mt-1 uppercase tracking-wider">Sinh Thái Nông Nghiệp</p>
+                            </div>
+                            ${state.isKicked ? `
+                                <div class="mb-4 p-3 bg-rose-50 dark:bg-rose-950/40 border-l-4 border-rose-500 text-rose-700 dark:text-rose-400 text-xs font-semibold rounded-r-xl flex items-start gap-2 animate-enter">
+                                    <svg class="flex-shrink-0 mt-0.5 animate-pulse text-rose-600" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    <p>Tài khoản vừa bị khóa vì phát hiện đăng nhập cùng lúc từ một thiết bị khác!</p>
+                                </div>` : ''}
+                            <form onsubmit="handleLogin(event)" class="space-y-5">
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Tài khoản Email</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                                        <input type="email" id="emailInput" placeholder="abc...@quizpointstudio.com" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.emailInput}" required />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wider">Mật mã bảo mật</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                                        <input type="password" id="passwordInput" placeholder="••••••••" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-semibold border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm" value="${state.passwordInput}" required />
+                                    </div>
+                                </div>
+                                <div id="authError" class="text-xs font-bold text-rose-500 bg-rose-50 dark:bg-rose-950/30 p-3 rounded-lg border border-rose-100 dark:border-rose-900/40 hidden"></div>
+                                <button type="submit" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition-all text-sm uppercase tracking-wider">Xác nhận đăng nhập</button>
+                            </form>
+                            <div class="text-center mt-6">
+                                <button onclick="window.location.href='./index.html'" class="text-xs text-slate-400 hover:text-brand-600 dark:hover:text-emerald-400 font-bold transition-all hover:underline">← Quay lại danh mục trang chủ</button>
+                            </div>
+                        </div>
+                    </div>`;
+                if(state.authError) {
+                    const errDiv = document.getElementById('authError');
+                    errDiv.innerText = state.authError;
+                    errDiv.classList.remove('hidden');
+                }
+                return;
+            }
+
+            if (state.reviewMode) {
+                root.innerHTML = `
+                    <div class="min-h-screen p-4 sm:p-6 lg:p-8 bg-slate-50/50 dark:bg-slate-950/20 w-full flex flex-col items-center">
+                        <div class="w-full max-w-4xl space-y-6">
+                            <div class="glass-panel p-4 rounded-2xl shadow-sm sticky top-4 z-10 flex justify-between items-center mb-8">
+                                <button onclick="setReviewMode(false)" class="flex items-center gap-2 text-brand-700 dark:text-emerald-400 font-extrabold transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> <span>Quay lại</span></button>
+                                <h2 class="text-xl font-black text-slate-800 dark:text-white tracking-tight uppercase">Chi tiết bài làm</h2>
+                                <div class="w-8"></div> 
+                            </div>
+                            <div class="space-y-8 pb-10">
+                                ${state.reviewData.map((item, index) => {
+                                    const userAnsArr = item.s ? item.s.split('') : [];
+                                    const correctAnsArr = item.c ? item.c.split('') : [];
+                                    const isItemCorrect = item.s === item.c;
+                                    return `
+                                        <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 ${!isItemCorrect ? 'ring-2 ring-red-500/20' : ''}">
+                                            <div class="flex gap-4 mb-2">
+                                                <span class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg ${isItemCorrect ? 'bg-gradient-to-br from-emerald-400 to-emerald-600' : 'bg-gradient-to-br from-red-400 to-red-600'}">${index + 1}</span>
+                                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 leading-relaxed">${item.q}</h3>
+                                            </div>
+                                            <div class="pl-14 mb-4 text-xs font-bold text-brand-600 dark:text-emerald-400">
+                                                 ${item.c.length > 1 ? "☑ Câu hỏi này tích chọn nhiều đáp án đúng" : "🔘 Câu hỏi này chọn một đáp án duy nhất"}
+                                            </div>
+                                            <div class="space-y-3 pl-0 sm:pl-14">
+                                                ${item.o.map(opt => {
+                                                    const isOptCorrect = correctAnsArr.includes(opt.key);
+                                                    const isOptSelected = userAnsArr.includes(opt.key);
+                                                    let optionClass = "p-4 rounded-xl border flex justify-between items-center font-semibold text-sm ";
+                                                    if (isOptCorrect) optionClass += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 shadow-sm";
+                                                    else if (isOptSelected) optionClass += "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 shadow-sm";
+                                                    else optionClass += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600 opacity-70";
+                                                    return `
+                                                        <div class="${optionClass}">
+                                                            <span>${opt.text}</span>
+                                                            ${isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                                            ${isOptSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                                        </div>`;
+                                                }).join('')}
+                                            </div>
+                                        </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (!state.currentPart) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col relative w-full items-center">
+                        
+                        <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto">
+                                <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="flex flex-col items-start">
+                                    <span class="text-sm font-black text-brand-700 dark:text-emerald-400 leading-none tracking-tight uppercase">QuizPoint</span>
+                                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 leading-tight uppercase tracking-widest">Studio</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 pointer-events-auto">
+                                <button onclick="handleGoHome()" class="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs rounded-2xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-md active:scale-95">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                    <span class="hidden sm:inline">Quay về trang chủ</span>
+                                    <span class="sm:hidden">Trang chủ</span>
+                                </button>
+                                
+                                <button onclick="toggleDarkMode()" class="p-2 sm:p-3 rounded-2xl border shadow-md glass-panel text-slate-700 dark:text-amber-400 active:scale-95">
+                                    ${state.isDarkMode ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'}
+                                </button>
+                            </div>
+                        </header>
+                        
+                        <div class="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950 text-white shadow-xl relative overflow-hidden text-center pt-40 pb-16 md:pt-32 md:pb-20">
+                            <div class="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_60%)] animate-pulse-slow"></div>
+                            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:30px_30px]"></div>
+                            <div class="absolute top-6 right-[25%] opacity-30 text-yellow-300 animate-bounce-slow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                            <div class="absolute bottom-8 left-[20%] opacity-30 text-emerald-300 animate-float"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                            <div class="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center gap-4 relative z-10">
+                                <div class="p-3 bg-white/5 rounded-2xl backdrop-blur-md border border-white/10 animate-float inline-block shadow-xl">
+                                    <svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22V10"/>
+                                        <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                        <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                        <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                        <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <div class="space-y-2">
+                                 <h1 style="line-height: 1.35 !important;" class="pt-2 text-3xl md:text-5xl font-black uppercase bg-gradient-to-r from-white via-emerald-300 to-slate-200 bg-clip-text text-transparent drop-shadow-lg">SINH THÁI NÔNG NGHIỆP</h1>
+    <p class="text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto leading-relaxed">Ngân hàng 91 câu hỏi tổng ôn lý thuyết chia làm 5 chương</p>
+</div>
+                            </div>
+                        </div>
+
+                        <div class="max-w-6xl mx-auto px-4 py-8 w-full -mt-10 relative z-20 space-y-10 flex flex-col items-center">
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md py-3 px-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm w-full max-w-xl">
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-brand-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Tên: <span class="text-brand-600 dark:text-emerald-400 font-extrabold">Nguyễn Văn Lượng</span></span></div>
+                                <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
+                                <div class="flex items-center gap-2 font-bold text-xs sm:text-sm"><svg class="text-amber-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .81 2.71A2 2 0 0 1 22 16.92z"/></svg><span>LH: <span class="font-mono text-slate-900 dark:text-white font-black">0333738861</span></span></div>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-brand-600 to-teal-700 text-white p-6 rounded-3xl shadow-xl border border-brand-500/30 overflow-hidden relative group text-center w-full max-w-3xl">
+                                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                                <div class="relative z-10 flex flex-col items-center gap-4">
+                                    <div class="flex items-center justify-center gap-3"><svg class="text-yellow-300 animate-pulse" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg><span class="font-bold text-lg sm:text-xl leading-tight">Nhận làm Quiz Ôn Tập & PowerPoint Cơ Bản</span></div>
+                                    <div class="flex flex-wrap justify-center gap-4 mt-1">
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Hệ thống Quiz</span></div>
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span>Thiết kế PPT</span></div>
+                                         <div class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm text-xs font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg><span>Tài liệu học tập</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 w-full">
+                                ${[1, 2, 3, 4, 5].map(num => `
+                                    <button onclick="startQuiz(${num})" class="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-brand-500 dark:hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-center gap-3">
+                                      <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 shadow-inner group-hover:bg-brand-500 dark:group-hover:bg-emerald-500 group-hover:text-white text-brand-500 transition-all duration-300">
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 22V10"/>
+                                            <path d="M12 10c0-3.3 2.7-6 6-6h2v1c0 3.3-2.7 6-6 6h-2Z"/>
+                                            <path d="M12 14c0-2.8-2.2-5-5-5H3v1c0 2.8 2.2 5 5 5h4Z"/>
+                                            <path d="M12 6c0-2.2 1.8-4 4-4h2v.5c0 2.2-1.8 4-4 4h-2Z"/>
+                                            <circle cx="12" cy="22" r="1" fill="currentColor"/>
+                                         </svg>
+                                      </div>
+                                      <div>
+                                        <div class="font-black text-sm text-slate-800 dark:text-slate-200 tracking-tight leading-tight">Chương 0${num}</div>
+                                        <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 uppercase tracking-wide"></div>
+                                      </div>
+                                    </button>`).join('')}
+                            </div>
+
+                            <div class="glass-panel p-6 rounded-3xl shadow-sm max-w-2xl mx-auto w-full text-left">
+                                <div class="flex justify-between items-center mb-6 px-2">
+                                  <h2 class="text-sm font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg> Lịch sử kết quả làm bài</h2>
+                                  ${state.history.length > 0 ? `<button onclick="clearHistory()" class="text-rose-500 hover:text-rose-700 p-2 hover:bg-rose-50 rounded-lg transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>` : ''}
+                                </div>
+                                ${state.history.length === 0 ? `<div class="text-center py-8 text-slate-400 dark:text-slate-600 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold italic">Chưa có lịch sử làm đề lưu trữ</div>` : `
+                                  <div class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    ${state.history.map((record, index) => `
+                                      <div class="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 hover:shadow-md transition-shadow">
+                                        <div class="flex-1 w-full sm:w-auto">
+                                          <div class="font-black text-sm text-slate-700 dark:text-slate-300 uppercase tracking-tight">Chương ${record.part}</div>
+                                          <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 mt-1 italic">${record.date}</div>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="text-right">
+                                                <div class="text-sm font-black"><span class="text-emerald-600 dark:text-emerald-400">${record.score} Đ</span><span class="text-rose-500 ml-1.5">/ ${record.wrong} S</span></div>
+                                                <div class="text-[10px] font-extrabold text-slate-400 tracking-wide">/${record.total} CÂU</div>
+                                            </div>
+                                            <button onclick="viewHistoryDetail(${index})" class="p-2 bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-emerald-400 rounded-xl hover:bg-brand-100 dark:hover:bg-slate-700 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                                        </div>
+                                      </div>`).join('')}
+                                  </div>`}
+                            </div>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            if (state.showResult) {
+                root.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center p-4 text-center w-full">
+                        <div class="bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl shadow-2xl max-w-md w-full border border-slate-100 dark:border-slate-800 animate-enter">
+                          <div class="relative inline-block mb-6">
+                            <div class="absolute inset-0 bg-yellow-400 blur-xl opacity-30 rounded-full"></div>
+                            <svg class="w-20 h-20 text-yellow-500 relative z-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                          </div>
+                          <h2 class="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Hoàn Thành Bài Ôn Tập!</h2>
+                          <div class="grid grid-cols-2 gap-4 mb-8 mt-6">
+                            <div class="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100"><p class="text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider mb-1">Đúng</p><p class="text-4xl font-black text-emerald-600 dark:text-emerald-400">${state.score}</p></div>
+                            <div class="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-2xl border border-rose-100"><p class="text-rose-500 dark:text-rose-400 text-xs font-extrabold uppercase tracking-wider mb-1">Sai / Thiếu</p><p class="text-4xl font-black text-rose-500 dark:text-rose-400">${state.wrongScore}</p></div>
+                          </div>
+                          <button onclick="resetQuiz()" class="w-full py-4 bg-gradient-to-r from-brand-500 to-emerald-600 text-white rounded-xl font-extrabold text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Về màn hình chính</button>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const progress = ((state.currentQuestionIndex + 1) / state.questions.length) * 100;
+
+            root.innerHTML = `
+                <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4 ${state.isConfirming ? 'block' : 'hidden'}">
+                  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100">
+                    <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight mb-2">Nộp bài & kết thúc?</h3>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 font-medium mb-6">Kết quả bài làm hiện tại của bạn sẽ được lưu giữ lại hệ thống.</p>
+                    <div class="flex gap-3">
+                      <button onclick="setConfirming(false)" class="flex-1 py-3 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors">Tiếp bài làm</button>
+                      <button onclick="confirmFinish()" class="flex-1 py-3 px-4 bg-rose-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">Nộp bài ngay</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-h-screen flex flex-col items-center p-4 sm:p-6 w-full max-w-3xl mx-auto relative justify-start">
+                    <div class="w-full flex justify-between items-center mb-6 pt-2">
+                        <button onclick="requestFinish()" class="p-2.5 rounded-xl text-slate-400 hover:text-rose-500 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+                        <div class="glass-panel px-4 py-2 rounded-full border text-xs font-bold text-slate-600 dark:text-slate-300 tracking-wide uppercase">Câu ${state.currentQuestionIndex + 1} / ${state.questions.length}</div>
+                        <div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 px-3 py-1.5 rounded-xl"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${state.score}</div>
+                    </div>
+                    
+                    <div class="w-full mb-8">
+                        <div class="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all rounded-full" style="width: ${progress}%"></div></div>
+                    </div>
+                    
+                    <div class="w-full bg-white dark:bg-slate-900 p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800/60 mb-24 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-emerald-600"></div>
+                        
+                        <div>
+                            <div class="mb-6">
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                    <span class="inline-block bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-slate-100">ID: #${currentQ.id}</span>
+                                    <span class="text-[10px] font-black tracking-wider uppercase px-2.5 py-1 rounded-full ${currentQ.isMultiple ? 'bg-amber-50 text-amber-600 border border-amber-200' : 'bg-teal-50 text-teal-600 border border-teal-200'}">
+                                        ${currentQ.isMultiple ? "☑ Tích chọn nhiều đáp án" : "🔘 Chọn một đáp án"}
+                                    </span>
+                                </div>
+                                <h2 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 leading-snug tracking-tight">${currentQ.q}</h2>
+                            </div>
+                            
+                            <div class="space-y-3.5">
+                                ${state.shuffledOptions.map((option) => {
+                                    const isSelected = state.selectedOptions.includes(option.key);
+                                    const isOptCorrect = currentQ.correct.split('').includes(option.key);
+                                    
+                                    let containerClass = "w-full p-5 rounded-2xl border text-left font-semibold transition-all duration-200 transform active:scale-[0.98] flex justify-between items-center relative overflow-hidden text-sm ";
+                                    
+                                    if (state.isSubmitted) {
+                                      containerClass += " active:scale-100 cursor-not-allowed "; 
+                                      if (isOptCorrect) containerClass += "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-inner";
+                                      else if (isSelected) containerClass += "border-rose-500 bg-rose-50 dark:bg-rose-950/30 text-rose-800 ring-2 ring-rose-200 shadow-inner";
+                                      else containerClass += "border-slate-100 text-slate-400 opacity-50";
+                                    } else {
+                                      if (isSelected) containerClass += "border-emerald-500 bg-emerald-50/60 dark:bg-slate-800/80 text-emerald-900 dark:text-teal-300 ring-2 ring-emerald-200 dark:ring-emerald-900/40 shadow-md -translate-y-0.5";
+                                      else containerClass += "border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-brand-50/40 hover:border-brand-200 hover:shadow-sm hover:-translate-y-0.5";
+                                    }
+
+                                    return `
+                                        <button onclick="handleOptionSelect('${option.key}', ${currentQ.isMultiple})" ${state.isSubmitted ? 'disabled' : ''} class="${containerClass}">
+                                            <div class="flex items-center gap-4 relative z-10">
+                                                <div class="w-5 h-5 flex items-center justify-center border-2 flex-shrink-0 rounded-md transition-colors ${isSelected ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 bg-white dark:bg-slate-900'}">
+                                                    ${isSelected ? '<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>' : ''}
+                                                </div>
+                                                <span>${option.text}</span>
+                                            </div>
+                                            ${state.isSubmitted && isOptCorrect ? '<svg class="text-emerald-600 dark:text-emerald-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                                            ${state.isSubmitted && isSelected && !isOptCorrect ? '<svg class="text-red-600 dark:text-red-400 flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' : ''}
+                                        </button>`;
+                                }).join('')}
+                            </div>
+                            
+                            ${!state.isSubmitted && state.selectedOptions.length > 0 ? `
+                                <div class="mt-6 flex justify-end">
+                                    <button onclick="checkAnswerSubmission()" class="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold rounded-xl text-xs uppercase tracking-wider shadow-md transform active:scale-95 transition-transform">
+                                        Xác nhận đáp án
+                                    </button>
+                                </div>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-100 dark:border-slate-900/60 flex justify-center items-center gap-4 z-20">
+                        <button onclick="prevQuestion()" ${state.currentQuestionIndex === 0 ? 'disabled' : ''} class="w-14 h-14 rounded-2xl flex items-center justify-center border text-slate-600 dark:text-slate-400 disabled:opacity-25 transform active:scale-95 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+                        <button onclick="nextQuestion()" ${!state.isSubmitted ? 'disabled' : ''} class="flex-1 max-w-md h-14 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 disabled:bg-slate-200 dark:disabled:bg-slate-800/50 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:shadow-none bg-brand-600 text-white disabled:cursor-not-allowed transform active:scale-[0.99] transition-all">
+                            ${state.currentQuestionIndex === state.questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        auth.onAuthStateChanged((currentUser) => {
+    if (currentUser) {
+        const ADMIN_EMAIL = "ngocyen@cucdang.com";
+        const userEmail = currentUser.email.toLowerCase();
+        
+        if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".stnn")) {
+            state.authError = "Tài khoản này không có quyền truy cập môn STNN!";
+            auth.signOut();
+            state.user = null;
+        } else {
+            const token = getOrCreateDeviceToken();
+            const sessionRef = db.ref(`active_sessions/mon_stnn/${currentUser.uid}`);
+            
+            const isAdmin = userEmail === ADMIN_EMAIL;
+
+            if (!state.user) {
+                if (!isAdmin) {
+                    sessionRef.set({ 
+                        deviceToken: token, 
+                        lastLogin: firebase.database.ServerValue.TIMESTAMP, 
+                        email: currentUser.email 
+                    });
+                }
+            }
+
+            sessionRef.on("value", (snap) => {
+                const val = snap.val();
+                
+                if (val && val.deviceToken !== token && !isAdmin) {
+                    state.isKicked = true;
+                    auth.signOut();
+                    state.user = null;
+                    render();
+                }
+            });
+            state.user = currentUser;
+        }
+    } else {
+        state.user = null;
+    }
+    state.loading = false;
+    render();
+});
+
+        function handleLogin(e) {
+            e.preventDefault();
+            state.authError = "";
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            state.emailInput = email; state.passwordInput = password;
+
+            auth.signInWithEmailAndPassword(email, password).catch(err => {
+                state.authError = "Tài khoản hoặc mật khẩu bảo mật không chính xác.";
+                render();
+            });
+        }
+
+        function handleGoHome() {
+            if (window.confirm("Bạn có chắc muốn rời môn học và quay về trang chủ không?")) {
+                if (state.user) db.ref(`active_sessions/mon_stnn/${state.user.uid}`).remove();
+                auth.signOut().then(() => { window.location.href = "./index.html"; });
+            }
+        }
+
+        function startQuiz(part) {
+            const raw = TEST_DATA[part] || [];
+            state.questions = raw.map(item => ({
+                id: item.id, q: item.q, correct: item.ans, isMultiple: item.ans.length > 1,
+                options: [{ key: 'a', text: item.a }, { key: 'b', text: item.b }, { key: 'c', text: item.c }, { key: 'd', text: item.d }].filter(o => o.text !== undefined)
+            }));
+            state.currentPart = part; state.currentQuestionIndex = 0; state.score = 0; state.wrongScore = 0;
+            state.sessionAnswers = []; state.showResult = false; state.selectedOptions = []; state.isSubmitted = false;
+            if (state.questions.length > 0) state.shuffledOptions = shuffleArray(state.questions[0].options);
+            render();
+        }
+
+        function handleOptionSelect(key, isMultiple) {
+            if (state.isSubmitted) return;
+            if (isMultiple) {
+                if (state.selectedOptions.includes(key)) {
+                    state.selectedOptions = state.selectedOptions.filter(k => k !== key);
+                } else {
+                    state.selectedOptions.push(key);
+                }
+            } else {
+                state.selectedOptions = [key];
+            }
+            render();
+        }
+
+        function checkAnswerSubmission() {
+            if (state.selectedOptions.length === 0 || state.isSubmitted) return;
+            const currentQ = state.questions[state.currentQuestionIndex];
+            const userAnsStr = [...state.selectedOptions].sort().join('');
+            const correctAnsStr = currentQ.correct.split('').sort().join('');
+            const correct = userAnsStr === correctAnsStr;
+            
+            state.isSubmitted = true;
+            if (correct) state.score++; else state.wrongScore++;
+            state.sessionAnswers.push({ ...currentQ, userSelected: userAnsStr, options: state.shuffledOptions });
+            render();
+        }
+
+        function nextQuestion() {
+            if (state.currentQuestionIndex < state.questions.length - 1) {
+                state.currentQuestionIndex++;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                if (existing) {
+                    state.shuffledOptions = existing.options;
+                    state.selectedOptions = existing.userSelected.split('');
+                    state.isSubmitted = true;
+                } else {
+                    state.shuffledOptions = shuffleArray(newQ.options); state.selectedOptions = []; state.isSubmitted = false;
+                }
+                render();
+            } else {
+                state.showResult = true;
+                saveHistoryToLocal();
+                render();
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                state.currentQuestionIndex--;
+                const newQ = state.questions[state.currentQuestionIndex];
+                const existing = state.sessionAnswers.find(a => a.id === newQ.id);
+                state.shuffledOptions = existing.options;
+                state.selectedOptions = existing.userSelected.split('');
+                state.isSubmitted = true;
+                render();
+            }
+        }
+
+        function saveHistoryToLocal() {
+            const record = {
+                id: Date.now(), date: new Date().toLocaleString('vi-VN'), part: state.currentPart,
+                score: state.score, wrong: state.wrongScore, total: state.questions.length,
+                details: state.sessionAnswers.map(q => ({ id: q.id, q: q.q, o: q.options || [], s: q.userSelected, c: q.correct }))
+            };
+            state.history.unshift(record);
+            try { localStorage.setItem('stnn_local_history', JSON.stringify(state.history)); } catch (e) {}
+        }
+
+        function clearHistory() {
+            if (window.confirm('Bạn có chắc muốn xóa toàn bộ lịch sử kết quả không?')) {
+                state.history = []; localStorage.removeItem('stnn_local_history'); render();
+            }
+        }
+
+        function viewHistoryDetail(index) {
+            state.reviewData = state.history[index].details || []; state.reviewMode = true; render();
+        }
+
+        function setReviewMode(val) { state.reviewMode = val; render(); }
+        function requestFinish() { state.isConfirming = true; render(); }
+        function setConfirming(val) { state.isConfirming = val; render(); }
+        function confirmFinish() { state.showResult = true; state.isConfirming = false; saveHistoryToLocal(); render(); }
+        function resetQuiz() { state.currentPart = null; state.questions = []; state.reviewMode = false; render(); }
+
+        window.addEventListener('DOMContentLoaded', () => { render(); });
+    </script>
+</body>
+</html>
