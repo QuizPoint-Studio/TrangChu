@@ -92,10 +92,8 @@
     
     <input type="file" id="admin-file-upload" class="hidden" multiple />
 
-    <!-- Container Toast Notifications -->
     <div id="toast-container" class="fixed bottom-6 right-6 z-[9999] flex flex-col gap-2.5 pointer-events-none"></div>
 
-    <!-- Modal Xác nhận -->
     <div id="custom-confirm-modal" class="hidden fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-enter">
         <div class="bg-white dark:bg-slate-900 w-full max-w-sm p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 text-center">
             <div id="confirm-icon-box" class="w-12 h-12 mx-auto mb-4 rounded-2xl flex items-center justify-center bg-emerald-50 text-brand-600 dark:bg-emerald-950/50 dark:text-emerald-400">
@@ -110,7 +108,6 @@
         </div>
     </div>
 
-    <!-- Modal Đăng nhập Tài khoản Môn học để Tải File -->
     <div id="student-file-auth-modal" class="hidden fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-enter">
         <div class="bg-white dark:bg-slate-900 w-full max-w-sm p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 relative space-y-4 text-center">
             <button onclick="document.getElementById('student-file-auth-modal').classList.add('hidden')" class="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
@@ -129,7 +126,6 @@
         </div>
     </div>
 
-    <!-- Modal danh sách file (Xem nội bộ & Tải về) -->
     <div id="file-list-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-enter">
         <div id="file-modal-card" class="bg-white dark:bg-slate-900 w-full max-w-lg p-6 rounded-3xl shadow-2xl relative border border-slate-100 dark:border-slate-800 transition-all duration-300">
             <div class="flex items-center justify-between border-b pb-3 mb-4 border-slate-100 dark:border-slate-800">
@@ -433,7 +429,6 @@
 
         const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyl6TNoWZxdi4Z_tAhX1u_5RkdQ4NZ2d4SfAzhJsRFh0SFagFxWwBaGyrVfcGndvfi65A/exec";
 
-        // DANH SÁCH MÔN HỌC CHUẨN GIAO DIỆN (Đã phân tách mã code duy nhất)
         const subSubjects = {
             "on-thi-chuan-dau-ra": [
                 { name: "ACCESS: Đề ôn đầu ra Access", code: "ACC-01", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".access" },
@@ -443,19 +438,53 @@
                 { name: "Môn: Sinh Lý Thực Vật", code: "BIO-301", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".sltv" },
                 { name: "Môn: Khí Tượng Nông Nghiệp", code: "BIO-303", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".ktnn" },
                 { name: "Môn: Rèn Nghề", code: "PRACT-101", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".rn" },
-                { name: "Môn: Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật", code: "PRACT-104", tag: "Mới", tagColor: "bg-emerald-500", url: "STPT.html", authKey: ".stpt" },
-                { name: "Môn: Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật (P2)", code: "PRACT-105", tag: "Mới", tagColor: "bg-emerald-500", url: "STPTP2.html", authKey: ".stpt" },
-                { name: "Môn: Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng", code: "PRACT-102", tag: "Mới", tagColor: "bg-emerald-500", url: "CNSH.html", authKey: ".cnsh" },
-                { name: "Môn: Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng (P2)", code: "PRACT-103", tag: "Mới", tagColor: "bg-emerald-500", url: "CNSHP2.html", authKey: ".cnsh" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P1)", code: "VSVNN-01", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNN.html", authKey: ".vsvnn" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P2)", code: "VSVNN-02", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP2.html", authKey: ".vsvnn" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P3)", code: "VSVNN-03", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP3.html", authKey: ".vsvnn" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P4)", code: "VSVNN-04", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP4.html", authKey: ".vsvnn" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P5)", code: "VSVNN-05", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP5.html", authKey: ".vsvnn" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D1)", code: "VSVNN-D1", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND1.html", authKey: ".vsvnn" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D2)", code: "VSVNN-D2", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND2.html", authKey: ".vsvnn" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D3)", code: "VSVNN-D3", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND3.html", authKey: ".vsvnn" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D4)", code: "VSVNN-D4", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND4.html", authKey: ".vsvnn" },
+                
+                { 
+                    name: "Môn: Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật", 
+                    code: "PRACT-104", 
+                    tag: "Mới", 
+                    tagColor: "bg-emerald-500", 
+                    url: "#", 
+                    authKey: ".stpt",
+                    parts: [
+                        { name: "Phần 1: Lý thuyết cơ bản", url: "STPT.html" },
+                        { name: "Phần 2: Nâng cao & Đề thi", url: "STPTP2.html" }
+                    ]
+                },
+
+                { 
+                    name: "Môn: Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng", 
+                    code: "PRACT-102", 
+                    tag: "Mới", 
+                    tagColor: "bg-emerald-500", 
+                    url: "#", 
+                    authKey: ".cnsh",
+                    parts: [
+                        { name: "Phần 1: Lý thuyết chính", url: "CNSH.html" },
+                        { name: "Phần 2: Mở rộng", url: "CNSHP2.html" }
+                    ]
+                },
+
+                { 
+                    name: "Môn: Vi Sinh Vật Nông Nghiệp", 
+                    code: "VSVNN-ALL", 
+                    tag: "HOT", 
+                    tagColor: "bg-emerald-500", 
+                    url: "#", 
+                    authKey: ".vsvnn",
+                    parts: [
+                        { name: "Phần 1: Đại cương vi sinh vật", url: "VSVNN.html" },
+                        { name: "Phần 2: Chuyển hóa vật chất", url: "VSVNNP2.html" },
+                        { name: "Phần 3: Vi sinh vật đất & cây trồng", url: "VSVNNP3.html" },
+                        { name: "Phần 4: Vi sinh vật gây bệnh & phòng trừ", url: "VSVNNP4.html" },
+                        { name: "Phần 5: Ứng dụng công nghệ vi sinh", url: "VSVNNP5.html" },
+                        { name: "Đề ôn luyện số 1 (D1)", url: "VSVNND1.html" },
+                        { name: "Đề ôn luyện số 2 (D2)", url: "VSVNND2.html" },
+                        { name: "Đề ôn luyện số 3 (D3)", url: "VSVNND3.html" },
+                        { name: "Đề ôn luyện số 4 (D4)", url: "VSVNND4.html" }
+                    ]
+                },
+
                 { name: "Môn: Sinh Thái Nông Nghiệp", code: "BIO-305", tag: "Mới", tagColor: "bg-emerald-500", url: "STNN.html", authKey: ".stnn" },
                 { name: "Môn: Cỏ Dại Và Quản Lý Cỏ Dại", code: "BIO-304", tag: "Mới", tagColor: "bg-emerald-500", url: "CODAI.html", authKey: ".cd" }
             ],
@@ -488,7 +517,6 @@
             return null;
         }
 
-        // LẮNG NGHE TRẠNG THÁI ĐĂNG NHẬP FIREBASE
         auth.onAuthStateChanged((user) => {
             if (user) {
                 const userEmail = (user.email || "").toLowerCase().trim();
@@ -603,10 +631,11 @@
         function renderSubjectButton(item) {
             const fileData = uploadedFiles[item.code];
             const count = getFileCount(fileData);
+            const encodedItem = encodeURIComponent(JSON.stringify(item));
 
             return `
                 <div class="w-full text-left px-3.5 py-3 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50/60 dark:bg-slate-800/40 hover:bg-brand-50 dark:hover:bg-slate-800 rounded-xl flex items-center justify-between group transition-colors border border-slate-100 dark:border-slate-800 gap-2">
-                    <div class="flex flex-col gap-0.5 flex-1 cursor-pointer" onclick="goToSubjectLink('${item.url}')">
+                    <div class="flex flex-col gap-0.5 flex-1 cursor-pointer" onclick="goToSubjectLink('${encodedItem}')">
                         <span class="text-slate-400 dark:text-slate-500 font-mono text-[10px] tracking-wider">${item.code}</span>
                         <span>${item.name}</span>
                         ${count > 0 ? `<span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-extrabold mt-0.5">📂 ${count} tài liệu</span>` : ''}
@@ -632,6 +661,54 @@
                     </div>
                 </div>
             `;
+        }
+
+        window.goToSubjectLink = function(encodedItemStr) {
+            let item;
+            try {
+                item = JSON.parse(decodeURIComponent(encodedItemStr));
+            } catch (e) {
+                if (encodedItemStr === "#" || encodedItemStr === "") {
+                    showToast("Phân hệ nội dung này đang được thiết kế và cập nhật!", "info");
+                } else {
+                    window.location.href = encodedItemStr;
+                }
+                return;
+            }
+
+            if (item.parts && item.parts.length > 0) {
+                openPartsSelectionModal(item);
+            } else if (item.url === "#" || item.url === "") {
+                showToast("Phân hệ nội dung này đang được thiết kế và cập nhật!", "info");
+            } else {
+                window.location.href = item.url;
+            }
+        };
+
+        function openPartsSelectionModal(item) {
+            const modal = document.getElementById('file-list-modal');
+            document.getElementById('modal-subject-title').innerText = `Lựa chọn phần học: ${item.name}`;
+            document.getElementById('modal-admin-batch-toolbar').classList.add('hidden');
+
+            const modalCard = document.getElementById('file-modal-card');
+            modalCard.classList.remove('max-w-4xl');
+            modalCard.classList.add('max-w-lg');
+
+            const container = document.getElementById('modal-file-list');
+            container.innerHTML = item.parts.map((p, idx) => `
+                <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 gap-3 hover:border-brand-500 transition-colors">
+                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                        <span class="w-6 h-6 rounded-full bg-brand-500/10 text-brand-600 dark:text-emerald-400 font-extrabold text-[11px] flex items-center justify-center shrink-0">${idx + 1}</span>
+                        <span class="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">${p.name}</span>
+                    </div>
+                    <a href="${p.url}" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-extrabold transition-colors shadow-sm shrink-0 flex items-center gap-1">
+                        <span>Làm bài</span>
+                        <span>▶</span>
+                    </a>
+                </div>
+            `).join('');
+
+            modal.classList.remove('hidden');
         }
 
         window.triggerAdminUpload = function(code) {
@@ -660,7 +737,7 @@
 
                 pendingStudentFileCode = code;
                 const subjectName = getSubjectNameByCode(code);
-                document.getElementById('student-auth-title').innerText = `Tài liệu ${subjectName}`;
+                document.getElementById('student-auth-title').innerText = `Tài liệu: ${subjectName}`;
                 document.getElementById('student-auth-email').value = "";
                 document.getElementById('student-auth-pass').value = "";
                 document.getElementById('student-file-auth-modal').classList.remove('hidden');
@@ -722,10 +799,9 @@
             }
 
             const subjectName = getSubjectNameByCode(code);
-            document.getElementById('modal-subject-title').innerText = `Tài liệu ${subjectName}`;
+            document.getElementById('modal-subject-title').innerText = `Tài liệu: ${subjectName}`;
             document.getElementById('modal-admin-batch-toolbar').classList.add('hidden');
             
-            // Khôi phục kích thước modal tiêu chuẩn
             const modalCard = document.getElementById('file-modal-card');
             modalCard.classList.remove('max-w-4xl');
             modalCard.classList.add('max-w-lg');
@@ -747,14 +823,13 @@
             document.getElementById('file-list-modal').classList.remove('hidden');
         };
 
-window.previewFileInFrame = function(url, fileName) {
+        window.previewFileInFrame = function(url, fileName) {
             const fileId = extractFileId(url);
             if (!fileId) {
                 showToast("Liên kết tài liệu không hợp lệ!", "error");
                 return;
             }
 
-            // Mở rộng modal khi xem trực tuyến
             const modalCard = document.getElementById('file-modal-card');
             modalCard.classList.remove('max-w-lg');
             modalCard.classList.add('max-w-4xl');
@@ -772,7 +847,7 @@ window.previewFileInFrame = function(url, fileName) {
                         </button>
                     </div>
                     <div class="relative w-full h-[65vh] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-950 shadow-inner">
-<div class="absolute top-0 right-0 w-14 h-14 z-20 bg-transparent select-none"></div>                        
+                        <div class="absolute top-0 right-0 w-14 h-14 z-20 bg-transparent select-none"></div>                        
                         <iframe src="${embeddedUrl}" class="w-full h-full border-none relative z-10" allow="autoplay"></iframe>
                     </div>
                 </div>
@@ -796,7 +871,7 @@ window.previewFileInFrame = function(url, fileName) {
             }
 
             const subjectName = getSubjectNameByCode(code);
-            document.getElementById('modal-subject-title').innerText = `Quản lý file ${subjectName}`;
+            document.getElementById('modal-subject-title').innerText = `Quản lý file: ${subjectName}`;
             
             const modalCard = document.getElementById('file-modal-card');
             modalCard.classList.remove('max-w-4xl');
@@ -1004,7 +1079,6 @@ window.previewFileInFrame = function(url, fileName) {
             currentUploadCode = null;
         });
 
-        // XỬ LÝ THEME DARK/LIGHT
         const themeToggleBtn = document.getElementById('theme-toggle-btn');
         const sunIcon = document.getElementById('sun-icon');
         const moonIcon = document.getElementById('moon-icon');
@@ -1021,7 +1095,6 @@ window.previewFileInFrame = function(url, fileName) {
         const adminEmailField = document.getElementById('admin-email-field');
         const adminPasswordField = document.getElementById('admin-password-field');
 
-        // BỔ SUNG SỰ KIỆN FORM ĐĂNG KÝ
         const formModal = document.getElementById('form-modal');
         const modalOpenTrigger = document.getElementById('modal-open-trigger');
         const modalCloseBtn = document.getElementById('modal-close-btn');
@@ -1130,14 +1203,6 @@ window.previewFileInFrame = function(url, fileName) {
                     container.innerHTML = filtered.map(item => renderSubjectButton(item)).join('');
                 }
             });
-        }
-
-        window.goToSubjectLink = function(url) {
-            if(url === "#") {
-                showToast("Phân hệ nội dung này đang được thiết kế và cập nhật!", "info");
-            } else {
-                window.location.href = url;
-            }
         }
 
         document.querySelectorAll('.category-block').forEach(block => {
