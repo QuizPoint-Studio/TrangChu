@@ -83,15 +83,77 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         .animate-enter { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-slide-in { animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-[#f0fdf4] via-[#e0f2fe] to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 min-h-screen text-slate-800 dark:text-slate-100">
+<body class="bg-gradient-to-br from-[#f0fdf4] via-[#e0f2fe] to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 min-h-screen text-slate-800 dark:text-slate-100 flex flex-col justify-between">
     
+    <input type="file" id="admin-file-upload" class="hidden" multiple />
+
+    <!-- Container Toast Notifications -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[9999] flex flex-col gap-2.5 pointer-events-none"></div>
+
+    <!-- Modal Xác nhận -->
+    <div id="custom-confirm-modal" class="hidden fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-enter">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-sm p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 text-center">
+            <div id="confirm-icon-box" class="w-12 h-12 mx-auto mb-4 rounded-2xl flex items-center justify-center bg-emerald-50 text-brand-600 dark:bg-emerald-950/50 dark:text-emerald-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <h4 id="confirm-modal-title" class="text-sm font-black uppercase text-slate-800 dark:text-slate-100 mb-2">Xác nhận</h4>
+            <p id="confirm-modal-msg" class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-6 leading-relaxed"></p>
+            <div class="flex items-center gap-3">
+                <button id="confirm-btn-cancel" class="flex-1 py-2.5 px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Hủy</button>
+                <button id="confirm-btn-ok" class="flex-1 py-2.5 px-4 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold transition-colors shadow-sm">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Đăng nhập Tài khoản Môn học để Tải File -->
+    <div id="student-file-auth-modal" class="hidden fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-enter">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-sm p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 relative space-y-4 text-center">
+            <button onclick="document.getElementById('student-file-auth-modal').classList.add('hidden')" class="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <div class="w-12 h-12 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mx-auto mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h3 id="student-auth-title" class="text-base font-black uppercase text-slate-800 dark:text-slate-100">Đăng nhập tài liệu môn học</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Vui lòng đăng nhập tài khoản học phần được cấp để mở quyền xem & tải tài liệu.</p>
+            <form id="student-file-auth-form" class="space-y-3.5 pt-2" onsubmit="handleStudentAccountAuth(event)">
+                <input id="student-auth-email" required type="text" placeholder="Email học phần..." class="w-full px-4 py-3 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-brand-500 text-slate-800 dark:text-white" />
+                <input id="student-auth-pass" required type="password" placeholder="Mật khẩu môn học..." class="w-full px-4 py-3 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-brand-500 text-slate-800 dark:text-white" />
+                <button type="submit" class="w-full py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-bold uppercase text-xs tracking-wider transition-colors shadow-sm">Xác nhận tải tài liệu</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal danh sách file (Xem nội bộ & Tải về) -->
+    <div id="file-list-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-enter">
+        <div id="file-modal-card" class="bg-white dark:bg-slate-900 w-full max-w-lg p-6 rounded-3xl shadow-2xl relative border border-slate-100 dark:border-slate-800 transition-all duration-300">
+            <div class="flex items-center justify-between border-b pb-3 mb-4 border-slate-100 dark:border-slate-800">
+                <h3 id="modal-subject-title" class="text-sm font-black uppercase text-brand-600 dark:text-emerald-400">Danh sách tài liệu</h3>
+                <button onclick="closeFileListModal()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">Đóng</button>
+            </div>
+            
+            <div id="modal-admin-batch-toolbar" class="hidden flex items-center justify-between p-2.5 mb-3 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200/80 dark:border-slate-700">
+                <label class="flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-300 cursor-pointer select-none pl-1">
+                    <input type="checkbox" id="modal-select-all-checkbox" class="w-4 h-4 rounded border-slate-300 text-brand-500 focus:ring-brand-500" onchange="toggleSelectAllFiles(this.checked)">
+                    <span>Chọn tất cả</span>
+                </label>
+                <button id="modal-batch-delete-btn" onclick="deleteSelectedBatchFiles()" class="px-3 py-1.5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed shadow-sm" disabled>
+                    🗑️ Xóa đã chọn (0)
+                </button>
+            </div>
+
+            <div id="modal-file-list" class="space-y-2 max-h-[75vh] overflow-y-auto custom-scrollbar"></div>
+        </div>
+    </div>
+
     <div class="min-h-screen flex flex-col relative">
-        
         <header class="absolute top-4 inset-x-4 sm:top-6 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none">
-            <div id="logo-trigger" class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto cursor-pointer select-none active:scale-[0.98] transition-transform" title="Kích hoạt cổng bảo mật">
+            <div id="logo-trigger" class="flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border shadow-md glass-panel pointer-events-auto cursor-pointer select-none active:scale-[0.98] transition-transform" title="Nhấp đúp để mở cổng bảo mật">
                 <div class="bg-gradient-to-br from-brand-500 to-emerald-600 text-white p-2 rounded-xl shadow-md transform hover:rotate-12 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                 </div>
@@ -175,7 +237,7 @@
                 </div>
                 <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
                 <div class="flex items-center gap-2 font-bold text-xs sm:text-sm">
-                    <svg class="text-brand-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <svg class="text-brand-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.5 19.5 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 .81 2.71A2 2 0 0 1 22 16.92z"/></svg>
                     <span>Zalo hỗ trợ: <span class="font-mono text-slate-900 dark:text-white font-black">0333738861</span></span>
                 </div>
             </div>
@@ -255,7 +317,7 @@
                                 <span>MÔN HỌC YÊU CẦU THIẾT KẾ</span>
                                 <svg class="chevron text-slate-400 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                             </h3>
-                            <p class="text-slate-500 dark:text-slate-400 text-xs mt-2.5 leading-relaxed font-medium">Không gian học tập thiết kế mở rộng dành cho các bài tập đặc thù, tài liệu riêng biệt đặt hàng tùy chỉnh.</p>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs mt-2.5 leading-relaxed font-medium">Không gian học tập thiết kế mở rộng dành cho các bài tập, tài liệu riêng biệt đặt hàng tùy chỉnh.</p>
                         </div>
                     </div>
                     <div id="wrapper-noi-dung-yeu-cau" class="hidden bg-white/90 dark:bg-slate-900/90 rounded-2xl p-3 border border-brand-100 dark:border-slate-800 shadow-md space-y-1.5 animate-enter"></div>
@@ -332,7 +394,7 @@
                     <ul class="space-y-2 text-xs text-slate-400 font-medium">
                         <li class="flex items-center gap-2"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Bước 1: Nhập tên môn học vào thanh tìm kiếm ở thanh thông minh.</li>
                         <li class="flex items-center gap-2"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Bước 2: Click chọn môn học mong muốn từ danh sách.</li>
-                        <li class="flex items-center gap-2"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Bước 3: Đăng nhập tài khoảng và mật khẩu.</li>
+                        <li class="flex items-center gap-2"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Bước 3: Đăng nhập tài khoản và mật khẩu.</li>
                         <li class="flex items-center gap-2"><svg class="text-emerald-400" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Bước 4: Luyện đề ôn tập.</li>
                     </ul>
                 </div>
@@ -342,7 +404,7 @@
                         <span>LỜI CẢM ƠN</span>
                     </h4>
                     <p class="text-xs leading-relaxed text-slate-400 font-medium">
-                        QuizPoint Studio vô cùng tự hảo khi là một phần trên con đường học tập chủ động của bạn. Chúc bạn luôn giữ vững đam mê học hỏi và gặt hái nhiều thành tích rực rỡ!
+                        QuizPoint Studio vô cùng tự hào khi là một phần trên con đường học tập chủ động của bạn. Chúc bạn luôn giữ vững đam mê học hỏi và gặt hái nhiều thành tích rực rỡ!
                     </p>
                 </div>
             </div>
@@ -354,6 +416,7 @@
     </div>
 
     <script>
+        let isDarkMode = false;
         const firebaseConfig = {
           apiKey: "AIzaSyC-n88rPoijqfE44ZF3ulPZdcGz_rtC3lg",
           authDomain: "quizpointstuidio.firebaseapp.com",
@@ -368,41 +431,581 @@
         const auth = firebase.auth();
         const db = firebase.database();
 
+        const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyl6TNoWZxdi4Z_tAhX1u_5RkdQ4NZ2d4SfAzhJsRFh0SFagFxWwBaGyrVfcGndvfi65A/exec";
+
+        // DANH SÁCH MÔN HỌC CHUẨN GIAO DIỆN (Đã phân tách mã code duy nhất)
         const subSubjects = {
             "on-thi-chuan-dau-ra": [
-                { name: "ACCESS: Đề ôn đầu ra Access", code: "ACC-01", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#" },
-                { name: "TIN A: Đề ôn đầu ra Tin A", code: "TINA-02", tag: "HOT", tagColor: "bg-emerald-500", url: "TinHocDauRaPhan1.html" }
+                { name: "ACCESS: Đề ôn đầu ra Access", code: "ACC-01", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".access" },
+                { name: "TIN A: Đề ôn đầu ra Tin A", code: "TINA-02", tag: "HOT", tagColor: "bg-emerald-500", url: "TinHocDauRaPhan1.html", authKey: ".tina" }
             ],
             "on-tap-mon-hoc": [
-                { name: "Môn: Sinh Lý Thực Vật", code: "BIO-301", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#" },
-                { name: "Môn: Khí Tượng Nông Nghiệp", code: "BIO-303", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#" },
-                { name: "Môn: Rèn Nghề", code: "PRACT-101", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#" },
-                { name: "Môn: Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "STPT.html" },
-                { name: "Môn: Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật (P2)", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "STPTP2.html" },
-                { name: "Môn: Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "CNSH.html" },
-                { name: "Môn: Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng (P2)", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "CNSHP2.html" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNN.html" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P2)", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP2.html" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P3)", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP3.html" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P4)", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP4.html" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P5)", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP5.html" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D1)", code: "REQ-01", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND1.html" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D2)", code: "REQ-01", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND2.html" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D3)", code: "REQ-02", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND3.html" },
-                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D4)", code: "REQ-01", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND4.html" },
-                { name: "Môn: Sinh Thái Nông Nghiệp", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "STNN.html" },
-                { name: "Môn: Cỏ Dại Và Quản Lý Cỏ Dại", code: "PRACT-101", tag: "Mới", tagColor: "bg-emerald-500", url: "CODAIVAQUANLYCODAI.html" }
+                { name: "Môn: Sinh Lý Thực Vật", code: "BIO-301", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".sltv" },
+                { name: "Môn: Khí Tượng Nông Nghiệp", code: "BIO-303", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".ktnn" },
+                { name: "Môn: Rèn Nghề", code: "PRACT-101", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".rn" },
+                { name: "Môn: Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật", code: "PRACT-104", tag: "Mới", tagColor: "bg-emerald-500", url: "STPT.html", authKey: ".stpt" },
+                { name: "Môn: Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật (P2)", code: "PRACT-105", tag: "Mới", tagColor: "bg-emerald-500", url: "STPTP2.html", authKey: ".stpt" },
+                { name: "Môn: Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng", code: "PRACT-102", tag: "Mới", tagColor: "bg-emerald-500", url: "CNSH.html", authKey: ".cnsh" },
+                { name: "Môn: Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng (P2)", code: "PRACT-103", tag: "Mới", tagColor: "bg-emerald-500", url: "CNSHP2.html", authKey: ".cnsh" },
+                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P1)", code: "VSVNN-01", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNN.html", authKey: ".vsvnn" },
+                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P2)", code: "VSVNN-02", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP2.html", authKey: ".vsvnn" },
+                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P3)", code: "VSVNN-03", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP3.html", authKey: ".vsvnn" },
+                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P4)", code: "VSVNN-04", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP4.html", authKey: ".vsvnn" },
+                { name: "Môn: Vi Sinh Vật Nông Nghiệp (P5)", code: "VSVNN-05", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNNP5.html", authKey: ".vsvnn" },
+                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D1)", code: "VSVNN-D1", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND1.html", authKey: ".vsvnn" },
+                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D2)", code: "VSVNN-D2", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND2.html", authKey: ".vsvnn" },
+                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D3)", code: "VSVNN-D3", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND3.html", authKey: ".vsvnn" },
+                { name: "Môn: Vi Sinh Vật Nông Nghiệp (D4)", code: "VSVNN-D4", tag: "Mới", tagColor: "bg-emerald-500", url: "VSVNND4.html", authKey: ".vsvnn" },
+                { name: "Môn: Sinh Thái Nông Nghiệp", code: "BIO-305", tag: "Mới", tagColor: "bg-emerald-500", url: "STNN.html", authKey: ".stnn" },
+                { name: "Môn: Cỏ Dại Và Quản Lý Cỏ Dại", code: "BIO-304", tag: "Mới", tagColor: "bg-emerald-500", url: "CODAI.html", authKey: ".cd" },
+                { name: "Môn: Cơ Khí Nông Nghiệp", code: "MEC-101", tag: "Mới", tagColor: "bg-emerald-500", url: "CK.html", authKey: ".ck" }
             ],
             "noi-dung-yeu-cau": [
-                { name: "Yêu Cầu 1: CD ", code: "REQ-01", tag: "Mới", tagColor: "bg-emerald-500", url: "CODAI.html" }
+                { name: "Yêu Cầu 1: CD", code: "REQ-01", tag: "Mới", tagColor: "bg-emerald-500", url: "CODAI.html", authKey: ".cd" }
             ]
         };
 
         let openSection = null; 
         let searchQuery = "";
-        let isDarkMode = false;
         let isAdmin = false;
+        let currentUploadCode = null; 
+        let activeManageSubjectCode = null; 
+        let pendingStudentFileCode = null;
+        let uploadedFiles = {}; 
 
+        function getSubjectNameByCode(code) {
+            for (const section in subSubjects) {
+                const found = subSubjects[section].find(item => item.code === code);
+                if (found) return found.name;
+            }
+            return code;
+        }
+
+        function getSubjectAuthKey(code) {
+            for (const section in subSubjects) {
+                const found = subSubjects[section].find(item => item.code === code);
+                if (found && found.authKey) return found.authKey.toLowerCase();
+            }
+            return null;
+        }
+
+        // LẮNG NGHE TRẠNG THÁI ĐĂNG NHẬP FIREBASE
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                const userEmail = (user.email || "").toLowerCase().trim();
+                if (userEmail === "ngocyen@cucdang.com") {
+                    isAdmin = true;
+                    document.getElementById('logout-btn').classList.remove('hidden');
+                    document.getElementById('admin-panel').classList.remove('hidden');
+                    refreshDataList();
+
+                    db.ref("subject_files").on("value", (snapshot) => {
+                        uploadedFiles = snapshot.val() || {};
+                        renderSubjectLists();
+                        if (searchQuery) handleInstantSearch();
+                    });
+                }
+            } else {
+                isAdmin = false;
+                uploadedFiles = {};
+                document.getElementById('logout-btn').classList.add('hidden');
+                document.getElementById('admin-panel').classList.add('hidden');
+                renderSubjectLists();
+            }
+        });
+
+        function getFileCount(data) {
+            if (!data) return 0;
+            if (Array.isArray(data)) return data.length;
+            return 1;
+        }
+
+        function extractFileId(url) {
+            if (!url) return null;
+            const match = url.match(/id=([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            return match ? match[1] : null;
+        }
+
+        function getDriveDirectDownloadUrl(url) {
+            const fileId = extractFileId(url);
+            return fileId ? "https://drive.google.com/uc?export=download&id=" + fileId : url;
+        }
+
+        function deleteFileFromDrive(url) {
+            const fileId = extractFileId(url);
+            if (!fileId) return Promise.resolve();
+
+            return new Promise((resolve) => {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", GOOGLE_APP_SCRIPT_URL, true);
+                xhr.setRequestHeader("Content-Type", "text/plain;charset=utf-8");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) resolve();
+                };
+                xhr.send(JSON.stringify({ 
+                    action: "delete", 
+                    fileId: fileId,
+                    secret: "QuizPoint_Secret_Key_2026_@!"
+                }));
+            });
+        }
+
+        function showToast(message, type = "success") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            
+            const styles = {
+                success: "bg-emerald-600 text-white shadow-emerald-600/20",
+                error: "bg-rose-600 text-white shadow-rose-600/20",
+                info: "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 shadow-slate-900/20"
+            };
+
+            const icons = {
+                success: `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,
+                error: `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+                info: `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="16" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`
+            };
+
+            toast.className = `flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xl text-xs font-bold pointer-events-auto animate-slide-in transition-all duration-300 ${styles[type] || styles.info}`;
+            toast.innerHTML = `${icons[type] || icons.info}<span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.style.transform = "translateX(50px)";
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function showCustomConfirm(title, message) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById("custom-confirm-modal");
+                document.getElementById("confirm-modal-title").innerText = title;
+                document.getElementById("confirm-modal-msg").innerText = message;
+                modal.classList.remove("hidden");
+
+                const btnOk = document.getElementById("confirm-btn-ok");
+                const btnCancel = document.getElementById("confirm-btn-cancel");
+
+                const cleanup = () => {
+                    modal.classList.add("hidden");
+                    btnOk.removeEventListener("click", onOk);
+                    btnCancel.removeEventListener("click", onCancel);
+                };
+
+                const onOk = () => { cleanup(); resolve(true); };
+                const onCancel = () => { cleanup(); resolve(false); };
+
+                btnOk.addEventListener("click", onOk);
+                btnCancel.addEventListener("click", onCancel);
+            });
+        }
+
+        function renderSubjectButton(item) {
+            const fileData = uploadedFiles[item.code];
+            const count = getFileCount(fileData);
+
+            return `
+                <div class="w-full text-left px-3.5 py-3 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50/60 dark:bg-slate-800/40 hover:bg-brand-50 dark:hover:bg-slate-800 rounded-xl flex items-center justify-between group transition-colors border border-slate-100 dark:border-slate-800 gap-2">
+                    <div class="flex flex-col gap-0.5 flex-1 cursor-pointer" onclick="goToSubjectLink('${item.url}')">
+                        <span class="text-slate-400 dark:text-slate-500 font-mono text-[10px] tracking-wider">${item.code}</span>
+                        <span>${item.name}</span>
+                        ${count > 0 ? `<span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-extrabold mt-0.5">📂 ${count} tài liệu</span>` : ''}
+                    </div>
+
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <span class="text-[9px] text-white px-2 py-0.5 rounded-md font-extrabold uppercase ${item.tagColor}">${item.tag}</span>
+                        
+                        <button onclick="handleCheckAuthBeforeDownload('${item.code}')" class="px-2 py-1 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-[10px] font-extrabold transition-colors shadow-sm" title="Tải tài liệu">
+                            ⬇ Tải file
+                        </button>
+
+                        ${isAdmin ? `
+                        <button onclick="triggerAdminUpload('${item.code}')" class="p-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors" title="Thêm file">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                        </button>
+                        ${count > 0 ? `
+                        <button onclick="openManageFilesModal('${item.code}')" class="p-1 bg-rose-500 hover:bg-rose-600 text-white rounded-lg transition-colors" title="Xóa/Quản lý file">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        </button>
+                        ` : ''}
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        window.triggerAdminUpload = function(code) {
+            currentUploadCode = code;
+            document.getElementById('admin-file-upload').click();
+        };
+
+        window.handleCheckAuthBeforeDownload = function(code) {
+            const requiredKey = getSubjectAuthKey(code);
+            const currentUser = auth.currentUser;
+            const userEmail = currentUser ? (currentUser.email || "").toLowerCase().trim() : "";
+
+            if (isAdmin || userEmail === "ngocyen@cucdang.com") {
+                loadAndShowSubjectFiles(code);
+                return;
+            }
+
+            const isMatchedCurrentSubject = currentUser && requiredKey && userEmail.includes(requiredKey);
+
+            if (isMatchedCurrentSubject) {
+                loadAndShowSubjectFiles(code);
+            } else {
+                if (currentUser) {
+                    auth.signOut();
+                }
+
+                pendingStudentFileCode = code;
+                const subjectName = getSubjectNameByCode(code);
+                document.getElementById('student-auth-title').innerText = `Tài liệu ${subjectName}`;
+                document.getElementById('student-auth-email').value = "";
+                document.getElementById('student-auth-pass').value = "";
+                document.getElementById('student-file-auth-modal').classList.remove('hidden');
+            }
+        };
+
+        window.handleStudentAccountAuth = function(e) {
+            e.preventDefault();
+            const email = document.getElementById('student-auth-email').value.trim().toLowerCase();
+            const pass = document.getElementById('student-auth-pass').value.trim();
+            const targetCode = pendingStudentFileCode;
+            const requiredKey = getSubjectAuthKey(targetCode);
+            const ADMIN_EMAIL = "ngocyen@cucdang.com";
+
+            if (email !== ADMIN_EMAIL && requiredKey && !email.includes(requiredKey)) {
+                showToast("Tài khoản không có quyền truy cập tài liệu môn học này!", "error");
+                return;
+            }
+
+            showToast("Đang xác thực thông tin...", "info");
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(() => {
+                    document.getElementById('student-file-auth-modal').classList.add('hidden');
+                    showToast("Đăng nhập thành công!", "success");
+
+                    setTimeout(() => {
+                        loadAndShowSubjectFiles(targetCode);
+                    }, 200);
+
+                    pendingStudentFileCode = null;
+                })
+                .catch((error) => {
+                    console.error("Lỗi đăng nhập:", error);
+                    showToast("Sai tài khoản hoặc mật khẩu môn học!", "error");
+                });
+        };
+
+        function loadAndShowSubjectFiles(code) {
+            db.ref("subject_files/" + code).once("value").then(snapshot => {
+                const fileData = snapshot.val();
+                if (fileData) {
+                    openSubjectFileList(code, fileData);
+                } else {
+                    showToast("Môn học này chưa có file tài liệu tải lên!", "info");
+                }
+            }).catch(err => {
+                showToast("Lỗi truy cập dữ liệu: " + err.message, "error");
+            });
+        }
+
+        window.openSubjectFileList = function(code, fileData) {
+            activeManageSubjectCode = code;
+            let list = [];
+            if (typeof fileData === "string") {
+                list = [{ name: "Tài liệu môn học", url: fileData }];
+            } else if (Array.isArray(fileData)) {
+                list = fileData;
+            }
+
+            const subjectName = getSubjectNameByCode(code);
+            document.getElementById('modal-subject-title').innerText = `Tài liệu ${subjectName}`;
+            document.getElementById('modal-admin-batch-toolbar').classList.add('hidden');
+            
+            // Khôi phục kích thước modal tiêu chuẩn
+            const modalCard = document.getElementById('file-modal-card');
+            modalCard.classList.remove('max-w-4xl');
+            modalCard.classList.add('max-w-lg');
+
+            const container = document.getElementById('modal-file-list');
+            container.innerHTML = list.map((f, idx) => `
+                <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 gap-3">
+                    <span class="text-xs font-bold truncate text-slate-700 dark:text-slate-200 flex-1" title="${f.name}">${idx + 1}. ${f.name}</span>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="previewFileInFrame('${f.url}', '${f.name}')" class="px-3 py-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition-colors">
+                            Xem
+                        </button>
+                        <a href="${getDriveDirectDownloadUrl(f.url)}" target="_blank" class="px-3.5 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-bold transition-colors shadow-sm">
+                            Tải về
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('file-list-modal').classList.remove('hidden');
+        };
+
+window.previewFileInFrame = function(url, fileName) {
+            const fileId = extractFileId(url);
+            if (!fileId) {
+                showToast("Liên kết tài liệu không hợp lệ!", "error");
+                return;
+            }
+
+            // Mở rộng modal khi xem trực tuyến
+            const modalCard = document.getElementById('file-modal-card');
+            modalCard.classList.remove('max-w-lg');
+            modalCard.classList.add('max-w-4xl');
+
+            const embeddedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+            const container = document.getElementById('modal-file-list');
+            
+            container.innerHTML = `
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-600 dark:text-slate-300 truncate max-w-[70%]">📄 ${fileName}</span>
+                        <button onclick="loadAndShowSubjectFiles(activeManageSubjectCode)" class="text-xs font-bold text-brand-600 dark:text-emerald-400 hover:underline flex items-center gap-1">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                            Quay lại danh sách
+                        </button>
+                    </div>
+                    <div class="relative w-full h-[65vh] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-950 shadow-inner">
+<div class="absolute top-0 right-0 w-14 h-14 z-20 bg-transparent select-none"></div>                        
+                        <iframe src="${embeddedUrl}" class="w-full h-full border-none relative z-10" allow="autoplay"></iframe>
+                    </div>
+                </div>
+            `;
+        };
+
+        window.closeFileListModal = function() {
+            document.getElementById('file-list-modal').classList.add('hidden');
+            const modalCard = document.getElementById('file-modal-card');
+            modalCard.classList.remove('max-w-4xl');
+            modalCard.classList.add('max-w-lg');
+        };
+
+        window.openManageFilesModal = function(code) {
+            activeManageSubjectCode = code;
+            let fileData = uploadedFiles[code];
+            if (!fileData) return;
+
+            if (typeof fileData === "string") {
+                fileData = [{ name: "Tài liệu môn học", url: fileData }];
+            }
+
+            const subjectName = getSubjectNameByCode(code);
+            document.getElementById('modal-subject-title').innerText = `Quản lý file ${subjectName}`;
+            
+            const modalCard = document.getElementById('file-modal-card');
+            modalCard.classList.remove('max-w-4xl');
+            modalCard.classList.add('max-w-lg');
+
+            const toolbar = document.getElementById('modal-admin-batch-toolbar');
+            if (isAdmin) {
+                toolbar.classList.remove('hidden');
+            } else {
+                toolbar.classList.add('hidden');
+            }
+
+            const container = document.getElementById('modal-file-list');
+            container.innerHTML = fileData.map((f, idx) => `
+                <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 gap-3">
+                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                        ${isAdmin ? `
+                        <input type="checkbox" data-file-idx="${idx}" class="batch-file-checkbox w-4 h-4 rounded border-slate-300 text-brand-500 focus:ring-brand-500 shrink-0" onchange="onSingleCheckboxChange()">
+                        ` : ''}
+                        <span class="text-xs font-bold truncate text-slate-700 dark:text-slate-200" title="${f.name}">${idx + 1}. ${f.name}</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="previewFileInFrame('${f.url}', '${f.name}')" class="px-3 py-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition-colors">Xem</button>
+                        <button onclick="deleteSingleFile('${code}', ${idx})" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 dark:bg-rose-950/50 dark:text-rose-400 rounded-xl text-xs font-bold transition-colors">Xóa</button>
+                    </div>
+                </div>
+            `).join('');
+
+            const selectAllCb = document.getElementById('modal-select-all-checkbox');
+            if (selectAllCb) selectAllCb.checked = false;
+            updateBatchDeleteButtonState();
+
+            document.getElementById('file-list-modal').classList.remove('hidden');
+        };
+
+        window.toggleSelectAllFiles = function(isChecked) {
+            const checkboxes = document.querySelectorAll('.batch-file-checkbox');
+            checkboxes.forEach(cb => cb.checked = isChecked);
+            updateBatchDeleteButtonState();
+        };
+
+        window.onSingleCheckboxChange = function() {
+            const checkboxes = document.querySelectorAll('.batch-file-checkbox');
+            const checkedCount = document.querySelectorAll('.batch-file-checkbox:checked').length;
+            const selectAllCb = document.getElementById('modal-select-all-checkbox');
+            
+            if (selectAllCb) {
+                selectAllCb.checked = (checkboxes.length > 0 && checkedCount === checkboxes.length);
+            }
+            updateBatchDeleteButtonState();
+        };
+
+        function updateBatchDeleteButtonState() {
+            const checkedCount = document.querySelectorAll('.batch-file-checkbox:checked').length;
+            const btn = document.getElementById('modal-batch-delete-btn');
+            if (btn) {
+                btn.disabled = checkedCount === 0;
+                btn.innerText = `🗑️ Xóa đã chọn (${checkedCount})`;
+            }
+        }
+
+        window.deleteSelectedBatchFiles = async function() {
+            const code = activeManageSubjectCode;
+            let fileData = uploadedFiles[code];
+            if (!fileData) return;
+
+            if (typeof fileData === "string") {
+                fileData = [{ name: "Tài liệu môn học", url: fileData }];
+            }
+
+            const selectedCheckboxes = Array.from(document.querySelectorAll('.batch-file-checkbox:checked'));
+            const selectedIndices = selectedCheckboxes.map(cb => parseInt(cb.getAttribute('data-file-idx'))).sort((a, b) => b - a);
+
+            if (selectedIndices.length === 0) return;
+
+            const confirmed = await showCustomConfirm("Xác nhận xóa", `Bạn có chắc chắn muốn xóa ${selectedIndices.length} file đã chọn không?`);
+            if (!confirmed) return;
+
+            showToast(`Đang xóa ${selectedIndices.length} file...`, "info");
+
+            const deletePromises = selectedIndices.map(idx => {
+                const targetFile = fileData[idx];
+                return targetFile && targetFile.url ? deleteFileFromDrive(targetFile.url) : Promise.resolve();
+            });
+            await Promise.all(deletePromises);
+
+            selectedIndices.forEach(idx => {
+                fileData.splice(idx, 1);
+            });
+
+            if (fileData.length === 0) {
+                db.ref("subject_files/" + code).remove((err) => {
+                    if (!err) {
+                        closeFileListModal();
+                        showToast(`Đã xóa toàn bộ tài liệu!`, "info");
+                    }
+                });
+            } else {
+                db.ref("subject_files/" + code).set(fileData, (err) => {
+                    if (!err) {
+                        showToast(`Đã xóa thành công!`);
+                        openManageFilesModal(code);
+                    }
+                });
+            }
+        };
+
+        window.deleteSingleFile = async function(code, index) {
+            let fileData = uploadedFiles[code];
+            if (!fileData) return;
+
+            const confirmed = await showCustomConfirm("Xác nhận xóa", "Bạn có chắc chắn muốn xóa file này không?");
+            if (!confirmed) return;
+
+            showToast("Đang xóa file...", "info");
+
+            let targetUrl = "";
+            if (typeof fileData === "string") {
+                targetUrl = fileData;
+                fileData = [];
+            } else if (Array.isArray(fileData)) {
+                targetUrl = fileData[index] ? fileData[index].url : "";
+                fileData.splice(index, 1);
+            }
+
+            if (targetUrl) await deleteFileFromDrive(targetUrl);
+
+            if (fileData.length === 0) {
+                db.ref("subject_files/" + code).remove((err) => {
+                    if (!err) {
+                        closeFileListModal();
+                        showToast("Đã xóa tài liệu thành công!", "info");
+                    }
+                });
+            } else {
+                db.ref("subject_files/" + code).set(fileData, (err) => {
+                    if (!err) {
+                        showToast("Đã xóa file thành công!");
+                        openManageFilesModal(code);
+                    }
+                });
+            }
+        };
+
+        function uploadSingleFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("POST", GOOGLE_APP_SCRIPT_URL, true);
+                    xhr.setRequestHeader("Content-Type", "text/plain;charset=utf-8");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            try {
+                                const result = JSON.parse(xhr.responseText);
+                                if (result.success) resolve({ name: file.name, url: result.url });
+                                else reject(new Error(result.error || "Lỗi tải file"));
+                            } catch (e) { reject(e); }
+                        }
+                    };
+                    xhr.onerror = () => reject(new Error("Lỗi kết nối"));
+                    xhr.send(JSON.stringify({
+                        fileName: file.name,
+                        mimeType: file.type,
+                        base64: reader.result
+                    }));
+                };
+                reader.onerror = reject;
+            });
+        }
+
+        document.getElementById('admin-file-upload').addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            if (files.length === 0 || !currentUploadCode) return;
+
+            const targetCode = currentUploadCode;
+            const subjectName = getSubjectNameByCode(targetCode);
+            const confirmed = await showCustomConfirm("Tải lên tài liệu", `Tải lên ${files.length} file cho ${subjectName}?`);
+            if (!confirmed) { e.target.value = ""; return; }
+
+            showToast(`Đang tải lên ${files.length} file...`, "info");
+
+            const uploadTasks = files.map(file => 
+                uploadSingleFile(file)
+                    .then(res => ({ success: true, data: res }))
+                    .catch(err => ({ success: false, error: err, name: file.name }))
+            );
+
+            const results = await Promise.all(uploadTasks);
+            const successfulUploads = results.filter(r => r.success).map(r => r.data);
+
+            if (successfulUploads.length > 0) {
+                let currentFiles = uploadedFiles[targetCode] || [];
+                if (typeof currentFiles === "string") currentFiles = [{ name: "Tài liệu 1", url: currentFiles }];
+                const mergedFiles = [...currentFiles, ...successfulUploads];
+
+                db.ref("subject_files/" + targetCode).set(mergedFiles, (err) => {
+                    if (err) showToast("Lỗi lưu: " + err.message, "error");
+                    else showToast(`Đã tải lên thành công ${successfulUploads.length}/${files.length} file!`, "success");
+                });
+            }
+
+            document.getElementById('admin-file-upload').value = "";
+            currentUploadCode = null;
+        });
+
+        // XỬ LÝ THEME DARK/LIGHT
         const themeToggleBtn = document.getElementById('theme-toggle-btn');
         const sunIcon = document.getElementById('sun-icon');
         const moonIcon = document.getElementById('moon-icon');
@@ -413,6 +1016,13 @@
         const adminPanel = document.getElementById('admin-panel');
         const adminListContainer = document.getElementById('admin-list-container');
         
+        const adminLoginModal = document.getElementById('admin-login-modal');
+        const loginModalCloseBtn = document.getElementById('login-modal-close-btn');
+        const adminLoginForm = document.getElementById('admin-login-form');
+        const adminEmailField = document.getElementById('admin-email-field');
+        const adminPasswordField = document.getElementById('admin-password-field');
+
+        // BỔ SUNG SỰ KIỆN FORM ĐĂNG KÝ
         const formModal = document.getElementById('form-modal');
         const modalOpenTrigger = document.getElementById('modal-open-trigger');
         const modalCloseBtn = document.getElementById('modal-close-btn');
@@ -420,11 +1030,41 @@
         const zaloField = document.getElementById('zalo-field');
         const noteField = document.getElementById('note-field');
 
-        const adminLoginModal = document.getElementById('admin-login-modal');
-        const loginModalCloseBtn = document.getElementById('login-modal-close-btn');
-        const adminLoginForm = document.getElementById('admin-login-form');
-        const adminEmailField = document.getElementById('admin-email-field');
-        const adminPasswordField = document.getElementById('admin-password-field');
+        modalOpenTrigger.addEventListener('click', () => formModal.classList.remove('hidden'));
+        modalCloseBtn.addEventListener('click', () => formModal.classList.add('hidden'));
+
+        submissionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const zalo = zaloField.value.trim();
+            const note = noteField.value.trim();
+            const newRequest = {
+                zalo: zalo,
+                note: note,
+                timestamp: Date.now(),
+                dateString: new Date().toLocaleString('vi-VN')
+            };
+
+            db.ref("yeu_cau_thiet_ke").push(newRequest)
+                .then(() => {
+                    showToast("Gửi thông tin thành công! Chúng tôi sẽ liên hệ sớm.", "success");
+                    submissionForm.reset();
+                    formModal.classList.add('hidden');
+                    if (isAdmin) refreshDataList();
+                })
+                .catch(() => {
+                    let localData = [];
+                    try {
+                        localData = JSON.parse(localStorage.getItem("qp_local_requests") || "[]");
+                    } catch(e){}
+                    localData.push(newRequest);
+                    localStorage.setItem("qp_local_requests", JSON.stringify(localData));
+
+                    showToast("Đã lưu yêu cầu thành công!", "success");
+                    submissionForm.reset();
+                    formModal.classList.add('hidden');
+                    if (isAdmin) refreshDataList();
+                });
+        });
 
         themeToggleBtn.addEventListener('click', () => {
             isDarkMode = !isDarkMode;
@@ -463,15 +1103,7 @@
             if (matchedItems.length === 0) {
                 searchResultsWrapper.innerHTML = `<p class="text-xs text-slate-400 italic p-3 text-center">Không tìm thấy môn học nào khớp</p>`;
             } else {
-                searchResultsWrapper.innerHTML = matchedItems.map(item => `
-                    <button onclick="goToSubjectLink('${item.url}')" class="w-full text-left px-3.5 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50/95 dark:bg-slate-800/90 hover:bg-brand-50 dark:hover:bg-brand-950/60 hover:text-brand-700 dark:hover:text-emerald-400 rounded-xl flex items-center justify-between group transition-all border border-slate-100 dark:border-slate-800/80 shadow-sm">
-                        <div class="flex flex-col gap-0.5">
-                            <span class="text-slate-400 dark:text-slate-500 font-mono text-[10px] tracking-wider">${item.code}</span>
-                            <span>${item.name}</span>
-                        </div>
-                        <span class="text-[9px] text-white px-2 py-0.5 rounded-md font-extrabold uppercase ${item.tagColor}">${item.tag}</span>
-                    </button>
-                `).join('');
+                searchResultsWrapper.innerHTML = matchedItems.map(item => renderSubjectButton(item)).join('');
             }
         }
 
@@ -496,22 +1128,14 @@
                 if (filtered.length === 0) {
                     container.innerHTML = `<p class="text-xs text-slate-400 italic p-3 text-center">Không tìm thấy dữ liệu hợp lệ</p>`;
                 } else {
-                    container.innerHTML = filtered.map(item => `
-                        <button onclick="goToSubjectLink('${item.url}')" class="w-full text-left px-3.5 py-3 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50/60 dark:bg-slate-800/40 hover:bg-brand-50 dark:hover:bg-slate-800 hover:text-brand-700 dark:hover:text-emerald-400 rounded-xl flex items-center justify-between group transition-colors border border-slate-100 dark:border-slate-800">
-                            <div class="flex flex-col gap-0.5">
-                                <span class="text-slate-400 dark:text-slate-500 font-mono text-[10px] tracking-wider">${item.code}</span>
-                                <span>${item.name}</span>
-                            </div>
-                            <span class="text-[9px] text-white px-2 py-0.5 rounded-md font-extrabold uppercase ${item.tagColor}">${item.tag}</span>
-                        </button>
-                    `).join('');
+                    container.innerHTML = filtered.map(item => renderSubjectButton(item)).join('');
                 }
             });
         }
 
         window.goToSubjectLink = function(url) {
             if(url === "#") {
-                alert("Phân hệ nội dung này đang được thiết kế và cập nhật!");
+                showToast("Phân hệ nội dung này đang được thiết kế và cập nhật!", "info");
             } else {
                 window.location.href = url;
             }
@@ -568,46 +1192,6 @@
             }
         });
 
-        modalOpenTrigger.addEventListener('click', () => formModal.classList.remove('hidden'));
-        modalCloseBtn.addEventListener('click', () => formModal.classList.add('hidden'));
-
-        submissionForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const zaloVal = zaloField.value.trim();
-            const noteVal = noteField.value.trim();
-            if (!zaloVal) return;
-
-            const newRequest = {
-                zalo: zaloVal,
-                note: noteVal,
-                timestamp: Date.now(),
-                dateString: new Date().toLocaleString('vi-VN')
-            };
-
-            try {
-                const saved = localStorage.getItem("qp_local_requests");
-                const currentLocal = saved ? JSON.parse(saved) : [];
-                currentLocal.push(newRequest);
-                localStorage.setItem("qp_local_requests", JSON.stringify(currentLocal));
-            } catch(err){}
-
-            db.ref("yeu_cau_thiet_ke").push(newRequest)
-                .then(() => {
-                    alert("Hệ thống đã ghi nhận thông tin! Tác giả Nguyễn Văn Lượng sẽ liên hệ bạn ngay qua Zalo.");
-                    zaloField.value = "";
-                    noteField.value = "";
-                    formModal.classList.add('hidden');
-                    refreshDataList();
-                })
-                .catch(() => {
-                    alert("Hệ thống đã ghi nhận thông tin! Tác giả Nguyễn Văn Lượng sẽ liên hệ bạn ngay qua Zalo.");
-                    zaloField.value = "";
-                    noteField.value = "";
-                    formModal.classList.add('hidden');
-                    refreshDataList();
-                });
-        });
-
         logoTrigger.addEventListener('dblclick', () => {
             if (isAdmin) {
                 adminPanel.classList.toggle('hidden');
@@ -622,34 +1206,27 @@
             const targetEmail = adminEmailField.value.trim().toLowerCase();
 
             if (targetEmail !== "ngocyen@cucdang.com") {
-                alert("Tài khoản không có quyền truy cập cổng dữ liệu!");
+                showToast("Tài khoản không có quyền truy cập cổng dữ liệu!", "error");
                 return;
             }
 
             auth.signInWithEmailAndPassword(targetEmail, adminPasswordField.value)
                 .then(() => {
-                    alert("Đăng nhập quản trị viên thành công!");
-                    isAdmin = true;
-                    localStorage.setItem("qp_admin_active", "true");
+                    showToast("Đăng nhập quản trị viên thành công!", "success");
                     adminLoginModal.classList.add('hidden');
-                    logoutBtn.classList.remove('hidden');
-                    adminPanel.classList.remove('hidden');
                     adminEmailField.value = "";
                     adminPasswordField.value = "";
-                    refreshDataList();
                 })
                 .catch((error) => {
-                    alert("Đăng nhập thất bại: Mật khẩu không chính xác hoặc lỗi quyền truy cập!");
+                    showToast("Đăng nhập thất bại: Mật khẩu không chính xác!", "error");
                     console.error(error);
                 });
         });
 
         logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem("qp_admin_active");
-            isAdmin = false;
-            logoutBtn.classList.add('hidden');
-            adminPanel.classList.add('hidden');
-            alert("Đã khóa cổng dữ liệu ẩn an toàn.");
+            auth.signOut().then(() => {
+                showToast("Đã khóa cổng dữ liệu ẩn an toàn.", "info");
+            });
         });
 
         function refreshDataList() {
@@ -705,8 +1282,9 @@
             }
         }
 
-        window.deleteRequest = function(id, timestamp) {
-            if (window.confirm("Xóa dòng dữ liệu đăng ký này?")) {
+        window.deleteRequest = async function(id, timestamp) {
+            const confirmed = await showCustomConfirm("Xác nhận xóa", "Bạn có chắc chắn muốn xóa dòng thông tin này?");
+            if (confirmed) {
                 if (id) db.ref(`yeu_cau_thiet_ke/${id}`).remove();
                 
                 try {
@@ -721,14 +1299,6 @@
                 setTimeout(() => refreshDataList(), 200);
             }
         };
-
-        const adminSession = localStorage.getItem("qp_admin_active");
-        if (adminSession === "true") {
-            isAdmin = true;
-            logoutBtn.classList.remove('hidden');
-            adminPanel.classList.remove('hidden');
-            refreshDataList();
-        }
     </script>
 </body>
 </html>
