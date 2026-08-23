@@ -42,7 +42,7 @@
                         'bounce-slow': 'bounce 3s infinite',
                         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'float': 'float 4s ease-in-out infinite',
-                        'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+                        'ping-slow': 'ping 2s cubic-bezier(0, 0.2, 1) infinite',
                     },
                     keyframes: {
                         float: {
@@ -109,7 +109,7 @@
     </div>
 
     <div id="student-file-auth-modal" class="hidden fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-enter">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-sm p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 relative space-y-4 text-center">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-sm p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 relative space-y-4 text-center" onclick="event.stopPropagation();">
             <button onclick="document.getElementById('student-file-auth-modal').classList.add('hidden')" class="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
@@ -127,10 +127,14 @@
     </div>
 
     <div id="file-list-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-enter">
-        <div id="file-modal-card" class="bg-white dark:bg-slate-900 w-full max-w-lg p-6 rounded-3xl shadow-2xl relative border border-slate-100 dark:border-slate-800 transition-all duration-300">
+        <div id="file-modal-card" class="bg-white dark:bg-slate-900 w-full max-w-lg p-6 rounded-3xl shadow-2xl relative border border-slate-100 dark:border-slate-800 transition-all duration-300" onclick="event.stopPropagation();">
             <div class="flex items-center justify-between border-b pb-3 mb-4 border-slate-100 dark:border-slate-800">
                 <h3 id="modal-subject-title" class="text-sm font-black uppercase text-brand-600 dark:text-emerald-400">Danh sách tài liệu</h3>
-                <button onclick="closeFileListModal()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">Đóng</button>
+                
+                <button onclick="closeFileListModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/50 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 text-xs font-black transition-all active:scale-95">
+                    <span>Đóng</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
             </div>
             
             <div id="modal-admin-batch-toolbar" class="hidden flex items-center justify-between p-2.5 mb-3 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200/80 dark:border-slate-700">
@@ -266,11 +270,11 @@
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
                     <div class="space-y-2 flex-1">
                         <h3 class="text-lg sm:text-xl font-black tracking-tight leading-snug text-white group-hover:text-yellow-200 transition-colors">
-                            Nhận Thiết Kế Hệ Thống Quiz & PowerPoint
+                            Nhận Thiết Kế Hệ Thống Quiz & PowerPoint Chuẩn
                         </h3>
                         
                         <p class="text-xs text-emerald-100 font-medium leading-relaxed max-w-lg">
-                            Số hóa ngân hàng đề trắc nghiệm cá nhân hoặc thiết kế slide thuyết trình cơ bản theo yêu cầu riêng của bạn.
+                            Số hóa ngân hàng đề trắc nghiệm cá nhân hoặc thiết kế slide thuyết trình chuyên nghiệp theo yêu cầu riêng của bạn.
                         </p>
                     </div>
 
@@ -337,7 +341,7 @@
         </div>
 
         <div id="form-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md animate-enter">
-            <div class="bg-white dark:bg-slate-900 w-full max-w-md p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 relative space-y-4">
+            <div class="bg-white dark:bg-slate-900 w-full max-w-md p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 relative space-y-4" onclick="event.stopPropagation();">
                 <button id="modal-close-btn" class="absolute top-4 right-4 p-1.5 text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
@@ -355,7 +359,7 @@
                     </div>
                     <div>
                         <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">Ghi chú yêu cầu dịch vụ</label>
-                        <textarea id="note-field" rows="2" placeholder="Nội dung cần làm bài quiz, slide  học..." class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-white font-medium"></textarea>
+                        <textarea id="note-field" rows="2" placeholder="Nội dung cần làm bài quiz, slide môn học..." class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-white font-medium"></textarea>
                     </div>
                     <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-brand-500 to-emerald-600 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl hover:shadow-lg transition-shadow">Gửi Thông Tin Ngay</button>
                 </form>
@@ -363,7 +367,7 @@
         </div>
 
         <div id="admin-login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-enter">
-            <div class="bg-white dark:bg-slate-900 w-full max-w-sm p-6 rounded-3xl shadow-2xl border border-brand-500 dark:border-slate-800 space-y-4 relative">
+            <div class="bg-white dark:bg-slate-900 w-full max-w-sm p-6 rounded-3xl shadow-2xl border border-brand-500 dark:border-slate-800 space-y-4 relative" onclick="event.stopPropagation();">
                 <button id="login-modal-close-btn" class="absolute top-4 right-4 p-1.5 text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
@@ -444,62 +448,100 @@
         const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyl6TNoWZxdi4Z_tAhX1u_5RkdQ4NZ2d4SfAzhJsRFh0SFagFxWwBaGyrVfcGndvfi65A/exec";
 
         const subSubjects = {
-            "on-thi-chuan-dau-ra": [
-                { name: "ACCESS: Đề ôn đầu ra Access", code: "ACC-01", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".access" },
-                { name: "TIN A: Đề ôn đầu ra Tin A", code: "TINA-02", tag: "HOT", tagColor: "bg-emerald-500", url: "TinHocDauRaPhan1.html", authKey: ".tina" }
-            ],
-            "on-tap-mon-hoc": [
-                { name: "Môn: Sinh Lý Thực Vật", code: "204103", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".sltv" },
-                { name: "Môn: Khí Tượng Nông Nghiệp", code: "204615", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".ktnn" },
-                { name: "Môn: Rèn Nghề", code: "204539", tag: "Cập nhật", tagColor: "bg-amber-500", url: "#", authKey: ".rn" },
-                
-                { 
-                    name: "Môn: Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật", 
-                    code: "204112", 
-                    url: "#", 
-                    authKey: ".stpt",
-                    parts: [
-                        { name: "Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật Phần 1", url: "STPT.html" },
-                        { name: "Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật Phần 2", url: "STPTP2.html" }
-                    ]
-                },
-
-                { 
-                    name: "Môn: Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng", 
-                    code: "204224", 
-                    url: "#", 
-                    authKey: ".cnsh",
-                    parts: [
-                        { name: "Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng Phần 1", url: "CNSH.html" },
-                        { name: "Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng Phần 2", url: "CNSHP2.html" }
-                    ]
-                },
-
-                { 
-                    name: "Môn: Vi Sinh Vật Nông Nghiệp", 
-                    code: "204121", 
-                    url: "#", 
-                    authKey: ".vsvnn",
-                    parts: [
-                        { name: "Vi Sinh Vật Nông Nghiệp Phần 1", url: "VSVNN.html" },
-                        { name: "Vi Sinh Vật Nông Nghiệp Phần 2", url: "VSVNNP2.html" },
-                        { name: "Vi Sinh Vật Nông Nghiệp Phần 3", url: "VSVNNP3.html" },
-                        { name: "Vi Sinh Vật Nông Nghiệp Phần 4", url: "VSVNNP4.html" },
-                        { name: "Vi Sinh Vật Nông Nghiệp Phần 5", url: "VSVNNP5.html" },
-                        { name: "Đề ôn luyện số 1 (D1)", url: "VSVNND1.html" },
-                        { name: "Đề ôn luyện số 2 (D2)", url: "VSVNND2.html" },
-                        { name: "Đề ôn luyện số 3 (D3)", url: "VSVNND3.html" },
-                        { name: "Đề ôn luyện số 4 (D4)", url: "VSVNND4.html" }
-                    ]
-                },
-
-                { name: "Môn: Sinh Thái Nông Nghiệp", code: "STNN", url: "STNN.html", authKey: ".stnn" },
-                { name: "Môn: Cỏ Dại Và Quản Lý Cỏ Dại", code: "204753", url: "CODAI.html", authKey: ".cd" }
-            ],
-            "noi-dung-yeu-cau": [
-                { name: "Yêu Cầu 1: CD", code: "REQ-01", tag: "Mới", tagColor: "bg-emerald-500", url: "CODAI.html", authKey: ".cd" }
+    "on-thi-chuan-dau-ra": [
+        { 
+            name: "ACCESS: Đề ôn đầu ra Access", 
+            code: "ACC-01", 
+            tag: "CẬP NHẬT", 
+            tagColor: "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm shadow-orange-500/25", 
+            url: "#", 
+            authKey: ".access" 
+        },
+        { 
+            name: "TIN A: Đề ôn đầu ra Tin A", 
+            code: "TINA-02", 
+            tag: "HOT", 
+            tagColor: "bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-sm shadow-rose-500/25", 
+            url: "TinHocDauRaPhan1.html", 
+            authKey: ".tina" 
+        }
+    ],
+    "on-tap-mon-hoc": [
+        { 
+            name: "Môn: Sinh Lý Thực Vật", 
+            code: "204103", 
+            tag: "CẬP NHẬT", 
+            tagColor: "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm shadow-orange-500/25", 
+            url: "#", 
+            authKey: ".sltv" 
+        },
+        { 
+            name: "Môn: Khí Tượng Nông Nghiệp", 
+            code: "204615", 
+            tag: "CẬP NHẬT", 
+            tagColor: "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm shadow-orange-500/25", 
+            url: "#", 
+            authKey: ".ktnn" 
+        },
+        { 
+            name: "Môn: Rèn Nghề", 
+            code: "204539", 
+            tag: "CẬP NHẬT", 
+            tagColor: "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm shadow-orange-500/25", 
+            url: "#", 
+            authKey: ".rn" 
+        },
+        { 
+            name: "Môn: Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật", 
+            code: "204112", 
+            url: "#", 
+            authKey: ".stpt",
+            parts: [
+                { name: "Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật Phần 1", url: "STPT.html" },
+                { name: "Sinh Trưởng Phát Triển và Tính Chống Chịu Của Thực Vật Phần 2", url: "STPTP2.html" }
             ]
-        };
+        },
+        { 
+            name: "Môn: Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng", 
+            code: "204224", 
+            url: "#", 
+            authKey: ".cnsh",
+            parts: [
+                { name: "Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng Phần 1", url: "CNSH.html" },
+                { name: "Công Nghệ Sinh Học Trong Sản Xuất Cây Trồng Phần 2", url: "CNSHP2.html" }
+            ]
+        },
+        { 
+            name: "Môn: Vi Sinh Vật Nông Nghiệp", 
+            code: "204121", 
+            url: "#", 
+            authKey: ".vsvnn",
+            parts: [
+                { name: "Vi Sinh Vật Nông Nghiệp Phần 1", url: "VSVNN.html" },
+                { name: "Vi Sinh Vật Nông Nghiệp Phần 2", url: "VSVNNP2.html" },
+                { name: "Vi Sinh Vật Nông Nghiệp Phần 3", url: "VSVNNP3.html" },
+                { name: "Vi Sinh Vật Nông Nghiệp Phần 4", url: "VSVNNP4.html" },
+                { name: "Vi Sinh Vật Nông Nghiệp Phần 5", url: "VSVNNP5.html" },
+                { name: "Đề ôn luyện số 1 (D1)", url: "VSVNND1.html" },
+                { name: "Đề ôn luyện số 2 (D2)", url: "VSVNND2.html" },
+                { name: "Đề ôn luyện số 3 (D3)", url: "VSVNND3.html" },
+                { name: "Đề ôn luyện số 4 (D4)", url: "VSVNND4.html" }
+            ]
+        },
+        { name: "Môn: Sinh Thái Nông Nghiệp", code: "STNN", url: "STNN.html", authKey: ".stnn" },
+        { name: "Môn: Cỏ Dại Và Quản Lý Cỏ Dại", code: "204753", url: "CODAI.html", authKey: ".cd" }
+    ],
+    "noi-dung-yeu-cau": [
+        { 
+            name: "Yêu Cầu 1: CD", 
+            code: "REQ-01", 
+            tag: "HOT", 
+            tagColor: "bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-sm shadow-rose-500/25", 
+            url: "CODAI.html", 
+            authKey: ".cd" 
+        }
+    ]
+};
 
         let openSection = null; 
         let searchQuery = "";
@@ -742,38 +784,39 @@
         }
 
         function renderSubjectButton(item) {
-            const fileData = uploadedFiles[item.code];
-            const count = getFileCount(fileData);
-            const encodedItem = encodeURIComponent(JSON.stringify(item));
+    const fileData = uploadedFiles[item.code];
+    const count = getFileCount(fileData);
+    const encodedItem = encodeURIComponent(JSON.stringify(item));
 
-            return `
-                <div class="w-full text-left px-3.5 py-3 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50/60 dark:bg-slate-800/40 hover:bg-brand-50 dark:hover:bg-slate-800 rounded-xl flex items-center justify-between group transition-colors border border-slate-100 dark:border-slate-800 gap-2">
-                    <div class="flex flex-col gap-0.5 flex-1 cursor-pointer" onclick="goToSubjectLink('${encodedItem}')">
-                        <span class="text-slate-400 dark:text-slate-500 font-mono text-[10px] tracking-wider">${item.code}</span>
-                        <span>${item.name}</span>
-                        ${count > 0 ? `<span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-extrabold mt-0.5">📂 ${count} tài liệu</span>` : ''}
-                    </div>
+    return `
+        <div class="w-full text-left px-3.5 py-3 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50/60 dark:bg-slate-800/40 hover:bg-brand-50 dark:hover:bg-slate-800 rounded-xl flex items-center justify-between group transition-colors border border-slate-100 dark:border-slate-800 gap-2">
+            <div class="flex flex-col gap-0.5 flex-1 cursor-pointer" onclick="goToSubjectLink('${encodedItem}')">
+                <span class="text-slate-400 dark:text-slate-500 font-mono text-[10px] tracking-wider">${item.code}</span>
+                <span>${item.name}</span>
+                ${count > 0 ? `<span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-extrabold mt-0.5">📂 ${count} tài liệu</span>` : ''}
+            </div>
 
-                    <div class="flex items-center gap-1.5 shrink-0">
-                        
-                        <button onclick="handleCheckAuthBeforeDownload('${item.code}')" class="px-2 py-1 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-[10px] font-extrabold transition-colors shadow-sm" title="Tải tài liệu">
-                            ⬇ Tải file
-                        </button>
+            <div class="flex items-center gap-1.5 shrink-0">
+                ${item.tag ? `<span class="text-[9px] px-2.5 py-1 rounded-lg font-black uppercase tracking-wider ${item.tagColor || 'bg-brand-500 text-white'}">${item.tag}</span>` : ''}
 
-                        ${isAdmin ? `
-                        <button onclick="triggerAdminUpload('${item.code}')" class="p-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors" title="Thêm file">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-                        </button>
-                        ${count > 0 ? `
-                        <button onclick="openManageFilesModal('${item.code}')" class="p-1 bg-rose-500 hover:bg-rose-600 text-white rounded-lg transition-colors" title="Xóa/Quản lý file">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                        </button>
-                        ` : ''}
-                        ` : ''}
-                    </div>
-                </div>
-            `;
-        }
+                <button onclick="handleCheckAuthBeforeDownload('${item.code}')" class="px-2 py-1 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-[10px] font-extrabold transition-colors shadow-sm" title="Tải tài liệu">
+                    ⬇ Tải file
+                </button>
+
+                ${isAdmin ? `
+                <button onclick="triggerAdminUpload('${item.code}')" class="p-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors" title="Thêm file">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+                ${count > 0 ? `
+                <button onclick="openManageFilesModal('${item.code}')" class="p-1 bg-rose-500 hover:bg-rose-600 text-white rounded-lg transition-colors" title="Xóa/Quản lý file">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+                ` : ''}
+                ` : ''}
+            </div>
+        </div>
+    `;
+}
 
         window.goToSubjectLink = function(encodedItemStr) {
             let item;
@@ -936,7 +979,6 @@
                         </div>
                     </div>
 
-                    <!-- THANH TIẾN TRÌNH % TẢI XUỐNG -->
                     <div id="progress-container-${idx}" class="hidden space-y-1 pt-1">
                         <div class="flex items-center justify-between text-[10px] font-extrabold text-brand-600 dark:text-emerald-400">
                             <span id="progress-text-${idx}">Đang nạp file...</span>
@@ -997,10 +1039,15 @@
         };
 
         window.closeFileListModal = function() {
-            document.getElementById('file-list-modal').classList.add('hidden');
+            const modal = document.getElementById('file-list-modal');
             const modalCard = document.getElementById('file-modal-card');
+            
+            modal.classList.add('hidden');
             modalCard.classList.remove('max-w-4xl');
             modalCard.classList.add('max-w-lg');
+            
+            const container = document.getElementById('modal-file-list');
+            if (container) container.innerHTML = '';
         };
 
         window.openManageFilesModal = function(code) {
@@ -1089,7 +1136,7 @@
 
             if (selectedIndices.length === 0) return;
 
-            const confirmed = await showCustomConfirm("Xác nhận xóa", `Bạn có chắc muốn xóa ${selectedIndices.length} file đã chọn không?`);
+            const confirmed = await showCustomConfirm("Xác nhận xóa", `Bạn có chắc chắn muốn xóa ${selectedIndices.length} file đã chọn không?`);
             if (!confirmed) return;
 
             showToast(`Đang xóa ${selectedIndices.length} file...`, "info");
@@ -1125,7 +1172,7 @@
             let fileData = uploadedFiles[code];
             if (!fileData) return;
 
-            const confirmed = await showCustomConfirm("Xác nhận xóa", "Bạn có chắc muốn xóa file này không?");
+            const confirmed = await showCustomConfirm("Xác nhận xóa", "Bạn có chắc chắn muốn xóa file này không?");
             if (!confirmed) return;
 
             showToast("Đang xóa file...", "info");
@@ -1284,6 +1331,20 @@
 
         modalOpenTrigger.addEventListener('click', () => formModal.classList.remove('hidden'));
         modalCloseBtn.addEventListener('click', () => formModal.classList.add('hidden'));
+
+        // SỰ KIỆN CLICK RA NGOÀI ĐỂ TỰ ĐỘNG ĐÓNG MODAL
+        document.getElementById('file-list-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'file-list-modal') closeFileListModal();
+        });
+        document.getElementById('student-file-auth-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'student-file-auth-modal') e.currentTarget.classList.add('hidden');
+        });
+        formModal.addEventListener('click', (e) => {
+            if (e.target.id === 'form-modal') formModal.classList.add('hidden');
+        });
+        adminLoginModal.addEventListener('click', (e) => {
+            if (e.target.id === 'admin-login-modal') adminLoginModal.classList.add('hidden');
+        });
 
         submissionForm.addEventListener('submit', (e) => {
             e.preventDefault();
