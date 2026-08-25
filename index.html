@@ -274,7 +274,7 @@
                         </h3>
                         
                         <p class="text-xs text-emerald-100 font-medium leading-relaxed max-w-lg">
-                            Số hóa ngân hàng đề trắc nghiệm cá nhân hoặc thiết kế slide thuyết trình chuyên nghiệp theo yêu cầu riêng của bạn.
+                            Số hóa ngân hàng đề trắc nghiệm cá nhân hoặc thiết kế slide thuyết trình cơ bản theo yêu cầu riêng của bạn.
                         </p>
                     </div>
 
@@ -892,7 +892,7 @@
 
                 pendingStudentFileCode = code;
                 const subjectName = getSubjectNameByCode(code);
-                document.getElementById('student-auth-title').innerText = `Tài liệu: ${subjectName}`;
+                document.getElementById('student-auth-title').innerText = `Tài liệu ${subjectName}`;
                 document.getElementById('student-auth-email').value = "";
                 document.getElementById('student-auth-pass').value = "";
                 document.getElementById('student-file-auth-modal').classList.remove('hidden');
@@ -955,7 +955,7 @@
             }
 
             const subjectName = getSubjectNameByCode(code);
-            document.getElementById('modal-subject-title').innerText = `Tài liệu: ${subjectName}`;
+            document.getElementById('modal-subject-title').innerText = `Tài liệu ${subjectName}`;
             document.getElementById('modal-admin-batch-toolbar').classList.add('hidden');
             
             const modalCard = document.getElementById('file-modal-card');
