@@ -463,7 +463,7 @@
             tag: "HOT", 
             tagColor: "bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-sm shadow-rose-500/25", 
             url: "TinHocDauRaPhan1.html", 
-            authKey: ".TinHocDauRaPhan1" 
+            authKey: ".tinhocdauraphan1" 
         }
     ],
     "on-tap-mon-hoc": [
@@ -603,7 +603,6 @@
             return match ? (match[1] || match[0]) : null;
         }
 
-        // TẢI FILE TỰ ĐỘNG CÓ HIỆN THANH TIẾN TRÌNH % TRỰC TIẾP TRÊN GIAO DIỆN
         window.forceDownloadDriveFile = function(url, fileName, fileIdx) {
             const fileId = extractFileId(url);
             if (!fileId) {
