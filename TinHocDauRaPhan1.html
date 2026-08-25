@@ -961,7 +961,7 @@
         const ADMIN_EMAIL = "ngocyen@cucdang.com";
         const userEmail = currentUser.email.toLowerCase();
         
-        if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".TinHocDauRaphan1")) {
+        if (userEmail !== ADMIN_EMAIL && !userEmail.includes(".tinhocdauraphan1")) {
             state.authError = "Tài khoản này không có quyền truy cập môn Tin học!";
             auth.signOut();
             state.user = null;
